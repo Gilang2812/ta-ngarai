@@ -46,8 +46,7 @@ const findOrCreateAuthGroup = async (id, name) => {
     where: { id },
     defaults: { name }, 
   });
-  console.log(authGroup)
-  console.log(created)
+
   return authGroup; 
 };
 const deleteUser  = async (id) => {
