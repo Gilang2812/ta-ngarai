@@ -6,7 +6,7 @@ const Announcement = sequelize.define(
   {
     id: {
         type: DataTypes.STRING(5),
-        allowNull: false,
+        allowNull: false, 
         primaryKey: true,
       },
       admin_id: {
@@ -25,6 +25,7 @@ const Announcement = sequelize.define(
   {
     tableName: "announcement",
     timestamps: false,
+    
   }
 );
 

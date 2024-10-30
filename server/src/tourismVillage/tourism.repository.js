@@ -5,4 +5,11 @@ const findTourismById =  async (id)=>{
     return tourism
 }
 
-module.exports = {findTourismById}
+const editTourism =async (id,body)=>{  
+    // const data=await findTourismById(id) 
+    // const tourism =await data.update(body)
+    console.log(body)
+    return body
+}
+
+module.exports = {findTourismById,editTourism}
