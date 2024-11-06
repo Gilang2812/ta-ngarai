@@ -14,7 +14,7 @@ const registerSchema = Joi.object({
         }
         return value;
     }),
-    password: Joi.string().min(6).required(),
+    password: Joi.string().required(),
     confirmPassword: Joi.any().valid(Joi.ref('password')).required().messages({
         'any.only': 'Passwords do not match',
     })

@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 
-const authentication = (req,res,next)=>{
+const verifyToken = (req,res,next)=>{
 
     let secret = process.env.SECRET_TOKEN;
 
@@ -8,7 +8,7 @@ const authentication = (req,res,next)=>{
     const token = authHeader && authHeader.split(' ')[1];
 
     if(token ==null){
-        return res.status(401).json({message: 'Token not provided'});
+        return res.status(401).json({message: 'Token not provided'}); 
     }
     
     jwt.verify(token, secret, (err, user)=>{
@@ -22,4 +22,11 @@ const authentication = (req,res,next)=>{
 
 }
 
-module.exports = {authentication};
+const verifyAdmin = (req,res,next)=>{
+    if(req.user.group_id!= 3){
+        return res.status(403).json({message: 'Unauthorized to access admin routes'});
+    }
+    next();
+}
+
+module.exports = {verifyToken,verifyAdmin};
