@@ -12,7 +12,7 @@ export  function WhyVisitSection() {
   return (
     <section
       ref={ref}
-      className={`  grid grid-cols-1 lg:grid-cols-2 gap-16 py-32 px-44 justify-items-stretch ${
+      className={`  grid grid-cols-1 lg:grid-cols-2 gap-16 py-32 max-w-6xl mx-[10%] justify-items-stretch ${
         inView ? "animate-FadeIn" : "opacity-0"
       }`}
     >
@@ -53,7 +53,7 @@ export  function WhyVisitSection() {
         </footer>
       </article>
 
-      <aside className="col-span-1">
+      <aside className="col-span-1 translate-x-5">
         <div className="-translate-x-10 border-4 border-primary">
           <Image
             src='/images/carousel-1.jpg'

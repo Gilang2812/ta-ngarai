@@ -33,14 +33,14 @@ body {
 }
 
 @font-face {
-  font-family: "Nunito", sans-serif;
+  font-family: "Nunito";
   src: url('/fonts/Nunito.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
 }
 
 @font-face {
-  font-family:  "Open Sans", sans-serif;
+  font-family:  "Open Sans";
   src: url('/fonts/OpenSans.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;

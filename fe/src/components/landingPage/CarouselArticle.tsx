@@ -5,7 +5,6 @@ import Slider from 'react-slick'
 import Image from 'next/image'
 import { NextButton, PrevButton } from '@/components/landingPage/CarouselButtons'
  
- 
 const images = [{
   src: '/images/carousel-1.jpg',
   alt: 'First slide',
@@ -41,7 +40,7 @@ const CarouselArticle = () => {
     beforeChange: (oldIndex: number, newIndex: number) => {
       setCurrentSlide(newIndex)
     },
-    appendDots: (dots:any) => (
+    appendDots: (dots:React.ReactNode) => (
       <div
         style={{
           backgroundColor: 'transparent',
@@ -53,22 +52,25 @@ const CarouselArticle = () => {
       </div>
     ),
     customPaging: (i: number) => (
+      <div className={`${i === currentSlide ?'bg-primary border-primary' :'border-white'} p-1 border `}>
       <div
         style={{
-          width: "12px",
-          height: "12px",
-          borderRadius: "50%",
-          border: "2px solid   #435ebe",
-          backgroundColor: i === currentSlide ? "white" : "transparent",
+          width: "8px",
+          height: "8px",
+          borderRadius: "100%",
+          border: "2px solid inset  transparent",
+          backgroundColor: i === currentSlide ? "white" : "white",
           transition: "background-color 0.3s ease",
         }}
       />
+      </div>
+
     ),
   }
 
   return (
-    <div className='bg-blue-500 relative'>
-      <div className='z-40 mt-20 bottom-0 text-white absolute left-1/2 transform translate-x-[-50%] translate-y-[-50%] space-x-40'>
+    <div className='bg-blue-500 relative col-span-1'>
+      <div className='z-10 mt-20 bottom-0 text-white absolute left-1/2 transform translate-x-[-50%] translate-y-[-50%] space-x-40'>
         <PrevButton onClick={previous} />
         <NextButton onClick={next} />
       </div>

@@ -1,18 +1,42 @@
-import Image from "next/image"
-
-export const WelcomeSection = ()=>{
-    return   <aside className="relative inset-0 font-quicksand col-span-1 z-10">
-    <Image
+import Image from 'next/image';
+import { FaPlay } from 'react-icons/fa';
+import Modal from '../modal/ModalVideo';
+import {useModal} from '@/utils/ModalUtils';
+ 
+ 
+export default function WelcomeSection( ) {
+  const {isOpen,openModal, closeModal } = useModal()
+  return (
+    <aside className="relative min-h-fit min-w-[640px] font-quicksand  bg-red-400 z-20">
+       <Image
       src='/images/bg-header.jpg'
       alt="bg"
-      layout="responsive"
-      width={700}
-      height={475}
-      className="w-full bg-cover h-auto"
-    />
-    <div className="absolute capitalize leading-relaxed text-5xl inset-0 p-8 pt-12 bg-black/70 text-white font-extrabold flex flex-col justify-center items-start">
-      <h2>Welcome to </h2>
-      <h1 className="text-7xl">Desa Wisata Nagari Koto Gadang</h1>
-    </div>
-  </aside>
+      width={500}
+      height={500}
+      layout='reponsive'
+       
+      className="w-full h-full bg-cover   "
+    /> <section className="absolute inset-0 pr-52 px-20 leading-tight pt-12 text-wrap bg-black/70 text-white text-custom gap-4 font-bold flex flex-col justify-center items-start">
+        <h2 className="text-4xl">Welcome to </h2>
+        <h1>Desa Wisata Nagari Koto Gadang</h1>
+        <div className="flex text-lg mt-4  gap-8 items-center">
+          <a href="/web" className="hover:bg-success text-lg mr-12 transition-ease-in-out bg-primary  py-2  px-4 lg:py-4 lg:px-8">
+            Explore
+          </a>
+          <div className=" ">
+            <div className="absolute bg-white rounded-full h-16 w-16 flex items-center justify-center animate-ping"></div>
+            <button
+              onClick={openModal}
+              id="buttonPlay"
+              className="bg-white p-4 size-16  flex items-center justify-center rounded-full relative"
+            >
+              <FaPlay className="ml-1 mt-1 text-primary" />
+            </button>
+          </div>
+          <label htmlFor="buttonPlay">Watch Video</label>
+        </div>
+      </section>
+      <Modal isOpen={isOpen} closeModal={closeModal} />
+    </aside>
+  );
 }

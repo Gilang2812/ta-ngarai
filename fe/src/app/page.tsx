@@ -1,6 +1,6 @@
 'use client'
 import {Header} from "@/components/landingPage/Header";
-import {WelcomeSection} from "@/components/landingPage/WelcomeSection"; 
+import WelcomeSection from "@/components/landingPage/WelcomeSection"; 
 import CarouselArticle from "@/components/landingPage/CarouselArticle";
 import {WhyVisitSection} from "@/components/landingPage/WhyVisitSection";
 import {GeoparkSection} from "@/components/landingPage/GeoparkSection"; 
@@ -8,6 +8,7 @@ import {Footer} from "@/components/landingPage/Footer";
 import React, { useRef } from "react";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css"; 
+import ScrollToTop from "@/components/landingPage/ScrollToTop";
 
 export default function Home() {
   // Define refs for each section
@@ -27,7 +28,7 @@ export default function Home() {
         onAboutClick={() => scrollToSection(whyVisitRef)} 
         onAwardClick={() => scrollToSection(geoparkRef)} 
       />
-      <section className="z-10 grid grid-cols-1 lg:grid-cols-2">
+      <section className="z-10 min-w-[640px] grid grid-cols-1 lg:grid-cols-2">
         <WelcomeSection />
         <CarouselArticle />
       </section>
@@ -40,6 +41,7 @@ export default function Home() {
         <GeoparkSection />
       </section>
       <Footer />
+      <ScrollToTop />
     </main>
   );
 }

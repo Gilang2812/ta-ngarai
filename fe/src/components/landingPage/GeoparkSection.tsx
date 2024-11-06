@@ -11,7 +11,7 @@ export   function GeoparkSection() {
   return (
     <section
       ref={ref}
-      className={`space-y-12 text-white p-28 ${
+      className={`space-y-12 text-white  mx-[10%] mb-8 ${
         inView ? "animate-FadeIn" : "opacity-0"
       }`} 
     >
