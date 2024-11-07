@@ -43,7 +43,6 @@ export default function Login() {
         
                 <FormInput
                     name="email"
-                 
                   icon={FaRegUser}
                   type="text"
                   placeholder="Email or Username"

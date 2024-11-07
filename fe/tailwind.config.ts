@@ -13,13 +13,13 @@ const config: Config = {
       lg: "1024px",
       xl: "1280px",
       "2xl": "1536px",
-    },
+      },
     extend: {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
-        primary: "var(--primary)",
-        secondary: "var(--secondary)",
+        primary: "#435ebe",
+        secondary: "#2D499D",
         tertiary: "var(--tertiary)",
         success:'#4DC397'
       },
