@@ -2,7 +2,9 @@ import type { Metadata } from "next";
 import "./globals.css";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { ReactQueryProvider } from '@/context/ReactQueryClientProvider';
+import { ReactQueryProvider } from "@/context/ReactQueryClientProvider";
+import "swiper/css"; 
+import "swiper/css/bundle";
  
 export const metadata: Metadata = {
   title: "Kawasan Wisata Ngarai Sianok",
@@ -16,10 +18,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ReactQueryProvider>
-      <html lang="en">
-        <body className={` font-nunito   antialiased`}>{children}</body>
-      </html>
+    <ReactQueryProvider> 
+        <html lang="en">
+          <body className={` font-nunito   antialiased`}>{children}</body>
+        </html> 
     </ReactQueryProvider>
   );
 }

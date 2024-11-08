@@ -11,7 +11,7 @@ export const UserNav = () => {
           <SideNavItem icon={FaHouse} label="Home" link="/web" />
         </li>
         <li>
-          <SideNavItem icon={FaMap} label="Explore Village" link="/web" />
+          <SideNavItem icon={FaMap} label="Explore Village" link="#" />
         </li>
         <li>
           <SideNavItem

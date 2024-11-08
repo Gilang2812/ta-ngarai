@@ -4,20 +4,20 @@ import { Sidebar } from "@/components/global/Sidebar";
 import { OpenSidebar } from "@/components/global/SidebarButton";
 import { SidebarProvider } from "@/context/SidebarContext";
 import Image from "next/image";
-import { AdminNav } from "@/components/nav/AdminNav";
+import { UserNav } from "@/components/nav/UserNav";
 
 export default function UserSidebarLayout({
   children,
- 
 }: {
   children: React.ReactNode;
 }) {
   return (
     <SidebarProvider>
       <main className="flex min-h-screen bg-[#f2f7ff]">
-        <Sidebar >
-        <AdminNav />
-        </Sidebar>        <section className="w-screen h-screen p-8 overflow-x-hidden font-bold transform transition-ease-in-out min-w-fit grow justify-items-stretch xl:w-full font-nunito">
+        <Sidebar>
+          <UserNav />
+        </Sidebar>{" "}
+        <section className="flex-1 h-screen p-8 overflow-x-hidden font-bold justify-items-stretch xl:w-full font-nunito">
           <header className="flex justify-between mb-10">
             <section className="space-y-4">
               <OpenSidebar />

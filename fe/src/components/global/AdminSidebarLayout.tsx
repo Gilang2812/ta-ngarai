@@ -13,12 +13,12 @@ export default function AdminSidebarLayout({
 }) {
   return (
     <SidebarProvider>
-      <main className="flex min-h-screen bg-[#f2f7ff]">
+      <main className="  flex min-h-screen bg-[#f2f7ff]">
         <Sidebar>
           <AdminNav />
         </Sidebar>
-        <section className="w-screen h-screen p-8 overflow-x-hidden font-bold transform transition-ease-in-out min-w-fit grow justify-items-stretch xl:w-full font-nunito">
-          <header className="flex justify-between mb-10">
+        <section className="relative h-screen   p-8 overflow-x-hidden font-bold   transition-ease-in-out min-w-fit grow    font-nunito">
+          <header className="flex flex-wrap justify-between mb-10">
             <section className="space-y-4">
               <OpenSidebar />
               <h1 className="text-2xl">Nagari Koto Gadang</h1>

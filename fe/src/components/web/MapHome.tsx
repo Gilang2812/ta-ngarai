@@ -3,16 +3,16 @@ import { useEffect, useRef, useState } from "react";
 import { Loader } from "@googlemaps/js-api-loader";
 import { useGeoJSON } from "@/features/web/useGeoJSON";
 import Swal from "sweetalert2";
+import MapControls from "../global/MapControls";
 
 const Map = () => {
   const mapRef = useRef<HTMLDivElement | null>(null);
   const { data: geojson, isLoading, error } = useGeoJSON();
   const [map, setMap] = useState<google.maps.Map | null>(null);
-  const [showLegend, setShowLegend] = useState(true);
+  const [showLegend, setShowLegend] = useState(false);
   const [isManualLocationActive, setIsManualLocationActive] = useState(false);
-  const manualMarkerRef = useRef<google.maps.Marker | null>(null); // Use a ref for manualMarker
-  const [clickListener, setClickListener] =
-    useState<google.maps.MapsEventListener | null>(null);
+  const manualMarkerRef = useRef<google.maps.Marker | null>(null);
+  const clickListenerRef = useRef<google.maps.MapsEventListener | null>(null);
 
   useEffect(() => {
     if (!geojson || isLoading || error) return;
@@ -35,7 +35,7 @@ const Map = () => {
 
       // Set the style for GeoJSON features
       mapInstance.data.setStyle((feature) => {
-        const featureType = feature.getProperty("type") as string; // Explicitly assert type
+        const featureType = feature.getProperty("type") as string;
         let color = "yellow";
 
         if (featureType === "negara") {
@@ -58,13 +58,12 @@ const Map = () => {
         };
       });
 
-      // Add a marker for center point
       const marker = new google.maps.Marker({
         position: { lat: -0.316691, lng: 100.343548 },
         map: mapInstance,
         icon: {
-          url: "/landingPage/trophy.png",
-          scaledSize: new google.maps.Size(40, 60),
+          url: "/icons/village.png",
+          scaledSize: new google.maps.Size(60, 60),
         },
         title: "Center Point",
       });
@@ -89,104 +88,80 @@ const Map = () => {
         infoWindow.open(mapInstance, marker);
       });
 
-      const manualLocationListener = google.maps.event.addListener(mapInstance,"click",(event: any) => {
-          // Create a new marker for manual location
-          if (manualMarkerRef.current) {
-            manualMarkerRef.current.setMap(null); 
-          }
-
-          const newMarker = new google.maps.Marker({
-            position: event.latLng,
-            map: mapInstance,
-            title: "Manual Location",
-          });
-
-          manualMarkerRef.current = newMarker;  
-
-          const manualInfoWindow = new google.maps.InfoWindow({
-            content: `<p class='text-center'><span class='fw-bold'>Manual Location</span> <br> lat: ${event.latLng.lat().toFixed(8)} <br> lng: ${event.latLng.lng().toFixed(8)}</p>`,
-          });
-
-          // Open the info window for manual location
-          manualInfoWindow.open(mapInstance, newMarker);
-
-          // Always create info window for GeoJSON areas
-          const isInsideGeoJSON = mapInstance.data.forEach(event.latLng);
-          if (isInsideGeoJSON) {
-            const featureName = isInsideGeoJSON.getProperty("name");
-            const geoJsonInfoWindow = new google.maps.InfoWindow({
-              content: `<div><strong>Wilayah:</strong> ${featureName}</div>`,
-            });
-            geoJsonInfoWindow.setPosition(event.latLng);
-            geoJsonInfoWindow.open(mapInstance);
-          }
-
-          newMarker.addListener("click", () => {
-            manualInfoWindow.open(mapInstance, newMarker);
-          });
-      });
-
       return () => {
-        if (manualLocationListener) {
-          google.maps.event.removeListener(manualLocationListener);
-        }
-        marker.setMap(null);  
         if (manualMarkerRef.current) {
-          manualMarkerRef.current.setMap(null);  
+          manualMarkerRef.current.setMap(null);
         }
+        if (clickListenerRef.current) {
+          google.maps.event.removeListener(clickListenerRef.current);
+        }
+        marker.setMap(null);
       };
     });
-  }, [geojson, isLoading, error, isManualLocationActive]); 
+  }, [geojson, isLoading, error, isManualLocationActive]);
 
   const handleManualLocation = () => {
     if (!map) {
       Swal.fire("Map is not ready yet. Please try again later.");
-      return; // Exit if map is not yet initialized
+      return;
+    }
+
+    if (manualMarkerRef.current) {
+      setIsManualLocationActive(true);
+      return;
     }
 
     Swal.fire("Click on Map to set location.");
-
     setIsManualLocationActive(true);
 
-    // Remove previous click listener if exists
-    if (clickListener) {
-      google.maps.event.removeListener(clickListener);
-    }
+    clickListenerRef.current = map.addListener("click", (mapsMouseEvent) => {
+      const position = mapsMouseEvent.latLng;
 
-    // Add new click listener to set manual marker
-    const listener = map.addListener(
-      "click",
-      (mapsMouseEvent: google.maps.MapMouseEvent) => {
-        const position = mapsMouseEvent.latLng!;
-
-        // If manual marker already exists, update its position
-        if (manualMarkerRef.current) {
-          manualMarkerRef.current.setPosition(position);
-        } else {
-          // Create a new marker if none exists
-          const newMarker = new google.maps.Marker({
-            position: position,
-            map: map,
-            animation: google.maps.Animation.DROP,
-          });
-          manualMarkerRef.current = newMarker; // Update the ref
-        }
-
-        const infoWindow = new google.maps.InfoWindow({
-          content: `<p class='text-center'><span class='fw-bold'>Manual Location</span> <br> lat: ${position.lat().toFixed(8)} <br> lng: ${position.lng().toFixed(8)}</p>`,
+      if (manualMarkerRef.current) {
+        manualMarkerRef.current.setPosition(position);
+      } else {
+        manualMarkerRef.current = new google.maps.Marker({
+          position: position,
+          map: map,
+          animation: google.maps.Animation.DROP,
+          title: "Manual Location",
         });
-
-        infoWindow.open(map, manualMarkerRef.current);
-
-        manualMarkerRef.current.addListener("click", () => {
-          infoWindow.open(map, manualMarkerRef.current);
-        });
-
-        setIsManualLocationActive(false); // Disable manual mode after setting marker
       }
-    );
 
-    setClickListener(listener);
+      const infoWindow = new google.maps.InfoWindow({
+        content: `<p class='text-center'><span class='fw-bold'>Manual Location</span><br>lat: ${position.lat().toFixed(8)}<br>lng: ${position.lng().toFixed(8)}</p>`,
+      });
+
+      infoWindow.open(map, manualMarkerRef.current);
+
+      manualMarkerRef.current.addListener("click", () => {
+        infoWindow.open(map, manualMarkerRef.current);
+      });
+
+      setIsManualLocationActive(false);
+    });
+  };
+
+  const handleCurrentLocation = () => {
+    if (navigator.geolocation && map) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const userLocation = new google.maps.LatLng(
+            position.coords.latitude,
+            position.coords.longitude
+          );
+          map.setCenter(userLocation);
+          new google.maps.Marker({
+            position: userLocation,
+            map: map,
+            title: 'Your Current Location',
+          });
+        },
+        () => {
+          alert('Unable to retrieve your location.');
+        }
+      );
+    }
   };
 
   const handleGoToMarker = () => {
@@ -203,17 +178,9 @@ const Map = () => {
   if (error) return <div>Error loading map data</div>;
 
   return (
-    <div>
+    <div className=" grow">
       <div className="flex gap-2 mb-4">
-        <button onClick={handleManualLocation} className="btn btn-primary">
-          Set Manual Location
-        </button>
-        <button onClick={handleGoToMarker} className="btn-primary">
-          Go to Marker
-        </button>
-        <button onClick={toggleLegend} className="btn-primary">
-          {showLegend ? "Hide Legend" : "Show Legend"}
-        </button>
+        <MapControls current={handleCurrentLocation} manual={handleManualLocation} goTO={handleGoToMarker} legend={toggleLegend}/>
       </div>
 
       <div ref={mapRef} className="w-full aspect-[4/3] h-max" />
@@ -223,24 +190,19 @@ const Map = () => {
           <h4>Legend</h4>
           <ul>
             <li className="flex items-center">
-              <span className="w-4 h-4 bg-[#880c9c] mr-2 inline-block"></span>{" "}
-              Negara
+              <span className="w-4 h-4 bg-[#880c9c] mr-2 inline-block"></span> Negara
             </li>
             <li className="flex items-center">
-              <span className="w-4 h-4 bg-[#0f910a] mr-2 inline-block"></span>{" "}
-              Provinsi
+              <span className="w-4 h-4 bg-[#0f910a] mr-2 inline-block"></span> Provinsi
             </li>
             <li className="flex items-center">
-              <span className="w-4 h-4 bg-[#a6123a] mr-2 inline-block"></span>{" "}
-              Kabupaten/Kota
+              <span className="w-4 h-4 bg-[#a6123a] mr-2 inline-block"></span> Kabupaten/Kota
             </li>
             <li className="flex items-center">
-              <span className="w-4 h-4 bg-[#a67712] mr-2 inline-block"></span>{" "}
-              Kecamatan
+              <span className="w-4 h-4 bg-[#a67712] mr-2 inline-block"></span> Kecamatan
             </li>
             <li className="flex items-center">
-              <span className="w-4 h-4 bg-[#eff538] mr-2 inline-block"></span>{" "}
-              Desa
+              <span className="w-4 h-4 bg-[#eff538] mr-2 inline-block"></span> Village
             </li>
           </ul>
         </div>

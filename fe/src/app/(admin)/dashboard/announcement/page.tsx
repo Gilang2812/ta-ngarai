@@ -10,7 +10,7 @@ export default function Announcement() {
       <section className="py-6 space-y-8">
         <button
           type="button"
-          className="flex flex-row items-center gap-4 px-3 py-2 font-normal text-white rounded bg-customBlue"
+          className="flex flex-row items-center gap-4 px-3 py-2 font-normal text-white rounded bg-primary"
         >
           <FaPlus /> New Announcement
         </button>
@@ -37,7 +37,7 @@ export default function Announcement() {
               <td className="py-2">Active</td>
               <td className="py-2 space-x-2">
                 <button
-                  className="p-3 transition duration-300 ease-in-out bg-white border rounded border-customBlue text-customBlue hover:bg-customBlue hover:text-white"
+                  className="p-3 transition duration-300 ease-in-out bg-white border rounded border-primary text-primary hover:bg-primary hover:text-white"
                   aria-label="View Details"
                 >
                   <FaCircleInfo />

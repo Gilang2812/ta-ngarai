@@ -60,9 +60,24 @@ body {
 } 
 
 .btn-primary {
-  @apply text-primary bg-white border border-primary w-fit font-normal hover:bg-secondary py-2 px-3 rounded transition-ease-in-out;
+  @apply px-3 py-2 font-normal bg-white border rounded text-primary border-primary w-fit hover:text-white hover:bg-secondary transition-ease-in-out;
 }
 
 .btn-fill-primary {
-  @apply text-white bg-primary  w-fit font-normal py-2 px-3 rounded hover:bg-secondary transition-ease-in-out;
+  @apply px-3 py-2 font-normal text-white rounded bg-primary w-fit hover:bg-secondary transition-ease-in-out;
+}
+ 
+.swiper-pagination-bullet{
+  @apply text-red-500
+}
+
+.swiper-pagination-bullet-active{
+  @apply text-primary rounded-none
+}
+
+.swiper-pagination-line {
+  @apply bg-white/80 opacity-75; /* Warna dan opasitas garis tidak aktif */
+}
+.swiper-pagination-line-active {
+  @apply bg-white h-1; /* Warna dan ketebalan garis aktif */
 }

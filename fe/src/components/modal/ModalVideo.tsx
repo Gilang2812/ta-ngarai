@@ -6,11 +6,11 @@ import { FaXmark } from "react-icons/fa6";
 const Modal: React.FC<ModalProps> = ({ isOpen, closeModal }) => {
   return (
     <Transition show={isOpen} as={React.Fragment}>
-      <div className="fixed inset-0 z-50 border border-black font-quicksand w-5xl font-bold flex items-center justify-center bg-black/50  ">
+      <div className="fixed inset-0 z-50 flex items-center justify-center font-bold border border-black font-quicksand w-5xl bg-black/50 ">
         <div>
-          <header className="bg-white p-4 flex justify-between text-2xl">
+          <header className="flex justify-between p-4 text-2xl bg-white">
             <h1> Video</h1>
-            <button onClick={closeModal} className=" text-gray-500">
+            <button onClick={closeModal} className="text-gray-500 ">
               <FaXmark />
             </button>
           </header>

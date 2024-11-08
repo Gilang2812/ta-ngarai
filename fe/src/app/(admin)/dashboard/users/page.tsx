@@ -9,13 +9,14 @@ import { Spinner } from "@/components/loading/Spinner";
 import { useFetchUsers } from "@/features/dashboard/users/useFetchUser";
 import { confirmDeleteAlert, showCreateAlert, showDeleteAlert } from "@/utils/AlertUtils";
 import Image from "next/image";
-import { AuthGroupUser, createUserSchema } from "@/validation/usersSchema";
+import {  createUserSchema } from "@/validation/usersSchema";
 import { useCreateUser } from "@/features/dashboard/users/useCreateUser";
 import { useDeleteUser } from "@/features/dashboard/users/useDeleteUser";
 import { Modal } from "@/components/modal/Modal";
 import { FormInput } from "@/components/inputs/FormInput";
-import { RawSkeleton } from "@/components/loading/RawSkeleton";
+import { RawSkeleton } from "@/components/loading/TableRawSkeleton";
 import { InfoModal } from "@/components/modal/InfoModal";
+import { AuthGroupUser } from "@/type/schema/usersSchema";
 
 export default function ManageUsers() {
   const [errorInput, setErrorInput] = useState<{ [key: string]: string }>({});
