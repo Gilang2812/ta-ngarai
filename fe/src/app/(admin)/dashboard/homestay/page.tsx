@@ -52,7 +52,7 @@ const Homestay: NextPage<Props> = ({}) => {
       <header className="flex items-center justify-between mb-10">
         <h1 className="text-lg capitalize">Manage Homestay</h1>
         <a
-          className="flex items-center gap-3 px-3 py-2 font-normal text-white rounded bg-customBlue hover:bg-customBg"
+          className="flex items-center gap-3 px-3 py-2 font-normal text-white rounded bg-primary hover:bg-secondary"
           href="#"
         >
           <FaPlus /> New Homestay
@@ -109,7 +109,7 @@ const Homestay: NextPage<Props> = ({}) => {
                 <td className="py-2 text-center">{item.status}</td>
                 <td className="flex justify-center gap-4 py-2">
                   <button
-                    className="p-3 capitalize transition duration-300 ease-linear bg-white border rounded text-customBlue border-customBlue hover:bg-customBlue hover:text-white"
+                    className="p-3 capitalize transition duration-300 ease-linear bg-white border rounded text-primary border-primary hover:bg-primary hover:text-white"
                     aria-label="View Homestay Info"
                   >
                     <FaCircleInfo />

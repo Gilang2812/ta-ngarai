@@ -14,14 +14,14 @@ import { useCreateUser } from "@/features/dashboard/users/useCreateUser";
 import { useDeleteUser } from "@/features/dashboard/users/useDeleteUser";
 import { Modal } from "@/components/modal/Modal";
 import { FormInput } from "@/components/inputs/FormInput";
-import { RawSkeleton } from "@/components/loading/TableRawSkeleton";
+import { TableRawSkeleton } from "@/components/loading/TableRawSkeleton";
 import { InfoModal } from "@/components/modal/InfoModal";
 import { AuthGroupUser } from "@/type/schema/usersSchema";
 
 export default function ManageUsers() {
   const [errorInput, setErrorInput] = useState<{ [key: string]: string }>({});
   const [selectedUser, setSelectedUser] = useState<AuthGroupUser | null>(null);
-
+  console.log(errorInput)
   const {
     isOpen: isModalInputOpen,
     closeModal: closeModalInput,
@@ -106,8 +106,7 @@ export default function ManageUsers() {
     ));
   };
 
-  const isSSR = typeof window === "undefined";
-
+  
   return (
     <section
       className="p-5 bg-white rounded-xl"
@@ -136,7 +135,7 @@ export default function ManageUsers() {
         ))}
       </header>
       {userIsLoading && (
-          <RawSkeleton
+          <TableRawSkeleton
             tableHead={["#", "ID", "Username", "Fullname", "Email", "Action"]}
           />
         ) }
@@ -150,7 +149,7 @@ export default function ManageUsers() {
         {activeTab === "admin" && (
           <button
             onClick={openModalInput}
-            className="flex items-center gap-2 p-2 px-3 mb-5 font-normal text-white rounded bg-primary hover:bg-customBg"
+            className="flex items-center gap-2 p-2 px-3 mb-5 font-normal text-white rounded bg-primary hover:bg-secondary"
             type="button"
           >
             <FaPlus /> New Admin
@@ -200,7 +199,7 @@ export default function ManageUsers() {
             </div>
             <div>
               <button
-                className="flex justify-center px-3 font-normal text-white capitalize transition duration-300 ease-in-out rounded bg-primary hover:bg-customBg disabled:bg-gray-500"
+                className="flex justify-center px-3 font-normal text-white capitalize transition duration-300 ease-in-out rounded bg-primary hover:bg-secondary disabled:bg-gray-500"
                 type="submit"
                 disabled={createProdukLoading}
               >

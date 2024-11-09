@@ -113,7 +113,7 @@ const Page: NextPage<Props> = ({}) => {
                 <td className="py-2">{item.package}</td>
                 <td className="flex justify-center gap-4 py-2 font-normal">
                   <button
-                    className="px-4 py-2 capitalize transition duration-300 ease-linear bg-white border rounded text-customBlue border-customBlue hover:bg-customBlue hover:text-white disabled:opacity-50"
+                    className="px-4 py-2 capitalize transition duration-300 ease-linear bg-white border rounded text-primary border-primary hover:bg-primary hover:text-white disabled:opacity-50"
                     aria-label={`More info about ${item.package}`}
                   >
                     More Info

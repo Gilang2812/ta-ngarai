@@ -126,7 +126,7 @@ const NewHomestay: NextPage<Props> = ({}) => {
             </button>
             <button
               type="submit"
-              className="px-4 py-2 text-white rounded-md shadow-md bg-customBlue hover:bg-customBg"
+              className="px-4 py-2 text-white rounded-md shadow-md bg-primary hover:bg-secondary"
             >
               Save & Add Facility
             </button>

@@ -16,19 +16,19 @@ export default function MyPackage() {
             <h1>Google Maps With Location</h1>
             <button
               aria-label="Settings"
-              className="p-2 px-3 ml-4 text-white rounded-lg bg-customBlue hover:bg-customBg focus:bg-cyan-600 focus:outline-none focus:ring-4 focus:ring-blue-300"
+              className="p-2 px-3 ml-4 text-white rounded-lg bg-primary hover:bg-secondary focus:bg-cyan-600 focus:outline-none focus:ring-4 focus:ring-blue-300"
             >
               <TbCurrentLocation fontSize="small" />
             </button>
             <button
               aria-label="My Location"
-              className="p-2 px-3 text-white rounded-lg bg-customBlue hover:bg-customBg focus:bg-cyan-600 focus:outline-none focus:ring-4 focus:ring-blue-300"
+              className="p-2 px-3 text-white rounded-lg bg-primary hover:bg-secondary focus:bg-cyan-600 focus:outline-none focus:ring-4 focus:ring-blue-300"
             >
               <MdOutlinePinDrop fontSize="small" />
             </button>
             <button
               aria-label="Legend"
-              className="p-2 px-3 text-white rounded-lg bg-customBlue hover:bg-customBg focus:bg-cyan-600 focus:outline-none focus:ring-4 focus:ring-blue-300"
+              className="p-2 px-3 text-white rounded-lg bg-primary hover:bg-secondary focus:bg-cyan-600 focus:outline-none focus:ring-4 focus:ring-blue-300"
             >
               <MdOutlineVisibility fontSize="small" />
             </button>
@@ -72,14 +72,14 @@ export default function MyPackage() {
                     <div className="flex items-stretch">
                       <button
                         aria-label="View Day 1 activities"
-                        className="h-full p-2 text-white rounded-l bg-customBlue hover:bg-customBg"
+                        className="h-full p-2 text-white rounded-l bg-primary hover:bg-secondary"
                         type="button"
                       >
                         Day 1
                       </button>
                       <button
                         aria-label="Expand Day 1 activities"
-                        className="h-10 p-2 text-white rounded-r bg-customBlue hover:bg-customBg"
+                        className="h-10 p-2 text-white rounded-r bg-primary hover:bg-secondary"
                         type="button"
                       >
                         <FaCaretDown />
@@ -94,7 +94,7 @@ export default function MyPackage() {
           <footer className="px-4 pt-6">
             <button
               type="button"
-              className="flex items-center gap-4 px-3 py-2 font-normal border rounded border-customBlue text-customBlue"
+              className="flex items-center gap-4 px-3 py-2 font-normal border rounded border-primary text-primary"
             >
               <FaCompass /> Search object around you?
             </button>

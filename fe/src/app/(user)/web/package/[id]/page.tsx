@@ -88,7 +88,7 @@ const MoreInfo: NextPage<Props> = () => {
             <div className="flex gap-3 font-normal">
               <a
                 href="#"
-                className="flex items-center px-3 py-2 bg-white border rounded border-customBlue text-customBlue hover:bg-customBlue hover:text-white"
+                className="flex items-center px-3 py-2 bg-white border rounded border-primary text-primary hover:bg-primary hover:text-white"
               >
                 <FaCartPlus /> Add to Cart
               </a>
@@ -148,7 +148,7 @@ const MoreInfo: NextPage<Props> = () => {
             <div className="col-span-3 text-right">
               <button
                 type="submit"
-                className="flex items-center gap-2 px-3 py-2 border rounded border-customBlue text-customBlue hover:bg-customBlue hover:text-white"
+                className="flex items-center gap-2 px-3 py-2 border rounded border-primary text-primary hover:bg-primary hover:text-white"
               >
                 <FaSquarePlus /> Extend
               </button>
@@ -169,7 +169,7 @@ const MoreInfo: NextPage<Props> = () => {
           <footer className="mt-16">
             <button
               type="button"
-              className="flex items-center gap-2 px-3 py-2 bg-white border rounded border-customBlue text-customBlue hover:bg-customBlue hover:text-white"
+              className="flex items-center gap-2 px-3 py-2 bg-white border rounded border-primary text-primary hover:bg-primary hover:text-white"
             >
               <FaCirclePlay /> Play Video
             </button>

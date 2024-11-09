@@ -19,7 +19,7 @@ export default function Package() {
         <button
           type="button"
           aria-label="Create custom new package"
-          className="flex items-center gap-4 px-3 py-2 font-normal text-white capitalize rounded bg-customBlue"
+          className="flex items-center gap-4 px-3 py-2 font-normal text-white capitalize rounded bg-primary"
         >
           <FaPlus />
           Create New Custom Package
@@ -64,7 +64,7 @@ export default function Package() {
                 <div className="flex items-center gap-2">
                   <a
                     href="#"
-                    className="flex items-center gap-1 px-3 py-1 capitalize bg-white border rounded text-customBlue w-fit border-customBlue"
+                    className="flex items-center gap-1 px-3 py-1 capitalize bg-white border rounded text-primary w-fit border-primary"
                     role="button"
                     aria-label="More info about Basic Package"
                   >
@@ -72,7 +72,7 @@ export default function Package() {
                   </a>
                   <a
                     href="#"
-                    className="flex items-center gap-1 px-3 py-1 capitalize bg-white border rounded text-customBlue w-fit border-customBlue"
+                    className="flex items-center gap-1 px-3 py-1 capitalize bg-white border rounded text-primary w-fit border-primary"
                     role="button"
                     aria-label="Extend Basic Package"
                   >

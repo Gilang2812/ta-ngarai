@@ -11,11 +11,11 @@ export const Sidebar = ({children}:{children:React.ReactNode}) => {
       <aside
         className={`z-50 transform ${
           open ? "translate-x-0" : "-translate-x-full"
-        } absolute xl:static transition-transform duration-500 ease-out min-w-[300px] bg-white h-screen col-span-2 p-8 py-12 xl:translate-x-0`}
+        } absolute xl:static h-screen transition-transform duration-500 ease-out min-w-[300px] bg-white max-h-screen custom-scroll-bar ps__rail-y  overflow-x-hidden col-span-2 p-8 py-12 xl:translate-x-0`}
       >
         <FaX
           onClick={toggleSidebar}
-          className="absolute text-xl cursor-pointer xl:hidden right-7 top-5 text-customBlue hover:text-customBg"
+          className="absolute text-xl cursor-pointer xl:hidden right-7 top-5 text-primary hover:text-secondary"
         />
         <header className="flex flex-col items-center gap-8">
           <div className="flex justify-between w-full">

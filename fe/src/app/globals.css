@@ -59,14 +59,33 @@ body {
   @apply transition-all duration-300 ease-out 
 } 
 
+.transition-ease-in-out-10{
+  @apply transition-all duration-1000 ease-in-out   
+}
+.transition-linear-10{
+  @apply transition-all duration-1000 ease-linear
+}
+.transition-ease-in-10{
+  @apply transition-all duration-1000 ease-in 
+}
+.transition-ease-out-10{
+  @apply transition-all duration-1000 ease-out 
+}
+
 .btn-primary {
   @apply px-3 py-2 font-normal bg-white border rounded text-primary border-primary w-fit hover:text-white hover:bg-secondary transition-ease-in-out;
 }
 
 .btn-fill-primary {
-  @apply px-3 py-2 font-normal text-white rounded bg-primary w-fit hover:bg-secondary transition-ease-in-out;
+  @apply flex items-center gap-2 px-3 py-2 font-normal text-white rounded bg-primary w-fit hover:bg-secondary transition-ease-in-out;
 }
- 
+
+.btn-danger {
+  @apply px-3 py-2 font-normal text-white rounded bg-red-500 w-fit hover:text-white hover:bg-red-600 transition-ease-in-out;
+}
+.btn-success {
+  @apply px-3 py-2 font-normal text-white rounded bg-green-500 w-fit hover:text-white hover:bg-green-600 transition-ease-in-out;
+}
 .swiper-pagination-bullet{
   @apply text-red-500
 }
@@ -81,3 +100,46 @@ body {
 .swiper-pagination-line-active {
   @apply bg-white h-1; /* Warna dan ketebalan garis aktif */
 }
+ 
+.custom-scroll-bar {
+  /* Custom scrollbar width and appearance */
+  &::-webkit-scrollbar {
+    width: 6px;
+    transition: all 0.3s;
+   
+  }
+  &::-webkit-scrollbar-track:hover {
+    width: 12px;
+   }
+  &::-webkit-scrollbar-track {
+    background-color: theme('colors.gray.100');
+    border-radius: 9999px; 
+  
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: theme('colors.gray.300');
+    border-radius: 9999px;
+  
+  }
+
+  /* Dark mode scrollbar colors */
+  @media (prefers-color-scheme: dark) {
+    &::-webkit-scrollbar-track {
+      background-color: theme('colors.neutral.700');
+    }
+    &::-webkit-scrollbar-thumb {
+      background-color: theme('colors.neutral.500');
+    }
+  }
+}
+
+.custom-scroll-bar:hover {
+  /* Change opacity on hover */
+  &::-webkit-scrollbar {
+    opacity: 1;
+  }
+}
+
+ 
+
