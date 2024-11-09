@@ -13,11 +13,11 @@ export default function AdminSidebarLayout({
 }) {
   return (
     <SidebarProvider>
-      <main className="  flex min-h-screen bg-[#f2f7ff]">
+      <main className=" flex h-lvh relative max-w-screen min-h-screen bg-[#f2f7ff]">
         <Sidebar>
           <AdminNav />
         </Sidebar>
-        <section className="relative h-screen   p-8 overflow-x-hidden font-bold   transition-ease-in-out min-w-fit grow    font-nunito">
+        <section className=" h-screen min-w-min  p-8 overflow-x-hidden font-bold   transition-ease-in-out  grow    font-nunito">
           <header className="flex flex-wrap justify-between mb-10">
             <section className="space-y-4">
               <OpenSidebar />

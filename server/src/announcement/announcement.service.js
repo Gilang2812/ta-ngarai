@@ -1,31 +1,31 @@
 const { CustomBulkError } = require("../../utils/CustomError");
 const { findAllAnnouncement, insertAnnouncement, findAnnouncementById, updateAnnouncement, deleteAnnouncement } = require("./announcement.repository")
 
-const getAllAnnouncements =async (status)=>{
-    console.log('ini service',status);
+const getAllAnnouncements =async (status)=>{ 
 
     const announcements = await findAllAnnouncement(status)
     return announcements
 }
 const getAnnouncementById = async (id)=>{
-    const announcement = await findAnnouncementById(id)
-    console.log(announcement)
+    const announcement = await findAnnouncementById(id) 
     if(!announcement) {
         throw new Error('Announcement not found')
     }
     return announcement
 }
+const duplicateAnnouncement = async (id)=>{
+    const existingAnnouncement = await findAllAnnouncement({id}) 
+
+    if(existingAnnouncement.length>0) {
+        throw new Error('Announcement with id "'+id+'"  already exists')
+    }
+    return existingAnnouncement
+ 
+}
 const createAnnouncement = async (body)=>{
-    let error = {}
-
-    const existingId = await findAnnouncementById(body.id)
-    if(existingId) {
-        error.id = 'id already exists'
-    }
-
-    if(Object.keys(error).length > 0) {
-        throw new CustomBulkError(error, 400)
-    }
+   
+    await duplicateAnnouncement(body.id)
+ 
     const announcement = await insertAnnouncement(body)
     return announcement
 } 

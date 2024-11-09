@@ -1,64 +1,250 @@
-import { FaPlus, FaTrash, FaCircleInfo, FaPencil } from "react-icons/fa6";
+"use client";
+
+import AnnouncementHeader from "@/components/announcement/AnnouncementHeader";
+import AnnouncementTable from "@/components/announcement/AnnouncementTable";
+import CreateButton from "@/components/announcement/CreateButton";
+import TableRow from "@/components/announcement/TableRow";
+import { FormInput } from "@/components/inputs/FormInput";
+import { RawSkeleton } from "@/components/loading/RawSkeleton";
+import { InfoModal } from "@/components/modal/InfoModal";
+import { Modal } from "@/components/modal/Modal";
+import { useCreateAnnouncement } from "@/features/dashboard/announcement/useCreateAnnouncement";
+import { useDeleteAnnouncement } from "@/features/dashboard/announcement/useDeleteAnnouncement";
+import { useEditAnnouncement } from "@/features/dashboard/announcement/useEditAnnouncement";
+import { useFetchAnnouncements } from "@/features/web/useFetchAnnouncement";
+import { AnnouncementSchema } from "@/type/schema/announcementSchema";
+import { confirmDeleteAlert, cornerAlert, cornerError } from "@/utils/AlertUtils";
+import { useModal } from "@/utils/ModalUtils";
+import { Spinner } from "@material-tailwind/react";
+import { Formik, Form } from "formik";
+import { useState } from "react";
+import * as yup from "yup";
+
+const validationSchema = yup.object({
+  id: yup.string().required("ID is required").max(5),
+  announcement: yup.string().required("Announcement is required"),
+  status: yup.number().required("Status is required"),
+});
 
 export default function Announcement() {
+  const [status, setStatus] = useState(1);
+  const [errorInput, setInputError] = useState<{ [key: string]: string }>({});
+  const [selectedData, setSelectedData] = useState<AnnouncementSchema | null>(
+    null
+  );
+  const { data, isLoading, refetch } = useFetchAnnouncements();
+
+  const {
+    isOpen: inputModal,
+    closeModal: closeInputModal,
+    openModal: openModalInput,
+  } = useModal();
+  const {
+    isOpen: infoModal,
+    closeModal: closeInfoModal,
+    openModal: openModalInfo,
+  } = useModal();
+
+  const { mutate, isPending } = useCreateAnnouncement({
+    onSuccess: () => {
+      cornerAlert('create announcement ');
+      closeInputModal();
+      refetch();
+    },
+    onError: (error: any) => {
+      const errorMessage = error?.response?.data;
+      setInputError(errorMessage);
+    },
+  });
+
+  const { mutate: editMutate, isPending: editPending } = useEditAnnouncement({
+    onSuccess: () => {
+      closeInputModal();
+      cornerAlert('edit announcement ');
+      refetch();
+    },
+    onError: (error: any) => {
+      const errorMessage = error?.response?.data;
+      setInputError(errorMessage);
+    },
+  });
+
+  const { mutate:deleteMutate } = useDeleteAnnouncement({
+    onSuccess: () => {
+      cornerAlert('delete announcement ');
+      refetch();
+    },
+    onError: (error: any) => {
+      const errorMessage = error?.response?.data;
+      setInputError(errorMessage);
+      cornerError(errorMessage)
+    },
+  })
+  const handleCreate = async (values: AnnouncementSchema) => {
+    mutate(values);
+  };
+
+  const handleEdit = async (values: AnnouncementSchema) => {
+    await editMutate(values);
+  };
+
+  const handleDelete = async (id: string) => {
+    await confirmDeleteAlert("announcement", id,() => deleteMutate(id));
+ 
+  };
+  const handleStatusChange = (value: number, setFieldValue: any) => {
+    setStatus(value);
+    setFieldValue("status", value);
+  };
+
+  const handleOpenModalInput = () => {
+    openModalInput();
+  };
+
+  const handleOpenModalInfo = (data: AnnouncementSchema) => {
+    setSelectedData(data);
+    openModalInfo();
+  };
+
+  const handleOpenModalEdit = (data: AnnouncementSchema) => {
+    setSelectedData(data);
+    setStatus(data.status);
+    openModalInput();
+  };
+
   return (
     <main className="p-5 space-y-5 bg-white rounded-xl">
-      <header className="text-lg capitalize">
-        <h1>Manage Announcement</h1>
-      </header>
+      <AnnouncementHeader />
 
       <section className="py-6 space-y-8">
-        <button
-          type="button"
-          className="flex flex-row items-center gap-4 px-3 py-2 font-normal text-white rounded bg-primary"
-        >
-          <FaPlus /> New Announcement
-        </button>
+        <CreateButton onClick={handleOpenModalInput} />
+        <AnnouncementTable>
+          <tbody role="rowgroup">
+            {!isLoading &&
+              data?.map((data: AnnouncementSchema, index: number) => (
+                <TableRow
+                  key={index}
+                  onInfoClick={() => handleOpenModalInfo(data)}
+                  onEditClick={() => handleOpenModalEdit(data)}
+                  onDeleteClick={() => handleDelete(data.id)}
+                  data={data}
+                  index={index + 1}
+                />
+              ))}
+          </tbody>
+        </AnnouncementTable>
+        {isLoading && <RawSkeleton />}
+      </section>
 
-        <table className="w-full">
-          <thead>
-            <tr className="border-b-2">
-              <th className="p-2">#</th>
-              <th className="p-2">ID</th>
-              <th className="p-2">Announcement</th>
-              <th className="p-2">Status</th>
-              <th className="p-2">Action</th>
-            </tr>
-          </thead>
+      <Modal
+        title={selectedData ? "Edit Announcement" : "New Announcement"}
+        isOpen={inputModal}
+        onClose={() => {
+          closeInputModal();
+          setSelectedData(null); 
+        }}
+      >
+        {typeof errorInput === "string" && (
+          <p className="text-red-500 mb-2">{errorInput}</p>
+        )}
+        <Formik
+          initialValues={{
+            id: selectedData?.id||"",
+            announcement: selectedData?.announcement || "",
+            status: selectedData?.status ||1,
+          }}
+          validationSchema={validationSchema}
+          onSubmit={async (values) => {
+            if (selectedData) {
+              await handleEdit(values);
+            } else {
+              await handleCreate(values);
+            }
+           }}
+        >
+          {({ values, handleChange, setFieldValue }) => (
+            <Form>
+              <div>
+                <FormInput name="id" type="text" readonly={!!selectedData}/>
+              </div>
+              <div>
+                <label htmlFor="announcement" className="font-semibold">
+                  Announcement
+                </label>
+                <textarea
+                  id="announcement"
+                  name="announcement"
+                  className="w-full p-4 border focus:ring-4 transition-all focus:ring-primary/30 rounded outline-none border-black"
+                  value={values.announcement}
+                  onChange={handleChange}
+                />
+              </div>
+              <div className="space-y-2 mt-4">
+                <label className="font-semibold">Status</label>
+                <div className="flex flex-col space-y-2">
+                  <label className="flex items-center space-x-2">
+                    <input
+                      type="radio"
+                      name="status"
+                      value={1}
+                      checked={status === 1}
+                      onChange={() => handleStatusChange(1, setFieldValue)}
+                      className="form-radio text-blue-500"
+                    />
+                    <span>Active</span>
+                  </label>
+                  <label className="flex items-center space-x-2">
+                    <input
+                      type="radio"
+                      name="status"
+                      value={2}
+                      checked={status === 2}
+                      onChange={() => handleStatusChange(2, setFieldValue)}
+                      className="form-radio text-gray-300"
+                    />
+                    <span>Non Active</span>
+                  </label>
+                </div>
+              </div>
+              <button
+                type="submit"
+                className="mt-4 px-4 py-2 text-white bg-primary rounded"
+                disabled={isPending||editPending}
+              >
+                {(isPending || editPending)? <Spinner />:'Submit'}   
+              </button>
+            </Form>
+          )}
+        </Formik>
+      </Modal>
+
+      <InfoModal isOpen={infoModal} onClose={()=>{
+        closeInfoModal()
+        setSelectedData(null)
+        }}>
+        <table className="table-fixed my-4">
           <tbody>
-            <tr className="py-2 border-b">
-              <td className="py-2">1</td>
-              <td className="py-2">AN001</td>
-              <td className="py-2 text-wrap w-[500px] text-left">
-                Road access to the village is still completely cut off, so
-                visitors are asked to take an alternative route through Malalak
-                or Solok.
-              </td>
-              <td className="py-2">Active</td>
-              <td className="py-2 space-x-2">
-                <button
-                  className="p-3 transition duration-300 ease-in-out bg-white border rounded border-primary text-primary hover:bg-primary hover:text-white"
-                  aria-label="View Details"
-                >
-                  <FaCircleInfo />
-                </button>
-                <button
-                  className="p-3 transition duration-300 ease-in-out bg-white border rounded border-cyan-400 text-cyan-400 hover:bg-cyan-400 hover:text-white"
-                  aria-label="Edit Announcement"
-                >
-                  <FaPencil />
-                </button>
-                <button
-                  className="p-3 text-red-600 transition duration-300 ease-in-out bg-white border border-red-600 rounded hover:bg-red-600 hover:text-white"
-                  aria-label="Delete Announcement"
-                >
-                  <FaTrash />
-                </button>
+            <tr className="border-b [&_td]:p-2">
+              <td>ID</td>
+              <td>{selectedData?.id}</td>
+            </tr>
+            <tr className="border-b [&_td]:p-2">
+              <td>Announcement</td>
+              <td>{selectedData?.announcement}</td>
+            </tr>
+            <tr className="border-b [&_td]:p-2 text-sm">
+              <td>Status</td>
+              <td>
+                {selectedData?.status == 1 ? (
+                  <p className="px-2 py-1 btn-success">active</p>
+                ) : (
+                  <p className="px-2 py-1 btn-danger">non active</p>
+                )}
               </td>
             </tr>
           </tbody>
         </table>
-      </section>
+      </InfoModal>
     </main>
   );
 }
