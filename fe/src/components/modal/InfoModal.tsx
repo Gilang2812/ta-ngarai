@@ -17,7 +17,7 @@ import {
     isOpen: boolean;
     onClose: () => void;
     children: React.ReactNode;
-    title: string;
+    title?: string;
   }) => {
     return (
       <Transition appear show={isOpen} as={Fragment}>

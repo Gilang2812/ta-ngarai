@@ -58,7 +58,7 @@ export const Modal = ({
                   <HiXMark className="font-light" />
                 </button>
               </DialogTitle>
-              <div className=" px-4  pb-4">{children}</div>
+              <div className=" p-4  ">{children}</div>
             </DialogPanel>
           </TransitionChild>
         </div>

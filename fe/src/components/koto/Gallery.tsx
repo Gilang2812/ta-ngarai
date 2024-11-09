@@ -1,3 +1,4 @@
+"use client";
 import { useFetchGalleries } from "@/features/web/useFetchGalleries";
 import { imageUrl } from "@/lib/baseUrl";
 import { GallerySchema } from "@/type/schema/gallerySchema";
@@ -9,9 +10,10 @@ export const Gallery = () => {
 
   return (
     <article className="col-span-1 space-y-4">
-      <h2 className="font-semibold text-primary">Gallery</h2>
-      <div className="  gap-4 ld:grid-cols-4 md:grid-cols-3 grid-cols-2 ">
-        {isLoading&& ([...Array(4)].map((_,index)=><ImageSkeleton key={index} />))}
+      <h2 className="font-semibold max-w-max text-primary">Gallery</h2>
+      <div className=" grid grid-cols-4 gap-4 ">
+        {isLoading &&
+          [...Array(4)].map((_, index) => <ImageSkeleton key={index} />)}
         {data?.map((g: GallerySchema) => (
           <Image
             key={g.id}
@@ -19,7 +21,7 @@ export const Gallery = () => {
             alt={`Village gallery image  `}
             width={500}
             height={500}
-            className="rounded-lg"
+            className="rounded "
           />
         ))}
       </div>
