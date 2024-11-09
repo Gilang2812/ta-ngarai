@@ -18,5 +18,5 @@ export type TourismSchema = {
   bank_code: string;
   bank_account_holder: string;
   bank_account_number: string;
-  qr_url: string; 
+  qr_url: string; d
 };

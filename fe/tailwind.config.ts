@@ -17,6 +17,9 @@ const config: Config =   {
       "2xl": "1536px",
       },
     extend: {
+      maxWidth:{
+        custom : 'calc(100vw - 300px)',
+      },
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",

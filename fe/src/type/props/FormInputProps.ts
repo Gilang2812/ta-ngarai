@@ -1,0 +1,10 @@
+import { IconType } from "react-icons";
+
+export type FormInputProps ={
+    label?: string;
+    icon?: IconType;
+    type: string;
+    name: string;
+    placeholder?: string;
+    readonly?:boolean
+  }
