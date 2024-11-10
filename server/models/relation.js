@@ -13,6 +13,7 @@ const { PackageType } = require("./PackageType");
 const { ServicePackage } = require("./ServicePackage");
 const { TourismVillage } = require("./TourismVillageModel");
 const { User } = require("./UsersModels");
+const { GalleryPackage } = require("./GalleryPackage.js");
 
 User.hasMany(AuthGroupUsers, { foreignKey: "user_id", as: "user" });
 AuthGroup.hasMany(AuthGroupUsers, { foreignKey: "group_id", as: "group" });
@@ -24,55 +25,55 @@ User.hasMany(Announcement, { foreignKey: "admin_id" });
 Announcement.belongsTo(User, { foreignKey: "admin_id" });
 
 TourismVillage.hasMany(GalleryTourism, {
-  foreignKey: "tourism_village_id",
-  as: "gallery",
+    foreignKey: "tourism_village_id",
+    as: "gallery",
 });
 GalleryTourism.belongsTo(TourismVillage, {
-  foreignKey: "tourism_village_id",
-  as: "gallery",
+    foreignKey: "tourism_village_id",
+    as: "gallery",
 });
 
 DetailPackage.belongsTo(PackageDay, {
-  foreignKey: 'package_id',
-  targetKey: 'package_id',
-  as: 'packageDay',
-  constraints: false
+    foreignKey: 'package_id',
+    targetKey: 'package_id',
+    as: 'packageDay',
+    constraints: false
 });
 DetailPackage.belongsTo(PackageDay, {
-  foreignKey: 'day',
-  targetKey: 'day',
-  as: 'packageDayByDay',
-  constraints: false
+    foreignKey: 'day',
+    targetKey: 'day',
+    as: 'packageDayByDay',
+    constraints: false
 });
 
 PackageDay.hasMany(DetailPackage, {
-  foreignKey: 'package_id',
-  sourceKey: 'package_id',
-  as: 'detailPackages',
-  scope: { day: Sequelize.col('PackaDetageDay.day') }  
+    foreignKey: 'package_id',
+    sourceKey: 'package_id',
+    as: 'detailPackages',
+    scope: { day: Sequelize.col('PackaDetageDay.day') }
 });
 
 
 PackageDay.hasMany(DetailPackage, {
-  foreignKey: "day",
-  as: "detailsByDay",
+    foreignKey: "day",
+    as: "detailsByDay",
 });
 PackageDay.belongsTo(Package, {
-  foreignKey: "package_id",
-  as: "package",
+    foreignKey: "package_id",
+    as: "package",
 });
 Package.hasMany(PackageDay, {
-  foreignKey: 'package_id',
-  sourceKey: 'id',
-  as: 'packageDays'
+    foreignKey: 'package_id',
+    sourceKey: 'id',
+    as: 'packageDays'
 });
 Package.hasMany(DetailServicePackage, { foreignKey: "package_id" });
 ServicePackage.hasMany(DetailServicePackage, {
-  foreignKey: "service_package_id",
+    foreignKey: "service_package_id",
 });
 DetailServicePackage.belongsTo(Package, { foreignKey: "package_id" });
 DetailServicePackage.belongsTo(ServicePackage, {
-  foreignKey: "service_package_id",
+    foreignKey: "service_package_id",
 });
 
 PackageType.hasMany(Package, { foreignKey: "type_id" });
@@ -81,16 +82,22 @@ Package.belongsTo(PackageType, { foreignKey: "type_id" });
 FacilityType.hasMany(Facility, { foreignKey: "type_id" });
 Facility.belongsTo(FacilityType, { foreignKey: "type_id" });
 
+GalleryPackage.belongsTo(Package, { foreignKey: "package_id" });
+Package.hasMany(GalleryPackage, { foreignKey: "package_id" });
 module.exports = {
-  AuthGroup,
-  AuthGroupUsers,
-  User,
-  Announcement,
-  TourismVillage,
-  GalleryTourism,
-  Package,
-  PackageDay,
-  PackageType,
-  ServicePackage,
-  DetailPackage,
+    AuthGroup,
+    AuthGroupUsers,
+    User,
+    Announcement,
+    TourismVillage,
+    GalleryTourism,
+    Package,
+    PackageDay,
+    PackageType,
+    ServicePackage,
+    DetailPackage,
+    FacilityType,
+    Facility,
+    DetailServicePackage,
+    GalleryPackage
 };

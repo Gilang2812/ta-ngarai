@@ -13,12 +13,12 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-  
+
 
 app.use((req, res, next) => {
     console.log(`Received ${req.method} request for ${req.url}`);
     next();
-  });
+});
 var authRouter = require('./src/auth/auth.controller')
 var userRouter = require('./src/user/user.controller')
 var homestayRouter = require('./src/homestay/homestay.controller')
@@ -26,8 +26,9 @@ var geoRouter = require('./src/geoJSON/geo.controller')
 var tourismRouter = require('./src/tourismVillage/tourism.controller')
 var announcementRouter = require('./src/announcement/announcement.controller')
 var galleryRouter = require('./src/gallery/gallery.controller')
-var detailPackageRouter  = require('./src/detailPackage/detailPackage.controller')
+var detailPackageRouter = require('./src/detailPackage/detailPackage.controller')
 const objectRouter = require('./src/object/object.controller')
+const packageRouter = require('./src/package/package.controller')
 app.use('/', authRouter);
 app.use('/users', userRouter);
 app.use('/homestays', homestayRouter);
@@ -36,5 +37,7 @@ app.use('/tourism', tourismRouter);
 app.use('/announcement', announcementRouter);
 app.use('/gallery', galleryRouter);
 app.use('/detailPackage', detailPackageRouter);
-app.use('/object',objectRouter)
+app.use('/object', objectRouter)
+app.use('/packages', packageRouter)
+
 module.exports = app;
