@@ -1,145 +1,146 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-  --primary : #435ebe;
-  --secondary: #2D499D;
-
+    --background: #ffffff;
+    --foreground: #171717;
+    --primary: #435ebe;
+    --secondary: #2D499D;
 }
 
 @media (prefers-color-scheme: dark) {
-  :root {
-    --background: #6f42c1;
-    --foreground: #ededed;
-  }
+     :root {
+        --background: #6f42c1;
+        --foreground: #ededed;
+    }
 }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
-  padding: 0;
-  margin: 0;
+    color: var(--foreground);
+    background: var(--background);
+    font-family: Arial, Helvetica, sans-serif;
+    padding: 0;
+    margin: 0;
 }
 
 @font-face {
-  font-family: "quicksand";
-  src: url('/fonts/Quicksand.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
+    font-family: "quicksand";
+    src: url('/fonts/Quicksand.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
 }
 
 @font-face {
-  font-family: "Nunito";
-  src: url('/fonts/Nunito.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
+    font-family: "Nunito";
+    src: url('/fonts/Nunito.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
 }
 
 @font-face {
-  font-family:  "Open Sans";
-  src: url('/fonts/OpenSans.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
+    font-family: "Open Sans";
+    src: url('/fonts/OpenSans.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
 }
 
-.transition-ease-in-out{
-  @apply transition-all duration-300 ease-in-out 
+.transition-ease-in-out {
+    @apply transition-all duration-300 ease-in-out
 }
-.transition-linear{
-  @apply transition-all duration-300 ease-linear
-}
-.transition-ease-in{
-  @apply transition-all duration-300 ease-in 
-}
-.transition-ease-out{
-  @apply transition-all duration-300 ease-out 
-} 
 
-.transition-ease-in-out-10{
-  @apply transition-all duration-1000 ease-in-out   
+.transition-linear {
+    @apply transition-all duration-300 ease-linear
 }
-.transition-linear-10{
-  @apply transition-all duration-1000 ease-linear
+
+.transition-ease-in {
+    @apply transition-all duration-300 ease-in
 }
-.transition-ease-in-10{
-  @apply transition-all duration-1000 ease-in 
+
+.transition-ease-out {
+    @apply transition-all duration-300 ease-out
 }
-.transition-ease-out-10{
-  @apply transition-all duration-1000 ease-out 
+
+.transition-ease-in-out-10 {
+    @apply transition-all duration-1000 ease-in-out
+}
+
+.transition-linear-10 {
+    @apply transition-all duration-1000 ease-linear
+}
+
+.transition-ease-in-10 {
+    @apply transition-all duration-1000 ease-in
+}
+
+.transition-ease-out-10 {
+    @apply transition-all duration-1000 ease-out
 }
 
 .btn-primary {
-  @apply px-3 py-2 font-normal bg-white border rounded text-primary border-primary w-fit hover:text-white hover:bg-secondary transition-ease-in-out;
+    @apply flex items-center gap-2 px-3 py-2 font-normal bg-white border rounded text-primary border-primary w-fit hover:text-white hover:bg-secondary transition-ease-in-out;
 }
 
 .btn-fill-primary {
-  @apply flex items-center gap-2 px-3 py-2 font-normal text-white rounded bg-primary w-fit hover:bg-secondary transition-ease-in-out;
+    @apply flex items-center gap-2 px-3 py-2 font-normal text-white rounded bg-primary w-fit hover:bg-secondary transition-ease-in-out;
 }
 
 .btn-danger {
-  @apply px-3 py-2 font-normal text-white rounded bg-red-500 w-fit hover:text-white hover:bg-red-600 transition-ease-in-out;
-}
-.btn-success {
-  @apply px-3 py-2 font-normal text-white rounded bg-green-500 w-fit hover:text-white hover:bg-green-600 transition-ease-in-out;
-}
-.swiper-pagination-bullet{
-  @apply text-red-500
+    @apply px-3 py-2 font-normal text-white rounded bg-red-500 w-fit hover:text-white hover:bg-red-600 transition-ease-in-out;
 }
 
-.swiper-pagination-bullet-active{
-  @apply text-primary rounded-none
+.btn-success {
+    @apply px-3 py-2 font-normal text-white rounded bg-green-500 w-fit hover:text-white hover:bg-green-600 transition-ease-in-out;
+}
+
+.swiper-pagination-bullet {
+    @apply text-red-500
+}
+
+.swiper-pagination-bullet-active {
+    @apply text-primary rounded-none
 }
 
 .swiper-pagination-line {
-  @apply bg-white/80 opacity-75; /* Warna dan opasitas garis tidak aktif */
+    @apply bg-white/80 opacity-75;
+    /* Warna dan opasitas garis tidak aktif */
 }
+
 .swiper-pagination-line-active {
-  @apply bg-white h-1; /* Warna dan ketebalan garis aktif */
+    @apply bg-white h-1;
+    /* Warna dan ketebalan garis aktif */
 }
- 
+
 .custom-scroll-bar {
-  /* Custom scrollbar width and appearance */
-  &::-webkit-scrollbar {
-    width: 6px;
-    transition: all 0.3s;
-   
-  }
-  &::-webkit-scrollbar-track:hover {
-    width: 12px;
-   }
-  &::-webkit-scrollbar-track {
-    background-color: theme('colors.gray.100');
-    border-radius: 9999px; 
-  
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background-color: theme('colors.gray.300');
-    border-radius: 9999px;
-  
-  }
-
-  /* Dark mode scrollbar colors */
-  @media (prefers-color-scheme: dark) {
+    /* Custom scrollbar width and appearance */
+    &::-webkit-scrollbar {
+        width: 6px;
+        transition: all 0.3s;
+    }
+    &::-webkit-scrollbar-track:hover {
+        width: 12px;
+    }
     &::-webkit-scrollbar-track {
-      background-color: theme('colors.neutral.700');
+        background-color: theme('colors.gray.100');
+        border-radius: 9999px;
     }
     &::-webkit-scrollbar-thumb {
-      background-color: theme('colors.neutral.500');
+        background-color: theme('colors.gray.300');
+        border-radius: 9999px;
     }
-  }
+    /* Dark mode scrollbar colors */
+    @media (prefers-color-scheme: dark) {
+        &::-webkit-scrollbar-track {
+            background-color: theme('colors.neutral.700');
+        }
+        &::-webkit-scrollbar-thumb {
+            background-color: theme('colors.neutral.500');
+        }
+    }
 }
 
 .custom-scroll-bar:hover {
-  /* Change opacity on hover */
-  &::-webkit-scrollbar {
-    opacity: 1;
-  }
+    /* Change opacity on hover */
+    &::-webkit-scrollbar {
+        opacity: 1;
+    }
 }
-
- 
-

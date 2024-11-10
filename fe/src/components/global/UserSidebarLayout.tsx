@@ -4,7 +4,8 @@ import { Sidebar } from "@/components/global/Sidebar";
 import { OpenSidebar } from "@/components/global/SidebarButton";
 import { SidebarProvider } from "@/context/SidebarContext";
 import Image from "next/image";
-import { UserNav } from "@/components/nav/UserNav";
+import { UserNav } from "@/components/nav/UserNav"; 
+import { FaCartShopping } from "react-icons/fa6";
 
 export default function UserSidebarLayout({
   children,
@@ -24,15 +25,22 @@ export default function UserSidebarLayout({
               <h1 className="text-2xl">Nagari Koto Gadang</h1>
               <h2>Tourism Village</h2>
             </section>
-            <aside className="flex items-center justify-center px-6 bg-white rounded-lg cursor-pointer">
+            <section className="grid grid-cols-2 gap-2">
+
+            
+            <div className="flex items-center justify-center px-5 bg-white rounded-lg cursor-pointer">
+              <FaCartShopping />
+            </div>
+            <div className="flex items-center justify-center px-5 bg-white rounded-lg cursor-pointer">
               <Image
                 src="/images/profile.png"
-                width={1000}
+                width={200}
                 alt="profile"
-                height={1000}
+                height={200}
                 className="size-12"
               />
-            </aside>
+            </div>
+            </section>
           </header>
           {children}
         </section>

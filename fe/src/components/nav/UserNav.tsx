@@ -1,7 +1,14 @@
 import { SideNavItem } from "@/components/nav/SideNavItem";
 import { BsFillGridFill } from "react-icons/bs";
-import { FaInstagram, FaMap, FaThLarge, FaTiktok } from "react-icons/fa";
+import {
+  FaInstagram,
+  FaList,
+  FaMap, 
+  FaTiktok,
+} from "react-icons/fa";
 import { FaHouse, FaSquarePollHorizontal } from "react-icons/fa6";
+import { DropDownItem } from "@/components/nav/DropDownItem";
+import { DropDownChildrenItem } from "./DropDownChildren";
 
 export const UserNav = () => {
   return (
@@ -14,11 +21,19 @@ export const UserNav = () => {
           <SideNavItem icon={FaMap} label="Explore Village" link="#" />
         </li>
         <li>
-          <SideNavItem
-            icon={FaSquarePollHorizontal}
-            label="Tourism Package"
-            link="/web/package"
-          />
+         
+          <DropDownItem icon={FaSquarePollHorizontal} label="Tourism Package">
+            <DropDownChildrenItem
+              icon={FaList}
+              label="With Our Package"
+              link="/web/explore"
+            />
+            <DropDownChildrenItem
+              icon={FaList}
+              label="With My Village"
+              link="/web/mypackage"
+            />
+          </DropDownItem>
         </li>
         <li>
           <SideNavItem
@@ -28,7 +43,7 @@ export const UserNav = () => {
           />
         </li>
         <li className="flex flex-wrap ">
-          <SideNavItem icon={FaInstagram} label="Instagram" link="#" /> 
+          <SideNavItem icon={FaInstagram} label="Instagram" link="#" />
           <SideNavItem icon={FaTiktok} label="Tiktok" link="#" />
         </li>
       </ul>
