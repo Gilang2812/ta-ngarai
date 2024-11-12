@@ -29,6 +29,8 @@ var galleryRouter = require('./src/gallery/gallery.controller')
 var detailPackageRouter = require('./src/detailPackage/detailPackage.controller')
 const objectRouter = require('./src/object/object.controller')
 const packageRouter = require('./src/package/package.controller')
+const detailServiceRouter = require('./src/detailServicePackage/detailService.controller')
+
 app.use('/', authRouter);
 app.use('/users', userRouter);
 app.use('/homestays', homestayRouter);
@@ -39,5 +41,6 @@ app.use('/gallery', galleryRouter);
 app.use('/detailPackage', detailPackageRouter);
 app.use('/object', objectRouter)
 app.use('/packages', packageRouter)
+app.use('/services', detailServiceRouter)
 
 module.exports = app;

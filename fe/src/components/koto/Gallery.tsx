@@ -6,7 +6,7 @@ import Image from "next/image";
 import { ImageSkeleton } from "@/components/loading/ImageSkeleton";
 
 export const Gallery = () => {
-  const { data, isLoading } = useFetchGalleries("tourism");
+  const { data, isLoading } = useFetchGalleries<GallerySchema>("tourism");
 
   return (
     <article className="col-span-1 space-y-4">
@@ -14,7 +14,7 @@ export const Gallery = () => {
       <div className=" grid grid-cols-4 gap-4 ">
         {isLoading &&
           [...Array(4)].map((_, index) => <ImageSkeleton key={index} />)}
-        {data?.map((g: GallerySchema) => (
+        {data?.map((g:GallerySchema) => (
           <Image
             key={g.id}
             src={imageUrl + g.url}

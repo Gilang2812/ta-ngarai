@@ -9,6 +9,15 @@ export const showCreateAlert = (message: string) => {
     timer: 1500,
   });
 };
+export const showSuccessAlert = (message: string) => {
+  return Swal.fire({
+    icon: "success",
+    title: "Success",
+    text: `  ${message}  `,
+    showConfirmButton: false,
+    timer: 1500,
+  });
+};
 export const showEditeAlert = (message: string) => {
   return Swal.fire({
     icon: "success",

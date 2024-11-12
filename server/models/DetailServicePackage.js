@@ -1,7 +1,7 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../config/db");
 
-const DetailServicePackage = sequelize.define(
+const   DetailServicePackage = sequelize.define(
   "DetailServicePackage",
   {
     package_id: {

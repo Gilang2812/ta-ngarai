@@ -7,7 +7,7 @@ import { useModal } from "@/utils/ModalUtils";
 import { Form, Formik } from "formik";
 import { Spinner } from "@/components/loading/Spinner";
 import { useFetchUsers } from "@/features/dashboard/users/useFetchUser";
-import { confirmDeleteAlert, showCreateAlert, showDeleteAlert } from "@/utils/AlertUtils";
+import { confirmDeleteAlert, showCreateAlert, showDeleteAlert, showErrorAlert } from "@/utils/AlertUtils";
 import Image from "next/image";
 import {  createUserSchema } from "@/validation/usersSchema";
 import { useCreateUser } from "@/features/dashboard/users/useCreateUser";
@@ -21,7 +21,7 @@ import { AuthGroupUser } from "@/type/schema/usersSchema";
 export default function ManageUsers() {
   const [errorInput, setErrorInput] = useState<{ [key: string]: string }>({});
   const [selectedUser, setSelectedUser] = useState<AuthGroupUser | null>(null);
-  console.log(errorInput)
+ 
   const {
     isOpen: isModalInputOpen,
     closeModal: closeModalInput,
@@ -55,12 +55,12 @@ export default function ManageUsers() {
 
   const { mutate: deleteUser, isError } = useDeleteUser({
     onSuccess: () => {
-      console.log(isError);
+    
       showDeleteAlert("user");
       refetchUser();
     },
     onError: (error: any) => {
-      console.error("Error deleting user:", error);
+      showErrorAlert("Error deleting user:");
     },
   });
 

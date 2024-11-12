@@ -3,18 +3,17 @@ import { Swiper, SwiperSlide, } from "swiper/react";
 import { Navigation, Pagination,  Autoplay, } from "swiper/modules";
 import Image from "next/image";
 import { useFetchGalleries } from "@/features/web/useFetchGalleries";
-import { imageUrl } from "@/lib/baseUrl";
-import { GallerySchema } from "@/type/schema/gallerySchema";
+import { imageUrl } from "@/lib/baseUrl"; 
 import { ImageSkeleton } from "@/components/loading/ImageSkeleton";
+import { GallerySchema } from "@/type/schema/gallerySchema";
 
-export const TourismGalleries = ()=>{
+export const TourismGalleries = ({id}:{id?:string})=>{
 
-  const {data, isLoading} = useFetchGalleries('tourism')
-  console.log(data)
+  const {data, isLoading} = useFetchGalleries<GallerySchema>('tourism',id)
+ 
     return   <figure>
     <div className=" min-h-fit relative">
-      <Swiper
-        slidesPerView={1}
+      <Swiper 
         navigation={{ 
           enabled: true,
         }}
@@ -38,10 +37,10 @@ export const TourismGalleries = ()=>{
         }}
         autoplay={true}
         modules={[Navigation, Pagination,Autoplay]}
-        className="  min-h-fit bg-red-200 rounded-lg [&_div.swiper-button-next]:text-background [&_div.swiper-button-prev]:text-background hover:[&_div]:text-slate-300 [&_div]:transition-ease-in-out   "
+        className="    rounded-lg [&_div.swiper-button-next]:text-background [&_div.swiper-button-prev]:text-background hover:[&_div]:text-slate-300 [&_div]:transition-ease-in-out   "
       >
         {isLoading&&<ImageSkeleton />}
-        {data?.map((g:GallerySchema) => (
+        {data?.map((g) => (
           <SwiperSlide key={g.id}>
             <Image 
               className="object-fill"
@@ -49,7 +48,7 @@ export const TourismGalleries = ()=>{
               alt={'gallery'+g.id}
               width={500}
               height={500}
-              loading='lazy'
+              priority
             />
           </SwiperSlide>
         ))}
@@ -57,4 +56,4 @@ export const TourismGalleries = ()=>{
        </Swiper>
     </div>
   </figure>
-}
+} 

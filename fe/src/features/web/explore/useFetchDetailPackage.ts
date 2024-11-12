@@ -2,12 +2,14 @@ import { axiosInstance } from "@/lib/axios"
 import { DetailPackage } from "@/type/schema/detailPackage"
 import { useQuery } from "@tanstack/react-query"
 
-export const useFetchDetailPackage = ()=>{
+export const useFetchDetailPackage = (package_id?:string)=>{
     return useQuery<DetailPackage[]>(
         {
             queryKey:['detailPackage'],
             queryFn: async()=>{
-                const {data} = await axiosInstance.get('/detailPackage')
+                const {data} = await axiosInstance.get('/detailPackage',{
+                    params:{package_id}
+                })
                 return data
             }
         })

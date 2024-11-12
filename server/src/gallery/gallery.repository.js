@@ -7,14 +7,12 @@ const findGalleryTourisms = async() => {
     return tourisms
 }
 
-const findGalleryPackages = async(custom) => {
-    const query = custom.custom ? custom : {}
-    console.log(custom)
+const findGalleryPackages = async(custom) => { 
     const packages = await GalleryPackage.findAll({
         include: {
             model: Package,
-            include: { model: PackageType },
-            where: query
+            include: { model: PackageType }, 
+            where:custom
         }
     })
     return packages

@@ -12,11 +12,12 @@ import { imageNotFound, imageUrl } from "@/lib/baseUrl";
 import { useFetchDetailPackage } from "@/features/web/explore/useFetchDetailPackage";
 import { DetailPackage } from "@/type/schema/detailPackage";
 import Link from "next/link";
+import { GalleryPackageSchema } from "@/type/schema/gallerySchema";
 export const PackageList = () => {
   const {data:packages} = useFetchDetailPackage()
 
  
-  const {data, isLoading}  = useFetchGalleries('package',0) 
+  const {data, isLoading}  = useFetchGalleries<GalleryPackageSchema>('package') 
   const uniquePackage =  [...new Map(packages?.map((item:DetailPackage) => [item.package_id, item])).values()]
   console.log(uniquePackage)
   return (

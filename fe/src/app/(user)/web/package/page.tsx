@@ -13,7 +13,7 @@ export default function Package() {
         <button
           type="button"
           aria-label="Create custom new package"
-          className="flex items-center gap-4 px-3 py-2 font-normal text-white capitalize rounded bg-primary"
+          className="btn-fill-primary"
         >
           <FaPlus />
           Create New Custom Package

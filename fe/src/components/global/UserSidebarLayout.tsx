@@ -6,18 +6,29 @@ import { SidebarProvider } from "@/context/SidebarContext";
 import Image from "next/image";
 import { UserNav } from "@/components/nav/UserNav"; 
 import { FaCartShopping } from "react-icons/fa6";
+import { useTransition } from "react";
+import { useRouter } from "next/navigation";
+import Loading from "@/app/loading";
 
 export default function UserSidebarLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const [isPending, startTransition] = useTransition();
+  const router = useRouter();
+
+  const handleNavigation = (url: string) => {
+    startTransition(() => {
+      router.push(url);
+    });
+  };
   return (
     <SidebarProvider>
       <main className="flex min-h-screen bg-[#f2f7ff]">
-        <Sidebar>
-          <UserNav />
-        </Sidebar>{" "}
+      <Sidebar handleNavigation={handleNavigation}>
+          <UserNav handleNavigation={handleNavigation} />
+        </Sidebar>
         <section className="flex-1 h-screen p-8 overflow-x-hidden font-bold justify-items-stretch xl:w-full font-nunito">
           <header className="flex justify-between mb-10">
             <section className="space-y-4">
@@ -42,7 +53,7 @@ export default function UserSidebarLayout({
             </div>
             </section>
           </header>
-          {children}
+          {isPending ? <Loading /> : children} 
         </section>
       </main>
     </SidebarProvider>

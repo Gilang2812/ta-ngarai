@@ -5,8 +5,8 @@ const getGalleryTourisms = async() => {
     return galleryTourism
 }
 
-const getGalleryPackages = async(custom,id) => {
-    const galleryPackages = await findGalleryPackages( custom ,id)
+const getGalleryPackages = async(custom ) => {
+    const galleryPackages = await findGalleryPackages( custom  )
     return galleryPackages
 }
 module.exports = { getGalleryTourisms, getGalleryPackages }

@@ -14,6 +14,7 @@ const { ServicePackage } = require("./ServicePackage");
 const { TourismVillage } = require("./TourismVillageModel");
 const { User } = require("./UsersModels");
 const { GalleryPackage } = require("./GalleryPackage.js");
+const Reservation = require("./ReservationMode.js");
 
 User.hasMany(AuthGroupUsers, { foreignKey: "user_id", as: "user" });
 AuthGroup.hasMany(AuthGroupUsers, { foreignKey: "group_id", as: "group" });
@@ -84,6 +85,12 @@ Facility.belongsTo(FacilityType, { foreignKey: "type_id" });
 
 GalleryPackage.belongsTo(Package, { foreignKey: "package_id" });
 Package.hasMany(GalleryPackage, { foreignKey: "package_id" });
+
+Reservation.belongsTo(User, { foreignKey: "user_id" });
+Reservation.belongsTo(User, { foreignKey: "admin_confirm" });
+Reservation.belongsTo(User, { foreignKey: "admin_refund" });
+
+Reservation.belongsTo(Package, { foreignKey: "package_id" });
 module.exports = {
     AuthGroup,
     AuthGroupUsers,
@@ -99,5 +106,6 @@ module.exports = {
     FacilityType,
     Facility,
     DetailServicePackage,
-    GalleryPackage
+    GalleryPackage,
+    Reservation
 };

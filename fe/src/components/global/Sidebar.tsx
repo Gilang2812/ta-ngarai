@@ -1,10 +1,17 @@
 import { useSidebar } from "@/context/SidebarContext";
 import Image from "next/image";
-import { FaRegMoon, FaRegSun } from "react-icons/fa"; 
+import { FaRegMoon, FaRegSun } from "react-icons/fa";
 import { Logo } from "@/components/Logo";
 import { FaX } from "react-icons/fa6";
 import Link from "next/link";
-export const Sidebar = ({children}:{children:React.ReactNode}) => {
+
+export const Sidebar = ({
+  children,
+  handleNavigation,
+}: {
+  children: React.ReactNode;
+  handleNavigation?: (url: string) => void;
+}) => {
   const { open, toggleSidebar } = useSidebar();
 
   return (
@@ -20,8 +27,8 @@ export const Sidebar = ({children}:{children:React.ReactNode}) => {
         />
         <header className="flex flex-col items-center gap-8">
           <div className="flex justify-between w-full">
-            <Link href="/web">
-            <Logo className="size-8" />
+            <Link onClick={() => handleNavigation("/web")} href="/web">
+              <Logo className="size-8" />
             </Link>
             <div className="flex items-center gap-3">
               <FaRegSun />
@@ -53,7 +60,7 @@ export const Sidebar = ({children}:{children:React.ReactNode}) => {
             </p>
           </section>
         </header>
-          {children}
+        {children}
       </aside>
     </div>
   );

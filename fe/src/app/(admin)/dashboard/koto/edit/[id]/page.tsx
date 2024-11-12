@@ -26,7 +26,7 @@ const EditDataVillage = () => {
   const router = useRouter();
   const id = params.id;
 
-  const { data, isLoading } = useFetchTourism(id.toString());
+  const { data, isLoading } = useFetchTourism(id!.toString());
 
   useEffect(() => {
     if (data?.qr_url) {

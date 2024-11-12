@@ -5,16 +5,27 @@ import { OpenSidebar } from "@/components/global/SidebarButton";
 import { SidebarProvider } from "@/context/SidebarContext";
 import Image from "next/image";
 import { AdminNav } from "@/components/nav/AdminNav";
+import { Suspense, useTransition } from "react";
+import { useRouter } from "next/navigation";
+import Loading from "@/app/loading";
 
 export default function AdminSidebarLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+
+  const [isPending, startTransition] = useTransition();
+  const router = useRouter();
+  const handleNavigation = (url: string) => {
+    startTransition(() => {
+      router.push(url);
+    });
+  }; 
   return (
     <SidebarProvider>
       <main className=" flex h-lvh relative max-w-screen min-h-screen bg-[#f2f7ff]">
-        <Sidebar>
+        <Sidebar handleNavigation={handleNavigation}>
           <AdminNav />
         </Sidebar>
         <section className=" h-screen min-w-min  p-8 overflow-x-hidden font-bold   transition-ease-in-out  grow    font-nunito">
@@ -34,7 +45,9 @@ export default function AdminSidebarLayout({
               />
             </aside>
           </header>
-          {children}
+          <Suspense fallback={<Loading />}> 
+          {isPending ? <Loading /> : children} 
+          </Suspense>
         </section>
       </main>
     </SidebarProvider>

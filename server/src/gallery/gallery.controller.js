@@ -18,9 +18,9 @@ router.get("/tourism", async(req, res) => {
 router.get("/package", async(req, res) => {
     try {
         let condition = {}
-        const id = req.query.id && (condition.id = parseInt(req.query.id)) ;
-        const custom = req.query.custom &&(condition.custom = req.query.custom.toString() ) ;
-
+        req.query.id && (condition.id = req.query.id) ;
+        req.query.custom &&(condition.custom = parseInt(req.query.custom)  ) ;
+        // console.log(condition)
         const galleryPackages = await getGalleryPackages(condition);
 
         res.status(200).json(galleryPackages);

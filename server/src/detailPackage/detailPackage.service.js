@@ -1,7 +1,7 @@
 const { findAllDetailPackages } = require("./detailPackage.repository")
 
-const getAllDetailPackages = async() =>{
-    const detailPackage = await findAllDetailPackages()
+const getAllDetailPackages = async(condition) =>{
+    const detailPackage = await findAllDetailPackages(condition)
     return detailPackage
 }
 

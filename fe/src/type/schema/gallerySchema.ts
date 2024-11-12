@@ -1,7 +1,7 @@
 import { PackageSchema } from "./detailPackage";
 
 export type GallerySchema = {
-  id: string;
+  id: string|undefined;
   tourism_village_id: string;
   url: string;
 };

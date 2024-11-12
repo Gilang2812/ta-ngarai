@@ -5,35 +5,11 @@ import React from "react";
 import { Dropdown } from "flowbite-react";
 import { useFetchDetailPackage } from "@/features/web/explore/useFetchDetailPackage";
 import { DetailPackage, PackageSchema, } from "@/type/schema/detailPackage";
+import { DayButton } from "@/components/web/explore/DayButton";
  
 
 
-const DayButton = ({ day,activity }: { day: string,activity:Array<DetailPackage> }) =>{ 
- console.log(activity)
-  return(
-  <div className="flex   text-sm font-normal  ">
-     <button
-      className="h-full w-fit text-nowrap p-2 text-white rounded-l bg-primary hover:bg-secondary transition ease-in-out"
-      type="button"
-    >
-      {day}
-    </button>
-    
-    <Dropdown className="px-4 py-2" aria-expanded={true} label={day} dismissOnClick={false} renderTrigger={()=>  <button
-      className="h-10 p-2 text-white rounded-r bg-primary hover:bg-secondary transition ease-in-out"
-      type="button"
-    >
-      <FaCaretDown />
-    </button>}>
-    <Dropdown.Item className="flex items-center text-primary border border-primary rounded w-fit gap-2"><FaRoad /> Titik 0 ke 1 </Dropdown.Item>
-
-      {activity.map((ac:DetailPackage,index:number)=>(
-         <Dropdown.Item key={index} className="flex items-center text-primary border border-primary rounded w-fit gap-2"><FaRoad /> activity {ac.activity} ke {parseInt(ac.activity)+1} </Dropdown.Item>
-      ))}
-
-    </Dropdown>
-  </div>
-)};
+ 
 
 // Main component
 export const Package = () => {
@@ -76,7 +52,7 @@ export const Package = () => {
           <td className="flex relative flex-wrap gap-y-2 py-2">
             {[...new Map(data?.filter((day: DetailPackage) => day.packageDay.package_id == item.id).map((day: DetailPackage) =>[day.packageDay.day,day])).values()]
               .map((day:any, index: number) => (
-                <DayButton key={index} day={`  ${day.packageDay.description} `} activity={ data?.filter((ac:DetailPackage)=>ac.package_id==day.package_id&&ac.day==day.day)} />
+                <DayButton key={index} day={`  ${day.packageDay.day} `} activity={ data?.filter((ac:DetailPackage)=>ac.package_id==day.package_id&&ac.day==day.day)} />
               ))}
           </td>
         </tr> 
