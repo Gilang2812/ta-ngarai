@@ -128,8 +128,8 @@ const Reservation = sequelize.define('Reservation', {
     type: DataTypes.STRING(100),
     allowNull: true
   },
-  refund_account: {
-    type: DataTypes.STRING(255),
+  proof_refund: {
+    type: DataTypes.STRING(100),
     allowNull: true
   },
   refund_amount: {
@@ -144,7 +144,7 @@ const Reservation = sequelize.define('Reservation', {
     type: DataTypes.DATE,
     allowNull: true
   },
-  amount_refund: {
+  admin_refund: {
     type: DataTypes.INTEGER,
     allowNull: true
   },
@@ -158,4 +158,4 @@ const Reservation = sequelize.define('Reservation', {
   timestamps: false
 });
 
-module.exports = Reservation;
+module.exports = {Reservation};

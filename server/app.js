@@ -30,6 +30,8 @@ var detailPackageRouter = require('./src/detailPackage/detailPackage.controller'
 const objectRouter = require('./src/object/object.controller')
 const packageRouter = require('./src/package/package.controller')
 const detailServiceRouter = require('./src/detailServicePackage/detailService.controller')
+const reserveationRouter = require('./src/reservation/reservation.controller')
+const detailReservationRouter = require('./src/detailReservation/detailReservation.controller')
 
 app.use('/', authRouter);
 app.use('/users', userRouter);
@@ -42,5 +44,7 @@ app.use('/detailPackage', detailPackageRouter);
 app.use('/object', objectRouter)
 app.use('/packages', packageRouter)
 app.use('/services', detailServiceRouter)
+app.use('/reservations', reserveationRouter)
+app.use('/detailReservations', detailReservationRouter)
 
 module.exports = app;

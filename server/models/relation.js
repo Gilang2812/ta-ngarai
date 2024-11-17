@@ -14,7 +14,11 @@ const { ServicePackage } = require("./ServicePackage");
 const { TourismVillage } = require("./TourismVillageModel");
 const { User } = require("./UsersModels");
 const { GalleryPackage } = require("./GalleryPackage.js");
-const Reservation = require("./ReservationMode.js");
+const {Reservation} = require("./ReservationModel.js");
+const { Homestay } = require("./HomestayModel.js");
+const { UnitHomestay } = require("./UnitHomestayModel.js");
+const { HomestayUnitType } = require("./HomestayUnitTypeModel.js");
+const { DetailReservation } = require("./DetailReservationModel.js");
 
 User.hasMany(AuthGroupUsers, { foreignKey: "user_id", as: "user" });
 AuthGroup.hasMany(AuthGroupUsers, { foreignKey: "group_id", as: "group" });
@@ -38,26 +42,24 @@ DetailPackage.belongsTo(PackageDay, {
     foreignKey: 'package_id',
     targetKey: 'package_id',
     as: 'packageDay',
-    constraints: false
 });
 DetailPackage.belongsTo(PackageDay, {
     foreignKey: 'day',
     targetKey: 'day',
     as: 'packageDayByDay',
-    constraints: false
 });
 
 PackageDay.hasMany(DetailPackage, {
     foreignKey: 'package_id',
     sourceKey: 'package_id',
-    as: 'detailPackages',
-    scope: { day: Sequelize.col('PackaDetageDay.day') }
+as: 'detailPackages',
 });
 
 
 PackageDay.hasMany(DetailPackage, {
     foreignKey: "day",
-    as: "detailsByDay",
+    targetKey: "day",
+    as: "detailPackagesByDay",
 });
 PackageDay.belongsTo(Package, {
     foreignKey: "package_id",
@@ -68,7 +70,7 @@ Package.hasMany(PackageDay, {
     sourceKey: 'id',
     as: 'packageDays'
 });
-Package.hasMany(DetailServicePackage, { foreignKey: "package_id" });
+Package.hasMany(DetailServicePackage, { foreignKey: "package_id",as: "detailServices"});
 ServicePackage.hasMany(DetailServicePackage, {
     foreignKey: "service_package_id",
 });
@@ -86,11 +88,66 @@ Facility.belongsTo(FacilityType, { foreignKey: "type_id" });
 GalleryPackage.belongsTo(Package, { foreignKey: "package_id" });
 Package.hasMany(GalleryPackage, { foreignKey: "package_id" });
 
-Reservation.belongsTo(User, { foreignKey: "user_id" });
-Reservation.belongsTo(User, { foreignKey: "admin_confirm" });
-Reservation.belongsTo(User, { foreignKey: "admin_refund" });
+Reservation.belongsTo(User, { foreignKey: "user_id" ,as:"customer"});
+Reservation.belongsTo(User, { foreignKey: "admin_confirm", as:"confirm" });
+Reservation.belongsTo(User, { foreignKey: "admin_refund",as:"refund" });
 
-Reservation.belongsTo(Package, { foreignKey: "package_id" });
+User.hasMany(Reservation, { foreignKey: "user_id" });
+User.hasMany(Reservation, { foreignKey: "admin_confirm" });
+User.hasMany(Reservation, { foreignKey: "admin_refund" });
+
+Reservation.belongsTo(Package, { foreignKey: "package_id", as:"package" });
+Package.hasMany(Reservation, { foreignKey: "package_id", as:"reservation" });
+
+Homestay.hasMany(UnitHomestay,{foreignKey: "homestay_id" })
+HomestayUnitType.hasMany(UnitHomestay,{foreignKey: "unit_type" })
+
+UnitHomestay.belongsTo(Homestay,{foreignKey: "homestay_id" })
+UnitHomestay.belongsTo(HomestayUnitType,{foreignKey: "unit_type" })
+
+Reservation.hasMany(DetailReservation,{foreignKey: "reservation_id" ,as:"detail" });
+DetailReservation.belongsTo(Reservation,{foreignKey: "reservation_id",as:"reservation" });
+UnitHomestay.hasMany(DetailReservation, {
+    foreignKey: 'homestay_id',
+    sourceKey: 'homestay_id',
+    constraints: true,
+    as: 'detailReservations'
+});
+
+UnitHomestay.hasMany(DetailReservation, {
+    foreignKey: 'unit_type',
+    sourceKey: 'unit_type',
+    constraints: true,
+});
+
+UnitHomestay.hasMany(DetailReservation, {
+    foreignKey: 'unit_number',
+    sourceKey: 'unit_number',
+    constraints: true,
+});
+
+
+DetailReservation.belongsTo(UnitHomestay, {
+    foreignKey: 'homestay_id',
+    targetKey: 'homestay_id',
+    constraints: true,
+    as: 'homestay'
+});
+
+DetailReservation.belongsTo(UnitHomestay, {
+    foreignKey: 'unit_type',
+    targetKey: 'unit_type',
+    constraints: true,
+    as: 'unit'
+
+});
+
+DetailReservation.belongsTo(UnitHomestay, {
+    foreignKey: 'unit_number',
+    targetKey: 'unit_number',
+    constraints: true,
+    as: 'number'
+});
 module.exports = {
     AuthGroup,
     AuthGroupUsers,
@@ -107,5 +164,11 @@ module.exports = {
     Facility,
     DetailServicePackage,
     GalleryPackage,
-    Reservation
+    Reservation,
+    Homestay,
+    HomestayUnitType,
+    UnitHomestay,
+    DetailReservation,
+    DetailReservation
+
 };
