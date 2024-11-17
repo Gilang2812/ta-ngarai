@@ -1,3 +1,5 @@
+import { DetailServiceSchema } from "./serviceSchema";
+
 export type PackageType = {
   id: string;
   type_name: string;
@@ -15,6 +17,8 @@ export type PackageSchema ={
     custom: number;
     status: number;
     PackageType: PackageType;
+    packageDays:PackageDay[];
+    detailServices:DetailServiceSchema[]
   }
   
   export type PackageDay ={
@@ -25,6 +29,7 @@ export type PackageSchema ={
     created_at: string;
     updated_at: string;
     package: PackageSchema;
+    detailPackages: DetailPackage[]
   }
   
   export type DetailPackage= {

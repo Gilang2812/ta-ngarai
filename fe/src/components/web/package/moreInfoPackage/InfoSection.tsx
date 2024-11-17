@@ -5,22 +5,14 @@ import { Itinerary } from "@/components/web/package/moreInfoPackage/Itinerary";
 import { Review } from "@/components/web/package/moreInfoPackage/Review";
 import { useFetchGalleries } from "@/features/web/useFetchGalleries";
 import { GalleryPackageSchema } from "@/type/schema/gallerySchema";
-import { useFetchDetailService } from "@/features/web/package/useFetchDetailService";
-import { useEffect, useState } from "react";
+import { useFetchDetailService } from "@/features/web/package/useFetchDetailService"; 
 import { Gallery } from "@/components/web/package/moreInfoPackage/Gallery";
 import { DetailServiceSchema } from "@/type/schema/serviceSchema";
 import { FaCirclePlay } from "react-icons/fa6";
 import { useFetchDetailPackage } from "@/features/web/explore/useFetchDetailPackage";
-import GoogleMap from "@/components/map/GoogleMapComponent";
-
+ 
 export const InfoSection =  () => {
-  const handleMapLoad = () => {
-    console.log('Map loaded successfully');
-  };
-
-  const handleMapError = (error: Error) => {
-    console.error('Map loading error:', error);
-  };
+ 
   const  id='P0075'
   const { data:gallery, isLoading } =  useFetchGalleries<GalleryPackageSchema>('package',id );
 

@@ -1,5 +1,5 @@
 export default function Loading(){
-    return <center>
-        <p>loading...</p>
-    </center>
+return <center>
+    <p>loading...</p>
+</center>
 }

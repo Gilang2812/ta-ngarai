@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import { useEffect, useRef, useState } from "react";
 import { Loader } from "@googlemaps/js-api-loader";
@@ -25,7 +26,8 @@ const Map = () => {
     loader.load().then((google) => {
       const mapInstance = new google.maps.Map(mapRef.current!, {
         center: { lat: -0.316691, lng: 100.343548 },
-        zoom: 10,
+        zoom: 9,
+        mapTypeId:'satellite'
       });
 
       setMap(mapInstance);
@@ -54,7 +56,7 @@ const Map = () => {
           fillColor: color,
           strokeColor: "#fff",
           strokeWeight: 1,
-          fillOpacity: 0.3,
+          fillOpacity: 0.6,
         };
       });
 
@@ -114,32 +116,37 @@ const Map = () => {
     Swal.fire("Click on Map to set location.");
     setIsManualLocationActive(true);
 
-    clickListenerRef.current = map.addListener("click", (mapsMouseEvent) => {
-      const position = mapsMouseEvent.latLng;
+    clickListenerRef.current = map.addListener(
+      "click",
+      (mapsMouseEvent: any) => {
+        const position = mapsMouseEvent.latLng;
 
-      if (manualMarkerRef.current) {
-        manualMarkerRef.current.setPosition(position);
-      } else {
-        manualMarkerRef.current = new google.maps.Marker({
-          position: position,
-          map: map,
-          animation: google.maps.Animation.DROP,
-          title: "Manual Location",
+        if (manualMarkerRef.current) {
+          manualMarkerRef.current.setPosition(position);
+        } else {
+          manualMarkerRef.current = new google.maps.Marker({
+            position: position,
+            map: map,
+            animation: google.maps.Animation.DROP,
+            title: "Manual Location",
+          });
+        }
+
+        const infoWindow = new google.maps.InfoWindow({
+          content: `<p class='text-center'><span class='fw-bold'>Manual Location</span><br>lat: ${position
+            .lat()
+            .toFixed(8)}<br>lng: ${position.lng().toFixed(8)}</p>`,
         });
-      }
 
-      const infoWindow = new google.maps.InfoWindow({
-        content: `<p class='text-center'><span class='fw-bold'>Manual Location</span><br>lat: ${position.lat().toFixed(8)}<br>lng: ${position.lng().toFixed(8)}</p>`,
-      });
-
-      infoWindow.open(map, manualMarkerRef.current);
-
-      manualMarkerRef.current.addListener("click", () => {
         infoWindow.open(map, manualMarkerRef.current);
-      });
 
-      setIsManualLocationActive(false);
-    });
+        manualMarkerRef.current.addListener("click", () => {
+          infoWindow.open(map, manualMarkerRef.current);
+        });
+
+        setIsManualLocationActive(false);
+      }
+    );
   };
 
   const handleCurrentLocation = () => {
@@ -154,11 +161,11 @@ const Map = () => {
           new google.maps.Marker({
             position: userLocation,
             map: map,
-            title: 'Your Current Location',
+            title: "Your Current Location",
           });
         },
         () => {
-          alert('Unable to retrieve your location.');
+          alert("Unable to retrieve your location.");
         }
       );
     }
@@ -180,33 +187,47 @@ const Map = () => {
   return (
     <div className=" grow">
       <div className="flex gap-2 mb-4">
-        <MapControls current={handleCurrentLocation} manual={handleManualLocation} goTO={handleGoToMarker} legend={toggleLegend}/>
+        <MapControls
+          current={handleCurrentLocation}
+          manual={handleManualLocation}
+          goTO={handleGoToMarker}
+          legend={toggleLegend}
+        />
       </div>
 
-      <div ref={mapRef} className="w-full aspect-[4/3] h-max" />
-
-      {showLegend && (
-        <div className="p-2 mt-2 bg-white shadow-lg legend">
-          <h4>Legend</h4>
-          <ul>
-            <li className="flex items-center">
-              <span className="w-4 h-4 bg-[#880c9c] mr-2 inline-block"></span> Negara
-            </li>
-            <li className="flex items-center">
-              <span className="w-4 h-4 bg-[#0f910a] mr-2 inline-block"></span> Provinsi
-            </li>
-            <li className="flex items-center">
-              <span className="w-4 h-4 bg-[#a6123a] mr-2 inline-block"></span> Kabupaten/Kota
-            </li>
-            <li className="flex items-center">
-              <span className="w-4 h-4 bg-[#a67712] mr-2 inline-block"></span> Kecamatan
-            </li>
-            <li className="flex items-center">
-              <span className="w-4 h-4 bg-[#eff538] mr-2 inline-block"></span> Village
-            </li>
-          </ul>
-        </div>
-      )}
+      <div ref={mapRef} className="w-full relative aspect-[4/3] h-max">
+        <legend
+          className={`absolute top-16 right-2 ${
+            showLegend ? "max-h-48" : "max-h-0"
+          }   transition ease-in-out overflow-hidden bg-white shadow-lg legend`}
+        >
+          <div className="p-4">
+            <h4>Legend</h4>
+            <ul>
+              <li className="flex items-center">
+                <span className="w-4 h-4 bg-[#880c9c] mr-2 inline-block"></span>{" "}
+                Negara
+              </li>
+              <li className="flex items-center">
+                <span className="w-4 h-4 bg-[#0f910a] mr-2 inline-block"></span>{" "}
+                Provinsi
+              </li>
+              <li className="flex items-center">
+                <span className="w-4 h-4 bg-[#a6123a] mr-2 inline-block"></span>{" "}
+                Kabupaten/Kota
+              </li>
+              <li className="flex items-center">
+                <span className="w-4 h-4 bg-[#a67712] mr-2 inline-block"></span>{" "}
+                Kecamatan
+              </li>
+              <li className="flex items-center">
+                <span className="w-4 h-4 bg-[#eff538] mr-2 inline-block"></span>{" "}
+                Village
+              </li>
+            </ul>
+          </div>
+        </legend>
+      </div>
     </div>
   );
 };

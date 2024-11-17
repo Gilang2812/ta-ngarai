@@ -2,6 +2,7 @@
 import { useFetchAnnouncements } from "@/features/web/useFetchAnnouncement";
 import { AnnouncementSchema } from "@/type/schema/announcementSchema";
 import { FaBullhorn } from "react-icons/fa";
+import { RawSkeleton } from "../loading/RawSkeleton";
 
 function Announcement() {
   const { data, isLoading } = useFetchAnnouncements(); // Assuming it returns announcements array
@@ -13,7 +14,7 @@ function Announcement() {
         Announcement
       </div>
       <ul className="text-black list-disc px-8">
-        {isLoading && <li>Loading...</li>}
+        {isLoading && <RawSkeleton />}
         {data?.map((a: AnnouncementSchema, index: string) => (
           <li key={index}>{a.announcement}</li>
         )) ||!isLoading&& <li>No announcements available.</li>} 
