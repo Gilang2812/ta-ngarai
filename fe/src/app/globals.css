@@ -75,23 +75,51 @@ body {
 .transition-ease-out-10 {
     @apply transition-all duration-1000 ease-out
 }
-
+.btn {
+    @apply flex items-center  gap-2  border rounded transition-ease-in-out
+}
 .btn-primary {
-    @apply flex items-center gap-2 px-3 py-2 font-normal bg-white border rounded text-primary border-primary w-fit hover:text-white hover:bg-secondary transition-ease-in-out;
+    @apply  btn   px-3 py-2 font-normal bg-white text-primary border-primary w-fit hover:text-white hover:bg-secondary ;
 }
 
 .btn-fill-primary {
-    @apply flex items-center gap-2 px-3 py-2 font-normal text-white rounded bg-primary w-fit hover:bg-secondary transition-ease-in-out;
+    @apply btn px-3 py-2 font-normal text-white  bg-primary w-fit hover:bg-secondary ;
 }
 
 .btn-danger {
-    @apply px-3 py-2 font-normal text-white rounded bg-red-500 w-fit hover:text-white hover:bg-red-600 transition-ease-in-out;
+    @apply btn px-3 py-2 font-normal text-white  bg-red-500 w-fit hover:text-white hover:bg-red-600 ;
 }
 
 .btn-success {
-    @apply px-3 py-2 font-normal text-white rounded bg-green-500 w-fit hover:text-white hover:bg-green-600 transition-ease-in-out;
+    @apply btn px-3 py-2 font-normal text-white  bg-green-500 w-fit hover:text-white hover:bg-green-600 ;
+}
+.btn-regsuccess {
+    @apply btn px-3 py-2 font-normal bg-white border-green-600  text-green-600 w-fit  hover:text-white hover:bg-green-900 ;
 }
 
+.status{
+    @apply rounded p-1 px-2 transition-ease-in-out italic cursor-pointer w-fit 
+}
+.status-pay{
+    @apply bg-cyan-400 hover:bg-cyan-300 status
+}
+.status-waiting{
+    @apply bg-yellow-500 hover:bg-yellow-400 status
+}
+.status-negatif-success{
+    @apply bg-red-500 hover:bg-red-500 status text-white
+}
+
+.status-success{
+    @apply bg-green-700 hover:bg-green-900 status text-white
+}
+
+.status-unknown{
+    @apply bg-slate-950  text-white status hover:bg-slate-700
+}
+.status-cancel{
+    @apply bg-slate-500 text-white status hover:bg-slate-700 
+}
  
 
 .custom-scroll-bar {
