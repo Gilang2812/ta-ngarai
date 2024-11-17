@@ -18,10 +18,12 @@
     "@mui/icons-material": "^6.1.6",
     "@tanstack/react-query": "^5.59.19",
     "axios": "^1.7.7",
+    "dayjs": "^1.11.13",
     "filepond-plugin-image-preview": "^4.6.12",
     "flowbite-react": "^0.10.2",
     "formik": "^2.4.6",
     "framer-motion": "^11.11.11",
+    "geojson": "^0.5.0",
     "iconoir-react": "^7.9.0",
     "lucide-react": "^0.456.0",
     "next": "15.0.2",
@@ -37,6 +39,7 @@
     "yup": "^1.4.0"
   },
   "devDependencies": {
+    "@types/geojson": "^7946.0.14",
     "@types/google.maps": "^3.58.1",
     "@types/node": "^20",
     "@types/react": "^18",
