@@ -1,61 +1,66 @@
-const { DataTypes } = require('sequelize')
-const sequelize = require('../config/db')
+const { DataTypes } = require('sequelize');
+const sequelize = require('../config/db');
+const { generateCustomId } = require('../utils/generateId');
 
 const Homestay = sequelize.define(
   'Homestay',
   {
     id: {
       type: DataTypes.STRING(5),
-      allowNull: false,
-      primaryKey: true
+      allowNull: true,
+      primaryKey: true,
     },
     name: {
       type: DataTypes.STRING(50),
-      allowNull: true
+      allowNull: true,
     },
     address: {
       type: DataTypes.STRING(100),
-      allowNull: true
+      allowNull: true,
     },
     contact_person: {
       type: DataTypes.STRING(13),
-      allowNull: true
+      allowNull: true,
     },
     description: {
       type: DataTypes.TEXT,
-      allowNull: true
+      allowNull: true,
     },
     status: {
       type: DataTypes.TINYINT(1),
       allowNull: false,
-      defaultValue: 0
+      defaultValue: 0,
     },
     geom: {
       type: DataTypes.GEOMETRY,
-      allowNull: true
+      allowNull: true,
     },
     open: {
       type: DataTypes.TIME,
-      allowNull: true
+      allowNull: true,
     },
     close: {
       type: DataTypes.TIME,
-      allowNull: true
+      allowNull: true,
     },
     homestay_status: {
       type: DataTypes.TINYINT(1),
       allowNull: false,
-      defaultValue: 0
+      defaultValue: 0,
     },
     video_url: {
       type: DataTypes.TEXT,
-      allowNull: true
-    }
+      allowNull: true,
+    },
   },
   {
     tableName: 'homestay',
-    timestamps: false
+    timestamps: false, // Nonaktifkan timestamps jika tidak diperlukan
   }
-)
+);
 
-module.exports = {Homestay}
+Homestay.beforeCreate(async (instance) => {
+  instance.id = await generateCustomId('HO',Homestay)
+});
+
+module.exports = { Homestay };

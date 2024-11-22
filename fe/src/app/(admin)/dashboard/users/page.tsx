@@ -19,7 +19,7 @@ import { InfoModal } from "@/components/modal/InfoModal";
 import { AuthGroupUser } from "@/type/schema/usersSchema";
 
 export default function ManageUsers() {
-  const [errorInput, setErrorInput] = useState<{ [key: string]: string }>({});
+  // const [errorInput, setErrorInput] = useState<{ [key: string]: string }>({});
   const [selectedUser, setSelectedUser] = useState<AuthGroupUser | null>(null);
  
   const {
@@ -47,19 +47,19 @@ export default function ManageUsers() {
       showCreateAlert("user");
       closeModalInput();
     },
-    onError: (error: any) => {
-      const errorMessage = error?.response?.data || ["Terjadi kesalahan"];
-      setErrorInput(errorMessage);
+    onError: ( ) => {
+      // const errorMessage = error?.response?.data || ["Terjadi kesalahan"];
+      // setErrorInput(errorMessage);
     },
   });
 
-  const { mutate: deleteUser, isError } = useDeleteUser({
+  const { mutate: deleteUser,   } = useDeleteUser({
     onSuccess: () => {
     
       showDeleteAlert("user");
       refetchUser();
     },
-    onError: (error: any) => {
+    onError: ( ) => {
       showErrorAlert("Error deleting user:");
     },
   });

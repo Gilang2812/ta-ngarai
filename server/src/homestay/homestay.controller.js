@@ -1,7 +1,9 @@
 const express = require('express');
 var router = express.Router();
 
-const { getAllHomestay, getHomestay } = require("./homestay.service");
+const { getAllHomestay, getHomestay, createHomestay } = require("./homestay.service");
+const { handleError } = require('../../utils/HandleError');
+const { homestaySchema } = require('./homestay.validation');
 
 router.get('/', async (req,res)=>{
     try {
@@ -14,14 +16,45 @@ router.get('/', async (req,res)=>{
 }
 )
 
-router.post('/',async (req,res)=>{
+router.get('/:id',async (req,res)=>{
     try {
+
         const homestay = await getHomestay('HO001');
-        
+        res.status(200).json(homestay);
     } catch (error) {
         console.error(error);
         res.status(error.statusCode||500).json( error.message||'Internal server error, ' );
     }
 } )
 
+
+router.post('/',async (req,res)=>{
+    try {
+        const {name,address,open,close,geom} = req.body;
+        req.body.geom= req.body.geom || {
+            type: "MultiPolygon",
+            coordinates: [
+              [
+                [
+                  [100.354, -0.948],
+                  [100.355, -0.949],
+                  [100.356, -0.947],
+                  [100.354, -0.948] 
+                ]
+              ]
+            ]
+          }
+     
+        console.log('ini terst')
+          console.log(req.body||'ini harislnya')
+        const {error} = handleError({name,address,open,close,geom},homestaySchema)
+       
+        if(error ) return res.status(400).json(error.details?.map(h=>h.message) ||'Internal server error, ')
+        const newHomestay = await createHomestay(req.body)
+        res.status(201).json(newHomestay);
+    } catch (error) {
+        console.error(error);
+        res.status(error.statusCode||500).json(error.messages ||error.message|| 'Internal server error, ' );
+    }
+})
 module.exports = router

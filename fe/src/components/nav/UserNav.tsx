@@ -54,7 +54,7 @@ export const UserNav = ({ handleNavigation }: UserNavProps) => {
           <SideNavItem
             icon={BsFillGridFill}
             label="Dashboard"
-            link="/dashbord/managereservation"
+            link="/dashboard/managereservation"
             onClick={() => handleNavigation("/dashbord/managereservation")}
           />
         </li>

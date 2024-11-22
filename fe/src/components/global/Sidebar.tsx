@@ -10,7 +10,7 @@ export const Sidebar = ({
   handleNavigation,
 }: {
   children: React.ReactNode;
-  handleNavigation?: (url: string) => void;
+  handleNavigation: (url: string) => void;
 }) => {
   const { open, toggleSidebar } = useSidebar();
 

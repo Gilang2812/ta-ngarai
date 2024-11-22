@@ -3,18 +3,18 @@ export type Geometry = {
   coordinates: number[][][][];
 };
 
-export type Homestay = {
+export type HomestaySchema = {
   id: string;
   name: string;
   address: string;
-  contact_person: string;
-  description: string;
-  status: number;
-  geom: Geometry;
-  open: string;
-  close: string;
-  homestay_status: number;
-  video_url: string | null;
+  contact_person?: string;
+  description?: string;
+  status?: number;
+  geom?: Geometry;
+  open?: string;
+  close?: string;
+  homestay_status?: number;
+  video_url?: string | null;
 };
 
 export type HomestayUnitType = {
@@ -30,7 +30,7 @@ export type HomestayDetails = {
   description: string;
   price: number;
   capacity: number;
-  Homestay: Homestay;
+  Homestay: HomestaySchema;
   HomestayUnitType: HomestayUnitType;
 };
 

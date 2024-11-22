@@ -46,5 +46,8 @@ app.use('/packages', packageRouter)
 app.use('/services', detailServiceRouter)
 app.use('/reservations', reserveationRouter)
 app.use('/detailReservations', detailReservationRouter)
+app.use('*',(req,res)=>{
+    res.status(404).json({message: 'Not Found'})
+})
 
 module.exports = app;

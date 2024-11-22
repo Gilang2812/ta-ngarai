@@ -36,7 +36,7 @@ export const AdminNav = () => {
           <SideNavItem
             icon={FaBullhorn}
             label="manage reservation"
-            link="/dashbord/managereservation"
+            link="/dashboard/managereservation"
           />
         </li>
         <li>

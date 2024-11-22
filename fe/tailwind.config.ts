@@ -30,6 +30,7 @@ const config: Config =   {
       },
       fontSize: {
         custom: "calc(1.375rem + 1.5vw)",
+        lpCustom : "calc(1.475rem + 2.7vw)"
       },
       fontFamily: {
         'quicksand': ["quicksand", "sans-serif"],

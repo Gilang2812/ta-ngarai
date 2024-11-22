@@ -1,52 +1,49 @@
 "use client";
-import { NextPage } from "next";
+ 
+import { useFetchHomestay } from "@/features/dashboard/homestay/useFetchHomestay";
+import { HomestaySchema } from "@/type/schema/detailReservationSchema";
 import { useState, useMemo } from "react";
 import { FaTrash, FaPlus, FaCircleInfo } from "react-icons/fa6";
 
-interface Props {}
 
-const Homestay: NextPage<Props> = ({}) => {
-  const data = useMemo(
-    () => [
-      { id: "P0025", name: "1 Day Sumpu Trip", status: "homestay" },
-      { id: "P0026", name: "1 Day Sumpu Trip", status: "homestay" },
-      { id: "P0027", name: "1 Day Sumpu Trip", status: "homestay" },
-      { id: "P0028", name: "1 Day Sumpu Trip", status: "homestay" },
-      { id: "P0029", name: "1 Day Sumpu Trip", status: "homestay" },
-      // Tambahkan lebih banyak data jika diperlukan
-    ],
-    []
-  );
+const Homestay = () => {
+  const {data, isLoading}  = useFetchHomestay ()  
 
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(10);
   const [searchTerm, setSearchTerm] = useState("");
 
   const filteredData = useMemo(() => {
-    return data.filter(
-      (item) =>
-        item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        item.id.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    return data?.filter((item) => {
+      return Object.keys(item).some((key) => {
+        const value = item[key as keyof HomestaySchema];
+        return (
+          typeof value === "string" &&
+          value.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+      });
+    });
   }, [searchTerm, data]);
-
+  
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = filteredData.slice(indexOfFirstItem, indexOfLastItem);
-  const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+  const currentItems = filteredData?.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages =  filteredData && Math.ceil(filteredData!.length / itemsPerPage);
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
   };
 
   const handleNextPage = () => {
-    setCurrentPage((prev) => Math.min(prev + 1, totalPages));
+    
+    if(data) setCurrentPage((prev) => Math.min(prev + 1, totalPages!));
   };
 
   const handlePrevPage = () => {
     setCurrentPage((prev) => Math.max(prev - 1, 1));
   };
 
+  if(isLoading) return <div>Loading...</div>;
   return (
     <main className="p-5 bg-white rounded-xl">
       <header className="flex items-center justify-between mb-10">
@@ -101,7 +98,7 @@ const Homestay: NextPage<Props> = ({}) => {
             </tr>
           </thead>
           <tbody>
-            {currentItems.map((item, index) => (
+            {currentItems?.map((item, index) => (
               <tr key={item.id} className="border-t">
                 <td className="py-2 text-center">{indexOfFirstItem + index + 1}</td>
                 <td className="py-2 text-center">{item.id}</td>
@@ -131,9 +128,11 @@ const Homestay: NextPage<Props> = ({}) => {
         aria-label="Pagination"
         className="flex items-center justify-between mt-4"
       >
+        {data&&
         <div>
-          Showing {indexOfFirstItem + 1} to {Math.min(indexOfLastItem, filteredData.length)} of {filteredData.length} entries
+          Showing {indexOfFirstItem + 1} to {Math.min(indexOfLastItem,  filteredData!.length)} of {filteredData?.length} entries
         </div>
+        }
         <div className="flex items-center space-x-2">
           <button
             onClick={handlePrevPage}

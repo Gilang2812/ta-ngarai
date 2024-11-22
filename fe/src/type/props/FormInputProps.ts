@@ -7,4 +7,6 @@ export type FormInputProps ={
     name: string;
     placeholder?: string;
     readonly?:boolean
+    as?:string
+    required?:boolean;
   }

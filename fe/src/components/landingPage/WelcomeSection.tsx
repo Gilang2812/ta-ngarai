@@ -1,29 +1,31 @@
-import Image from 'next/image';
-import { FaPlay } from 'react-icons/fa';
-import Modal from '../modal/ModalVideo';
-import {useModal} from '@/utils/ModalUtils';
- 
- 
-export default function WelcomeSection( ) {
-  const {isOpen,openModal, closeModal } = useModal()
+import Image from "next/image";
+import { FaPlay } from "react-icons/fa";
+import Modal from "../modal/ModalVideo";
+import { useModal } from "@/utils/ModalUtils";
+
+export default function WelcomeSection() {
+  const { isOpen, openModal, closeModal } = useModal();
   return (
-    <aside className="relative min-h-fit min-w-[640px] font-quicksand  bg-red-400 z-20">
-       <Image
-      src='/images/bg-header.jpg'
-      alt="bg"
-      width={500}
-      height={500}
-      layout='reponsive'
-       
-      className="w-full h-full bg-cover   "
-    /> <section className="absolute inset-0 pr-52 px-20 leading-tight pt-12 text-wrap bg-black/70 text-white text-custom gap-4 font-bold flex flex-col justify-center items-start">
-        <h2 className="text-4xl">Welcome to </h2>
+    <aside className="relative min-h-fit md:min-w-[640px] min-w-fit  font-quicksand  bg-red-400 z-20">
+      <Image
+        src="/images/bg-header.jpg"
+        alt="bg"
+        width={500}
+        height={500}
+        layout="reponsive"
+        className="w-full h-full bg-cover   "
+      /> 
+      <section className="absolute inset-0 pr-52 px-20 leading-tight pt-12 text-wrap bg-black/70 text-white text-lpCustom gap-4 font-bold flex flex-col justify-center items-start">
+        <h2 className="text-custom">Welcome to </h2>
         <h1>Desa Wisata Nagari Koto Gadang</h1>
         <div className="flex text-lg mt-4  gap-8 items-center">
-          <a href="/web" className="hover:bg-success text-lg mr-12 transition-ease-in-out bg-primary  py-2  px-4 lg:py-4 lg:px-8">
+          <a
+            href="/web"
+            className="hover:bg-success text-lg mr-12 transition-ease-in-out bg-primary  py-2  px-4 lg:py-4 lg:px-8"
+          >
             Explore
           </a>
-          <div className=" ">
+          <div className="animate-FadeIn ">
             <div className="absolute bg-white rounded-full h-16 w-16 flex items-center justify-center animate-ping"></div>
             <button
               onClick={openModal}

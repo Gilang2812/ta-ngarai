@@ -1,3 +1,4 @@
+import { CustomError } from "@/type/props/ErrorProps";
 import Swal from "sweetalert2";
 
 export const showCreateAlert = (message: string) => {
@@ -37,11 +38,11 @@ export const showDeleteAlert = (message: string) => {
   });
 };
 
-export const showErrorAlert = (message: string) => {
+export const showErrorAlert = (error:CustomError) => {
   return Swal.fire({
     icon: "error",
-    title: "Oops...",
-    text: `Error when ${message}`,
+    title: error?.status||"Oops...",
+    text: `${error?.response?.data?.message||'request'} Error   `,
     showConfirmButton: true,
     confirmButtonText: "OK",
     confirmButtonColor: "#2D499D",
