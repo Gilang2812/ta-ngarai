@@ -3,7 +3,7 @@ import Image from "next/image";
 import React from "react";
 
 import { useFetchDetailPackage } from "@/features/web/explore/useFetchDetailPackage";
-import { DetailPackage, PackageSchema } from "@/type/schema/detailPackage";
+import { DetailPackage, PackageSchema } from "@/type/schema/BetailPackage";
 import { DayButton } from "./DayButton";
 
 // Main component

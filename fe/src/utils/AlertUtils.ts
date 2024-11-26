@@ -96,7 +96,7 @@ export const cornerAlert = (message: string) => {
   });
 }
 
-export const cornerError= (message:string) => {
+export const cornerError= (message:string|undefined) => {
   const Toast = Swal.mixin({
     toast: true,
     position: "top-end",

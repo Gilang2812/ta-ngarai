@@ -10,7 +10,9 @@ export const FormInput = ({
   placeholder,
   as,
   readonly,
-  required
+  required,
+  children,
+  value,
 }: FormInputProps) => {
   const [field, meta] = useField(name);
 
@@ -26,22 +28,44 @@ export const FormInput = ({
           meta.touched && meta.error
             ? "border-red-500 text-red-500"
             : "border-black"
-        } transition ease-in-out ${readonly?'bg-slate-200':' focus-within:ring-4'}  focus-within:text-primary ring-primary/30 rounded px-4 py-1`}
+        } transition ease-in-out ${
+          readonly ? "bg-slate-200" : "focus-within:ring-4"
+        } focus-within:text-primary ring-primary/30 rounded  px-4 py-1`}
       >
-        {Icon && <Icon className="" />}
-        <Field
-          {...field}
-          className=" font-normal  w-full bg-transparent text-black focus:outline-none"
-           as={`${as?as:"input"}`}
-          type={type}
-          id={name}
-          name={name}
-          placeholder={placeholder}
-          readOnly={readonly}
-          required={required}
-        />
-        {meta.touched && meta.error && (
-          <HiOutlineExclamationCircle className="text-red-500 text-lg" />
+        {as === "select" ? (
+          <Field
+            {...field}
+            className="font-normal w-full bg-transparent text-black focus:outline-none"
+            as={as}
+            type={type}
+            id={name}
+            value={value}
+            name={name}
+            placeholder={placeholder}
+            readOnly={readonly}
+            required={required}
+          >
+            <option defaultValue="">select</option>
+            {children}
+          </Field>
+        ) : (
+          <>
+            {Icon && <Icon className="" />}
+            <Field
+              {...field}
+              className="font-normal w-full bg-transparent text-black focus:outline-none"
+              as={as || "input"}
+              type={type}
+              id={name}
+              name={name}
+              placeholder={placeholder}
+              readOnly={readonly}
+              required={required}
+            />
+            {meta.touched && meta.error && (
+              <HiOutlineExclamationCircle className="text-red-500 text-lg" />
+            )}
+          </>
         )}
       </div>
 

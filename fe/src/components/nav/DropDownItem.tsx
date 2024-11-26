@@ -1,5 +1,4 @@
-"use client";
-import { useState } from "react";
+"use client"; 
 import Link from "next/link";
 import { IconType } from "react-icons";
 import { BsChevronDown } from "react-icons/bs";

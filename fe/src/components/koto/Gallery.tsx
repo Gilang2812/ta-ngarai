@@ -1,7 +1,7 @@
 "use client";
 import { useFetchGalleries } from "@/features/web/useFetchGalleries";
 import { imageUrl } from "@/lib/baseUrl";
-import { GallerySchema } from "@/type/schema/gallerySchema";
+import { GallerySchema } from "@/type/schema/GallerySchema";
 import Image from "next/image";
 import { ImageSkeleton } from "@/components/loading/ImageSkeleton";
 

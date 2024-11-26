@@ -1,6 +1,6 @@
 
 import { imageLoading, imageNotFound, imageUrl } from "@/lib/baseUrl";
-import { GalleryPackageSchema } from "@/type/schema/gallerySchema";
+import { GalleryPackageSchema } from "@/type/schema/GallerySchema";
 import Image from "next/image";
 // import { useParams } from "next/navigation";
 import { FaRegStar, FaCartPlus } from "react-icons/fa6";

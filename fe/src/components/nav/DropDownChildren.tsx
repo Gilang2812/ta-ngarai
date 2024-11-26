@@ -11,7 +11,7 @@ type NavProps = {
 };
 export const DropDownChildrenItem = ({ icon: Icon, label, link ,onClick}: NavProps) => {
   const pathName = usePathname();
-  const isActive = link == pathName;
+  const isActive = link.startsWith(pathName);
   return (
     <Link
       href={link}

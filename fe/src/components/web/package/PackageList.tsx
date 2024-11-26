@@ -10,9 +10,9 @@ import { ImagePlaceHoldeSkeleton } from "@/components/loading/ImagePlaceHolderSk
 import { useFetchGalleries } from "@/features/web/useFetchGalleries";  
 import { imageNotFound, imageUrl } from "@/lib/baseUrl";
 import { useFetchDetailPackage } from "@/features/web/explore/useFetchDetailPackage";
-import { DetailPackage } from "@/type/schema/detailPackage";
+import { DetailPackage } from "@/type/schema/BetailPackage";
 import Link from "next/link";
-import { GalleryPackageSchema } from "@/type/schema/gallerySchema";
+import { GalleryPackageSchema } from "@/type/schema/GallerySchema";
 export const PackageList = () => {
   const {data:packages} = useFetchDetailPackage()
 

@@ -1,5 +1,6 @@
-import { DetailServiceSchema } from "./serviceSchema";
+import { DetailServiceSchema } from "./ServiceSchema";
 
+ 
 export type PackageType = {
   id: string;
   type_name: string;

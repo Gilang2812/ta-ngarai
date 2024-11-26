@@ -12,7 +12,9 @@ type NavProps = {
 
 export const SideNavItem = ({ icon: Icon, label, link, onClick }: NavProps) => {
   const pathName = usePathname();
-  const isActive = link === pathName;
+  const splittedPathName = pathName.split('/')
+
+  const isActive =splittedPathName.length<=2?link==pathName:link.startsWith(splittedPathName.slice(0,3).join('/'));
 
   return (
     <Link
@@ -22,7 +24,7 @@ export const SideNavItem = ({ icon: Icon, label, link, onClick }: NavProps) => {
         isActive ? "text-white bg-primary" : "hover:bg-slate-500/10"
       }`}
     >
-      <Icon /> {label}
+      <Icon /> {label}   
     </Link>
   );
 };

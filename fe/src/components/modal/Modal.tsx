@@ -22,19 +22,7 @@ export const Modal = ({
   return (
     <Transition appear show={isOpen} as={Fragment}>
       <Dialog as="div" className="relative z-10" onClose={onClose}>
-        <TransitionChild
-          as={Fragment}
-          enter="ease-out duration-300"
-          enterFrom="opacity-0"
-          enterTo="opacity-100"
-          leave="ease-in duration-200"
-          leaveFrom="opacity-100"
-          leaveTo="opacity-0"
-        >
-          <div className="fixed inset-0 bg-black bg-opacity-25" />
-        </TransitionChild>
-
-        <div className="fixed inset-0 flex   justify-center p-8">
+        <div className={`fixed inset-0 flex transition-ease-in-out ${isOpen ? "bg-black/25" : " bg-none"}  justify-center p-8`}>
           <TransitionChild
             as={Fragment}
             enter="ease-out duration-500"
@@ -47,7 +35,7 @@ export const Modal = ({
             <DialogPanel className="w-full max-w-lg   h-fit overflow-hidden bg-white rounded  shadow-lg transform transition-all">
               <DialogTitle
                 as="h3"
-                className="text-lg px-4 py-2 flex justify-between items-center font-bold border-b  text-gray-900"
+                className="text-lg capitalize px-4 py-2 flex justify-between items-center font-bold border-b  text-gray-900"
               >
                 {title}
                 <button

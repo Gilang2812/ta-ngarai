@@ -1,8 +1,8 @@
 const { Op } = require('sequelize');
 
-async function generateCustomId(prefix, model) {
+async function generateCustomId(prefix, model,length) {
   const prefixLength = prefix.length; 
-  const remainingLength = 5 - prefixLength; 
+  const remainingLength = length - prefixLength; 
 
   const lastRecord = await model.findOne({
     where: {

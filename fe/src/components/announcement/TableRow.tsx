@@ -1,6 +1,6 @@
 // TableRow.js
 
-import { AnnouncementSchema } from "@/type/schema/announcementSchema";
+import { AnnouncementSchema } from "@/type/schema/AnnouncementSchema";
 import { DeleteButton } from "../global/DeleteButton";
 import { EditButton } from "../global/EditButton";
 import { InfoButton } from "../global/InfoButton";
@@ -13,9 +13,7 @@ import { InfoButton } from "../global/InfoButton";
   index: number;
  }
  
- type DataProps = {
-    data : AnnouncementSchema
- }
+ 
 export default function TableRow({onInfoClick,onEditClick,onDeleteClick,data,index}: RawProps) {
   return (
     <tr className="py-2 border-b text-center">

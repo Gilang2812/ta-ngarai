@@ -1,4 +1,4 @@
-import { DetailPackage } from "@/type/schema/detailPackage";
+import { DetailPackage } from "@/type/schema/BetailPackage";
 import { FaCirclePlay } from "react-icons/fa6";
 import { DayButton } from "../../explore/DayButton";
 

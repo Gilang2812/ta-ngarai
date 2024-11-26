@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useFetchGalleries } from "@/features/web/useFetchGalleries";
 import { imageUrl } from "@/lib/baseUrl"; 
 import { ImageSkeleton } from "@/components/loading/ImageSkeleton";
-import { GallerySchema } from "@/type/schema/gallerySchema";
+import { GallerySchema } from "@/type/schema/GallerySchema";
 
 export const TourismGalleries = ({id}:{id?:string})=>{
 

@@ -1,6 +1,6 @@
 import { axiosInstance } from "@/lib/axios"
 import { ActionProps } from "@/type/props/ActionProps"
-import { TourismSchema } from "@/type/schema/tourismSchema"
+import { TourismSchema } from "@/type/schema/TourismSchema"
 import { useMutation } from "@tanstack/react-query"
 
 export const useEditTourism= ({onSuccess,onError}:ActionProps)=>{

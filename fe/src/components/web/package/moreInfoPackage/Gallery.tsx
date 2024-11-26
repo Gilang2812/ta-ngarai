@@ -1,6 +1,6 @@
 import { ImageSkeleton } from "@/components/loading/ImageSkeleton";
 import { imageUrl } from "@/lib/baseUrl";
-import { GalleryPackageSchema } from "@/type/schema/gallerySchema"
+import { GalleryPackageSchema } from "@/type/schema/GallerySchema"
 import Image from "next/image"
 
 type GalleryProps = {

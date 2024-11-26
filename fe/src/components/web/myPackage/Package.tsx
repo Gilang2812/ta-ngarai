@@ -4,7 +4,7 @@ import { FaCaretDown, FaRoad } from "react-icons/fa6";
 import React from "react";
 import { Dropdown } from "flowbite-react";
 import { useFetchDetailPackage } from "@/features/web/explore/useFetchDetailPackage";
-import { DetailPackage, PackageSchema, } from "@/type/schema/detailPackage";
+import { DetailPackage, PackageSchema, } from "@/type/schema/BetailPackage";
 import { DayButton } from "@/components/web/explore/DayButton";
  
 

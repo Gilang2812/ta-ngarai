@@ -12,7 +12,8 @@ import { useCreateAnnouncement } from "@/features/dashboard/announcement/useCrea
 import { useDeleteAnnouncement } from "@/features/dashboard/announcement/useDeleteAnnouncement";
 import { useEditAnnouncement } from "@/features/dashboard/announcement/useEditAnnouncement";
 import { useFetchAnnouncements } from "@/features/web/useFetchAnnouncement";
-import { AnnouncementSchema } from "@/type/schema/announcementSchema";
+import { CustomError } from "@/type/props/ErrorProps";
+import { AnnouncementSchema } from "@/type/schema/AnnouncementSchema";
 import { confirmDeleteAlert, cornerAlert, cornerError } from "@/utils/AlertUtils";
 import { useModal } from "@/utils/ModalUtils";
 import { Spinner } from "@material-tailwind/react";
@@ -28,7 +29,7 @@ const validationSchema = yup.object({
 
 export default function Announcement() {
   const [status, setStatus] = useState(1);
-  const [errorInput, setInputError] = useState<{ [key: string]: string }>({});
+  const [errorInput, setInputError] = useState<{ [key: string]: string |undefined}>({});
   const [selectedData, setSelectedData] = useState<AnnouncementSchema | null>(
     null
   );
@@ -51,9 +52,9 @@ export default function Announcement() {
       closeInputModal();
       refetch();
     },
-    onError: (error: any) => {
+    onError: (error: CustomError) => {
       const errorMessage = error?.response?.data;
-      setInputError(errorMessage);
+       setInputError(errorMessage!);
     },
   });
 
@@ -63,9 +64,9 @@ export default function Announcement() {
       cornerAlert('edit announcement ');
       refetch();
     },
-    onError: (error: any) => {
+    onError: (error: CustomError) => {
       const errorMessage = error?.response?.data;
-      setInputError(errorMessage);
+      setInputError(errorMessage!);
     },
   });
 
@@ -74,10 +75,10 @@ export default function Announcement() {
       cornerAlert('delete announcement ');
       refetch();
     },
-    onError: (error: any) => {
+    onError: (error: CustomError) => {
       const errorMessage = error?.response?.data;
-      setInputError(errorMessage);
-      cornerError(errorMessage)
+      setInputError(errorMessage!);
+      cornerError(errorMessage?.toString())
     },
   })
   const handleCreate = async (values: AnnouncementSchema) => {

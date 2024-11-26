@@ -1,4 +1,4 @@
-import { ReservationSchema } from "@/type/schema/reservationSchema";
+import { ReservationSchema } from "@/type/schema/ReservationSchema";
 import { addDays, localeDayDateTime } from "@/utils/localeDate";
 
 export const ReservationPackage = ({ data }: { data: ReservationSchema }) => {

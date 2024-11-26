@@ -1,4 +1,4 @@
-import { PackageSchema } from "./detailPackage";
+import { PackageSchema } from "./PackageSchema";
 
 export type GallerySchema = {
   id: string|undefined;

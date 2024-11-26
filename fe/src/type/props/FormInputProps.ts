@@ -5,8 +5,10 @@ export type FormInputProps ={
     icon?: IconType;
     type: string;
     name: string;
+    value?: string;
     placeholder?: string;
     readonly?:boolean
     as?:string
     required?:boolean;
+    children?:React.ReactNode
   }

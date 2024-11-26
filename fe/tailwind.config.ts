@@ -18,6 +18,7 @@ const config: Config =   {
       },
     extend: {
       maxWidth:{
+
         custom : 'calc(100vw - 300px)',
       },
       colors: {
@@ -28,9 +29,20 @@ const config: Config =   {
         tertiary: "var(--tertiary)",
         success:'#4DC397'
       },
+    
       fontSize: {
+        base: ["min(3vw, 1rem)", { lineHeight: '1.5rem' }],
+        lg: ["min(3vw, 1.125rem)", { lineHeight: '1.75rem' }],
+        xl: ["min(3vw, 1.25rem)", { lineHeight: '1.75rem' }],
+        "2xl": ["min(3vw, 1.5rem)", { lineHeight: '2rem' }],
         custom: "calc(1.375rem + 1.5vw)",
         lpCustom : "calc(1.475rem + 2.7vw)"
+      },
+      lineHeight:{
+        base: "min(1.5vw,1.5rem)",
+        lg: "min(1.5vw,1.75rem)",
+        xl: "min(1.5vw,1.75rem)",
+        "2xl": "min(1.5vw,2rem)",
       },
       fontFamily: {
         'quicksand': ["quicksand", "sans-serif"],

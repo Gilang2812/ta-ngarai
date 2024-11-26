@@ -4,10 +4,10 @@ import { PackageInformation } from "@/components/web/package/moreInfoPackage/Pac
 import { Itinerary } from "@/components/web/package/moreInfoPackage/Itinerary"; 
 import { Review } from "@/components/web/package/moreInfoPackage/Review";
 import { useFetchGalleries } from "@/features/web/useFetchGalleries";
-import { GalleryPackageSchema } from "@/type/schema/gallerySchema";
+import { GalleryPackageSchema } from "@/type/schema/GallerySchema";
 import { useFetchDetailService } from "@/features/web/package/useFetchDetailService"; 
 import { Gallery } from "@/components/web/package/moreInfoPackage/Gallery";
-import { DetailServiceSchema } from "@/type/schema/serviceSchema";
+import { DetailServiceSchema } from "@/type/schema/ServiceSchema";
 import { FaCirclePlay } from "react-icons/fa6";
 import { useFetchDetailPackage } from "@/features/web/explore/useFetchDetailPackage";
  

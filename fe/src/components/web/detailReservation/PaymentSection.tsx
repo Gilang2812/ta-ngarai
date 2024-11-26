@@ -1,5 +1,5 @@
 import { SetStatus } from "@/components/reservation/SetStatus";
-import { ReservationSchema } from "@/type/schema/reservationSchema";
+import { ReservationSchema } from "@/type/schema/ReservationSchema";
 import { FaDownload, FaMoneyBill1 } from "react-icons/fa6";
 
 export const PaymentSection = ({data}:{data:ReservationSchema}) => {

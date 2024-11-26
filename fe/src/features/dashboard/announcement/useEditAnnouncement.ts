@@ -1,6 +1,6 @@
 import { axiosInstance } from "@/lib/axios"
 import { ActionProps } from "@/type/props/ActionProps"
-import { AnnouncementSchema } from "@/type/schema/announcementSchema"
+import { AnnouncementSchema } from "@/type/schema/AnnouncementSchema"
 import { useMutation } from "@tanstack/react-query"
 
 export const useEditAnnouncement = ({onSuccess,onError}:ActionProps)=>{

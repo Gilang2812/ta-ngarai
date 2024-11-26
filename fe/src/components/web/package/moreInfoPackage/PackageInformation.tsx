@@ -1,5 +1,5 @@
-import { GalleryPackageSchema } from "@/type/schema/gallerySchema";
-import { DetailServiceSchema } from "@/type/schema/serviceSchema";
+import { GalleryPackageSchema } from "@/type/schema/GallerySchema";
+import { DetailServiceSchema } from "@/type/schema/ServiceSchema";
 
 type InfoProps = {
   packageItem: GalleryPackageSchema;

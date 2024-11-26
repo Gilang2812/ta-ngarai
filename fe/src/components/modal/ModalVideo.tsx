@@ -1,27 +1,52 @@
-import React from "react";
-import { Transition } from "@headlessui/react";
+import React, { Fragment } from "react";
+import {
+  Dialog,
+  DialogPanel,
+  DialogTitle,
+  Transition,
+  TransitionChild,
+} from "@headlessui/react";
 import { ModalProps } from "@/type/props/ModalProps";
 import { FaXmark } from "react-icons/fa6";
 
 const Modal: React.FC<ModalProps> = ({ isOpen, closeModal }) => {
   return (
-    <Transition show={isOpen} as={React.Fragment}>
-      <div className="fixed inset-0 z-50 flex items-center justify-center font-bold border border-black font-quicksand w-5xl bg-black/50 ">
-        <div>
-          <header className="flex justify-between p-4 text-2xl bg-white">
-            <h1> Video</h1>
-            <button onClick={closeModal} className="text-gray-500 ">
-              <FaXmark />
-            </button>
-          </header>
-          <section> 
-            <video width="800" height="600" controls>
-              <source src="/videos/landing_page.mp4" type="video/mp4" />
-              Your browser does not support the video tag.
-            </video>
-          </section>
+    <Transition appear show={isOpen} as={Fragment}>
+      <Dialog as="div" className="relative z-50" onClose={closeModal}>
+        <div
+          className={`fixed inset-0 flex transition-ease-in-out ${
+            isOpen ? "bg-black/25" : " bg-none"
+          }  justify-center p-8`}
+        >
+          <TransitionChild
+            as={Fragment}
+            enter="ease-out duration-500"
+            enterFrom="opacity-0 -translate-y-1/4"
+            enterTo="opacity-100 Translate-y-0"
+            leave="ease-in duration-200"
+            leaveFrom="opacity-100 Translate-y-0"
+            leaveTo="opacity-0 -translate-y-1/4"
+          >
+            <DialogPanel className="w-full max-w-lg   h-fit overflow-hidden bg-white rounded  shadow-lg transform transition-all">
+              <DialogTitle
+                as="h3"
+                className="text-lg px-4 py-2 flex justify-between items-center font-bold border-b  text-gray-900"
+              >
+                Video
+                <button onClick={closeModal} className="text-gray-500 ">
+                  <FaXmark />
+                </button>
+              </DialogTitle>
+              <div className=" p-4  ">
+                <video width="800" height="600" controls>
+                  <source src="/videos/landing_page.mp4" type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
+              </div>
+            </DialogPanel>
+          </TransitionChild>
         </div>
-      </div>
+      </Dialog>
     </Transition>
   );
 };

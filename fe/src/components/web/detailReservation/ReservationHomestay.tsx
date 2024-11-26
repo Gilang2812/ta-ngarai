@@ -1,4 +1,4 @@
-import { ReservationSchema } from "@/type/schema/reservationSchema";
+import { ReservationSchema } from "@/type/schema/ReservationSchema";
 
 export const ReservationHomestay = ({ data }: { data: ReservationSchema }) => {
   return (

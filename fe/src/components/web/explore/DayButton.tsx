@@ -1,4 +1,4 @@
-import { DetailPackage } from "@/type/schema/detailPackage";
+import { DetailPackage } from "@/type/schema/BetailPackage";
 import { Dropdown } from "flowbite-react";
 import { FaCaretDown, FaRoad } from "react-icons/fa";
 

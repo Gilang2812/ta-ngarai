@@ -19,6 +19,10 @@ const { Homestay } = require("./HomestayModel.js");
 const { UnitHomestay } = require("./UnitHomestayModel.js");
 const { HomestayUnitType } = require("./HomestayUnitTypeModel.js");
 const { DetailReservation } = require("./DetailReservationModel.js");
+const { FacilityHomestayDetail } = require("./FacilityHomestayDetail.js");
+const { FacilityHomestay } = require("./FacilityHomestay.js");
+const { GalleryHomestay } = require("./GalleryHomestayModel.js");
+const { Cart } = require("./CartModel.js");
 
 User.hasMany(AuthGroupUsers, { foreignKey: "user_id", as: "user" });
 AuthGroup.hasMany(AuthGroupUsers, { foreignKey: "group_id", as: "group" });
@@ -148,6 +152,21 @@ DetailReservation.belongsTo(UnitHomestay, {
     constraints: true,
     as: 'number'
 });
+
+
+FacilityHomestayDetail.belongsTo(Homestay,{foreignKey: 'homestay_id', as: 'homestay'})
+FacilityHomestayDetail.belongsTo(FacilityHomestay,{foreignKey: 'facility_homestay_id', as: 'facility'})
+Homestay.hasMany(FacilityHomestayDetail,{foreignKey: 'homestay_id', as: 'details'})
+Homestay.hasMany(FacilityHomestayDetail,{foreignKey: 'facility_homestay_id', as: 'detail'})
+
+GalleryHomestay.belongsTo(Homestay, {foreignKey: 'homestay_id', as: 'homestay'});
+Homestay.hasMany(GalleryHomestay,{foreignKey: 'homestay_id', as: 'galleries'});
+
+Cart.belongsTo(User, {foreignKey: 'user_id', as: 'user'});
+Cart.belongsTo(Package, { foreignKey: 'package_id' });
+User.hasMany(Cart, {foreignKey: 'user_id', as: 'userCart'})
+Package.hasMany(Cart, {foreignKey: 'package_id', as: 'packageCart'});
+
 module.exports = {
     AuthGroup,
     AuthGroupUsers,
@@ -169,6 +188,8 @@ module.exports = {
     HomestayUnitType,
     UnitHomestay,
     DetailReservation,
-    DetailReservation
-
+    DetailReservation,
+    FacilityHomestayDetail,
+    FacilityHomestay,
+    Cart,
 };

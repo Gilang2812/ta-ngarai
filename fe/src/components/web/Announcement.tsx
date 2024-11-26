@@ -1,6 +1,6 @@
 "use client";
 import { useFetchAnnouncements } from "@/features/web/useFetchAnnouncement";
-import { AnnouncementSchema } from "@/type/schema/announcementSchema";
+import { AnnouncementSchema } from "@/type/schema/AnnouncementSchema";
 import { FaBullhorn } from "react-icons/fa";
 import { RawSkeleton } from "../loading/RawSkeleton";
 

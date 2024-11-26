@@ -60,7 +60,7 @@ const Homestay = sequelize.define(
 );
 
 Homestay.beforeCreate(async (instance) => {
-  instance.id = await generateCustomId('HO',Homestay)
+  instance.id = await generateCustomId('HO',Homestay,5)
 });
 
 module.exports = { Homestay };

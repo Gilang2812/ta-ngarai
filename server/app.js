@@ -32,6 +32,8 @@ const packageRouter = require('./src/package/package.controller')
 const detailServiceRouter = require('./src/detailServicePackage/detailService.controller')
 const reserveationRouter = require('./src/reservation/reservation.controller')
 const detailReservationRouter = require('./src/detailReservation/detailReservation.controller')
+const homestayFacilityRouter = require('./src/homestayFacility/homestayFacility.controller') 
+const cartRouter = require('./src/cart/cart.controller')
 
 app.use('/', authRouter);
 app.use('/users', userRouter);
@@ -46,6 +48,10 @@ app.use('/packages', packageRouter)
 app.use('/services', detailServiceRouter)
 app.use('/reservations', reserveationRouter)
 app.use('/detailReservations', detailReservationRouter)
+app.use('/homestay-facility', homestayFacilityRouter)
+app.use('/carts', cartRouter)
+
+
 app.use('*',(req,res)=>{
     res.status(404).json({message: 'Not Found'})
 })

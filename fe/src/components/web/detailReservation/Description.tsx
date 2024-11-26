@@ -1,4 +1,4 @@
-import { ReservationSchema } from "@/type/schema/reservationSchema";
+import { ReservationSchema } from "@/type/schema/ReservationSchema";
 import { Accordion } from "./Accordion";
 
 export const Description = ({ data }: { data: ReservationSchema }) => {

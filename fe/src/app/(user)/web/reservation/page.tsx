@@ -3,7 +3,7 @@ import { DeleteButton } from "@/components/global/DeleteButton";
 import { InfoModal } from "@/components/modal/InfoModal";
 import { SetStatus } from "@/components/reservation/SetStatus";
 import { useFetchReservations } from "@/features/web/myreservation/useFetchReservations";
-import { ReservationSchema } from "@/type/schema/reservationSchema";
+import { ReservationSchema } from "@/type/schema/ReservationSchema";
 import { localeDate, localeDayDate } from "@/utils/localeDate";
 import { useModal } from "@/utils/ModalUtils"; 
 import Link from "next/link";
