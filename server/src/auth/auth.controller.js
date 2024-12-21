@@ -1,8 +1,8 @@
-const express = require("express");
+const router = require("express").Router();
 const { userLogin, userRegister } = require("./auth.service");
 const { registerSchema, loginScheme } = require("./auth.validation.js");
 const { CustomError } = require("../../utils/CustomError.js");
-var router = express.Router();
+ 
 router.post('/login', async (req,res)=>{
     try {
 

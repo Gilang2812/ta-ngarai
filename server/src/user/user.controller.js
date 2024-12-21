@@ -1,5 +1,4 @@
-var express = require('express');
-var router = express.Router();
+const router = require('express').Router(); 
 const { getAllUsers, createNewUser, deleteDetailUser } = require("./user.service");
 const { adminSchema } = require('./user.validation');
 

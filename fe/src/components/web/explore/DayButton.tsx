@@ -1,8 +1,14 @@
-import { DetailPackage } from "@/type/schema/BetailPackage";
+ 
+ 
+import { DetailPackageSchema } from "@/type/schema/PackageSchema";
 import { Dropdown } from "flowbite-react";
 import { FaCaretDown, FaRoad } from "react-icons/fa";
 
-export const DayButton = ({ day,activity }: { day: string,activity:Array<DetailPackage>|undefined }) =>{ 
+type Props = {
+  day:string
+  activity : DetailPackageSchema[]
+}
+export const DayButton = ({day, activity} :Props ) =>{ 
   
      return(
      <div className="flex   text-sm font-normal  ">
@@ -21,7 +27,7 @@ export const DayButton = ({ day,activity }: { day: string,activity:Array<DetailP
        </button>}>
        <Dropdown.Item className="flex items-center text-primary border border-primary rounded w-fit gap-2"><FaRoad /> Titik 0 ke 1 </Dropdown.Item>
    
-         {activity?.map((ac:DetailPackage,index:number)=>(
+         {activity?.map((ac,index)=>(
             <Dropdown.Item key={index} className="flex items-center text-primary border border-primary rounded w-fit gap-2"><FaRoad /> activity {ac.activity} ke {parseInt(ac.activity)+1} </Dropdown.Item>
          ))}
    

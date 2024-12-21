@@ -1,49 +1,46 @@
-'use client';
-import { NextPage } from "next";
-import { useState, useMemo } from "react";
+"use client";
+import { useDeleteCart } from "@/features/web/cart/useDeleteCart";
+import { useFetchUserCarts } from "@/features/web/cart/useFetchUserCarts";
+import { CartSchema } from "@/type/schema/CartSchema";
+import { confirmDeleteAlert, showDeleteAlert } from "@/utils/AlertUtils";
+import { Tooltip } from "flowbite-react";
+import Link from "next/link";
+import { useState, useMemo, useEffect } from "react";
 import { FaTrash } from "react-icons/fa6";
-
-interface Props {}
-
-const Page: NextPage<Props> = ({}) => {
-  const data = useMemo(
-    () => [
-      { id: "P0025", package: "1 Day Sumpu Trip" },
-      { id: "P0026", package: "1 Day Sumpu Trip" },
-      { id: "P0027", package: "1 Day Sumpu Trip" },
-      { id: "P0028", package: "1 Day Sumpu Trip" },
-      { id: "P0029", package: "1 Day Sumpu Trip" },
-      { id: "P0030", package: "2 Days Bukittinggi Adventure" },
-      { id: "P0031", package: "3 Days Padang City Tour" },
-      // Ensure all items have unique IDs
-    ],
-    []
-  );
-
+import { MdClose } from "react-icons/md";
+const Cart = ({}) => {
+  const { data , refetch } = useFetchUserCarts();
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [itemsPerPage, setItemsPerPage] = useState(5);
   const [searchTerm, setSearchTerm] = useState("");
 
-  // Memoize filtered data
   const filteredData = useMemo(() => {
-    return data.filter(
-      (item) =>
-        item.package.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        item.id.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    return data?.filter((item) => {
+      const {package:p, ...rest} = item 
+      const flat = {...rest,...(p||{})}
+      return Object.keys(flat).some((key) => {
+        console.log(key)
+        const value = flat[key as keyof CartSchema];
+        return String(value).toLowerCase().includes(searchTerm.toLowerCase());
+      });
+    });
   }, [searchTerm, data]);
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = filteredData.slice(indexOfFirstItem, indexOfLastItem);
-  const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+  const currentItems = filteredData?.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = data && Math.ceil(filteredData!.length / itemsPerPage);
+
+  useEffect(() => {
+    if (totalPages == 1) setCurrentPage(1);
+  }, [totalPages]);
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
   };
 
   const handleNextPage = () => {
-    setCurrentPage((prev) => Math.min(prev + 1, totalPages));
+    setCurrentPage((prev) => Math.min(prev + 1, Number(totalPages)));
   };
 
   const handlePrevPage = () => {
@@ -52,9 +49,21 @@ const Page: NextPage<Props> = ({}) => {
 
   const handleItemsPerPage = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setItemsPerPage(parseInt(e.target.value, 10));
-    setCurrentPage(1); // Reset to first page when changing items per page
+     
   };
 
+  const clearSearchTerm = () => {
+    setSearchTerm("");
+  };
+  const { mutate } = useDeleteCart({
+    onSuccess: () => {
+      showDeleteAlert("Cart");
+      refetch()
+    },
+  });
+  const handleDeleteCart = (id: string) => {
+    confirmDeleteAlert("Cart", id, () => mutate(id));
+  };
   return (
     <main className="p-5 bg-white rounded-xl">
       <header className="mb-10">
@@ -68,7 +77,7 @@ const Page: NextPage<Props> = ({}) => {
             <select
               name="entries"
               id="entries"
-              className="p-1 border rounded border-slate-400"
+              className="p-1 !border rounded !border-slate-400 focus:outline-none ring-0 focus:border focus:ring-4 transition-ease-in-out focus:ring-primary/30 "
               value={itemsPerPage}
               onChange={handleItemsPerPage}
             >
@@ -80,56 +89,70 @@ const Page: NextPage<Props> = ({}) => {
             </select>
             &nbsp;entries
           </label>
-          <input
-            type="text"
-            placeholder="Search"
-            className="p-2 border border-gray-300 rounded"
-            value={searchTerm}
-            onChange={handleSearch}
-            aria-label="Search packages"
-          />
+
+          <label
+            htmlFor=""
+            className=" [&_svg]:text-transparent [&_svg]:focus-within:text-slate-500 rounded border p-2 flex items-center justify-between  "
+          >
+            <input
+              type="text"
+              placeholder="Search"
+              className=" focus:outline-none border-none !ring-0 border-0  p-0 "
+              value={searchTerm}
+              onChange={handleSearch}
+              aria-label="Search packages"
+            />
+            <MdClose
+              onClick={() => clearSearchTerm()}
+              className="cursor-pointer hover:text-slate-500 transition-ease-in-out"
+            />
+          </label>
         </div>
 
         <h2 id="data-table-section" className="sr-only">
           Package Data Table
         </h2>
 
-        <table className="min-w-full bg-white">
+        <table className="min-w-full [&_td]:px-8 table-fixed bg-white">
           <thead>
             <tr>
               <th className="py-2">#</th>
               <th className="py-2">ID</th>
-              <th className="py-2">Package</th>
-              <th className="py-2 text-center">Action</th>
+              <th className="py-2 w-full">Package</th>
+              <th className="py-2 text-center  ">Action</th>
             </tr>
           </thead>
           <tbody>
-            {currentItems.map((item, index) => (
+            {currentItems?.map((item, index) => (
               <tr key={item.id} className="border-t">
                 <td className="py-2 text-center">
                   {indexOfFirstItem + index + 1}
                 </td>
                 <td className="py-2 text-center">{item.id}</td>
-                <td className="py-2">{item.package}</td>
-                <td className="flex justify-center gap-4 py-2 font-normal">
-                  <button
-                    className="px-4 py-2 capitalize transition duration-300 ease-linear bg-white border rounded text-primary border-primary hover:bg-primary hover:text-white disabled:opacity-50"
-                    aria-label={`More info about ${item.package}`}
+                <td className="py-2">{item.package.name }</td>
+                <td className="flex justify-center items-center flex-wrap md:flex-nowrap gap-4 py-2  w font-normal">
+                  <Link
+                    href={`/web/package/${item.package_id}`}
+                    className="px-4 py-2 capitalize transition duration-300 ease-linear bg-white border rounded text-primary border-primary hover:bg-primary hover:text-white disabled:opacity-50 text-nowrap"
+                    aria-label={`More info about ${item.package_id}`}
                   >
                     More Info
-                  </button>
+                  </Link>
                   <button
-                    className="px-4 py-2 text-white capitalize transition-all duration-300 ease-linear bg-green-700 rounded hover:bg-green-800 disabled:opacity-50"
-                    aria-label={`Book ${item.package}`}
+                    className="px-4 py-2 text-white capitalize transition-all duration-300 ease-linear bg-green-700 rounded hover:bg-green-800 text-nowrap disabled:opacity-50"
+                    aria-label={`Book ${item.package_id}`}
                   >
                     Book Now
                   </button>
-                  <button
-                    className="px-3 py-2 text-red-500 transition duration-300 ease-linear bg-white border border-red-500 rounded hover:bg-red-500 hover:text-white disabled:opacity-50"
-                    aria-label={`Delete ${item.package}`}
-                  >
-                    <FaTrash />
-                  </button>
+                  <Tooltip content="delete" placement="bottom">
+                    <button
+                      onClick={()=>handleDeleteCart(String(item.id))}
+                      className="p-3  text-red-500 transition duration-300 ease-linear bg-white border border-red-500 rounded hover:bg-red-500 hover:text-white disabled:opacity-50"
+                      aria-label={`Delete ${item.package_id}`}
+                    >
+                      <FaTrash />
+                    </button>
+                  </Tooltip>
                 </td>
               </tr>
             ))}
@@ -143,8 +166,8 @@ const Page: NextPage<Props> = ({}) => {
       >
         <div>
           Showing {indexOfFirstItem + 1} to{" "}
-          {Math.min(indexOfLastItem, filteredData.length)} of{" "}
-          {filteredData.length} entries
+          {Math.min(indexOfLastItem, Number(filteredData?.length))} of{" "}
+          {filteredData?.length} entries
         </div>
         <div className="flex items-center space-x-2">
           <button
@@ -172,4 +195,4 @@ const Page: NextPage<Props> = ({}) => {
   );
 };
 
-export default Page;
+export default Cart;

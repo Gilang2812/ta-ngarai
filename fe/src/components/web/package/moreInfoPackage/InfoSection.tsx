@@ -23,6 +23,8 @@ export const InfoSection =  () => {
   const { data: services } = useFetchDetailService<DetailServiceSchema>(id); 
 
   const {data:detailPackages} = useFetchDetailPackage(id) 
+  if(isLoading) return <div>loading ...</div>
+ 
   return (<>
     <section className="col-span-7 space-y-8">
       <OverviewSection isLoading={isLoading} packageItem={packageItem} />

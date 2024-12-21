@@ -1,5 +1,5 @@
-const express = require('express');
-var router = express.Router();
+const router = require('express').Router();
+ 
 
 const { getAllHomestay, getHomestay, createHomestay, deleteHomestay, editHomestay } = require("./homestay.service");
 const { handleError } = require('../../utils/HandleError');

@@ -1,32 +1,18 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import Image from "next/image";
 import React from "react";
-
-import { useFetchDetailPackage } from "@/features/web/explore/useFetchDetailPackage";
-import { DetailPackage, PackageSchema } from "@/type/schema/BetailPackage";
 import { DayButton } from "./DayButton";
+import { useFetchPackages } from "@/features/web/package/useFetchPackage";
 
 // Main component
 export const Package = () => {
-  const { data, isLoading } = useFetchDetailPackage();
-  const seen: { [key: string]: boolean } = {};
+  const { data, isLoading } = useFetchPackages();
 
   if (isLoading) return <div>Loading...</div>;
 
-  const packageData = data
-    ?.filter((item: DetailPackage) => {
-      const packageId = item?.packageDay?.package?.id;
-      if (packageId && !seen[packageId]) {
-        seen[packageId] = true;
-        return true;
-      }
-      return false;
-    })
-    .map((item: DetailPackage) => item?.packageDay?.package);
-
   const RenderPackage = () => {
-    return packageData?.map((item: PackageSchema) => (
-      <React.Fragment key={item.id}>
+    return data?.map((item, index) => (
+      <React.Fragment key={index}>
         <tr>
           <td className="flex items-center gap-4 p-4 capitalize border-b">
             <Image
@@ -41,23 +27,8 @@ export const Package = () => {
         </tr>
         <tr className="border-b ">
           <td className="flex relative flex-wrap gap-y-2 py-2">
-            {[
-              ...new Map(
-                data
-                  ?.filter(
-                    (day: DetailPackage) => day.packageDay.package_id == item.id
-                  )
-                  .map((day: DetailPackage) => [day.packageDay.day, day])
-              ).values(),
-            ].map((day: any, index: number) => (
-              <DayButton
-                key={index}
-                day={`  ${day.packageDay.day} `}
-                activity={data?.filter(
-                  (ac: DetailPackage) =>
-                    ac.package_id == day.package_id && ac.day == day.day
-                )}
-              />
+            {item.packageDays.map((day, dayIndex) => (
+              <DayButton key={dayIndex} day={`  ${day.day} `} activity={day.detailPackages} />
             ))}
           </td>
         </tr>

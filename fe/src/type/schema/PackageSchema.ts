@@ -1,7 +1,5 @@
-import { DetailServiceSchema } from "./ServiceSchema";
-
  
-export type PackageType = {
+export type PackageTypeSchema = {
   id: string;
   type_name: string;
 }
@@ -17,9 +15,7 @@ export type PackageSchema ={
     min_capacity: number;
     custom: number;
     status: number;
-    PackageType: PackageType;
-    packageDays:PackageDay[];
-    detailServices:DetailServiceSchema[]
+ 
   }
   
   export type PackageDay ={
@@ -29,11 +25,9 @@ export type PackageSchema ={
     status: number;
     created_at: string;
     updated_at: string;
-    package: PackageSchema;
-    detailPackages: DetailPackage[]
   }
   
-  export type DetailPackage= {
+  export type DetailPackageSchema= {
     package_id: string;
     day: string;
     activity: string;
@@ -41,9 +35,7 @@ export type PackageSchema ={
     object_id: string;
     description: string;
     status: number;
-    created_at: string;
-    updated_at: string;
-    packageDay: PackageDay;
+ 
   }
   
   

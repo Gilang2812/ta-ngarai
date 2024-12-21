@@ -6,6 +6,7 @@
     --foreground: #171717;
     --primary: #435ebe;
     --secondary: #2D499D;
+    interpolate-size: allow-keywords;
 }
 
 @media (prefers-color-scheme: dark) {

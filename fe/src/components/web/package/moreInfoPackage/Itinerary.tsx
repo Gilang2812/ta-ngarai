@@ -1,5 +1,5 @@
-import { DetailPackage } from "@/type/schema/BetailPackage";
-import { FaCirclePlay } from "react-icons/fa6";
+ 
+import { DetailPackage } from "@/type/schema/PackageSchema";
 import { DayButton } from "../../explore/DayButton";
 
 type ItineraryProps = {
@@ -10,7 +10,7 @@ export const Itinerary = ({ day }: ItineraryProps) => {
     ...new Map(day?.map((item: DetailPackage) => [item.day, item])).values(),
   ];
 
-  console.log(day);
+ 
   return (
     <section className="p-5 bg-white rounded-xl space-y-4">
       <div className="flex flex-grow relative flex-wrap gap-y-2 py-2">

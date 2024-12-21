@@ -1,12 +1,14 @@
 import type { Config } from "tailwindcss"; 
 import { mtConfig } from "@material-tailwind/react";
+import flowbite from "flowbite-react/tailwind";
 
 const config: Config =   {
   content: [ 
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
-    "./node_modules/@material-tailwind/react/**/*.{js,ts,jsx,tsx}"
+    "./node_modules/@material-tailwind/react/**/*.{js,ts,jsx,tsx}",
+    flowbite.content(),
    ],
   theme: {
     screens:{
@@ -27,7 +29,8 @@ const config: Config =   {
         primary: "#435ebe",
         secondary: "#2D499D",
         tertiary: "var(--tertiary)",
-        success:'#4DC397'
+        success:'#4DC397',
+        basic: '#f2f7ff'
       },
     
       fontSize: {
@@ -70,6 +73,6 @@ const config: Config =   {
       },
     },
   },
-  plugins: [mtConfig ],
+  plugins: [  flowbite.plugin(),mtConfig ],
 } ;
 export default config;

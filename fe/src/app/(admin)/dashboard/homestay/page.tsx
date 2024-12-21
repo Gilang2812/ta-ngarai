@@ -12,7 +12,7 @@ const Homestay = () => {
   const { data, isLoading, refetch } = useFetchHomestay();
 
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(10);
+  const [itemsPerPage] = useState(5);
   const [searchTerm, setSearchTerm] = useState("");
   const [show,setShow] = useState(0);
   const filteredData = useMemo(() => {
@@ -20,8 +20,8 @@ const Homestay = () => {
       return Object.keys(item).some((key) => {
         const value = item[key as keyof HomestaySchema];
         return (
-          typeof value === "string" &&
-          value.toLowerCase().includes(searchTerm.toLowerCase())
+          
+          String(value).toLowerCase().includes(searchTerm.toLowerCase())
         );
       });
     });
@@ -62,6 +62,8 @@ const Homestay = () => {
   const HandleDelete = (homestay: HomestaySchema) => {
     confirmDeleteAlert("homestay", homestay.name, ()=>mutate(homestay.id));
   };
+
+
 
   if (isLoading) return <div>Loading...</div>;
   return (

@@ -1,5 +1,5 @@
-import { axiosInstance } from "@/lib/axios"
-import { DetailPackage } from "@/type/schema/BetailPackage"
+import { axiosInstance } from "@/lib/axios" 
+import { DetailPackage } from "@/type/schema/PackageSchema"
 import { useQuery } from "@tanstack/react-query"
 
 export const useFetchDetailPackage = (package_id?:string)=>{

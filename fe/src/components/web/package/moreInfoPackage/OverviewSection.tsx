@@ -1,6 +1,9 @@
 
+import { useCreateCart } from "@/features/web/package/useCreateCart";
 import { imageLoading, imageNotFound, imageUrl } from "@/lib/baseUrl";
 import { GalleryPackageSchema } from "@/type/schema/GallerySchema";
+import { showSuccessAlert } from "@/utils/AlertUtils";
+import { useFormik } from "formik";
 import Image from "next/image";
 // import { useParams } from "next/navigation";
 import { FaRegStar, FaCartPlus } from "react-icons/fa6";
@@ -11,7 +14,26 @@ type OverviewProps = {
 export const OverviewSection = ({isLoading,packageItem}:OverviewProps) => {
   // const params = useParams()
 
+  const {mutate} = useCreateCart({
+    onSuccess:()=>{
+      showSuccessAlert('Success add to cart')
+    }
+  })
+ 
 
+  const formik = useFormik({
+    initialValues: {
+      package_id: packageItem?.package_id,
+    },
+    onSubmit: async (values) => {
+      console.log(values)
+     await mutate(values)
+    },
+  })
+
+  const handleaddToCart = ()=>{
+    formik.handleSubmit()
+  }
   return (
     <section className="flex gap-16 p-5 bg-white rounded-xl">
       <Image
@@ -42,12 +64,13 @@ export const OverviewSection = ({isLoading,packageItem}:OverviewProps) => {
           <p>Min. {packageItem?.Package?.min_capacity} people</p>
         </section>
         <div className="flex gap-3 font-normal">
-          <a
-            href="#"
+          <button
+            type="button"
+            onClick={()=>handleaddToCart()}
             className="btn-primary"
           >
             <FaCartPlus /> Add to Cart
-          </a>
+          </button>
           <a
             className="px-3 py-2 text-white bg-green-700 rounded hover:bg-green-900 "
             href="#"

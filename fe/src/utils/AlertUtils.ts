@@ -1,6 +1,9 @@
 import { CustomError } from "@/type/props/ErrorProps";
 import Swal from "sweetalert2";
 
+export const showAlertOk = (message: string) => {
+  Swal.fire(message);
+};
 export const showCreateAlert = (message: string) => {
   return Swal.fire({
     icon: "success",
@@ -38,11 +41,11 @@ export const showDeleteAlert = (message: string) => {
   });
 };
 
-export const showErrorAlert = (error:CustomError) => {
+export const showErrorAlert = (error: CustomError) => {
   return Swal.fire({
     icon: "error",
-    title: error?.status||"Oops...",
-    text: `${error?.response?.data?.message||'request'} Error   `,
+    title: error?.status || "Oops...",
+    text: `${error?.response?.data?.message || "request"} Error   `,
     showConfirmButton: true,
     confirmButtonText: "OK",
     confirmButtonColor: "#2D499D",
@@ -59,7 +62,11 @@ export const showWarningAlert = (message: string) => {
   });
 };
 
-export const confirmDeleteAlert = async (object: string, name: string, confirm: () => void) => {
+export const confirmDeleteAlert = async (
+  object: string,
+  name: string,
+  confirm: () => void
+) => {
   return Swal.fire({
     title: `Delete ${object}?`,
     text: `You are about to remove ${name}`,
@@ -88,15 +95,15 @@ export const cornerAlert = (message: string) => {
     didOpen: (toast) => {
       toast.onmouseenter = Swal.stopTimer;
       toast.onmouseleave = Swal.resumeTimer;
-    }
+    },
   });
   Toast.fire({
     icon: "success",
-    title: message +' successfully.'
+    title: message + " successfully.",
   });
-}
+};
 
-export const cornerError= (message:string|undefined) => {
+export const cornerError = (message: string | undefined) => {
   const Toast = Swal.mixin({
     toast: true,
     position: "top-end",
@@ -106,10 +113,10 @@ export const cornerError= (message:string|undefined) => {
     didOpen: (toast) => {
       toast.onmouseenter = Swal.stopTimer;
       toast.onmouseleave = Swal.resumeTimer;
-    }
+    },
   });
   Toast.fire({
     icon: "error",
-    title: message 
+    title: message,
   });
-}
+};

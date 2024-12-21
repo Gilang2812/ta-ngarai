@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 
 export const useFetchReservationByID = (id?: string) => {
   return useQuery<ReservationSchema>({
-    queryKey: ["asdasd"],
+    queryKey: ["Reservation"],
     queryFn: async () => {
       const { data } = await axiosInstance.get(`/reservations/${id}`);
       return data;

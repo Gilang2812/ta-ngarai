@@ -25,7 +25,7 @@ export default function UserSidebarLayout({
   };
   return (
     <SidebarProvider>
-      <main className="flex min-h-screen bg-[#f2f7ff]">
+      <main className="flex min-h-screen bg-basic">
       <Sidebar handleNavigation={handleNavigation}>
           <UserNav handleNavigation={handleNavigation} />
         </Sidebar>
@@ -40,7 +40,9 @@ export default function UserSidebarLayout({
 
             
             <div className="flex items-center justify-center px-5 bg-white rounded-lg cursor-pointer">
+              <a href="/web/cart">
               <FaCartShopping />
+              </a>
             </div>
             <div className="flex items-center justify-center px-5 bg-white rounded-lg cursor-pointer">
               <Image

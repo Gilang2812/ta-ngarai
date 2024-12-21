@@ -8,7 +8,7 @@ type GalleryProps = {
   isLoading:boolean
 }
 export const Gallery = ({gallery,isLoading}:GalleryProps)=>{
-  console.log(gallery)
+ 
     return     <section className="p-5 space-y-12 bg-white rounded-xl">
     <header className="text-lg">
       <h3 className="font-semibold">Our Gallery</h3>

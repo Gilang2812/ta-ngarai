@@ -59,12 +59,6 @@ PackageDay.hasMany(DetailPackage, {
 as: 'detailPackages',
 });
 
-
-PackageDay.hasMany(DetailPackage, {
-    foreignKey: "day",
-    targetKey: "day",
-    as: "detailPackagesByDay",
-});
 PackageDay.belongsTo(Package, {
     foreignKey: "package_id",
     as: "package",
@@ -163,7 +157,7 @@ GalleryHomestay.belongsTo(Homestay, {foreignKey: 'homestay_id', as: 'homestay'})
 Homestay.hasMany(GalleryHomestay,{foreignKey: 'homestay_id', as: 'galleries'});
 
 Cart.belongsTo(User, {foreignKey: 'user_id', as: 'user'});
-Cart.belongsTo(Package, { foreignKey: 'package_id' });
+Cart.belongsTo(Package, { foreignKey: 'package_id', as: 'package'});
 User.hasMany(Cart, {foreignKey: 'user_id', as: 'userCart'})
 Package.hasMany(Cart, {foreignKey: 'package_id', as: 'packageCart'});
 
