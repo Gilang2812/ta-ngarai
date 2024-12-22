@@ -1,13 +1,10 @@
-import { GalleryPackageSchema } from "@/type/schema/GallerySchema";
-import { DetailServiceSchema } from "@/type/schema/ServiceSchema";
+import { PackageService } from "@/features/web/package/useFetchPackage";
 
-type InfoProps = {
-  packageItem: GalleryPackageSchema;
-  service?: DetailServiceSchema[];
-};
-export const PackageInformation = ({ packageItem, service }: InfoProps) => {
-  const include = service?.filter((item) => item.ServicePackage.category === 1);
-  const exclude = service?.filter((item) => item.ServicePackage.category === 2);
+ 
+ 
+export const PackageInformation = ({ data }: {data:PackageService}) => {
+  const include = data?.detailServices.filter((item) => item.service.category === 1);
+  const exclude = data?.detailServices.filter((item) => item.service.category === 2);
  
   return (
     <section className="p-8 mb-4 bg-white rounded-xl">
@@ -18,23 +15,23 @@ export const PackageInformation = ({ packageItem, service }: InfoProps) => {
         <tbody className="[&_td]:py-2 ">
           <tr>
             <td>Name</td>
-            <td>{packageItem?.Package?.name}</td>
+            <td>{data?.name}</td>
           </tr>
           <tr>
             <td>Package Type</td>
-            <td>{packageItem?.Package?.PackageType?.type_name}</td>
+            <td>{data?.type?.type_name}</td>
           </tr>
           <tr>
             <td>Contact Person</td>
-            <td>{packageItem?.Package?.contact_person}</td>
+            <td>{data?.contact_person}</td>
           </tr>
           <tr>
             <td>Minimum Capacity</td>
-            <td>{packageItem?.Package?.min_capacity} people</td>
+            <td>{data?.min_capacity} people</td>
           </tr>
           <tr>
             <td>Price</td>
-            <td>Rp {packageItem?.Package?.price.toLocaleString()} </td>
+            <td>Rp {data?.price.toLocaleString()} </td>
           </tr>
         </tbody>
       </table>
@@ -43,7 +40,7 @@ export const PackageInformation = ({ packageItem, service }: InfoProps) => {
           <h3 className="text-lg font-semibold">Service Include</h3>
           <ul className="px-8 list-disc">
             {include.map((ic) => (
-              <li key={ic.service_package_id}>{ic.ServicePackage.name}</li>
+              <li key={ic.service_package_id}>{ic.service.name}</li>
             ))}
           </ul>
         </section>
@@ -54,7 +51,7 @@ export const PackageInformation = ({ packageItem, service }: InfoProps) => {
           <h3 className="text-lg font-semibold">Service Exclude</h3>
           <ul className="px-8 list-disc">
             {exclude.map((ec) => (
-              <li key={ec.service_package_id}>{ec.ServicePackage.name}</li>
+              <li key={ec.service_package_id}>{ec.service.name}</li>
             ))}
           </ul>
         </section>

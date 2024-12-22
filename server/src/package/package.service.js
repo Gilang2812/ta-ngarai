@@ -1,8 +1,14 @@
-const { findAllPackage } = require("./package.repository")
+const { findAllPackage, findPackage } = require("./package.repository")
 
-const getAllPackage = async() => {
-    const packages = await findAllPackage()
+const getAllPackage = async(query) => {
+    
+    const packages = await findAllPackage(query)
     return packages
 }
 
-module.exports = { getAllPackage }
+const getPackage = async(id)=>{
+    const package = await findPackage(id)
+    return package
+}
+
+module.exports = { getAllPackage,getPackage }

@@ -6,10 +6,10 @@ import { useFetchPackages } from "@/features/web/package/useFetchPackage";
 
 // Main component
 export const Package = () => {
-  const { data, isLoading } = useFetchPackages();
+  const { data, isLoading } = useFetchPackages({package:true});
 
   if (isLoading) return <div>Loading...</div>;
-
+ 
   const RenderPackage = () => {
     return data?.map((item, index) => (
       <React.Fragment key={index}>

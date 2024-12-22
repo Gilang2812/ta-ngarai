@@ -1,6 +1,5 @@
  
 export type PackageTypeSchema = {
-  id: string;
   type_name: string;
 }
 export type PackageSchema ={
@@ -15,6 +14,7 @@ export type PackageSchema ={
     min_capacity: number;
     custom: number;
     status: number;
+    type:PackageTypeSchema
  
   }
   
@@ -35,7 +35,6 @@ export type PackageSchema ={
     object_id: string;
     description: string;
     status: number;
- 
   }
   
   

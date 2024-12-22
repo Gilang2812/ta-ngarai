@@ -1,6 +1,5 @@
 "use client";
-import { useFetchAnnouncements } from "@/features/web/useFetchAnnouncement";
-import { AnnouncementSchema } from "@/type/schema/AnnouncementSchema";
+import { useFetchAnnouncements } from "@/features/web/useFetchAnnouncement"; 
 import { FaBullhorn } from "react-icons/fa";
 import { RawSkeleton } from "../loading/RawSkeleton";
 
@@ -15,7 +14,7 @@ function Announcement() {
       </div>
       <ul className="text-black list-disc px-8">
         {isLoading && <RawSkeleton />}
-        {data?.map((a: AnnouncementSchema, index: string) => (
+        {data?.map((a, index) => (
           <li key={index}>{a.announcement}</li>
         )) ||!isLoading&& <li>No announcements available.</li>} 
       </ul>

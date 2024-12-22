@@ -75,16 +75,17 @@ ServicePackage.hasMany(DetailServicePackage, {
 DetailServicePackage.belongsTo(Package, { foreignKey: "package_id" });
 DetailServicePackage.belongsTo(ServicePackage, {
     foreignKey: "service_package_id",
+    as:'service'
 });
 
 PackageType.hasMany(Package, { foreignKey: "type_id" });
-Package.belongsTo(PackageType, { foreignKey: "type_id" });
+Package.belongsTo(PackageType, { foreignKey: "type_id" ,as: 'type' });
 
 FacilityType.hasMany(Facility, { foreignKey: "type_id" });
 Facility.belongsTo(FacilityType, { foreignKey: "type_id" });
 
 GalleryPackage.belongsTo(Package, { foreignKey: "package_id" });
-Package.hasMany(GalleryPackage, { foreignKey: "package_id" });
+Package.hasMany(GalleryPackage, { foreignKey: "package_id", as: "packageGalleries" });
 
 Reservation.belongsTo(User, { foreignKey: "user_id" ,as:"customer"});
 Reservation.belongsTo(User, { foreignKey: "admin_confirm", as:"confirm" });

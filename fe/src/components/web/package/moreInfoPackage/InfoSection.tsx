@@ -3,33 +3,23 @@ import { OverviewSection } from "@/components/web/package/moreInfoPackage/Overvi
 import { PackageInformation } from "@/components/web/package/moreInfoPackage/PackageInformation";
 import { Itinerary } from "@/components/web/package/moreInfoPackage/Itinerary"; 
 import { Review } from "@/components/web/package/moreInfoPackage/Review";
-import { useFetchGalleries } from "@/features/web/useFetchGalleries";
-import { GalleryPackageSchema } from "@/type/schema/GallerySchema";
-import { useFetchDetailService } from "@/features/web/package/useFetchDetailService"; 
-import { Gallery } from "@/components/web/package/moreInfoPackage/Gallery";
-import { DetailServiceSchema } from "@/type/schema/ServiceSchema";
-import { FaCirclePlay } from "react-icons/fa6";
-import { useFetchDetailPackage } from "@/features/web/explore/useFetchDetailPackage";
  
-export const InfoSection =  () => {
+import { Gallery } from "@/components/web/package/moreInfoPackage/Gallery"; 
+import { FaCirclePlay } from "react-icons/fa6"; 
+import { useGetPackage } from "@/features/web/package/useGetPackage";
  
-  const  id='P0075'
-  const { data:gallery, isLoading } =  useFetchGalleries<GalleryPackageSchema>('package',id );
-
-  const packageItem = [
-    ...new Map(gallery?.map((item) => [item.package_id, item])).values(),
-  ][0];
-
-  const { data: services } = useFetchDetailService<DetailServiceSchema>(id); 
-
-  const {data:detailPackages} = useFetchDetailPackage(id) 
-  if(isLoading) return <div>loading ...</div>
+export const InfoSection =  ({id}:{id:string}) => {
  
+
+  const { data,isLoading } = useGetPackage(id);
+  
+ console.log(data);
+   
   return (<>
     <section className="col-span-7 space-y-8">
-      <OverviewSection isLoading={isLoading} packageItem={packageItem} />
-      <PackageInformation packageItem={packageItem} service={services}/>
-      <Gallery gallery={gallery} isLoading={isLoading}/>
+     {data&& <OverviewSection  data={data} isLoading={isLoading} />}
+      {  data&& <PackageInformation data={data}  />}
+      <Gallery gallery={data?.packageGalleries} isLoading={isLoading}/>
       <Review />
       <footer className="mt-16">
       <button
@@ -52,7 +42,7 @@ export const InfoSection =  () => {
         onMapError={handleMapError}
       /> */}
 
-      <Itinerary day={detailPackages} />
+      <Itinerary data={data} />
       
     </section>
   </>
