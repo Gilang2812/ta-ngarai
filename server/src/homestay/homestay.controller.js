@@ -1,7 +1,7 @@
 const router = require('express').Router();
  
 
-const { getAllHomestay, getHomestay, createHomestay, deleteHomestay, editHomestay } = require("./homestay.service");
+const { getAllHomestay, getHomestay, createHomestay, deleteHomestay, editHomestay, getUnitHomestays } = require("./homestay.service");
 const { handleError } = require('../../utils/HandleError');
 const { homestaySchema } = require('./homestay.validation');
 
@@ -15,9 +15,20 @@ router.get('/', async (req,res)=>{
     }
 }
 )
- 
 
-
+router.get('/units',async (req,res)=>{
+  try {
+    const checkIn = req.query.checkIn??new Date()
+    console.log(checkIn)
+    const newCheckIn = new Date(checkIn).toISOString().split('T')[0]
+    console.log(newCheckIn)
+    const units  = await getUnitHomestays(newCheckIn)
+    res.status(200).json(units)
+  } catch (error) {
+    console.error(error);
+    res.status(error.statusCode||500).json(error.messages ||error.message|| 'Internal server error, ' );
+  }
+})
 router.post('/',async (req,res)=>{
     try {
         const {name,address,open,close,geom} = req.body;
@@ -82,4 +93,7 @@ router.delete('/:id',async (req,res)=>{
     res.status(error.statusCode||500).json(error.messages ||error.message|| 'Internal server error, ' );
   }
 })
+
+
+
 module.exports = router

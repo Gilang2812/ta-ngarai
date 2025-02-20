@@ -47,6 +47,9 @@ importers:
       filepond-plugin-image-preview:
         specifier: ^4.6.12
         version: 4.6.12(filepond@4.32.1)
+      flowbite:
+        specifier: ^2.5.2
+        version: 2.5.2
       flowbite-react:
         specifier: ^0.10.2
         version: 0.10.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.14)
@@ -96,8 +99,8 @@ importers:
         specifier: ^11.14.5
         version: 11.14.5
       swiper:
-        specifier: ^11.1.14
-        version: 11.1.14
+        specifier: ^11.2.1
+        version: 11.2.1
       yup:
         specifier: ^1.4.0
         version: 1.4.0
@@ -1363,6 +1366,9 @@ packages:
   flowbite@2.5.1:
     resolution: {integrity: sha512-7jP1jy9c3QP7y+KU9lc8ueMkTyUdMDvRP+lteSWgY5TigSZjf9K1kqZxmqjhbx2gBnFQxMl1GAjVThCa8cEpKA==}
 
+  flowbite@2.5.2:
+    resolution: {integrity: sha512-kwFD3n8/YW4EG8GlY3Od9IoKND97kitO+/ejISHSqpn3vw2i5K/+ZI8Jm2V+KC4fGdnfi0XZ+TzYqQb4Q1LshA==}
+
   follow-redirects@1.15.9:
     resolution: {integrity: sha512-gew4GsXizNgdoRyqmyfMHyAmXsZDk6mHkSxZFCzW9gwlbtOW44CDtYavM+y+72qD/Vq2l550kMF52DT8fOLJqQ==}
     engines: {node: '>=4.0'}
@@ -2281,8 +2287,8 @@ packages:
   sweetalert2@11.14.5:
     resolution: {integrity: sha512-8MWk5uc/r6bWhiJWkUXyEuApfXAhSCZT8FFX7pZXL7YwaPxq+9Ynhi2dUzWkOFn9jvLjKj22CXuccZ+IHcnjvQ==}
 
-  swiper@11.1.14:
-    resolution: {integrity: sha512-VbQLQXC04io6AoAjIUWuZwW4MSYozkcP9KjLdrsG/00Q/yiwvhz9RQyt0nHXV10hi9NVnDNy1/wv7Dzq1lkOCQ==}
+  swiper@11.2.1:
+    resolution: {integrity: sha512-62G69+iQRIfUqTmJkWpZDcX891Ra8O9050ckt1/JI2H+0483g+gq0m7gINecDqMtDh2zt5dK+uzBRxGhGOOvQA==}
     engines: {node: '>= 4.7.0'}
 
   tabbable@6.2.0:
@@ -3872,7 +3878,7 @@ snapshots:
   flowbite-datepicker@1.3.0:
     dependencies:
       '@rollup/plugin-node-resolve': 15.3.0
-      flowbite: 2.5.1
+      flowbite: 2.5.2
     transitivePeerDependencies:
       - rollup
 
@@ -3892,6 +3898,14 @@ snapshots:
       - rollup
 
   flowbite@2.5.1:
+    dependencies:
+      '@popperjs/core': 2.11.8
+      flowbite-datepicker: 1.3.0
+      mini-svg-data-uri: 1.4.4
+    transitivePeerDependencies:
+      - rollup
+
+  flowbite@2.5.2:
     dependencies:
       '@popperjs/core': 2.11.8
       flowbite-datepicker: 1.3.0
@@ -4826,7 +4840,7 @@ snapshots:
 
   sweetalert2@11.14.5: {}
 
-  swiper@11.1.14: {}
+  swiper@11.2.1: {}
 
   tabbable@6.2.0: {}
 

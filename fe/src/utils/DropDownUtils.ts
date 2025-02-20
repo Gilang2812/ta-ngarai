@@ -9,5 +9,6 @@ export const useDropdown = ()=>{
     return {
         open,
         toggleDropdown,
+        setOpen
     }
 }

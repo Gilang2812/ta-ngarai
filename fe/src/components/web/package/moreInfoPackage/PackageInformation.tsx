@@ -3,8 +3,8 @@ import { PackageService } from "@/features/web/package/useFetchPackage";
  
  
 export const PackageInformation = ({ data }: {data:PackageService}) => {
-  const include = data?.detailServices.filter((item) => item.service.category === 1);
-  const exclude = data?.detailServices.filter((item) => item.service.category === 2);
+  const include = data?.detailServices?.filter((item) => item.service.category === 1);
+  const exclude = data?.detailServices?.filter((item) => item.service.category === 2);
  
   return (
     <section className="p-8 mb-4 bg-white rounded-xl">
@@ -31,7 +31,7 @@ export const PackageInformation = ({ data }: {data:PackageService}) => {
           </tr>
           <tr>
             <td>Price</td>
-            <td>Rp {data?.price.toLocaleString()} </td>
+            <td>Rp {data?.price?.toLocaleString()} </td>
           </tr>
         </tbody>
       </table>
@@ -39,7 +39,7 @@ export const PackageInformation = ({ data }: {data:PackageService}) => {
         <section className="my-4">
           <h3 className="text-lg font-semibold">Service Include</h3>
           <ul className="px-8 list-disc">
-            {include.map((ic) => (
+            {include?.map((ic) => (
               <li key={ic.service_package_id}>{ic.service.name}</li>
             ))}
           </ul>
@@ -50,7 +50,7 @@ export const PackageInformation = ({ data }: {data:PackageService}) => {
         <section className="">
           <h3 className="text-lg font-semibold">Service Exclude</h3>
           <ul className="px-8 list-disc">
-            {exclude.map((ec) => (
+            {exclude?.map((ec) => (
               <li key={ec.service_package_id}>{ec.service.name}</li>
             ))}
           </ul>

@@ -64,8 +64,8 @@ const config: Config =   {
           "100%": { transform: "rotate(0deg)" },
         },
         fadeIn: {
-          "0%": { opacity: "1", transform: "translate(0 100px)" },
-          "100%": { opacity: "1" , transform: "translate(0)"}
+          "0%": { opacity: "0", height: "0" },
+          "100%": { opacity: "1" , height: "100%"}
         },
       },
       animation: {
@@ -73,6 +73,6 @@ const config: Config =   {
       },
     },
   },
-  plugins: [  flowbite.plugin(),mtConfig ],
+  plugins: [  flowbite.plugin(),mtConfig,      ],
 } ;
 export default config;

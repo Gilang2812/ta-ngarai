@@ -15,11 +15,11 @@ export const Sidebar = ({
   const { open, toggleSidebar } = useSidebar();
 
   return (
-    <div>
+    <div className="xl:w-[300px]">
       <aside
         className={`z-50 transform ${
           open ? "translate-x-0" : "-translate-x-full"
-        } absolute xl:static h-screen transition-transform duration-500 ease-out min-w-[300px] bg-white max-h-screen custom-scroll-bar ps__rail-y  overflow-x-hidden col-span-2 p-8 py-12 xl:translate-x-0`}
+        } fixed h-full left-0 bottom-0 transition-transform duration-500 ease-out min-w-[300px] bg-white  custom-scroll-bar ps__rail-y  overflow-x-hidden col-span-2 p-8 py-12 xl:translate-x-0 `}
       >
         <FaX
           onClick={toggleSidebar}
@@ -58,7 +58,7 @@ export const Sidebar = ({
                 <strong>@adminKotoGadang</strong>
               </small>
             </p>
-          </section>
+          </section>  
         </header>
         {children}
       </aside>

@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import "./globals.css";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { ReactQueryProvider } from "@/context/ReactQueryClientProvider";
-import "swiper/css";
+import { ReactQueryProvider } from "@/context/ReactQueryClientProvider"; 
 import "swiper/css/bundle";
+import 'swiper/css';
 
 export const metadata: Metadata = {
   title: "Desa Wisata Koto Gadang",

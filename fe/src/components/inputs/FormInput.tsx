@@ -13,13 +13,14 @@ export const FormInput = ({
   required,
   children,
   value,
+  ...props
 }: FormInputProps) => {
   const [field, meta] = useField(name);
 
   return (
-    <div>
+    <div className="grow">
       {label && (
-        <label className="font-bold" htmlFor={name}>
+        <label className="font-bold text-nowrap capitalize" htmlFor={name}>
           {label}
         </label>
       )}
@@ -35,8 +36,9 @@ export const FormInput = ({
         {as === "select" ? (
           <Field
             {...field}
-            className="font-normal w-full bg-transparent text-black focus:outline-none"
+            className="font-normal w-full !border-none !p-0 bg-transparent text-black focus:!outline-none"
             as={as}
+            
             type={type}
             id={name}
             value={value}
@@ -53,7 +55,7 @@ export const FormInput = ({
             {Icon && <Icon className="" />}
             <Field
               {...field}
-              className="font-normal w-full bg-transparent text-black focus:outline-none"
+              className="font-normal !appearance-none !border-none !p-0 w-full bg-transparent focus:!border-none focus:!ring-0 text-black focus:!outline-none"
               as={as || "input"}
               type={type}
               id={name}
@@ -61,6 +63,7 @@ export const FormInput = ({
               placeholder={placeholder}
               readOnly={readonly}
               required={required}
+              {...props}
             />
             {meta.touched && meta.error && (
               <HiOutlineExclamationCircle className="text-red-500 text-lg" />

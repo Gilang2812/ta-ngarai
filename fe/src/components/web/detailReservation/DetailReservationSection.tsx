@@ -41,7 +41,7 @@ export const DetailReservationSection = () => {
         </section>
       )}
       <section className="col-span-2 ">
-      { data && <PaymentSection data={data} />}
+        {data && <PaymentSection data={data} />}
       </section>
     </main>
   );

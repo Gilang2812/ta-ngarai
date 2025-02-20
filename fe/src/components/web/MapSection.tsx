@@ -4,7 +4,7 @@ import Map from "@/components/web/MapHome";
 export default function MapSection() {
   return (
     <>
-      <div className="flex h-full basis-auto">
+      <div className="flex bg-white rounded-xl p-5 h-full basis-auto">
         <Map />
       </div>
     </>

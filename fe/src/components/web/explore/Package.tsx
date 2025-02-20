@@ -27,7 +27,7 @@ export const Package = () => {
         </tr>
         <tr className="border-b ">
           <td className="flex relative flex-wrap gap-y-2 py-2">
-            {item.packageDays.map((day, dayIndex) => (
+            {item?.packageDays?.map((day, dayIndex) => (
               <DayButton key={dayIndex} day={`  ${day.day} `} activity={day.detailPackages} />
             ))}
           </td>

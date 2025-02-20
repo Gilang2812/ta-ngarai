@@ -16,9 +16,9 @@ type FetchProps = {
 type Props = PackageSchema & {
   packageDays?: (PackageDay & {
   detailPackages: DetailPackageSchema[];
-  })[];
-  packageGalleries?: GalleryPackageSchema[];
-  detailServices?: DetailServiceSchema[];
+  })[]|[];
+  packageGalleries?: GalleryPackageSchema[]|[];
+  detailServices?: DetailServiceSchema[]|[];
 };
 export type Packages = PackageSchema & {
   packageDays: (PackageDay & {

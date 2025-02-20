@@ -21,7 +21,7 @@ import {
   }) => {
     return (
       <Transition appear show={isOpen} as={Fragment}>
-        <Dialog as="div" className="relative z-10" onClose={onClose}>
+        <Dialog as="div" className="relative z-50" onClose={onClose}>
      
   
         <div className={`fixed inset-0 flex transition-ease-in-out ${isOpen ? "bg-black/25" : " bg-none"}  justify-center p-8`}>

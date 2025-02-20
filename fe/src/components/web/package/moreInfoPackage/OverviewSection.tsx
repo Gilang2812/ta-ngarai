@@ -1,50 +1,60 @@
-
 import { useCreateCart } from "@/features/web/package/useCreateCart";
 import { PackageService } from "@/features/web/package/useFetchPackage";
-import { imageLoading, imageNotFound, imageUrl } from "@/lib/baseUrl"; 
+import { imageLoading, imageNotFound, imageUrl } from "@/lib/baseUrl";
 import { showSuccessAlert } from "@/utils/AlertUtils";
+import { Carousel } from "flowbite-react";
 import { useFormik } from "formik";
-import Image from "next/image"; 
+import Image from "next/image";
+import Link from "next/link";
 import { FaRegStar, FaCartPlus } from "react-icons/fa6";
- 
+
 type Props = {
-  data: PackageService
-  isLoading?: boolean
-}
-export const OverviewSection = ({data,isLoading}:Props) => {
- 
-
-  const {mutate} = useCreateCart({
-    onSuccess:()=>{
-      showSuccessAlert('Success add to cart')
-    }
-  })
-
+  data: PackageService;
+  isLoading?: boolean;
+};
+export const OverviewSection = ({ data, isLoading }: Props) => {
+  const { mutate } = useCreateCart({
+    onSuccess: () => {
+      showSuccessAlert("Success add to cart");
+    },
+  });
 
   const formik = useFormik({
     initialValues: {
       package_id: data.id,
     },
     onSubmit: async (values) => {
-      console.log(values)
-     await mutate(values)
+      console.log(values);
+      await mutate(values);
     },
-  })
+  });
 
-  const handleaddToCart = ()=>{
-    formik.handleSubmit()
-  }
+  const handleaddToCart = () => {
+    formik.handleSubmit();
+  };
   return (
-    <section className="flex gap-16 p-5 bg-white rounded-xl">
-      <Image
-        src={isLoading ? imageLoading :data?.packageGalleries[0].url?imageUrl+'/package/'+data?.packageGalleries[0].url:imageNotFound}
-  
-        alt="Koto Gadang"
-        width={300}
-        height={300}
-        priority
-        className="h-auto w-72 rounded-xl "
-      />
+    <section className="grid grid-cols-2 gap-10 p-5  bg-white min-w-fit min-h-fit rounded-xl">
+      <div className=" max-w-[300px]  ">
+        <Carousel  >
+          {data?.packageGalleries?.map((gc, index) => (
+            <Image
+              key={index}
+              src={
+                isLoading
+                  ? imageLoading
+                  : gc?.url
+                  ? imageUrl + "/package/" + gc?.url
+                  : imageNotFound
+              }
+              alt="Koto Gadang"
+              width={300}
+              height={300}
+              priority
+              className="  h-full w-full rounded-xl "
+            />
+          ))}
+        </Carousel>
+      </div>
       <article className="space-y-4">
         <h1 className="text-2xl font-bold">{data.name}</h1>
         <div className="flex gap-2 text-2xl text-orange-500">
@@ -57,28 +67,29 @@ export const OverviewSection = ({data,isLoading}:Props) => {
         <section>
           <p>Start from</p>
           <h2 className="text-lg font-semibold">
-            Rp {data?.price.toLocaleString()}
+            Rp {data?.price?.toLocaleString()}
           </h2>
         </section>
         <section>
-          <p>{data.type.type_name} package</p>
-          <p>Min. {data.min_capacity} people</p>
+          <p>{data?.type?.type_name} package</p>
+          <p>Min. {data?.min_capacity} people</p>
         </section>
         <div className="flex gap-3 font-normal">
           <button
             type="button"
-            onClick={()=>handleaddToCart()}
+            onClick={() => handleaddToCart()}
             className="btn-primary"
           >
             <FaCartPlus /> Add to Cart
           </button>
-          <a
+          <Link  
             className="px-3 py-2 text-white bg-green-700 rounded hover:bg-green-900 "
-            href="#"
+            href={`/web/reservation/custombooking/${data?.id}`}
           >
             Book Now
-          </a>
+          </Link>
         </div>
+        
       </article>
     </section>
   );

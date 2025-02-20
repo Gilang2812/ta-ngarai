@@ -12,13 +12,13 @@ export function Header({ onAboutClick, onAwardClick }: HeaderProps) {
   return (
     <header className="shadow  z-20 sticky w-full font-quicksand bg-white flex justify-between px-12 items-center py-1">
       <Link
-        className="flex text-primary justify-center gap-4 items-center font-semibold text-custom"
+        className="flex text-primary justify-center   gap-4 items-center font-semibold text-custom"
         href="/"
       >
-         <div className="size-16">
+         <div className="size-16   flex items-center justify-center">
           <Logo />
         </div>
-        <span className="text-custom">Tourism Village</span>
+        <p className="text-custom">Tourism Village</p>
       </Link>
       <nav className="space-x-9 font-opensans">
         <Link className="text-primary" href="/">

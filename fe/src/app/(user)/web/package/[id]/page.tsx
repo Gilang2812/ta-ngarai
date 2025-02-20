@@ -1,19 +1,18 @@
- 
-import React from 'react';
+import React from "react";
 import { InfoSection } from "@/components/web/package/moreInfoPackage/InfoSection";
- 
-export default async function MoreInfo ({
+import { ContentWrapper } from "@/components/global/ContentWrapper";
+
+export default async function MoreInfo({
   params,
 }: {
-  params: Promise<{ id: string }>
-})  {
- const id = (await params).id
- console.log(id)
+  params: Promise<{ id: string }>;
+}) {
+  const id = (await params).id;
+  console.log(id);
 
   return (
-    <main className="grid grid-cols-12 gap-6">
+    <ContentWrapper>
       <InfoSection id={id} />
-   </main>
+    </ContentWrapper>
   );
-};
- 
+}
