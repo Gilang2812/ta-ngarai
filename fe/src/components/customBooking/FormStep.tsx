@@ -1,20 +1,22 @@
-import React, { FC, useState } from "react";
+import React, { FC } from "react";
 import { FormInput } from "../inputs/FormInput";
 import { Accordion } from "../web/detailReservation/Accordion";
 import { NextStepButton } from "./NextStepButton";
 import { Guide } from "./Guide";
 import { StepFooter } from "./StepFooter";
 import { PrevStepButton } from "./PrevStepButton";
-import { FormSubmit } from "../inputs/FormSubmit";
-import { useFormikContext } from "formik";
-import { FormSchema } from "@/app/(user)/web/reservation/custombooking/[id]/page";
-import { cornerError } from "@/utils/AlertUtils";
-
+import { FormSubmit } from "../inputs/FormSubmit"; 
 type Props = {
   nextStep: () => void;
   prevStep: () => void;
   currentStep: number;
   steps: number[];
+  handleCheck: (e:React.ChangeEvent<HTMLInputElement>)=>void;
+  handleTotalPeopleInput: (e:React.FormEvent<HTMLInputElement>)=>void;
+  handleDateInput: (e:React.ChangeEvent<HTMLInputElement>)=>void;
+  total:number|null;
+  minReservation: string | number;
+  isValid:string|false
 };
 
 export const FormStep: FC<Props> = ({
@@ -22,77 +24,17 @@ export const FormStep: FC<Props> = ({
   prevStep,
   currentStep,
   steps,
+  handleCheck,
+  handleTotalPeopleInput,
+  handleDateInput,
+  total,
+  minReservation,
+  isValid
 }) => {
-  const [total, setTotal] = useState<number | null>(null);
   const isFirstStep = currentStep === 1;
   const isLastStep = currentStep === steps.length - 1;
   const isVisibile = isFirstStep || isLastStep;
-  const { values, setFieldValue } = useFormikContext<FormSchema>();
-  const [reqValid, setReqValid] = useState({
-    guide: false,
-    agree: false,
-    total: 0,
-    date: "",
-  });
-
-  const isValid =
-    reqValid.agree &&
-    reqValid.agree &&
-    Number(reqValid.total) > 0 &&
-    reqValid.date;
-
-  const minReservation = new Date(new Date().setDate(new Date().getDate() + 3))
-    .toISOString()
-    .split("T")[0];
-
-  const handleCheck = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setReqValid((prev) => ({
-      ...prev,
-      [e.target.name]: e.target.checked,
-    }));
-  };
-
-  const handleTotalPeopleInput = (e: React.FormEvent<HTMLInputElement>) => {
-    const value: number = parseInt(e.currentTarget.value) || 0;
-    const packageOrder =
-      value % values.min_capacity === 0
-        ? value / values.min_capacity
-        : value / values.min_capacity < 1
-        ? 1
-        : Math.floor(value / values.min_capacity) + 0.5;
-    const totalPrice: number = values.price * packageOrder;
-    setReqValid((prev) => ({
-      ...prev,
-      total: value,
-    }));
-    setFieldValue("package_order", packageOrder);
-    setFieldValue("total_people_homestay", value);
-    setFieldValue("total_package", totalPrice);
-    setTotal(totalPrice);
-  };
-
-  const handleDateInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value: string = e.target.value;
-    const checkOut = new Date(value).setDate(
-      new Date(value).getDate() + values.day - 1
-    );
-    const checkOutDate = new Date(checkOut).toISOString().split("T")[0];
-
-    setFieldValue("check_in", e.currentTarget.value);
-
-    console.log(value < minReservation);
-    if (value < minReservation) {
-      cornerError(`cannot  use date less than ${minReservation}`);
-      setFieldValue("check_in", minReservation);
-    } else {
-      setFieldValue("check_out", checkOutDate);
-      setFieldValue("check_out_time", "12.00");
-      setReqValid((prev) => ({
-        ...prev,
-        date: value,
-      }));
-    }
-  };
+ 
 
   const LastStepForm = () => {
     return (

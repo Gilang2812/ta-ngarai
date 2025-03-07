@@ -1,6 +1,6 @@
 import React from "react";
 import { InfoSection } from "@/components/web/package/moreInfoPackage/InfoSection";
-import { ContentWrapper } from "@/components/global/ContentWrapper";
+import { ContentWrapper } from "@/components/common/ContentWrapper";
 
 export default async function MoreInfo({
   params,

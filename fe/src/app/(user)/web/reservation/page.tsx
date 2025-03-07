@@ -1,5 +1,5 @@
 "use client";
-import { DeleteButton } from "@/components/global/DeleteButton"; 
+import { DeleteButton } from "@/components/common/DeleteButton"; 
 import { InfoModal } from "@/components/modal/InfoModal";
 import { SetStatus } from "@/components/reservation/SetStatus";
 import { useFetchReservations } from "@/features/web/myreservation/useFetchReservations";

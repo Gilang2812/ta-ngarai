@@ -93,7 +93,7 @@ export default function Announcement() {
     await confirmDeleteAlert("announcement", id,() => deleteMutate(id));
  
   };
-  const handleStatusChange = (value: number, setFieldValue: any) => {
+  const handleStatusChange = (value: number, setFieldValue: (field: string, value:unknown)=>void) => {
     setStatus(value);
     setFieldValue("status", value);
   };

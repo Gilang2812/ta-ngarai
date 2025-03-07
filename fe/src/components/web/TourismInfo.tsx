@@ -2,7 +2,7 @@
 
 import { TourismGalleries } from "@/components/web/TourismGalleries";
 import { TourismData } from "@/components/web/TourismData";
-import { ContentHeader } from "../global/ContentHeader";
+import { ContentHeader } from "../common/ContentHeader";
 
 export default function TourismInfo() {
   return (

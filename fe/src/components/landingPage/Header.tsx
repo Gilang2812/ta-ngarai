@@ -1,7 +1,7 @@
 import Link from "next/link";
 import React from "react";
 import { Logo } from "@/components/Logo";
-import { NavItem } from './../global/NavItem';
+import { NavItem } from './../common/NavItem';
 
 interface HeaderProps {
   onAboutClick: () => void;

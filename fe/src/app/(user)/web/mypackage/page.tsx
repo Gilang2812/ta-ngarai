@@ -1,7 +1,7 @@
 import { TbCurrentLocation } from "react-icons/tb";
 import { MdOutlinePinDrop, MdOutlineVisibility } from "react-icons/md";
 import { PackageSection } from "@/components/web/myPackage/PackageSection";
-import { ContentDiffSplitted } from "@/components/global/ContentDiffSplitted";
+import { ContentDiffSplitted } from "@/components/common/ContentDiffSplitted";
 
 export default function MyPackage() {
   const Maps = () => {

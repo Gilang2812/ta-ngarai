@@ -1,3 +1,4 @@
+import { UnitFacilityDetailSchema } from "./FacilitySchema";
 import { Geometry } from "./GeometrySchema";
 
 export type HomestaySchema = {
@@ -22,8 +23,9 @@ export type HomestaySchema = {
     description: string;
     price: number;
     capacity: number;
-    Homestay: HomestaySchema;
-    HomestayUnitType: HomestayUnitType;
+    homestay: HomestaySchema;
+    unitType: HomestayUnitType;
+    facilittyDetail: UnitFacilityDetailSchema[]
   };
 
   export type HomestayUnitType = {

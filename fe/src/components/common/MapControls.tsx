@@ -1,6 +1,6 @@
 import { MdOutlinePinDrop, MdOutlineVisibility } from "react-icons/md";
 import { TbCurrentLocation } from "react-icons/tb";
-import { MapControlItem } from "@/components/global/MapControlItem";
+import { MapControlItem } from "@/components/common/MapControlItem";
 import { FaLocationArrow } from "react-icons/fa6";
 
 type MapControlProps = {

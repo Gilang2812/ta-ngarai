@@ -1,5 +1,5 @@
-import { ContentHeader } from "@/components/global/ContentHeader";
-import { SinggleContentWrapper } from "@/components/global/SinggleContentWrapper";
+import { ContentHeader } from "@/components/common/ContentHeader";
+import { SinggleContentWrapper } from "@/components/common/SinggleContentWrapper";
 import { PackageList } from "@/components/web/package/PackageList";
 import { FaPlus } from "react-icons/fa6";
 

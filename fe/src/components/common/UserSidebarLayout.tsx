@@ -1,7 +1,7 @@
 "use client";
 
-import { Sidebar } from "@/components/global/Sidebar";
-import { OpenSidebar } from "@/components/global/SidebarButton";
+import { Sidebar } from "@/components/common/Sidebar";
+import { OpenSidebar } from "@/components/common/SidebarButton";
 import { SidebarProvider } from "@/context/SidebarContext";
 import Image from "next/image";
 import { UserNav } from "@/components/nav/UserNav";

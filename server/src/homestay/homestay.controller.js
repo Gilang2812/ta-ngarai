@@ -18,8 +18,11 @@ router.get('/', async (req,res)=>{
 
 router.get('/units',async (req,res)=>{
   try {
-    const checkIn = req.query.checkIn??new Date()
-    console.log(checkIn)
+    let checkIn = req.query.checkIn
+    if(!checkIn||checkIn===''){
+      return res.status(404).json({message: 'query checkIn is required'})
+    }
+    
     const newCheckIn = new Date(checkIn).toISOString().split('T')[0]
     console.log(newCheckIn)
     const units  = await getUnitHomestays(newCheckIn)

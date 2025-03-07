@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { Loader } from "@googlemaps/js-api-loader";
 import { useGeoJSON } from "@/features/web/useGeoJSON";
 import Swal from "sweetalert2";
-import MapControls from "../global/MapControls";
+import MapControls from "../common/MapControls";
 
 const Map = () => {
   const mapRef = useRef<HTMLDivElement | null>(null);

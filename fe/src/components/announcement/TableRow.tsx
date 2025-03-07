@@ -1,9 +1,9 @@
 // TableRow.js
 
 import { AnnouncementSchema } from "@/type/schema/AnnouncementSchema";
-import { DeleteButton } from "../global/DeleteButton";
-import { EditButton } from "../global/EditButton";
-import { InfoButton } from "../global/InfoButton";
+import { DeleteButton } from "../common/DeleteButton";
+import { EditButton } from "../common/EditButton";
+import { InfoButton } from "../common/InfoButton";
 
  type RawProps = {
   onInfoClick?: () => void,

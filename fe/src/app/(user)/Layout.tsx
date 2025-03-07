@@ -1,4 +1,4 @@
-import ClientSidebarLayout from "@/components/global/UserSidebarLayout";
+import ClientSidebarLayout from "@/components/common/UserSidebarLayout";
 
  
 export default function UserLayout({ children }: { children: React.ReactNode }) {

@@ -1,4 +1,4 @@
-import { ContentDiffSplitted } from "@/components/global/ContentDiffSplitted";
+import { ContentDiffSplitted } from "@/components/common/ContentDiffSplitted";
 import Announcement from "@/components/web/Announcement";
 import MapSection from "@/components/web/MapSection";
 import TourismInfo from "@/components/web/TourismInfo";

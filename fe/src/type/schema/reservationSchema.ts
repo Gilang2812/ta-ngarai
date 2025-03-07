@@ -42,7 +42,7 @@ export type ReservationDetails = {
   type_of_payment: number;
 };
 
-export type DetailReservation = {
+export type DetailReservationSchema = {
   date: string;
   homestay_id: string;
   unit_type: string;

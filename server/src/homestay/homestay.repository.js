@@ -1,4 +1,6 @@
-const { Sequelize, and, where, col, literal, Op } = require("sequelize");
+const { Op, Sequelize } = require("sequelize");
+const { col, fn, where, and } = Sequelize;
+
 const {
   FacilityHomestay,
   FacilityHomestayDetail,
@@ -11,6 +13,8 @@ const {
   GalleryUnit,
   DetailReservation,
   Reservation,
+  Package,
+  PackageDay,
 } = require("../../models/relation");
 
 const detailFacilityHomestayInclude = {
@@ -46,21 +50,6 @@ const findHomestayById = async (id) => {
 
 const findUnitHomestays = async (newCheckIn) => {
   const units = await UnitHomestay.findAll({
-    where: Sequelize.where(
-      Sequelize.literal(`
-        '${newCheckIn}' NOT BETWEEN 
-        \`detailReservations->reservation\`.\`check_in\` 
-        AND DATE_ADD(
-          \`detailReservations->reservation\`.\`check_in\`, 
-          INTERVAL (
-            SELECT COUNT(*) 
-            FROM \`package_day\` 
-            WHERE \`package_day\`.\`package_id\` = \`detailReservations->reservation\`.\`package_id\`
-          ) DAY
-        )
-      `),
-      true
-    ),
     include: [
       {
         model: Homestay,
@@ -72,15 +61,9 @@ const findUnitHomestays = async (newCheckIn) => {
         model: FacilityUnitDetail,
         as: "facilityDetails",
         attributes: ["description"],
-        where: and(
-          where(
-            col(`UnitHomestay.unit_type`),
-            col("facilityDetails.unit_type")
-          ),
-          where(
-            col(`UnitHomestay.unit_number`),
-            col("facilityDetails.unit_number")
-          )
+        where: Sequelize.and(
+          Sequelize.where(Sequelize.col(`UnitHomestay.unit_type`), Sequelize.col("facilityDetails.unit_type")),
+          Sequelize.where(Sequelize.col(`UnitHomestay.unit_number`), Sequelize.col("facilityDetails.unit_number"))
         ),
         include: [
           {
@@ -98,38 +81,46 @@ const findUnitHomestays = async (newCheckIn) => {
       {
         model: GalleryUnit,
         as: "unitGalleries",
-        where: and(
-          where(col(`UnitHomestay.unit_type`), col("unitGalleries.unit_type")),
-          where(
-            col(`UnitHomestay.unit_number`),
-            col("unitGalleries.unit_number")
-          )
+        where: Sequelize.and(
+          Sequelize.where(Sequelize.col(`UnitHomestay.unit_type`), Sequelize.col("unitGalleries.unit_type")),
+          Sequelize.where(Sequelize.col(`UnitHomestay.unit_number`), Sequelize.col("unitGalleries.unit_number"))
         ),
       },
       {
         model: DetailReservation,
         as: "detailReservations",
-        include: {
-          model: Reservation,
-          as: "reservation",
-          // where: Sequelize.where(
-          //   Sequelize.literal(`
-          //     \`detailReservations->reservation\`.\`check_in\` <
-          //     DATE_SUB(
-          //       '${newCheckIn}',
-          //       INTERVAL (
-          //         SELECT COUNT(*)
-          //         FROM \`package_day\`
-          //         WHERE \`package_day\`.\`package_id\` = \`detailReservations->reservation\`.\`package_id\`
-          //       ) DAY
-          //     )
-          //   `),
-          //   true
-          // ),
-        },
+        include: [
+          {
+            model: Reservation,
+            as: "reservation",
+            attributes: ["check_in", "package_id"],
+            include: [
+              {
+                model: Package,
+                as: "package",
+                attributes: [],
+              },
+            ],
+          },
+        ],
       },
     ],
+    where: Sequelize.literal(`
+      NOT EXISTS (
+        SELECT 1
+        FROM detail_reservation AS dr
+        INNER JOIN reservation AS r ON dr.reservation_id = r.id
+        INNER JOIN package AS p ON r.package_id = p.id
+        INNER JOIN package_day AS pd ON p.id = pd.package_id
+        WHERE dr.homestay_id = UnitHomestay.homestay_id
+          AND dr.unit_type = UnitHomestay.unit_type
+          AND dr.unit_number = UnitHomestay.unit_number
+          AND '${newCheckIn}' BETWEEN r.check_in 
+          AND DATE_ADD(r.check_in, INTERVAL (SELECT COUNT(*) FROM package_day WHERE package_id = p.id) DAY)
+      )
+    `),
   });
+
   return units;
 };
 

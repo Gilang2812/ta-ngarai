@@ -1,6 +1,6 @@
 'use client'
  
-import { ButtonPrimary } from "@/components/global/ButtonPrimary"; 
+import { ButtonPrimary } from "@/components/common/ButtonPrimary"; 
 import { useState } from "react";
 import { FaCircleXmark, FaCompass } from "react-icons/fa6";
 import { Around } from "@/components/web/explore/Around";

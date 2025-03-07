@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Logo } from "../Logo";
-import { NavItem } from "../global/NavItem";
+import { NavItem } from "../common/NavItem";
 
 export const AuthHeader = () => {
   return (

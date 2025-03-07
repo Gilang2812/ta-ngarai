@@ -6,7 +6,7 @@ import {
 import Tooltip from "@mui/material/Tooltip";
 
 import { PackageSection } from "@/components/web/explore/PackageSection";
-import { ContentDiffSplitted } from "@/components/global/ContentDiffSplitted";
+import { ContentDiffSplitted } from "@/components/common/ContentDiffSplitted";
 export default function WithOurPackage() {
   const Maps = () => {
     return (
