@@ -1,4 +1,5 @@
 import Image from 'next/image' 
+import Link from 'next/link';
 import React, { FC } from 'react'
 
 type Props = {
@@ -13,7 +14,7 @@ export const FinishStep:FC<Props> = ({currentSteps, steps}) => {
       <h2 className='text-4xl text-secondary'>Success!</h2>
       <Image alt='success' width={100} height={100} src={`https://img.icons8.com/color/96/000000/ok--v2.png`}/>
       <p>Your Reservation Has Been Successfully Booked.</p>
-      <a className='btn btn-fill-primary' href="/cart">My Reservation</a>
+      <Link className='btn btn-fill-primary' href="/web/cart">My Reservation</Link>
     </div>
   )
 }

@@ -26,6 +26,7 @@ const findReservations = async (condition) => {
         as: "package",
         include: {
           model: PackageType,
+          as:'type'
         },
       },
       {

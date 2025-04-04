@@ -18,9 +18,9 @@ export type FormReservationSchema = {
   min_capacity: number;
   day: number;
   price: number;
-  total_people: number|string;
+  total_people: number|null;
   package_order: string;
-  total_package: number|string;
+  total_package: number|null;
   check_in: string;
   check_in_time: string;
   check_out: string;
@@ -56,7 +56,9 @@ const CustomBooking = () => {
     }
   });
   const handleSubmit = (value:FormReservationSchema) => {
+    console.log(value)
     mutate(value)
+    nextStep()
   };
   if (isLoading) return <Loading />;
   return (
@@ -70,9 +72,9 @@ const CustomBooking = () => {
           min_capacity: packageItem?.min_capacity||0,
           day: packageItem?.packageDays?.length ||1,
           price: packageItem?.price||0,
-          total_people: "",
+          total_people: 0,
           package_order: "",
-          total_package: "",
+          total_package: 0,
           check_in: "",
           check_in_time: "10:00",
           check_out: "",

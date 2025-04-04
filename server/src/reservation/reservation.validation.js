@@ -19,8 +19,6 @@ const reservationSchema = z.object({
   total_package: z.number().positive(),
   check_in: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
   check_in_time: z.string().regex(/^\d{2}:\d{2}$/),
-  check_out: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
-  check_out_time: z.string().regex(/^\d{2}:\d{2}$/),
    selectedUnits: z.array(selectedUnitSchema).nullable().default([]),
   note: z.string().optional(),
 });

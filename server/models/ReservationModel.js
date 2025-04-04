@@ -98,7 +98,8 @@ const Reservation = sequelize.define('Reservation', {
   },
   status: {
     type: DataTypes.TINYINT,
-    allowNull: false
+    allowNull: false,
+    defaultValue:1
   },
   confirmation_date: {
     type: DataTypes.DATE,
