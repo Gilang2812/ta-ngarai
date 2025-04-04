@@ -1,11 +1,12 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/db');
+const { generateCustomId } = require('../utils/generateId');
 
 const Reservation = sequelize.define('Reservation', {
   id: {
     type: DataTypes.STRING(8),
     primaryKey: true,
-    allowNull: false
+    allowNull: true
   },
   user_id: {
     type: DataTypes.INTEGER,
@@ -158,4 +159,8 @@ const Reservation = sequelize.define('Reservation', {
   timestamps: false
 });
 
+
+Reservation.beforeCreate(async(instance)=>{
+  instance.id =await generateCustomId('R',Reservation,5)
+})
 module.exports = {Reservation};

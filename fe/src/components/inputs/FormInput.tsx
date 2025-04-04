@@ -1,20 +1,16 @@
-import { FormInputProps } from "@/type/props/FormInputProps";
 import { ErrorMessage, Field, useField } from "formik";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
 
 export const FormInput = ({
   label,
   icon: Icon,
-  type,
+  id,
   name,
-  placeholder,
   as,
   readonly,
-  required,
   children,
-  value,
   ...props
-}: FormInputProps) => {
+}: React.ComponentProps<typeof Field>) => {
   const [field, meta] = useField(name);
 
   return (
@@ -37,15 +33,8 @@ export const FormInput = ({
           <Field
             {...field}
             className="font-normal w-full !border-none !p-0 bg-transparent text-black focus:!outline-none"
-            as={as}
-            
-            type={type}
-            id={name}
-            value={value}
-            name={name}
-            placeholder={placeholder}
-            readOnly={readonly}
-            required={required}
+            id={id || name}
+            {...props}
           >
             <option defaultValue="">select</option>
             {children}
@@ -56,13 +45,8 @@ export const FormInput = ({
             <Field
               {...field}
               className="font-normal !appearance-none !border-none !p-0 w-full bg-transparent focus:!border-none focus:!ring-0 text-black focus:!outline-none"
+              id={id || name}
               as={as || "input"}
-              type={type}
-              id={name}
-              name={name}
-              placeholder={placeholder}
-              readOnly={readonly}
-              required={required}
               {...props}
             />
             {meta.touched && meta.error && (

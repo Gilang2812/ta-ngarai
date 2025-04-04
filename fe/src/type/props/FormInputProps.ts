@@ -5,7 +5,7 @@ export type FormInputProps ={
     icon?: IconType;
     type: string;
     name: string;
-    value?: string;
+    value?: string|number;
     placeholder?: string;
     readonly?:boolean
     as?:string

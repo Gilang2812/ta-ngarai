@@ -1,30 +1,35 @@
 import { Form, useFormikContext } from "formik";
-import React, { FC,  useState } from "react";
+import React, { FC, useState } from "react";
 import { FormStep } from "./FormStep";
 import { SecondStep } from "./SecondStep";
 import { cornerError } from "@/utils/AlertUtils";
-import { FormSchema } from "@/app/(user)/web/reservation/custombooking/[id]/page";
+import { FormReservationSchema } from "@/app/(user)/web/reservation/custombooking/[id]/page";
 import { useFetchUnitHomestayReservation } from "@/features/reservation/useFetchUnitHomestayReservation";
-import { useDebounce } from "@/features/common/useDebounce";
+import Loading from "@/app/loading";
+import { PackageService } from "@/features/web/package/useFetchPackage";
 
 type Props = {
   currentStep: number;
   steps: number[];
   nextStep: () => void;
   prevStep: () => void;
+  packageItem: PackageService;
+  isWithHomestay?: boolean;
 };
 export const ReservationForms: FC<Props> = ({
   currentStep,
   nextStep,
   prevStep,
   steps,
+  packageItem,
+  isWithHomestay,
 }) => {
   const [total, setTotal] = useState<number | null>(null);
-  const { values, setFieldValue } = useFormikContext<FormSchema>();
+  const { values, setFieldValue } = useFormikContext<FormReservationSchema>();
   const [reqValid, setReqValid] = useState({
     guide: false,
-    agree: false,
-    total: 0,
+    agree: !isWithHomestay,
+    total: values.total_people,
     date: "",
   });
 
@@ -61,6 +66,8 @@ export const ReservationForms: FC<Props> = ({
     setFieldValue("package_order", packageOrder);
     setFieldValue("total_people_homestay", value);
     setFieldValue("total_package", totalPrice);
+    setFieldValue("total_price_reservation", totalPrice);
+    setFieldValue("total_deposit", totalPrice / 5);
     setTotal(totalPrice);
   };
 
@@ -73,7 +80,6 @@ export const ReservationForms: FC<Props> = ({
 
     setFieldValue("check_in", e.currentTarget.value);
 
-    console.log(value < minReservation);
     if (value < minReservation) {
       cornerError(`cannot  use date less than ${minReservation}`);
       setFieldValue("check_in", minReservation);
@@ -87,12 +93,9 @@ export const ReservationForms: FC<Props> = ({
     }
   };
 
-  const checkInDate = useDebounce(reqValid.date, 300);
-  const { data: unitHomestay } = useFetchUnitHomestayReservation(checkInDate);
-  if (reqValid.total && reqValid.date) {
-    console.log(unitHomestay);
-  }
-
+  const checkInDate = reqValid.date;
+  const { data: unitHomestay, isLoading } = useFetchUnitHomestayReservation(checkInDate);
+ 
   return (
     <Form>
       <FormStep
@@ -106,14 +109,21 @@ export const ReservationForms: FC<Props> = ({
         isValid={isValid}
         minReservation={minReservation}
         total={total}
-        //#region
+        packageItem={packageItem}
+        isWithHomestay={isWithHomestay}
       />
-      <SecondStep
-        currentStep={currentStep}
-        nextStep={nextStep}
-        prevStep={prevStep} 
-        unitHomestayReservation={unitHomestay}
-      />
+      {isLoading ? (
+        <Loading />
+      ) : (
+        <SecondStep
+          isWithHomestay={isWithHomestay}
+          currentStep={currentStep}
+          nextStep={nextStep}
+          prevStep={prevStep}
+          packageTotal={total}
+          unitHomestayReservation={unitHomestay}
+        />
+      )}
     </Form>
   );
 };

@@ -15,7 +15,7 @@ export const Accordion = ({ children, title, defaultOpen }: AccordioProps) => {
   }, []);
   return (
     <article className="   " onClick={toggleDropdown}>
-      <button
+      <button type="button"
         className={`  w-full   font-normal transition-ease-in-out  items-center text-primary border  p-3 flex px-4 capitalize ${
           open
             ? "bg-primary/15 focus:ring-4 focus:ring-primary/25 border-primary/30 rounded"

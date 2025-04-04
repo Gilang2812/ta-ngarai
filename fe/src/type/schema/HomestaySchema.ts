@@ -25,7 +25,7 @@ export type HomestaySchema = {
     capacity: number;
     homestay: HomestaySchema;
     unitType: HomestayUnitType;
-    facilittyDetail: UnitFacilityDetailSchema[]
+    facilityDetails: UnitFacilityDetailSchema[]
   };
 
   export type HomestayUnitType = {

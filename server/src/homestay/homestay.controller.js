@@ -2,7 +2,7 @@ const router = require('express').Router();
  
 
 const { getAllHomestay, getHomestay, createHomestay, deleteHomestay, editHomestay, getUnitHomestays } = require("./homestay.service");
-const { handleError } = require('../../utils/HandleError');
+const { handleInput } = require('../../utils/handleInput');
 const { homestaySchema } = require('./homestay.validation');
 
 router.get('/', async (req,res)=>{
@@ -51,7 +51,7 @@ router.post('/',async (req,res)=>{
      
         console.log('ini terst')
           console.log(req.body||'ini harislnya')
-        const {error} = handleError({name,address,open,close,geom},homestaySchema)
+        const {error} = handleInput({name,address,open,close,geom},homestaySchema)
        
         if(error ) return res.status(400).json(error.details?.map(h=>h.message) ||'Internal server error, ')
         const newHomestay = await createHomestay(req.body)

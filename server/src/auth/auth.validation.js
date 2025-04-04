@@ -1,26 +1,23 @@
-const Joi = require('joi');
+import { z } from 'zod';
 
-const loginScheme = Joi.object({
-    email: Joi.string().required(),
-    password: Joi.string().min(8).required()
+const loginSchema = z.object({
+  email: z.string().email(),
+  password: z.string().min(8),
 });
 
-const registerSchema = Joi.object({
-    username: Joi.string().min(3).max(30).required(),
-    email: Joi.string().email().required().custom((value, helper) => {
-        const domain = value.split('@')[1];
-        if (domain !== 'gmail.com') {
-            return helper.message('Please enter a valid email address with Gmail domain.');
-        }
-        return value;
+const registerSchema = z.object({
+  username: z.string().min(3).max(30),
+  email: z
+    .string()
+    .email()
+    .refine((value) => value.endsWith('@gmail.com'), {
+      message: 'Please enter a valid email address with Gmail domain.',
     }),
-    password: Joi.string().required(),
-    confirmPassword: Joi.any().valid(Joi.ref('password')).required().messages({
-        'any.only': 'Passwords do not match',
-    })
+  password: z.string(),
+  confirmPassword: z.string(),
+}).refine((data) => data.password === data.confirmPassword, {
+  message: 'Passwords do not match',
+  path: ['confirmPassword'],
 });
 
-module.exports = {
-    registerSchema,
-    loginScheme
-};
+export { loginSchema, registerSchema };

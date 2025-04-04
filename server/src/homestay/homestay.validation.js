@@ -1,13 +1,15 @@
-const Joi = require('joi');
+import { z } from 'zod';
 
-const homestaySchema = Joi.object({
-    name:Joi.string().required(),
-    address: Joi.string().required(),
-    open: Joi.string().regex(/^([0-9]{2})\:([0-9]{2})$/).required(),
-    close: Joi.string().regex(/^([0-9]{2})\:([0-9]{2})$/).required(),
-    geom: Joi.required(),
-})
+const homestaySchema = z.object({
+  name: z.string(),
+  address: z.string(),
+  open: z.string().regex(/^([0-9]{2}):([0-9]{2})$/, {
+    message: 'Time must be in HH:MM format',
+  }),
+  close: z.string().regex(/^([0-9]{2}):([0-9]{2})$/, {
+    message: 'Time must be in HH:MM format',
+  }),
+  geom: z.any(),
+});
 
-
-
-module.exports = {homestaySchema};
+export { homestaySchema };

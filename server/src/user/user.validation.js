@@ -1,14 +1,13 @@
-const Joi = require('joi');
+import { z } from 'zod';
 
-const adminSchema = Joi.object({
-    username: Joi.string().min(3).max(30).required(),
-    email: Joi.string().email().required().custom((value, helper) => {
-        const domain = value.split('@')[1];
-        if (domain !== 'gmail.com') {
-            return helper.message('Please enter a valid email address with Gmail domain.');
-        }
-        return value;
+const adminSchema = z.object({
+  username: z.string().min(3).max(30),
+  email: z
+    .string()
+    .email()
+    .refine((value) => value.endsWith('@gmail.com'), {
+      message: 'Please enter a valid email address with Gmail domain.',
     }),
-})
+});
 
-module.exports = {adminSchema};
+export { adminSchema };

@@ -5,18 +5,25 @@ import { NextStepButton } from "./NextStepButton";
 import { Guide } from "./Guide";
 import { StepFooter } from "./StepFooter";
 import { PrevStepButton } from "./PrevStepButton";
-import { FormSubmit } from "../inputs/FormSubmit"; 
+import { FormSubmit } from "../inputs/FormSubmit";
+import { PackageService } from "@/features/web/package/useFetchPackage";
+import { useFormikContext } from "formik";
+import { ReservationFormSchema } from "./SecondStep";
+import { useService } from "@/utils/ServiceCategory";
+import { DetailServiceSchema } from "@/type/schema/ServiceSchema";
 type Props = {
   nextStep: () => void;
   prevStep: () => void;
   currentStep: number;
   steps: number[];
-  handleCheck: (e:React.ChangeEvent<HTMLInputElement>)=>void;
-  handleTotalPeopleInput: (e:React.FormEvent<HTMLInputElement>)=>void;
-  handleDateInput: (e:React.ChangeEvent<HTMLInputElement>)=>void;
-  total:number|null;
+  handleCheck: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleTotalPeopleInput: (e: React.FormEvent<HTMLInputElement>) => void;
+  handleDateInput: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  total: number | null;
   minReservation: string | number;
-  isValid:string|false
+  isValid: string | false;
+  packageItem?: PackageService;
+  isWithHomestay?: boolean;
 };
 
 export const FormStep: FC<Props> = ({
@@ -29,23 +36,29 @@ export const FormStep: FC<Props> = ({
   handleDateInput,
   total,
   minReservation,
-  isValid
+  isValid,
+  packageItem,
+  isWithHomestay,
 }) => {
   const isFirstStep = currentStep === 1;
   const isLastStep = currentStep === steps.length - 1;
   const isVisibile = isFirstStep || isLastStep;
- 
+  const include = useService(1, packageItem);
+  const exclude = useService(2, packageItem);
+  const { values } = useFormikContext<ReservationFormSchema>();
 
   const LastStepForm = () => {
     return (
       isLastStep && (
         <>
-          <FormInput
-            name="total_price_homestay"
-            type="text"
-            label="total price homestay"
-            readonly
-          />
+          {isWithHomestay && (
+            <FormInput
+              name="total_price_homestay"
+              type="text"
+              label="total price homestay"
+              readonly
+            />
+          )}
           <FormInput
             name="total_price_reservation"
             type="text"
@@ -63,18 +76,52 @@ export const FormStep: FC<Props> = ({
     );
   };
 
+  const RenderHomestayUnits = () => {
+    return values?.selectedUnits?.map((unit, index) => (
+      <tr key={index}>
+        <th> {values.check_in} </th>
+        <th>{unit.homestay_id}</th>
+        <th>{unit.unitType.name_type}</th>
+        <th>{unit.unit_number}</th>
+        <th>{unit.homestay.name}</th>
+        <th>{unit.unit_name}</th>
+        <th>{unit.price}</th>
+        <th>{unit.capacity}</th>
+      </tr>
+    ));
+  };
+  const RenderService = ({ service }: { service?: DetailServiceSchema[] }) => {
+    return service?.map((service, index) => (
+      <li key={index}>{service.service.name}</li>
+    ));
+  };
+  const RenderActivity = () => {
+    return packageItem?.packageDays.map((day, index) => (
+      <article key={index} className="p-2">
+        <p>{day.description}</p>
+        <ul className="list-decimal px-6">
+          {day.detailPackages.map((activity, i) => (
+            <li key={i}>{activity.description}</li>
+          ))}
+        </ul>
+      </article>
+    ));
+  };
+
   const Summary = () => {
     return (
       <div className="flex gap-20 text-right leading-loose">
         <div>
           <p>total package</p>
-          <p>total homestay</p>
+          {isWithHomestay && <p>total homestay</p>}
           <p>total reservation</p>
         </div>
-        <div>
-          <p>Rp package</p>
-          <p>Rp homestay</p>
-          <p>Rp reservation</p>
+        <div className="font-normal">
+          <p>Rp {values?.total_package?.toLocaleString()}</p>
+          {isWithHomestay && (
+            <p>Rp {values?.total_price_homestay?.toLocaleString()}</p>
+          )}
+          <p>Rp {values.total_price_reservation?.toLocaleString()}</p>
         </div>
       </div>
     );
@@ -87,7 +134,7 @@ export const FormStep: FC<Props> = ({
     >
       <header className="space-y-12">
         <h2>Reservation Preview</h2>
-        <Guide handleCheck={handleCheck} />
+        <Guide isLastStep={isLastStep} handleCheck={handleCheck} />
       </header>
       <section className="grid grid-cols-2 gap-16">
         <section className="leading-loose ">
@@ -126,19 +173,17 @@ export const FormStep: FC<Props> = ({
           <LastStepForm />
           <div className="py-16">
             <Accordion title="Package Include">
-              <ul>
-                <li>sadasd</li>
+              <ul className="p-4 list-disc">
+                <RenderService service={include} />
               </ul>
             </Accordion>
             <Accordion title="Package Exclude">
-              <ul>
-                <li>sadasd</li>
+              <ul className="p-4 list-disc">
+                <RenderService service={exclude} />
               </ul>
             </Accordion>
-            <Accordion title="Package Service">
-              <ul>
-                <li>sadasd</li>
-              </ul>
+            <Accordion title="Package Activity">
+              <RenderActivity />
             </Accordion>
           </div>
         </section>
@@ -165,7 +210,7 @@ export const FormStep: FC<Props> = ({
           </div>
           <div
             className={`${
-              !isFirstStep && "hidden"
+              (!isFirstStep && isWithHomestay )&& "hidden"
             } py-8 space-y-4 pr-16  font-bold`}
           >
             <p className="text-red-600 capitalize">
@@ -183,6 +228,7 @@ export const FormStep: FC<Props> = ({
                 onChange={handleCheck}
                 id="agree"
                 name="agree"
+                disabled={isLastStep}
                 className="border-2  outline-none rounded-sm h-4 w-4 focus:outline-transparent focus:border-primary focus:hover:text-secondary focus:text-primary  focus:ring-transparent"
               />
               Yes, I Agree
@@ -197,40 +243,35 @@ export const FormStep: FC<Props> = ({
               as="textarea"
               rows={4}
             />
-            <Accordion defaultOpen={true} title="Homestay Units">
-              <table>
-                <thead>
-                  <tr>
-                    <th>Date</th>
-                    <th>ID</th>
-                    <th>Type</th>
-                    <th>Number</th>
-                    <th>Homestay</th>
-                    <th>Unit</th>
-                    <th>Price</th>
-                    <th>Cpty</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <th>Date</th>
-                    <th>ID</th>
-                    <th>Type</th>
-                    <th>Number</th>
-                    <th>Homestay</th>
-                    <th>Unit</th>
-                    <th>Price</th>
-                    <th>Cpty</th>
-                  </tr>
-                </tbody>
-              </table>
-            </Accordion>
+           {isWithHomestay&& <Accordion defaultOpen={true} title="Homestay Units">
+              <div className=" overflow-x-scroll">
+                <table className="[&_th]:p-2 w-full">
+                  <thead>
+                    <tr className="border-b-2">
+                      <th>Date</th>
+                      <th>ID</th>
+                      <th>Type</th>
+                      <th>Number</th>
+                      <th>Homestay</th>
+                      <th>Unit</th>
+                      <th>Price</th>
+                      <th>Cpty</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <RenderHomestayUnits />
+                  </tbody>
+                </table>
+              </div>
+            </Accordion>}
           </div>
         </section>
 
-        <section className="col-span-2  flex justify-end">
-          <Summary />
-        </section>
+        {isLastStep && (
+          <section className="col-span-2  flex justify-end">
+            <Summary />
+          </section>
+        )}
         <StepFooter>
           {isFirstStep && total && <p>total: Rp {total?.toLocaleString()} </p>}
 

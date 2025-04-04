@@ -1,11 +1,11 @@
 const { getAllAnnouncements, createAnnouncement, editAnnouncementById, deleteAnnouncementById } = require("./announcement.service"); 
 const router = require("express").Router();
-const Joi = require('joi');
+const z = require('zod');
 
-const announcementSchema = Joi.object({
-  id: Joi.string().max(5).required(),
-  announcement: Joi.string().required(),
-  status: Joi.number().required(),
+const announcementSchema = z.object({
+  id: z.string().max(5),
+  announcement: z.string(),
+  status: z.number(),
 });
 
 router.get("/", async (req, res) => {
@@ -23,8 +23,8 @@ router.get("/", async (req, res) => {
 router.post("/", async (req, res) => {
   try {
     // Validate request body
-    const { error } = announcementSchema.validate(req.body);
-    if (error) throw new Error(error.details[0].message,400);
+    const { error } = announcementSchema.safeParse(req.body);
+    if (error) throw new Error(error.errors,400);
     
 
     const announcement = await createAnnouncement(req.body);

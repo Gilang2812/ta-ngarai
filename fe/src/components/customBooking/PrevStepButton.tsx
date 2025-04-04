@@ -7,6 +7,7 @@ type Props = {
 export const PrevStepButton: FC<Props> = ({ prevStep }) => {
   return (
     <button
+      type="button"
       onClick={prevStep}
       className="btn text-white bg-stone-600 !rounded-md hover:bg-slate-900 font-normal px-8 py-2 capitalize "
     >
