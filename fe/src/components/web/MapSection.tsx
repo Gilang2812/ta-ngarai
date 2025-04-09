@@ -1,11 +1,13 @@
 // import Weather from "@/components/weather/Weather";
-import Map from "@/components/web/MapHome";
+// import Map from "@/components/web/MapHome"; 
+import MapWeb from "./MapWeb";
  
 export default function MapSection() {
   return (
     <>
-      <div className="flex bg-white rounded-xl p-5 h-full basis-auto">
-        <Map />
+      <div className="flex flex-col bg-white rounded-xl p-5 h-full basis-auto">
+        <h4>Google Maps With location</h4>
+        <MapWeb  />
       </div>
     </>
   );

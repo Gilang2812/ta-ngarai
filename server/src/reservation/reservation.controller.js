@@ -45,6 +45,7 @@ router.post("/create", async (req, res) => {
       check_in,
       total_people,
       note,
+      check_in_time,
       total_deposit: deposit,
       total_price_reservation: total_price,
     } = req.body;
@@ -55,7 +56,7 @@ router.post("/create", async (req, res) => {
       user_id: 1,
       package_id,
       request_date: new Date(),
-      check_in,
+      check_in :`${check_in} ${check_in_time}`,
       total_people,
       note,
       deposit,

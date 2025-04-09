@@ -99,7 +99,7 @@ export const cornerAlert = (message: string) => {
   });
   Toast.fire({
     icon: "success",
-    title: message + " successfully.",
+    title: message ,
   });
 };
 
