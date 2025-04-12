@@ -35,5 +35,5 @@ export const useGoToVillage = () => {
       smoothTransition(LANDMARK_POSITION, 18);
     }
   }, [smoothTransition]);
-  return { mapRef, handleGoToVillage };
+  return { mapRef, handleGoToVillage ,smoothTransition};
 };

@@ -10,7 +10,7 @@ import {
 import { PiCrosshairLight } from "react-icons/pi";
 import { GeoJsonLayer } from "../map/GeoJSONLayer";
 import { useUserNavigation } from "@/hooks/useUserNavigation";
-import { useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { useGoToVillage } from "@/hooks/useGoToVillage";
 import ButtonMapNavigation from "../common/ButtonMapNavigation";
 import { MdOutlineRemoveRedEye } from "react-icons/md";
@@ -21,6 +21,7 @@ import { cornerAlert } from "@/utils/AlertUtils";
 import { MapLegend } from "../map/MapLegend";
 import { useShowLegend } from "@/hooks/useShowLegend";
 import { AirplaneToLandmark } from "../map/AirPlaneAnimation";
+import { launchAirplanes } from "@/lib/launchAirPlanes";
 
 export default function MapWeb() {
   const {
@@ -38,7 +39,7 @@ export default function MapWeb() {
     toggleManualLocation,
   } = useSetManualLocation();
 
-  const { mapRef, handleGoToVillage } = useGoToVillage();
+  const { mapRef, handleGoToVillage, smoothTransition } = useGoToVillage();
 
   const { isShowLegend, toggleLegend } = useShowLegend();
   const [geoData] = useState<GeoJSON.FeatureCollection>({
@@ -76,7 +77,7 @@ export default function MapWeb() {
       },
     ],
   });
-
+  const [showAirPlane, setShowAirPlane] = useState(false);
   const [airplanes, setAirplanes] = useState<
     Array<{
       id: number;
@@ -84,31 +85,27 @@ export default function MapWeb() {
       isActive: boolean;
     }>
   >([]);
-
   const cities = [
     { name: "JAKARTA", coords: { lat: -6.1754, lng: 106.8272 } },
     { name: "SINGAPURA", coords: { lat: 1.3521, lng: 103.8198 } },
     { name: "KUALA_LUMPUR", coords: { lat: 3.139, lng: 101.6869 } },
   ];
+  const [isTerrain, setIsTerrain] = useState(false);
+
+  const handleCheck = (e: ChangeEvent<HTMLInputElement>) => {
+    setIsTerrain(e.target.checked);
+  };
 
   const launchAllAirplanes = () => {
-    mapRef.current?.setZoom(5)
-    setAirplanes(
-      cities.map((city, index) => ({
-        id: index,
-        origin: city.coords,
-        isActive: true,
-      }))
-    );
+    setShowAirPlane((prev) => !prev);
+    launchAirplanes(mapRef, cities, setAirplanes, smoothTransition);
   };
 
-  const handleArrival = (id: number) => {
-    setAirplanes((prev) =>
-      prev.map((plane) =>
-        plane.id === id ? { ...plane, isActive: false } : plane
-      )
-    );
-  };
+  useEffect(() => {
+    if (!showAirPlane && mapRef.current) {
+      handleGoToVillage();
+    }
+  }, [showAirPlane, mapRef, handleGoToVillage]);
   return (
     <>
       <div className="flex gap-2 text-sm py-2">
@@ -117,7 +114,11 @@ export default function MapWeb() {
           <label htmlFor="mapLabels"> Labels</label>
         </section>
         <section>
-          <CheckBoxInput className="border-2 border-slate-300" id="terrain" />
+          <CheckBoxInput
+            onChange={handleCheck}
+            className="border-2 border-slate-300"
+            id="terrain"
+          />
           <label htmlFor="terrain"> Terrain</label>
         </section>
       </div>
@@ -126,9 +127,7 @@ export default function MapWeb() {
           label={`${tracking ? "cancel navigate" : "navigate from current"}`}
           onClick={handleLocateUser}
           Icon={PiCrosshairLight}
-          className={`${
-            tracking && "bg-green-400 ring-green-300 ring-4 hover:bg-green-600"
-          }`}
+          active={tracking}
         />
 
         <ButtonMapNavigation
@@ -138,24 +137,19 @@ export default function MapWeb() {
           }}
           Icon={FaLocationDot}
           label="Set Manual Location"
-          className={`${
-            isClickMapActivce &&
-            "bg-green-400 ring-green-300 ring-4 hover:bg-green-600"
-          }`}
+          active={isClickMapActivce}
         />
         <ButtonMapNavigation
           onClick={toggleLegend}
           Icon={MdOutlineRemoveRedEye}
           label="show legend"
-          className={`${
-            isShowLegend &&
-            "bg-green-400 ring-green-300 ring-4 hover:bg-green-600"
-          }`}
+          active={isShowLegend}
         />
         <ButtonMapNavigation
           onClick={launchAllAirplanes}
           Icon={FaPersonWalkingLuggage}
           label="how to react Koto Gadang"
+          active={showAirPlane}
         />
         <ButtonMapNavigation
           onClick={handleGoToVillage}
@@ -170,6 +164,7 @@ export default function MapWeb() {
             mapRef.current = map;
           }}
           onClick={handleManualLocation}
+          mapTypeId={`${isTerrain ? "terrain" : "satellite"}`}
         >
           {geoData && <GeoJsonLayer data={geoData} />}
           {userLocation && (
@@ -182,23 +177,23 @@ export default function MapWeb() {
               animation={google.maps.Animation.DROP}
             />
           )}
-          {airplanes.map(
-            (plane) =>
-              plane.isActive && (
-                <AirplaneToLandmark
-                  key={plane.id}
-                  origin={plane.origin}
-                  duration={5000} 
-                  onArrival={() => handleArrival(plane.id)}
-                  delay={1000}
-                />
-              )
-          )}
+          {showAirPlane &&
+            airplanes.map(
+              (plane) =>
+                plane.isActive && (
+                  <AirplaneToLandmark
+                    key={plane.id}
+                    origin={plane.origin}
+                    duration={5000}
+                    delay={1000}
+                    showAirPlane={showAirPlane}
+                  />
+                )
+            )}
           <MarkerManualLocation position={clickedPosition} />
           {directions && <DirectionsRenderer directions={directions} />}
         </MapLayout>
       </div>
-
       {locationError && <p className="text-red-500 text-sm">{locationError}</p>}
     </>
   );
