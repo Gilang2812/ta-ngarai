@@ -4,22 +4,22 @@ const {Village} = require('../../models/VillageModel.js');
 const { Kecamatan } = require('../../models/KecamatanModel.js');
 const { Negara } = require('../../models/CountryModel.js');
 
-const getAllKecamatan = async () => {
+const findAllKecamatan = async () => {
   return await Kecamatan.findAll();
 };
-const getAllVillages = async () => {
+const findAllVillages = async () => {
   return await Village.findAll();
 };
-const getAllKabKota = async () => {
+const findAllKabKota = async () => {
   return await KabKota.findAll();
 };
-const getAllProvinces = async () => {
+const findAllProvinces = async () => {
   return await Provinsi.findAll();
 };
-const getAllCountry = async () => {
+const findAllCountry = async () => {
   return await Negara.findAll();
 };
 
 module.exports = {
-  getAllProvinces,getAllKabKota,getAllVillages,getAllKecamatan,getAllCountry
+  findAllProvinces,findAllKabKota,findAllVillages,findAllKecamatan,findAllCountry
 };

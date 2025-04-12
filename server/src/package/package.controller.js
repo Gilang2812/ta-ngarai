@@ -18,14 +18,13 @@ router.get('/', async(req, res) => {
     }
 })
 
-router.get('/:id', async (req,res)=>{
+router.get('/:id', async (req,res,next)=>{
     try {
         const {id} = req.params
         const package = await getPackage(id)
         res.status(200).json(package)
     } catch (error) {
-        console.error(error);
-        res.status(error.statusCode||500).json(error.messages ||error.message|| 'Internal server error, ' );
+        next(error)
     }
 })
 

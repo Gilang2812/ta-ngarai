@@ -1,31 +1,28 @@
 const {
-  getAllProvinces,
-  getAllKabKota,
-  getAllVillages,
-  getAllKecamatan,
-  getAllCountry,
+  findAllProvinces,
+  findAllKabKota,
+  findAllVillages,
+  findAllKecamatan,
+  findAllCountry,
 } = require("./geo.repository");
 const fs = require("fs").promises;
 
 const readGeoJSONFile = async (path) => {
   try {
-    const data = await fs.readFile('public' + path, "utf-8");
+    const data = await fs.readFile("public" + path, "utf-8");
     const parsedData = JSON.parse(data);
 
-    
     if (parsedData.type === "FeatureCollection") {
-    
       const firstFeature = parsedData.features[0];
-      return firstFeature.geometry;  
+      return firstFeature.geometry;
     }
 
-    return parsedData;  
+    return parsedData;
   } catch (error) {
     console.error(`Error reading file at ${path}:`, error);
-    return null;  
+    return null;
   }
 };
-
 
 const toGeoJSONDb = (data, type) => ({
   type: "FeatureCollection",
@@ -38,21 +35,23 @@ const toGeoJSONDb = (data, type) => ({
       type: type || "",
     },
   })),
-})
+});
 
 const toGeoJSONStatic = async (data, type) => {
-  const features = await Promise.all(data.map(async (item) => {
-    const geometry = await readGeoJSONFile(item.geom); 
-    return {
-      type: "Feature",
-      geometry: geometry,
-      properties: {
-        id: item.id,
-        name: item.name,
-        type: type || "",
-      },
-    };
-  }));
+  const features = await Promise.all(
+    data.map(async (item) => {
+      const geometry = await readGeoJSONFile(item.geom);
+      return {
+        type: "Feature",
+        geometry: geometry,
+        properties: {
+          id: item.id,
+          name: item.name,
+          type: type || "",
+        },
+      };
+    })
+  );
 
   return {
     type: "FeatureCollection",
@@ -61,18 +60,18 @@ const toGeoJSONStatic = async (data, type) => {
 };
 
 const getAllGeoJSONData = async () => {
-  const negara =  await getAllCountry();
+  const negara = await getAllCountry();
   const provinces = await getAllProvinces();
   const kabkota = await getAllKabKota();
   const kecamatan = await getAllKecamatan();
   const villages = await getAllVillages();
 
   const features = [
-    ...await toGeoJSONDb(provinces, 'provinsi').features,
-    ...await toGeoJSONDb(kabkota, "kab_kota").features,
-    ...await toGeoJSONDb(negara, "negara").features,
-    ...(await toGeoJSONStatic(villages, "village")).features,
-    ...(await toGeoJSONStatic(kecamatan, "kecamatan")).features,
+    ...(await provinces.features),
+    ...(await kabkota.features),
+    ...(await negara.features),
+    ...(await villages.features),
+    ...(await kecamatan.features),
   ];
 
   return {
@@ -81,6 +80,34 @@ const getAllGeoJSONData = async () => {
   };
 };
 
+const getAllCountry = async () => {
+  const country = toGeoJSONDb(await findAllCountry(), "negara");
+  return country;
+};
+
+const getAllProvinces = async () => {
+  const provinces = toGeoJSONDb(await findAllProvinces(), "provinsi");
+  return provinces;
+};
+
+const getAllKabKota = async () => {
+  const kabKota = toGeoJSONDb(await findAllKabKota(), "kab_kota");
+  return kabKota;
+};
+const getAllKecamatan = async () => {
+  const kecamatan = toGeoJSONStatic(await findAllKecamatan(), "kecamatan");
+  return kecamatan;
+};
+const getAllVillages = async () => {
+  const villages = toGeoJSONStatic(await findAllVillages(), "village");
+  return villages;
+};
+
 module.exports = {
   getAllGeoJSONData,
+  getAllCountry,
+  getAllProvinces,
+  getAllKabKota,
+  getAllKecamatan,
+  getAllVillages,
 };

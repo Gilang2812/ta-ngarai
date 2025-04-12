@@ -33,7 +33,7 @@ router.use('/tourism', tourismRouter);
 router.use('/users', userRouter);
 
 
-router.use('*',(req,res)=>{
+router.use('*',(req,res,next)=>{
     res.status(404).json({message: 'Not Found'})
 })
 

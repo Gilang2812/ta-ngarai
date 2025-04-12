@@ -3,6 +3,8 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var cors = require('cors');
+const { errorHandler } = require("./src/middlewares/errorHandle");
+const router=  require('./router/index');
 
 var app = express();
 
@@ -13,15 +15,11 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-
-
 app.use((req, res, next) => {
     console.log(`Received ${req.method} request for ${req.url}`);
     next();
 });
-
-const router=  require('./router/index')
-
+app.use(errorHandler)
 app.use(router)
 
 module.exports = app;

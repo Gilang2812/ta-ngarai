@@ -14,15 +14,14 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.get('/:reservation_id',async (req,res)=>{
+router.get('/:reservation_id',async (req,res,next)=>{
     try {
         const {reservation_id} = req.params
 
         const detailReservation = await getDetailReservationById(reservation_id)
         res.status(200).json(detailReservation)
     } catch (error) {
-        console.error(error);
-        res.status(error.statusCode||500).json(error.messages ||error.message|| 'Internal server error, ' );
+        next(error)
     }
 })
 module.exports = router;

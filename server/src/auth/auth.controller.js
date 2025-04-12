@@ -3,7 +3,7 @@ const { userLogin, userRegister } = require("./auth.service");
 const { registerSchema, loginScheme } = require("./auth.validation.js");
 const { CustomError } = require("../../utils/CustomError.js");
  
-router.post('/login', async (req,res)=>{
+router.post('/login', async (req,res,next)=>{
     try {
 
         let data= req.body
@@ -20,7 +20,7 @@ router.post('/login', async (req,res)=>{
 }
 )
 
-router.post('/register',async (req,res)=>{
+router.post('/register',async (req,res,next)=>{
     try {
         const { error } = registerSchema.validate(req.body);
         if (error) {

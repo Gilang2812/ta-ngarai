@@ -2,7 +2,7 @@ const { getAllService } = require('./detailService.service');
 
 const router = require('express').Router();
 
-router.get('/', async (req,res)=>{
+router.get('/', async (req,res,next)=>{
     try {
         const condition ={}
         const {package_id} = req.query
@@ -10,8 +10,7 @@ router.get('/', async (req,res)=>{
         const services = await getAllService(condition);
         res.status(200).json(services);
     } catch (error) {
-        console.error(error);
-        res.status(error.statusCode||500).json(error.messages ||error.message|| 'Internal server error, ' );
+        next(error)
     }
 })
 

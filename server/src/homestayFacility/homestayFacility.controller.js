@@ -2,7 +2,7 @@ const { getHomestayWithFacility, getHomestayFacilities, createHomestayFacility, 
 
 const router = require("express").Router();
 
-router.get('/',async (req,res)=>{
+router.get('/',async (req,res,next)=>{
   try {
     const homestayFacilities = await getHomestayFacilities ()
 
@@ -26,7 +26,7 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-router.post('/',async (req,res)=>{
+router.post('/',async (req,res,next)=>{
   try {
     const  newHomestayFacility =await createHomestayFacility(req.body)
 
@@ -37,7 +37,7 @@ router.post('/',async (req,res)=>{
   }
 })
 
-router.get('/details',async (req,res)=>{
+router.get('/details',async (req,res,next)=>{
   try {
     const details = await getDetailHomestayFacilities()
     res.status(200).json(details)
@@ -47,7 +47,7 @@ router.get('/details',async (req,res)=>{
   }
 })
 
-router.post('/details',async (req,res)=>{
+router.post('/details',async (req,res,next)=>{
   try {
     console.log(req.body)
     const  newDetailFacility = await createDetailHomestayFacility(req.body);
@@ -58,7 +58,7 @@ router.post('/details',async (req,res)=>{
   }
 })
 
-router.delete('/:homestay_id/:facility_homestay_id', async (req,res)=>{
+router.delete('/:homestay_id/:facility_homestay_id', async (req,res,next)=>{
   try {
     const deleted =await deleteDetailHomestayFacility(req.params)
     return res.status(200).json(deleted)

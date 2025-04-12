@@ -35,7 +35,7 @@ router.post("/", async (req, res) => {
   }
 });
 
-router.patch('/:id', async (req,res)=>{
+router.patch('/:id', async (req,res,next)=>{
   try {
     const body = req.body;
     body['id'] =req.params.id;
@@ -48,7 +48,7 @@ router.patch('/:id', async (req,res)=>{
   }
 })
 
-router.delete('/:id', async (req,res)=>{
+router.delete('/:id', async (req,res,next)=>{
   try {
     const announcement = await deleteAnnouncementById(req.params.id)
     return res.status(200).json(announcement);

@@ -5,7 +5,7 @@ const { getAllHomestay, getHomestay, createHomestay, deleteHomestay, editHomesta
 const { handleInput } = require('../../utils/handleInput');
 const { homestaySchema } = require('./homestay.validation');
 
-router.get('/', async (req,res)=>{
+router.get('/', async (req,res,next)=>{
     try {
         const homestays = await getAllHomestay()
         res.json(200, homestays);
@@ -16,7 +16,7 @@ router.get('/', async (req,res)=>{
 }
 )
 
-router.get('/units',async (req,res)=>{
+router.get('/units',async (req,res,next)=>{
   try {
     let checkIn = req.query.checkIn
     if(!checkIn||checkIn===''){
@@ -32,7 +32,7 @@ router.get('/units',async (req,res)=>{
     res.status(error.statusCode||500).json(error.messages ||error.message|| 'Internal server error, ' );
   }
 })
-router.post('/',async (req,res)=>{
+router.post('/',async (req,res,next)=>{
     try {
         const {name,address,open,close,geom} = req.body;
         req.body.geom= req.body.geom || {
@@ -57,11 +57,10 @@ router.post('/',async (req,res)=>{
         const newHomestay = await createHomestay(req.body)
         res.status(201).json(newHomestay);
     } catch (error) {
-        console.error(error);
-        res.status(error.statusCode||500).json(error.messages ||error.message|| 'Internal server error, ' );
+        next(error)
     }
 })
-router.get('/:id',async (req,res)=>{
+router.get('/:id',async (req,res,next)=>{
   try {
     const homestay = await getHomestay(req.params.id)
     res.status(200).json(homestay);
@@ -71,7 +70,7 @@ router.get('/:id',async (req,res)=>{
   }
 })
 
-router.patch('/:id',async (req,res)=>{
+router.patch('/:id',async (req,res,next)=>{
   try {
     const body = req.body || {};
     body.id = req.params.id
@@ -85,7 +84,7 @@ router.patch('/:id',async (req,res)=>{
     res.status(error.statusCode||500).json(error.messages ||error.message|| 'Internal server error, ' );
   }
 })
-router.delete('/:id',async (req,res)=>{
+router.delete('/:id',async (req,res,next)=>{
   try {
     const id = req.params.id
 

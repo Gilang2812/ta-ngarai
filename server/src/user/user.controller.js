@@ -2,7 +2,7 @@ const router = require('express').Router();
 const { getAllUsers, createNewUser, deleteDetailUser } = require("./user.service");
 const { adminSchema } = require('./user.validation');
 
-router.get('/' , async (req,res)=>{
+router.get('/' , async (req,res,next)=>{
     try {
         const users = await getAllUsers()
         res.status(200).json(users);
@@ -12,7 +12,7 @@ router.get('/' , async (req,res)=>{
     }
 })
 
-router.post('/', async (req,res)=>{
+router.post('/', async (req,res,next)=>{
     try {
         let data= req.body
         const {error} = adminSchema.validate(data)
@@ -24,19 +24,16 @@ router.post('/', async (req,res)=>{
         }
         res.status(201).json(response);
     } catch (error) {
-        console.error(error);
-        res.status(error.statusCode||500).json(error.messages ||error.message|| 'Internal server error, ' );
+        next(error)
     }
 })
 
-router.delete('/:user_id/:group_id',async (req,res)=>{
+router.delete('/:user_id/:group_id',async (req,res,next)=>{
     try {
         const data = await deleteDetailUser(req.params)
         res.status(200).json(data);
     } catch (error) {
-        console.error(error);
-        res.status(error.statusCode||500).json(error.message || 'Internal server error, ' );
-    }
+  next(error) }
 } )
 
  

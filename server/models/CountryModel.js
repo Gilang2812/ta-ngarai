@@ -10,7 +10,7 @@ const Negara = sequelize.define('Negara', {
       geom: DataTypes.GEOMETRY() 
   
 }, {
-  tableName: 'Negara', 
+  tableName: 'negara', 
   timestamps: false
 });
 
