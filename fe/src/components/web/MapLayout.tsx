@@ -30,7 +30,7 @@ function MapLayout({ children, ...props }: Props) {
       <GoogleMap
         mapContainerStyle={containerStyle}
         center={LANDMARK_POSITION}
-        zoom={9}
+        zoom={6}
         mapTypeId="satellite"
         {...props}
       >

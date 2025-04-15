@@ -17,7 +17,7 @@ export default function Login() {
       console.log("Login successful:");
     },
     onError: (e) => {
-      showErrorAlert('Shomething Errror')
+      showErrorAlert(e)
       console.error("Error during login:", e);
     },
   });

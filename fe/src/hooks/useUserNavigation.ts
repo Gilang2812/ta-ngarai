@@ -14,7 +14,7 @@ export const useUserNavigation = ()=>{
   
     const handleLocateUser = useCallback(() => {
       if(directions)setDirection(null)
-        console.log(directions)
+       
   
       if (!navigator.geolocation) {
         setLocationError("Geolocation is not supported by this browser.");

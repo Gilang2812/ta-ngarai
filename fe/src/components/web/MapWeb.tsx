@@ -1,27 +1,27 @@
 "use client";
 
 import MapLayout from "./MapLayout";
-import { DirectionsRenderer, Marker } from "@react-google-maps/api";
-import {
-  FaLocationArrow,
-  FaLocationDot,
-  FaPersonWalkingLuggage,
-} from "react-icons/fa6";
-import { PiCrosshairLight } from "react-icons/pi";
+import { DirectionsRenderer } from "@react-google-maps/api";
 import { GeoJsonLayer } from "../map/GeoJSONLayer";
 import { useUserNavigation } from "@/hooks/useUserNavigation";
-import { ChangeEvent, useEffect, useState } from "react";
-import { useGoToVillage } from "@/hooks/useGoToVillage";
-import ButtonMapNavigation from "../common/ButtonMapNavigation";
-import { MdOutlineRemoveRedEye } from "react-icons/md";
-import { CheckBoxInput } from "../common/CheckBoxInput";
 import { useSetManualLocation } from "@/hooks/useManualLocation";
 import { MarkerManualLocation } from "../map/MarkerManualLocation";
-import { cornerAlert } from "@/utils/AlertUtils";
 import { MapLegend } from "../map/MapLegend";
 import { useShowLegend } from "@/hooks/useShowLegend";
-import { AirplaneToLandmark } from "../map/AirPlaneAnimation";
-import { launchAirplanes } from "@/lib/launchAirPlanes";
+import MapSkeletonLoader from "../loading/MapSkeleton";
+import { labeledRegionLocations } from "@/data/labeledRegionLocation";
+import { useCheckBox } from "@/hooks/useToggleCheckBox";
+import { useToggleMapOptions } from "@/hooks/useToggleMapOptions";
+import MapToolbar from "../map/MapToolbar";
+import MapControlPanel from "../map/MapControlPanel";
+import { RegionLabel } from "../map/RegionLabels";
+import { MapMarker } from "../map/MapMarker";
+import { AirplaneOverlays } from "../map/AirplaneOverLays";
+import { useMapLayer } from "@/hooks/useMapLayers";
+import { useAirPlaneController } from "@/hooks/useAirPlaneController";
+import { useMapTools } from "@/hooks/useMapTools";
+import { layersData } from "@/data/layers";
+import { objectsData } from "@/data/object";
 
 export default function MapWeb() {
   const {
@@ -31,7 +31,7 @@ export default function MapWeb() {
     tracking,
     userLocation,
   } = useUserNavigation();
-
+  const { isTerrain, setIsTerrain, setShowLabel, showLabel } = useMapTools();
   const {
     clickedPosition,
     handleManualLocation,
@@ -39,124 +39,55 @@ export default function MapWeb() {
     toggleManualLocation,
   } = useSetManualLocation();
 
-  const { mapRef, handleGoToVillage, smoothTransition } = useGoToVillage();
-
+  const {
+    mapRef,
+    handleGoToVillage,
+    airplanes,
+    launchAllAirplanes,
+    showAirPlane,
+  } = useAirPlaneController();
   const { isShowLegend, toggleLegend } = useShowLegend();
-  const [geoData] = useState<GeoJSON.FeatureCollection>({
-    type: "FeatureCollection",
-    features: [
-      {
-        type: "Feature",
-        properties: {
-          name: "Kawasan Ngarai Sianok",
-          area: "2.5 km²",
-        },
-        geometry: {
-          type: "MultiPolygon",
-          coordinates: [
-            [
-              [
-                [100.34, -0.31],
-                [100.345, -0.315],
-                [100.35, -0.312],
-                [100.348, -0.308],
-                [100.34, -0.31],
-              ],
-            ],
-            [
-              [
-                [100.335, -0.32],
-                [100.338, -0.322],
-                [100.342, -0.318],
-                [100.34, -0.315],
-                [100.335, -0.32],
-              ],
-            ],
-          ],
-        },
-      },
-    ],
-  });
-  const [showAirPlane, setShowAirPlane] = useState(false);
-  const [airplanes, setAirplanes] = useState<
-    Array<{
-      id: number;
-      origin: google.maps.LatLngLiteral;
-      isActive: boolean;
-    }>
-  >([]);
-  const cities = [
-    { name: "JAKARTA", coords: { lat: -6.1754, lng: 106.8272 } },
-    { name: "SINGAPURA", coords: { lat: 1.3521, lng: 103.8198 } },
-    { name: "KUALA_LUMPUR", coords: { lat: 3.139, lng: 101.6869 } },
-  ];
-  const [isTerrain, setIsTerrain] = useState(false);
 
-  const handleCheck = (e: ChangeEvent<HTMLInputElement>) => {
-    setIsTerrain(e.target.checked);
-  };
+  const {
+    state: layers,
+    setState: setLayers,
+    toggleAllOptions: handleShowAllLayers,
+  } = useToggleMapOptions(layersData);
+  const {
+    state: objects,
+    setState: setObjects,
+    toggleAllOptions: handleShowAllObject,
+  } = useToggleMapOptions(objectsData);
+  const { toggleCheckBox } = useCheckBox();
+  const { isLoading, mergedRegions } = useMapLayer(layers);
 
-  const launchAllAirplanes = () => {
-    setShowAirPlane((prev) => !prev);
-    launchAirplanes(mapRef, cities, setAirplanes, smoothTransition);
-  };
-
-  useEffect(() => {
-    if (!showAirPlane && mapRef.current) {
-      handleGoToVillage();
-    }
-  }, [showAirPlane, mapRef, handleGoToVillage]);
+  if (isLoading) return <MapSkeletonLoader />;
   return (
     <>
-      <div className="flex gap-2 text-sm py-2">
-        <section>
-          <CheckBoxInput className="border-2 border-slate-300" id="mapLabels" />
-          <label htmlFor="mapLabels"> Labels</label>
-        </section>
-        <section>
-          <CheckBoxInput
-            onChange={handleCheck}
-            className="border-2 border-slate-300"
-            id="terrain"
-          />
-          <label htmlFor="terrain"> Terrain</label>
-        </section>
-      </div>
-      <div className="flex gap-2 items-center py-2">
-        <ButtonMapNavigation
-          label={`${tracking ? "cancel navigate" : "navigate from current"}`}
-          onClick={handleLocateUser}
-          Icon={PiCrosshairLight}
-          active={tracking}
-        />
+      <MapToolbar
+        setIsTerrain={setIsTerrain}
+        setShowLabel={setShowLabel}
+        showLabel={showLabel}
+        toggleCheckBox={toggleCheckBox}
+      />
+      <MapControlPanel
+        tracking={tracking}
+        handleLocateUser={handleLocateUser}
+        isClickMapActivce={isClickMapActivce}
+        toggleManualLocation={toggleManualLocation}
+        toggleLegend={toggleLegend}
+        isShowLegend={isShowLegend}
+        launchAllAirplanes={launchAllAirplanes}
+        showAirPlane={showAirPlane}
+        handleGoToVillage={handleGoToVillage}
+        layers={layers}
+        setLayers={setLayers}
+        handleShowAllLayers={handleShowAllLayers}
+        objects={objects}
+        setObjects={setObjects}
+        handleShowAllObject={handleShowAllObject}
+      />
 
-        <ButtonMapNavigation
-          onClick={() => {
-            if (!isClickMapActivce) cornerAlert("click on the map");
-            toggleManualLocation();
-          }}
-          Icon={FaLocationDot}
-          label="Set Manual Location"
-          active={isClickMapActivce}
-        />
-        <ButtonMapNavigation
-          onClick={toggleLegend}
-          Icon={MdOutlineRemoveRedEye}
-          label="show legend"
-          active={isShowLegend}
-        />
-        <ButtonMapNavigation
-          onClick={launchAllAirplanes}
-          Icon={FaPersonWalkingLuggage}
-          label="how to react Koto Gadang"
-          active={showAirPlane}
-        />
-        <ButtonMapNavigation
-          onClick={handleGoToVillage}
-          Icon={FaLocationArrow}
-          label="Zoom to Koto Gadang"
-        />
-      </div>
       <div className="relative">
         <MapLegend isOpen={isShowLegend} />
         <MapLayout
@@ -166,30 +97,10 @@ export default function MapWeb() {
           onClick={handleManualLocation}
           mapTypeId={`${isTerrain ? "terrain" : "satellite"}`}
         >
-          {geoData && <GeoJsonLayer data={geoData} />}
-          {userLocation && (
-            <Marker
-              position={userLocation}
-              icon={{
-                url: "https://maps.google.com/mapfiles/ms/icons/blue-dot.png",
-                scaledSize: new google.maps.Size(40, 40),
-              }}
-              animation={google.maps.Animation.DROP}
-            />
-          )}
-          {showAirPlane &&
-            airplanes.map(
-              (plane) =>
-                plane.isActive && (
-                  <AirplaneToLandmark
-                    key={plane.id}
-                    origin={plane.origin}
-                    duration={5000}
-                    delay={1000}
-                    showAirPlane={showAirPlane}
-                  />
-                )
-            )}
+          {mergedRegions && <GeoJsonLayer data={mergedRegions} />}
+          {userLocation && <MapMarker position={userLocation} />}
+          <RegionLabel regions={labeledRegionLocations} showLabel={showLabel} />
+          <AirplaneOverlays airplanes={airplanes} showAirPlane={showAirPlane} />
           <MarkerManualLocation position={clickedPosition} />
           {directions && <DirectionsRenderer directions={directions} />}
         </MapLayout>

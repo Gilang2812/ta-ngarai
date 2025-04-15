@@ -14,7 +14,7 @@ const GalleryHomestay = dynamic (
 
 export const DetailHomestaySection = ({ id }: { id: string }) => {
   const { data } = useGetHomestay(id);
-  console.log(data);
+ 
   return (
     <>
       <section className="col-span-7 ">

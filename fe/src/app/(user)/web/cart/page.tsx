@@ -9,17 +9,16 @@ import { useState, useMemo, useEffect } from "react";
 import { FaTrash } from "react-icons/fa6";
 import { MdClose } from "react-icons/md";
 const Cart = ({}) => {
-  const { data , refetch } = useFetchUserCarts();
+  const { data, refetch } = useFetchUserCarts();
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(5);
   const [searchTerm, setSearchTerm] = useState("");
 
   const filteredData = useMemo(() => {
     return data?.filter((item) => {
-      const {package:p, ...rest} = item 
-      const flat = {...rest,...(p||{})}
+      const { package: p, ...rest } = item;
+      const flat = { ...rest, ...(p || {}) };
       return Object.keys(flat).some((key) => {
-        console.log(key)
         const value = flat[key as keyof CartSchema];
         return String(value).toLowerCase().includes(searchTerm.toLowerCase());
       });
@@ -49,7 +48,6 @@ const Cart = ({}) => {
 
   const handleItemsPerPage = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setItemsPerPage(parseInt(e.target.value, 10));
-     
   };
 
   const clearSearchTerm = () => {
@@ -58,7 +56,7 @@ const Cart = ({}) => {
   const { mutate } = useDeleteCart({
     onSuccess: () => {
       showDeleteAlert("Cart");
-      refetch()
+      refetch();
     },
   });
   const handleDeleteCart = (id: string) => {
@@ -129,7 +127,7 @@ const Cart = ({}) => {
                   {indexOfFirstItem + index + 1}
                 </td>
                 <td className="py-2 text-center">{item.id}</td>
-                <td className="py-2">{item.package.name }</td>
+                <td className="py-2">{item.package.name}</td>
                 <td className="flex justify-center items-center flex-wrap md:flex-nowrap gap-4 py-2  w font-normal">
                   <Link
                     href={`/web/package/${item.package_id}`}
@@ -146,7 +144,7 @@ const Cart = ({}) => {
                   </button>
                   <Tooltip content="delete" placement="bottom">
                     <button
-                      onClick={()=>handleDeleteCart(String(item.id))}
+                      onClick={() => handleDeleteCart(String(item.id))}
                       className="p-3  text-red-500 transition duration-300 ease-linear bg-white border border-red-500 rounded hover:bg-red-500 hover:text-white disabled:opacity-50"
                       aria-label={`Delete ${item.package_id}`}
                     >

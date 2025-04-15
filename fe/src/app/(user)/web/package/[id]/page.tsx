@@ -8,7 +8,6 @@ export default async function MoreInfo({
   params: Promise<{ id: string }>;
 }) {
   const id = (await params).id;
-  console.log(id);
 
   return (
     <ContentWrapper>

@@ -14,20 +14,20 @@ import { useParams } from "next/navigation";
 import { useState } from "react";
 
 export type FormReservationSchema = {
-  package?: string|null;
+  package?: string | null;
   min_capacity: number;
   day: number;
   price: number;
-  total_people: number|null;
+  total_people: number | null;
   package_order: string;
-  total_package: number|null;
+  total_package: number | null;
   check_in: string;
   check_in_time: string;
   check_out: string;
   check_out_time: string;
-  total_price_homestay: number|null;
-  total_price_reservation: number|null;
-  total_deposit: number|null;
+  total_price_homestay: number | null;
+  total_price_reservation: number | null;
+  total_deposit: number | null;
 };
 
 const CustomBooking = () => {
@@ -50,15 +50,14 @@ const CustomBooking = () => {
       scrollToTop();
     }
   };
-  const { mutate } = useCreateReservation({ 
-    onSuccess :()=>{
-      console.log()
-    }
+  const { mutate } = useCreateReservation({
+    onSuccess: () => {
+      console.log();
+    },
   });
-  const handleSubmit = (value:FormReservationSchema) => {
-    console.log(value)
-    mutate(value)
-    nextStep()
+  const handleSubmit = (value: FormReservationSchema) => {
+    mutate(value);
+    nextStep();
   };
   if (isLoading) return <Loading />;
   return (
@@ -69,9 +68,9 @@ const CustomBooking = () => {
         initialValues={{
           package_id: packageItem?.id,
           package: packageItem?.name,
-          min_capacity: packageItem?.min_capacity||0,
-          day: packageItem?.packageDays?.length ||1,
-          price: packageItem?.price||0,
+          min_capacity: packageItem?.min_capacity || 0,
+          day: packageItem?.packageDays?.length || 1,
+          price: packageItem?.price || 0,
           total_people: 0,
           package_order: "",
           total_package: 0,
@@ -84,7 +83,7 @@ const CustomBooking = () => {
           total_deposit: null,
           total_people_unit: null,
           total_people_homestay: "",
-          total_unit:null,
+          total_unit: null,
           selectedUnits: [],
         }}
       >

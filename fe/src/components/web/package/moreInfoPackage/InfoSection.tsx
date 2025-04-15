@@ -11,7 +11,7 @@ import { useGetPackage } from "@/features/web/package/useGetPackage";
 export const InfoSection = ({ id }: { id: string }) => {
   const { data, isLoading } = useGetPackage(id);
 
-  console.log(data);
+ 
 
   return (
     <>

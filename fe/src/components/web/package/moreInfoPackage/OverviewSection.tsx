@@ -24,7 +24,7 @@ export const OverviewSection = ({ data, isLoading }: Props) => {
       package_id: data.id,
     },
     onSubmit: async (values) => {
-      console.log(values);
+ 
       await mutate(values);
     },
   });

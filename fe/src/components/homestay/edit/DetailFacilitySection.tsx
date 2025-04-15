@@ -5,75 +5,89 @@ import { useCreateHomestayFacility } from "@/features/dashboard/facility/useCrea
 import { useDeleteDetailHomestayFacility } from "@/features/dashboard/facility/useDeleteDetailHomestayFacility";
 import { useFetchHomestayFacilities } from "@/features/dashboard/facility/useFetchHomestayFacilities";
 import { FetchHomestayProps } from "@/features/dashboard/homestay/useGetHomestay";
-import { confirmDeleteAlert, showCreateAlert, showDeleteAlert } from "@/utils/AlertUtils";
+import {
+  confirmDeleteAlert,
+  showCreateAlert,
+  showDeleteAlert,
+} from "@/utils/AlertUtils";
 import { useModal } from "@/utils/ModalUtils";
-import { CreateDetailFacilityHomestaySchema, CreateFacilityHomestaySchema, DeleteDetailFacilitySchema } from "@/validation/facilitySchema";
+import {
+  CreateDetailFacilityHomestaySchema,
+  CreateFacilityHomestaySchema,
+  DeleteDetailFacilitySchema,
+} from "@/validation/facilitySchema";
 import { Form, Formik } from "formik";
 import { FaTimes, FaTrashAlt } from "react-icons/fa";
 import { FaPlus } from "react-icons/fa6";
 
 type DetailFacilityProps = {
-    id : string
-    refetchHomestay: ()=>void
-    dataHomestay :  FetchHomestayProps
-}
+  id: string;
+  refetchHomestay: () => void;
+  dataHomestay: FetchHomestayProps;
+};
 
-export const DetailFacilitySection = ({id, refetchHomestay, dataHomestay}:DetailFacilityProps) => {
-    const {
-        isOpen: openFacility,
-        closeModal: closeFacility,
-        openModal: createFacility,
-      } = useModal();
-      const {
-        isOpen: openDetailFacility,
-        closeModal: closeDetailFacility,
-        openModal: createDetailFacility,
-      } = useModal();
-    const { data, refetch } = useFetchHomestayFacilities();
+export const DetailFacilitySection = ({
+  id,
+  refetchHomestay,
+  dataHomestay,
+}: DetailFacilityProps) => {
+  const {
+    isOpen: openFacility,
+    closeModal: closeFacility,
+    openModal: createFacility,
+  } = useModal();
+  const {
+    isOpen: openDetailFacility,
+    closeModal: closeDetailFacility,
+    openModal: createDetailFacility,
+  } = useModal();
+  const { data, refetch } = useFetchHomestayFacilities();
 
-    const facilityInitialValues = {
-        name: "",
-      };
-      const deatailFacilityInitialValues = {
-        homestay_id: id,
-        facility_homestay_id: "",
-        description: "",
-      };
+  const facilityInitialValues = {
+    name: "",
+  };
+  const deatailFacilityInitialValues = {
+    homestay_id: id,
+    facility_homestay_id: "",
+    description: "",
+  };
 
-    const { mutate: createHomestayFacility } = useCreateHomestayFacility({
-        onSuccess: async () => {
-          showCreateAlert("facility");
-          closeFacility();
-          refetch();
-        },
-      });
-    
-      const { mutate:createDetailHF } = useCreateDetailHomestayFacility({ 
-        onSuccess: () => {
-          showCreateAlert("facility detail");
-          closeDetailFacility();
-          refetchHomestay();
-        }
-       });
-    const handleFacilitySubmit = (values: CreateFacilityHomestaySchema) => {
-        createHomestayFacility(values);
-      };
-      const handleDetailFacilitySubmit = (
-        values: CreateDetailFacilityHomestaySchema
-      ) => {
-        console.log("form facility:", values);
-        createDetailHF(values)
-      };
-      const {mutate:deleteDetailHomesty} = useDeleteDetailHomestayFacility({
-        onSuccess: async () => {
-          showDeleteAlert("facility detail deleted");
-          refetchHomestay();
-        }
-     
-      })
-    const handleDeletedDetailHomestayFacility = (body:DeleteDetailFacilitySchema) => {
-        confirmDeleteAlert('Fasilitas',body.facility_homestay_id ,()=>deleteDetailHomesty(body) )
-      }
+  const { mutate: createHomestayFacility } = useCreateHomestayFacility({
+    onSuccess: async () => {
+      showCreateAlert("facility");
+      closeFacility();
+      refetch();
+    },
+  });
+
+  const { mutate: createDetailHF } = useCreateDetailHomestayFacility({
+    onSuccess: () => {
+      showCreateAlert("facility detail");
+      closeDetailFacility();
+      refetchHomestay();
+    },
+  });
+  const handleFacilitySubmit = (values: CreateFacilityHomestaySchema) => {
+    createHomestayFacility(values);
+  };
+  const handleDetailFacilitySubmit = (
+    values: CreateDetailFacilityHomestaySchema
+  ) => {
+    createDetailHF(values);
+  };
+  const { mutate: deleteDetailHomesty } = useDeleteDetailHomestayFacility({
+    onSuccess: async () => {
+      showDeleteAlert("facility detail deleted");
+      refetchHomestay();
+    },
+  });
+  const handleDeletedDetailHomestayFacility = (
+    body: DeleteDetailFacilitySchema
+  ) => {
+    confirmDeleteAlert("Fasilitas", body.facility_homestay_id, () =>
+      deleteDetailHomesty(body)
+    );
+  };
   return (
     <>
       <section className="bg-white rounde   d-xl p-4 space-y-4">
@@ -190,7 +204,7 @@ export const DetailFacilitySection = ({id, refetchHomestay, dataHomestay}:Detail
                   required
                 >
                   {data?.map((hf, index) => (
-                    <option key={index} value={hf.id}> 
+                    <option key={index} value={hf.id}>
                       {hf.name}
                     </option>
                   ))}
