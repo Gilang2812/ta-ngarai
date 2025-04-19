@@ -11,7 +11,7 @@ type Props = {
   showAirPlane: boolean;
 };
 
-export const AirplaneOverlays = ({ airplanes, showAirPlane }: Props) => {
+const AirplaneOverlays = ({ airplanes, showAirPlane }: Props) => {
   if (!showAirPlane) return null;
 
   return (
@@ -31,3 +31,4 @@ export const AirplaneOverlays = ({ airplanes, showAirPlane }: Props) => {
     </>
   );
 };
+export default AirplaneOverlays;

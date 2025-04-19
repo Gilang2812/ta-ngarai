@@ -1,11 +1,13 @@
-import { launchAirplanes } from "@/lib/launchAirPlanes";
-import { useEffect, useState } from "react";
-import { useGoToVillage } from "./useGoToVillage";
+import { useCallback, useEffect, useState } from "react";
 import { cities } from "@/data/cities";
+import { useLaunchAirplaness } from "@/lib/launchAirPlanes";
+import { smoothTransition } from "@/utils/map/SmoothTransition";
+import { LANDMARK_POSITION } from "@/lib/objectLandmark";
 
-export const useAirPlaneController = () => {
+export const useAirPlaneController = (
+  mapRef: React.MutableRefObject<google.maps.Map | null>
+) => {
   const [showAirPlane, setShowAirPlane] = useState(false);
-  const {mapRef,handleGoToVillage,smoothTransition}= useGoToVillage()
   const [airplanes, setAirplanes] = useState<
     Array<{
       id: number;
@@ -13,17 +15,22 @@ export const useAirPlaneController = () => {
       isActive: boolean;
     }>
   >([]);
+  const { launchAirplanes } = useLaunchAirplaness(mapRef, cities, setAirplanes);
 
-  const launchAllAirplanes = () => {
+  const launchAllAirplanes = useCallback(() => {
     setShowAirPlane((prev) => !prev);
-    launchAirplanes(mapRef, cities, setAirplanes, smoothTransition);
-  };
+    launchAirplanes();
+  }, [launchAirplanes]);
 
   useEffect(() => {
     if (!showAirPlane && mapRef.current) {
-      handleGoToVillage();
+      smoothTransition(mapRef, LANDMARK_POSITION, 6);
     }
-  }, [showAirPlane, mapRef, handleGoToVillage]);
+  }, [showAirPlane, mapRef]);
 
-  return {airplanes, launchAllAirplanes,showAirPlane,mapRef,handleGoToVillage};
+  return {
+    airplanes,
+    launchAllAirplanes,
+    showAirPlane,
+  };
 };

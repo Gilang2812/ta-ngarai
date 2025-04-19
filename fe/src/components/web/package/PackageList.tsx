@@ -4,8 +4,7 @@ import {
   FaRegClock,
   FaSquarePlus,
   FaUserGroup,
-} from "react-icons/fa6";
-import Image from "next/image";
+} from "react-icons/fa6"; 
 import { ImagePlaceHoldeSkeleton } from "@/components/loading/ImagePlaceHolderSkeleton";
 
 import { imageNotFound, imageUrl } from "@/lib/baseUrl";
@@ -16,6 +15,7 @@ import {
   useFetchPackages,
 } from "@/features/web/package/useFetchPackage";
 import { Tooltip } from "flowbite-react";
+import Img from "@/components/common/Img";
 export const PackageList = () => {
   const { data, isLoading } = useFetchPackages<PackageGallery>({
     package: true,
@@ -35,7 +35,7 @@ export const PackageList = () => {
           aria-labelledby="basic-package-title"
         >
           <figure className="w-44 basis-full grow md:grow-0 md:basis-[200px] min-w-[200px]  shrink rounded overflow-hidden aspect-[4/5]">
-            <Image
+            <Img
               src={
                 item?.packageGalleries?.[0]?.url
                   ? imageUrl + "package/" + item?.packageGalleries[0]?.url

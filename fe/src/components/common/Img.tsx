@@ -24,7 +24,7 @@ const Img = ({
     <Image
       src={imgSrc}
       {...props}
-      onError={() => setImgSrc("/images/Image_not_available.png")}
+      onError={() => setImgSrc(notFound)}
     />
   );
 };

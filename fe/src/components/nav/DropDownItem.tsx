@@ -23,11 +23,11 @@ export const DropDownItem = ({ icon: Icon, label, children }: NavProps) => {
           <Icon />
           {label}
         </span>
-        <BsChevronDown className={`${open ? "-rotate-180" : "rotate-0"} transition-linear`} />
+        <BsChevronDown className={`${open ? "-rotate-180 " : "rotate-0 "} transition-linear`} />
       </button>
       <div
         className={`px-4 ${
-          open ? "max-h-96  " : "max-h-0  "
+          open ? "max-h-96  " : "max-h-0  delay-[-100]"
         } transition-linear-10 overflow-hidden`}
       >
         {children}

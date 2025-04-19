@@ -11,7 +11,7 @@ type Props = {
   regions: Region[];
   showLabel: boolean;
 };
-export const  RegionLabel =({ regions, showLabel }: Props)=> {
+ const RegionLabel = ({ regions, showLabel }: Props) => {
   return (
     <>
       {regions?.map((region, index) => (
@@ -33,4 +33,5 @@ export const  RegionLabel =({ regions, showLabel }: Props)=> {
       ))}
     </>
   );
-}
+};
+export default RegionLabel;

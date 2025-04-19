@@ -5,30 +5,30 @@ export const TourismData = () => {
   const {data,isLoading } = useFetchTourism('KG01')
   if(isLoading)  return <RawSkeleton />;
   return (
-    <table className="  text-lg border-separate border-spacing-5">
+    <table className=" [&_th]:text-primary  text-sm border-separate border-spacing-5">
       <tbody className="text-left">
         <tr>
-          <td>Name</td>
+          <th>Name</th>
           <td>{data?.name}</td>
         </tr>
         <tr>
-          <td>Type of Tourism</td>
+          <th>Type of Tourism</th>
           <td>{data?.type_of_tourism}</td>
         </tr>
         <tr>
-          <td>Address</td>
+          <th>Address</th>
           <td>{data?.address}</td>
         </tr>
         <tr>
-          <td>Open</td>
+          <th>Open</th>
           <td>{data?.open}</td>
         </tr>
         <tr>
-          <td>Close</td>
+          <th>Close</th>
           <td>{data?.close}</td>
         </tr>
         <tr>
-          <td>Contact Person</td>
+          <th>Contact Person</th>
           <td>{data?.contact_person}</td>
         </tr>
       </tbody>

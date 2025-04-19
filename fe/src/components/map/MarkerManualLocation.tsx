@@ -4,7 +4,7 @@ import React from "react";
 type Props = {
   position: google.maps.LatLngLiteral | null;
 };
-export const MarkerManualLocation = ({ position }: Props) => {
+const MarkerManualLocation = ({ position }: Props) => {
   return (
     position && (
       <Marker animation={google.maps.Animation.DROP} position={position!}>
@@ -13,3 +13,5 @@ export const MarkerManualLocation = ({ position }: Props) => {
     )
   );
 };
+
+export default MarkerManualLocation;

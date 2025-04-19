@@ -1,41 +1,25 @@
-"use client";
-
 import MapControlPanelLayout from "@/layouts/MapControlPanelLayout";
-import MainControlPanelItems from "./MainControlPanelItems";
+import { AdvancedControlPanelProps } from "@/type/props";
+import React from "react";
 import AdvancedControlPanelItems from "./AdvancedControlPanelItems";
-import { AdvancedControlPanelProps, MainControlPanelProps } from "@/type/props";
 import { ToggleType } from "@/type/common/ToggleType";
 
-type Props = MainControlPanelProps & AdvancedControlPanelProps &ToggleType;
+type Props = AdvancedControlPanelProps&ToggleType;
 
-export default function MapControlPanel({
-  tracking,
-  handleLocateUser,
-  isClickMapActivce,
-  toggleManualLocation,
-  toggleLegend,
-  isShowLegend,
-  launchAllAirplanes,
-  showAirPlane,
+const AdvancedControlPanel = ({
   handleGoToVillage,
-  layers,
-  setLayers,
   handleShowAllLayers,
-  objects,
-  setObjects,
   handleShowAllObject,
+  launchAllAirplanes,
+  layers,
+  objects,
+  setLayers,
+  setObjects,
+  showAirPlane,
   togglePackage
-}: Props) {
+}: Props) => {
   return (
     <MapControlPanelLayout>
-      <MainControlPanelItems
-        handleLocateUser={handleLocateUser}
-        isClickMapActivce={isClickMapActivce}
-        isShowLegend={isShowLegend}
-        toggleLegend={toggleLegend}
-        toggleManualLocation={toggleManualLocation}
-        tracking={tracking}
-      />
       <AdvancedControlPanelItems
         handleGoToVillage={handleGoToVillage}
         handleShowAllLayers={handleShowAllLayers}
@@ -50,4 +34,6 @@ export default function MapControlPanel({
       />
     </MapControlPanelLayout>
   );
-}
+};
+
+export default AdvancedControlPanel;

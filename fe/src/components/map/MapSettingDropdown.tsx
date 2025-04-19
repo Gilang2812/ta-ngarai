@@ -1,5 +1,5 @@
 import React, { Dispatch, SetStateAction } from "react";
-import ButtonMapNavigation from "../common/ButtonMapNavigation";
+import ButtonMapNavigation from "../common/ButtonTooltip";
 import { Dropdown, DropdownItem } from "flowbite-react";
 import { MdArrowDropDown } from "react-icons/md";
 import { IconType } from "react-icons";

@@ -7,18 +7,14 @@ interface GeoJsonLayerProps {
   onClick?: (feature: google.maps.Data.Feature) => void;
   onRightClick?: (feature: google.maps.Data.Feature) => void;
 }
-export const GeoJsonLayer = ({
-  data,
-  onClick,
-  onRightClick,
-}: GeoJsonLayerProps) => {
+const GeoJsonLayer = ({ data, onClick, onRightClick }: GeoJsonLayerProps) => {
   const map = useGoogleMap();
   const stringToColor = (str: string) => {
     let hash = 0;
     for (let i = 0; i < str.length; i++) {
       hash = str.charCodeAt(i) + ((hash << 5) - hash);
     }
-    
+
     // Generate HSL dengan Hue acak, Saturation & Lightness tetap lembut
     const h = Math.abs(hash) % 360; // Hue (0-359)
     return `hsl(${h}, 70%, 80%)`; // Pastel
@@ -32,19 +28,19 @@ export const GeoJsonLayer = ({
 
     dataLayer.setStyle((feature) => {
       const type = feature.getProperty("type");
-      const name = feature.getProperty("name") || "indonesia";  
+      const name = feature.getProperty("name") || "indonesia";
       let fillColor = "#f94144";
       const strokeColor = "#fccfcf";
-      const fillOpacity = 0.4
-      const strokeWeight = 1
+      const fillOpacity = 0.4;
+      const strokeWeight = 1;
       if (type === "negara") {
-        fillColor = stringToColor(name.toString());   
+        fillColor = stringToColor(name.toString());
       }
 
       switch (type) {
         case "negara":
           return {
-            fillColor ,
+            fillColor,
             strokeColor,
             fillOpacity,
             strokeWeight,
@@ -104,3 +100,5 @@ export const GeoJsonLayer = ({
   }, [map, data, onClick, onRightClick]);
   return null;
 };
+
+export default GeoJsonLayer;

@@ -95,31 +95,6 @@ body {
 .transition-ease-out-10 {
   @apply transition-all duration-1000 ease-out;
 }
-.btn {
-  @apply flex items-center  gap-2  border rounded transition-ease-in-out;
-}
-.btn-primary {
-  @apply btn   px-3 py-2 font-normal bg-white text-primary border-primary w-fit hover:text-white hover:bg-secondary;
-}
-
-.btn-fill-primary {
-  @apply btn px-3 py-2 font-normal text-white  bg-primary w-fit hover:bg-secondary;
-}
-
-.btn-danger {
-  @apply btn px-3 py-2 font-normal text-white  bg-red-600 w-fit hover:text-white hover:bg-red-700;
-}
-
-.btn-success {
-  @apply btn px-3 py-2 font-normal text-white  bg-green-500 w-fit hover:text-white hover:bg-green-600;
-}
-.btn-regsuccess {
-  @apply btn px-3 py-2 font-normal bg-white border-green-600  text-green-600 w-fit  hover:text-white hover:bg-green-900;
-}
-
-.btn-secondary {
-  @apply btn px-3 py-2 font-normal text-white  bg-gray-300 w-fit hover:text-white hover:bg-gray-400;
-}
 
 .status {
   @apply rounded p-1 px-2 transition-ease-in-out italic cursor-pointer w-fit;

@@ -1,7 +1,8 @@
-import Image from "next/image";
+ 
 import { FaPlay } from "react-icons/fa";
 import Modal from "../modal/ModalVideo";
-import { useModal } from "@/utils/ModalUtils";
+import { useModal } from "@/utils/ModalUtils"; 
+import Image from "next/image";
 
 export default function WelcomeSection() {
   const { isOpen, openModal, closeModal } = useModal();
@@ -10,10 +11,11 @@ export default function WelcomeSection() {
       <Image
         src="/images/bg-header.jpg"
         alt="bg"
-        width={500}
-        height={500}
-        layout="reponsive"
-        className="w-full h-full bg-cover   "
+        // width={500}
+        // height={500} 
+        fill
+        priority
+        className="w-full h-full object-cover bg-cover   "
       /> 
       <section className="absolute inset-0 pr-52 px-20 leading-tight pt-12 text-wrap bg-black/70 text-white text-lpCustom gap-4 font-bold flex flex-col justify-center items-start">
         <h2 className="text-custom">Welcome to </h2>

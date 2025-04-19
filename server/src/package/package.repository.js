@@ -8,46 +8,13 @@ const {
   ServicePackage,
   PackageType,
 } = require("../../models/relation");
+const { getPackageIncludes } = require("../../utils/getPackgeInclude.js");
 
-const includes = [];
+ 
+ 
 
-const packageInclude = includes.push(
-  {
-    model: PackageDay,
-    required: true,
-    as: "packageDays",
-    include: {
-      model: DetailPackage,
-      as: "detailPackages",
-      where: Sequelize.where(
-        Sequelize.col("packageDays.day"),
-        Sequelize.col("packageDays->detailPackages.day")
-      ),
-    },
-  },
-  {
-    model: PackageType,
-    attributes: ["type_name"],
-    as: "type",
-  }
-);
-const galleryInclude = includes.push({
-  model: GalleryPackage,
-  as: "packageGalleries",
-});
-const serviceInclude = includes.push({
-  model: DetailServicePackage,
-  as: "detailServices",
-  include: {
-    model: ServicePackage,
-    as: "service",
-  },
-});
 const findAllPackage = async ({ package, gallery, service }) => {
-  package && packageInclude;
-  gallery && galleryInclude;
-  service && serviceInclude;
-
+const includes = getPackageIncludes({package,gallery,service})
   const packages = await Package.findAll({
     where: { status: 1 },
     include: includes,

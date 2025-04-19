@@ -1,4 +1,6 @@
+import { useCallback } from "react";
 import { LANDMARK_POSITION } from "./objectLandmark";
+import { smoothTransition } from "@/utils/map/SmoothTransition";
 
 type AirPlane = {
   id: number;
@@ -8,19 +10,21 @@ type AirPlane = {
 type City = {
   coords: google.maps.LatLngLiteral;
 };
-export const launchAirplanes = (
+export const useLaunchAirplaness = (
   mapRef: React.MutableRefObject<google.maps.Map | null>,
   cities: City[],
-  setAirplanes: React.Dispatch<React.SetStateAction<AirPlane[]>>,
-  smoothTransition:(target: google.maps.LatLngLiteral, zoom: number)=>void
+  setAirplanes: React.Dispatch<React.SetStateAction<AirPlane[]>>
 ) => {
-  smoothTransition(LANDMARK_POSITION, 5)
-  setAirplanes(
-    cities.map((city, index) => ({
-      id: index,
-      origin: city.coords,
-      isActive: true,
-    }))
-  );
+  const launchAirplanes = useCallback(() => {
+    smoothTransition(mapRef, LANDMARK_POSITION, 5);
+    setAirplanes(
+      cities.map((city, index) => ({
+        id: index,
+        origin: city.coords,
+        isActive: true,
+      }))
+    );
+  }, [cities, setAirplanes, mapRef]);
+
+  return { launchAirplanes };
 };
- 
