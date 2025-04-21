@@ -57,6 +57,7 @@ export default function MapWeb() {
     state: objects,
     setState: setObjects,
     toggleAllOptions: handleShowAllObject,
+    
   } = useToggleMapOptions(objectsData);
   const { toggleCheckBox } = useCheckBox();
   const { isLoading, mergedRegions } = useMapLayer(layers);
@@ -109,6 +110,7 @@ export default function MapWeb() {
           origin={userLocation || clickedPosition}
           onClick={handleManualLocation}
           mapTypeId={`${isTerrain ? "terrain" : "satellite"}`}
+          hideAllLayer = {hideAllLayers}
         >
           {mergedRegions && <GeoJsonLayer data={mergedRegions} />}
           {userLocation && <MapMarker position={userLocation} />}

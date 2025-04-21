@@ -1,17 +1,21 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import Image from "next/image";
-import React from "react";
+import React, { useState } from "react";
 import { DayButton } from "./DayButton";
-import { useFetchPackages } from "@/features/web/package/useFetchPackage";
+import {
+  Packages,
+  useFetchPackages,
+} from "@/features/web/package/useFetchPackage";
 import ButtonTooltip from "@/components/common/ButtonTooltip";
 import { FaRegCalendarAlt } from "react-icons/fa";
 import Loading from "@/app/loading";
 import Link from "next/link";
 
 // Main component
-export const Package = ({title}:{title:string}) => {
-  const { data, isLoading } = useFetchPackages({ package: true });
-  console.log(data)
+export const Package = ({ title }: { title: string }) => {
+  const { data, isLoading } = useFetchPackages<Packages>({ package: true });
+  const [buttonActive, setButtonActive] = useState<string | null>(null);
+
   if (isLoading) return <Loading />;
 
   const RenderPackage = () => {
@@ -32,20 +36,21 @@ export const Package = ({title}:{title:string}) => {
         <tr className="border-b ">
           <td className="flex gap-1 relative flex-wrap gap-y-2 p-2">
             <ButtonTooltip
-              label="Book Now" 
+              label="Book Now"
               className="rounded-none"
               variant="success"
               asChild
             >
-              <Link href={'/web/explore'}><FaRegCalendarAlt/></Link>
-            </ButtonTooltip> 
-            {item?.packageDays?.map((day, dayIndex) => (
-              <DayButton
-                key={dayIndex}
-                day={`  ${day.day} `}
-                activity={day.detailPackages}
-              />
-            ))}
+              <Link href={"/web/explore"}>
+                <FaRegCalendarAlt />
+              </Link>
+            </ButtonTooltip>
+
+            <DayButton
+              buttonActive={buttonActive}
+              setButtonActive={setButtonActive}
+              packageDays={item.packageDays}
+            />
           </td>
         </tr>
       </React.Fragment>
@@ -55,9 +60,7 @@ export const Package = ({title}:{title:string}) => {
   return (
     <div className="relative">
       <header className="space-y-8 mb-8 text-lg text-center">
-        <h1 className="text-xl text-wrap px-4 capitalize">
-          {title}
-        </h1>
+        <h1 className="text-xl text-wrap px-4 capitalize">{title}</h1>
       </header>
       <section className="relative max-h-[450px] overflow-auto  ">
         <table className="w-full table-auto overflow-auto  text-base capitalize">

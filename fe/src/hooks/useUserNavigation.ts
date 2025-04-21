@@ -28,10 +28,7 @@ export const useUserNavigation = (mapRef:React.MutableRefObject<google.maps.Map|
           lat: position.coords.latitude,
           lng: position.coords.longitude,
         };
-        console.log(
-          `Akurasi: ${position.coords.accuracy} meter\n` +
-            `Ketinggian: ${position.coords.altitudeAccuracy} meter`
-        );
+   
         setUserLocation((prevLocation) => {
           if (
             prevLocation &&

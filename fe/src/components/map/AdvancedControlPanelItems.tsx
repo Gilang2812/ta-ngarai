@@ -9,9 +9,11 @@ import {
 import ButtonMapNavigation from "../common/ButtonTooltip";
 import { MapSettingDropdown } from "./MapSettingDropdown";
 import { AdvancedControlPanelProps } from "@/type/props";
-import { ToggleType } from "@/type/common/ToggleType"; 
+import { ToggleType } from "@/type/common/ToggleType";
 import { useTools } from "@/hooks/useTools";
-type Props = AdvancedControlPanelProps &ToggleType;
+import { TbMapCancel } from "react-icons/tb";
+import { useDirectionStore } from "@/stores/DirectionStore";
+type Props = AdvancedControlPanelProps & ToggleType;
 
 const AdvancedControlPanelItems = ({
   handleGoToVillage,
@@ -23,9 +25,10 @@ const AdvancedControlPanelItems = ({
   setLayers,
   setObjects,
   showAirPlane,
-  togglePackage
+  togglePackage,
 }: Props) => {
-  const {open} = useTools()
+  const { open } = useTools();
+  const { direction, clearDirection } = useDirectionStore();
   return (
     <>
       <ButtonMapNavigation
@@ -59,8 +62,17 @@ const AdvancedControlPanelItems = ({
       <ButtonMapNavigation
         onClick={togglePackage}
         Icon={FaSquarePollHorizontal}
-        label={`${open?'close':'open'} package`}
+        label={`${open ? "close" : "open"} package`}
+        active={open}
       />
+      {!open && direction && (
+        <ButtonMapNavigation
+          label="Close Direction"
+          variant={"regDanger"}
+          Icon={TbMapCancel}
+          onClick={clearDirection}
+        />
+      )}
     </>
   );
 };

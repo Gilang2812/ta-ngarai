@@ -1,20 +1,18 @@
 "use client";
 
-import {
-  DirectionsRenderer,
+import { 
   GoogleMap,
   InfoWindow,
   useJsApiLoader,
-} from "@react-google-maps/api";
+} from "@react-google-maps/api"; 
 import MapSkeleton from "../loading/MapSkeleton";
 import { LANDMARK_POSITION } from "@/lib/objectLandmark";
-import { MapMarker } from "../map";
+import { MapMarker } from "../map"; 
+import { LatLngLiteral } from "@/type/common/MapType"; 
+import { ActivityDirections } from "../map/ActivityDirections";
 import { useCallback, useState } from "react";
-import { FaRoad, FaSpa } from "react-icons/fa6";
-import { useDirections } from "@/hooks/useDirection";
-import { LatLngLiteral } from "@/type/common/MapType";
-import { cornerAlert } from "@/utils/AlertUtils";
-import Button from "../common/Button";
+import { FaSpa } from "react-icons/fa6";
+import { DirectionToKotoGadangButton } from "../map/DirectionToKotoGadangButton";
 
 const containerStyle = {
   width: "100%",
@@ -24,47 +22,20 @@ const containerStyle = {
 type Props = React.ComponentProps<typeof GoogleMap> & {
   children?: React.ReactNode;
   origin?: LatLngLiteral | null;
+  hideAllLayer: () => void;
 };
 
-function MapLayout({ children, origin, ...props }: Props) {
+ 
+function MapLayout({ children, origin, hideAllLayer, ...props }: Props) {
+
   const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
-  const { isLoaded } = useJsApiLoader({
-    googleMapsApiKey: apiKey || "",
-  });
-  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const { isLoaded } = useJsApiLoader({ googleMapsApiKey: apiKey || "" });
+  const [isOpen, setIsOpen] = useState(false);
 
-  const toggleInfoWindow = useCallback(() => {
-    setIsOpen((prev) => !prev);
-  }, []);
+  const toggleInfoWindow = useCallback(() => setIsOpen((prev) => !prev), []);
 
-  const DirectionButton = () => {
-    const { directions, calculateDirections } = useDirections();
-    return (
-      <>
-        <Button
-        variant={'primary'}
-          onClick={() => {
-            if (!origin) {
-              return cornerAlert("set location first");
-            }
-            calculateDirections({
-              destination: LANDMARK_POSITION,
-              origin,
-            });
-          }}
-          className="p-2"
-          type="button"
-        >
-          <FaRoad />
-        </Button>
-        {directions && <DirectionsRenderer directions={directions} />}
-      </>
-    );
-  };
   if (!isLoaded) return <MapSkeleton />;
-  if (!apiKey) {
-    return <div>Google Maps API key is missing</div>;
-  }
+  if (!apiKey) return <div>Google Maps API key is missing</div>;
 
   return (
     <GoogleMap
@@ -72,9 +43,16 @@ function MapLayout({ children, origin, ...props }: Props) {
       center={LANDMARK_POSITION}
       zoom={6}
       mapTypeId="satellite"
+      options={{
+        disableDefaultUI: true,
+        zoomControl: true,
+        fullscreenControl: true,
+        mapTypeControl: true,
+        streetViewControl: true,
+        gestureHandling: "greedy",
+      }}
       {...props}
     >
-      <div>hello world</div>
       {children}
       <MapMarker
         icon={{
@@ -86,18 +64,19 @@ function MapLayout({ children, origin, ...props }: Props) {
       >
         {isOpen && (
           <InfoWindow onCloseClick={toggleInfoWindow}>
-            <article className=" space-y-2 p-2 rounded text-center [&_h3]:font-bold ">
+            <article className="space-y-2 p-2 rounded text-center [&_h3]:font-bold">
               <h3>Koto Gadang Tourism Village</h3>
               <section className="text-sm flex items-center justify-center">
                 <FaSpa />
                 <p>Tourism Village</p>
               </section>
               <section className="flex items-center justify-center">
-                <DirectionButton />
+                 <DirectionToKotoGadangButton origin={origin}   />
               </section>
             </article>
           </InfoWindow>
         )}
+        <ActivityDirections hideAllLayer={hideAllLayer} />
       </MapMarker>
     </GoogleMap>
   );

@@ -14,6 +14,7 @@ export const buttonVariants = cva(
           "bg-white text-primary border border-primary   hover:text-white hover:bg-secondary",
         danger:
           "text-white  bg-red-600 w-fit hover:text-white hover:bg-red-700",
+        regDanger: "text-red-600 border border-red-600 border-2 bg-red-600/10  hover:bg-red-600/70 hover:text-white ",
         success:
           "text-white  bg-green-600 w-fit hover:text-white hover:bg-green-800",
         regSuccess:
@@ -53,7 +54,7 @@ const Button = ({
       )}
       {...props}
     >
-      {props.children ??  (
+      {props.children ?? (
         <>
           {Icon && <Icon />}
           {text}

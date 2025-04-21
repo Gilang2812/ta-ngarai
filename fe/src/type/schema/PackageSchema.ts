@@ -1,3 +1,5 @@
+import {  MultiPolygon } from "geojson";
+
  
 export type PackageTypeSchema = {
   type_name: string;
@@ -35,6 +37,11 @@ export type PackageSchema ={
     object_id: string;
     description: string;
     status: number;
+    object:ObjectType
+  }
+  export type ObjectType = {
+    geom:MultiPolygon
+    geom_area:MultiPolygon
   }
   
   

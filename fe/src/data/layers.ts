@@ -1,6 +1,6 @@
 export const layersData= {
     country: true,
-    province: true,
+    province: false,
     city: true,
     district: true,
     village: true,
