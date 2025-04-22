@@ -22,7 +22,7 @@ export const ObjectArea = () => {
           },
         })),
     };
-    console.log(geo);
+
     const data = new google.maps.Data({ map });
     data.addGeoJson(geo);
 
@@ -37,7 +37,11 @@ export const ObjectArea = () => {
   return (
     objects.length > 0 &&
     objects.map((ob, index) => (
-      <MapMarker  key={index} label={{text:(index+1).toString(), color:'white'}}  position={getCentroid(ob.geom)} />
+      <MapMarker
+        key={index}
+        label={{ text: (index + 1).toString(), color: "white" }}
+        position={getCentroid(ob.geom)}
+      />
     ))
   );
 };

@@ -39,12 +39,15 @@ function MapLayout({ children, origin, hideAllLayer, ...props }: Props) {
       center={LANDMARK_POSITION}
       zoom={6} 
       mapTypeId="satellite"
+      
       options={{
         disableDefaultUI: true,
+        mapTypeId: "satellite",
         zoomControl: true,
         fullscreenControl: true,
         mapTypeControl: true,
         streetViewControl: true,
+        
         gestureHandling: "greedy",
       }}
       {...props}
