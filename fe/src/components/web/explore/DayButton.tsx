@@ -29,13 +29,14 @@ export const DayButton = ({
   buttonActive,
   setButtonActive,
 }: Props) => {
-  const { setObject, direction, setOption, clearObject, clearDirection } =
+  const { setObject, direction,objects, setOption, clearObject, clearDirection } =
     useDirectionStore();
 
   const handleAllDirection = (
     key: string,
     activities: DetailPackageSchema[]
   ) => {
+  
     clearDirection();
     clearObject();
     const object = activities.map((ac) => {
@@ -69,7 +70,10 @@ export const DayButton = ({
       clearObject();
       setButtonActive(null);
     } else {
-      setTimeout(() => {
+    console.log(direction||objects.length>0)
+    console.log(objects.length)
+    console.log(direction)
+      setTimeout(() => { 
         setObject(object as SimplifiedObject[]);
         setButtonActive(key);
       }, 5);
@@ -84,7 +88,7 @@ export const DayButton = ({
         onClick={() =>
           handleAllDirection(`${day.day}${day.package_id}`, day.detailPackages)
         }
-        active={!!direction && buttonActive === `${day.day}${day.package_id}`}
+        active={!!(objects.length>0) && buttonActive === `${day.day}${day.package_id}`}
       />
       <Dropdown
         className="px-4 py-2"
@@ -97,7 +101,7 @@ export const DayButton = ({
             label="activities"
             Icon={FaCaretDown}
             active={
-              !!direction &&
+              !!(direction||objects.length>0) &&
               buttonActive?.startsWith(`${day.day}${day.package_id}`)
             }
           />
