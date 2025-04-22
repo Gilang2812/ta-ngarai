@@ -1,16 +1,15 @@
 import { DirectionsRenderer, DirectionsService } from "@react-google-maps/api";
 import DirectionsPair from "./DirectionPair";
 import { useDirectionStore } from "@/stores/DirectionStore";
+import { getCentroid } from "@/utils/common/getCentroid";
 
-export const ActivityDirections = ({ hideAllLayer }: { hideAllLayer: () => void }) => {
-  const {
-    wayPoints,
-    direction,
-    origin,
-    destination,
-    setDirection,
-    clearOption,
-  } = useDirectionStore();
+export const ActivityDirections = ({
+  hideAllLayer,
+}: {
+  hideAllLayer: () => void;
+}) => {
+  const { objects, direction, origin, destination, setDirection, clearOption } =
+    useDirectionStore();
 
   const handleCallback = (
     result: google.maps.DirectionsResult | null,
@@ -22,7 +21,7 @@ export const ActivityDirections = ({ hideAllLayer }: { hideAllLayer: () => void 
     }
     clearOption();
   };
-
+  const wayPoints = objects.map((ob) => getCentroid(ob.geom));
   return (
     <>
       {origin && destination && (
@@ -44,6 +43,7 @@ export const ActivityDirections = ({ hideAllLayer }: { hideAllLayer: () => void 
           return (
             <DirectionsPair
               key={index}
+              hideAllLayer={hideAllLayer}
               destination={wayPoints[index]}
               origin={wayPoints[index - 1]}
             />

@@ -1,7 +1,17 @@
 import Button from "@/components/common/Button";
 import ButtonTooltip from "@/components/common/ButtonTooltip";
 import { useDirectionStore } from "@/stores/DirectionStore";
-import { DetailPackageSchema, PackageDay } from "@/type/schema/PackageSchema";
+import {
+  AttractionSchema,
+  CulinaryPlace,
+  DetailPackageSchema,
+  Facility,
+  PackageDay,
+  SimplifiedObject,
+  SouvenirPlaceSchema,
+  TraditionalHouse,
+  WorshipPlaceSchema,
+} from "@/type/schema/PackageSchema";
 import { getCentroid } from "@/utils/common/getCentroid";
 import { Dispatch, SetStateAction } from "react";
 import { Dropdown } from "flowbite-react";
@@ -19,22 +29,51 @@ export const DayButton = ({
   buttonActive,
   setButtonActive,
 }: Props) => {
-  const { direction, setOption, clearWayPoints, clearDirection, setwayPoints } =
+  const { setObject, direction, setOption, clearObject, clearDirection } =
     useDirectionStore();
 
   const handleAllDirection = (
     key: string,
     activities: DetailPackageSchema[]
   ) => {
-    const wayPoint = activities.map((ac) => getCentroid(ac.object.geom));
-    console.log(wayPoint);
     clearDirection();
+    clearObject();
+    const object = activities.map((ac) => {
+      if (ac.activity_type === "A") {
+        const { geom, geom_area, name, type, price } =
+          ac.object as AttractionSchema;
+        return { geom, geom_area, name, type, price };
+      } else if (ac.activity_type === "CP") {
+        const { geom, geom_area, name, contact_person, address } =
+          ac.object as CulinaryPlace;
+        return { geom, geom_area, name, contact_person, address };
+      } else if (ac.activity_type === "FC") {
+        const { geom, geom_area, name, price } = ac.object as Facility;
+        return { geom, geom_area, name, price };
+      } else if (ac.activity_type === "SP") {
+        const { geom, geom_area, name, contact_person, address } =
+          ac.object as SouvenirPlaceSchema;
+        return { geom, geom_area, name, contact_person, address };
+      } else if (ac.activity_type === "TH") {
+        const { geom, geom_area, name, contact_person, address } =
+          ac.object as TraditionalHouse;
+        return { geom, geom_area, name, contact_person, address };
+      } else if (ac.activity_type === "WO") {
+        const { geom, geom_area, name, capacity, address } =
+          ac.object as WorshipPlaceSchema;
+        return { geom, geom_area, name, capacity, address };
+      }
+    });
     if (key === buttonActive) {
+      clearDirection();
+      clearObject();
       setButtonActive(null);
     } else {
-      setButtonActive(key);
+      setTimeout(() => {
+        setObject(object as SimplifiedObject[]);
+        setButtonActive(key);
+      }, 5);
     }
-    setwayPoints(wayPoint);
   };
 
   return packageDays.map((day, index) => (
@@ -75,7 +114,7 @@ export const DayButton = ({
             <Button
               key={index}
               onClick={() => {
-                clearWayPoints();
+                clearObject();
                 setOption(
                   getCentroid(ac.object.geom),
                   getCentroid(next.object.geom)

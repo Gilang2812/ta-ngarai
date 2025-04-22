@@ -28,7 +28,8 @@ const AdvancedControlPanelItems = ({
   togglePackage,
 }: Props) => {
   const { open } = useTools();
-  const { direction, clearDirection } = useDirectionStore();
+  const { direction, clearDirection, objects:PackageObject, clearObject } =
+    useDirectionStore();
   return (
     <>
       <ButtonMapNavigation
@@ -65,12 +66,15 @@ const AdvancedControlPanelItems = ({
         label={`${open ? "close" : "open"} package`}
         active={open}
       />
-      {!open && direction && (
+      {!open && (direction||PackageObject.length>0) && (
         <ButtonMapNavigation
           label="Close Direction"
           variant={"regDanger"}
           Icon={TbMapCancel}
-          onClick={clearDirection}
+          onClick={() => {
+            clearDirection();
+            clearObject();
+          }}
         />
       )}
     </>

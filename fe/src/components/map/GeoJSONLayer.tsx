@@ -14,10 +14,8 @@ const GeoJsonLayer = ({ data, onClick, onRightClick }: GeoJsonLayerProps) => {
     for (let i = 0; i < str.length; i++) {
       hash = str.charCodeAt(i) + ((hash << 5) - hash);
     }
-
-    // Generate HSL dengan Hue acak, Saturation & Lightness tetap lembut
-    const h = Math.abs(hash) % 360; // Hue (0-359)
-    return `hsl(${h}, 70%, 80%)`; // Pastel
+    const h = Math.abs(hash) % 360;
+    return `hsl(${h}, 70%, 80%)`;
   };
 
   useEffect(() => {

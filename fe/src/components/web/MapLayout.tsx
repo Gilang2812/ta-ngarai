@@ -1,18 +1,15 @@
 "use client";
 
-import { 
-  GoogleMap,
-  InfoWindow,
-  useJsApiLoader,
-} from "@react-google-maps/api"; 
+import { GoogleMap, InfoWindow, useJsApiLoader } from "@react-google-maps/api";
 import MapSkeleton from "../loading/MapSkeleton";
 import { LANDMARK_POSITION } from "@/lib/objectLandmark";
-import { MapMarker } from "../map"; 
-import { LatLngLiteral } from "@/type/common/MapType"; 
+import { MapMarker } from "../map";
+import { LatLngLiteral } from "@/type/common/MapType";
 import { ActivityDirections } from "../map/ActivityDirections";
 import { useCallback, useState } from "react";
 import { FaSpa } from "react-icons/fa6";
-import { DirectionToKotoGadangButton } from "../map/DirectionToKotoGadangButton";
+import { DirectionToKotoGadangButton } from "../map/DirectionToKotoGadangButton"; 
+import { ObjectArea } from "../map/ObjectArea";
 
 const containerStyle = {
   width: "100%",
@@ -25,8 +22,7 @@ type Props = React.ComponentProps<typeof GoogleMap> & {
   hideAllLayer: () => void;
 };
 
- 
-function MapLayout({ children, origin, hideAllLayer, ...props }: Props) {
+function MapLayout({ children, origin, hideAllLayer, ...props }: Props) { 
 
   const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
   const { isLoaded } = useJsApiLoader({ googleMapsApiKey: apiKey || "" });
@@ -41,7 +37,7 @@ function MapLayout({ children, origin, hideAllLayer, ...props }: Props) {
     <GoogleMap
       mapContainerStyle={containerStyle}
       center={LANDMARK_POSITION}
-      zoom={6}
+      zoom={6} 
       mapTypeId="satellite"
       options={{
         disableDefaultUI: true,
@@ -71,11 +67,12 @@ function MapLayout({ children, origin, hideAllLayer, ...props }: Props) {
                 <p>Tourism Village</p>
               </section>
               <section className="flex items-center justify-center">
-                 <DirectionToKotoGadangButton origin={origin}   />
+                <DirectionToKotoGadangButton origin={origin} />
               </section>
             </article>
           </InfoWindow>
         )}
+        <ObjectArea />
         <ActivityDirections hideAllLayer={hideAllLayer} />
       </MapMarker>
     </GoogleMap>

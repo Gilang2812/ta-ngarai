@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
-import { DirectionsRenderer, DirectionsService } from '@react-google-maps/api';
+import React, { useState } from "react";
+import { DirectionsRenderer, DirectionsService } from "@react-google-maps/api";
 
 type Props = {
   origin: google.maps.LatLngLiteral;
   destination: google.maps.LatLngLiteral;
   travelMode?: google.maps.TravelMode;
   options?: google.maps.DirectionsRendererOptions;
+  hideAllLayer: () => void;
 };
 
 const DirectionsPair: React.FC<Props> = ({
@@ -13,27 +14,29 @@ const DirectionsPair: React.FC<Props> = ({
   destination,
   travelMode = google.maps.TravelMode.DRIVING,
   options,
+  hideAllLayer,
 }) => {
-  const [response, setResponse] = useState<google.maps.DirectionsResult | null>(null);
+  const [response, setResponse] = useState<google.maps.DirectionsResult | null>(
+    null
+  );
 
   return (
     <>
       {!response && (
         <DirectionsService
-        
           options={{
             origin,
             destination,
             travelMode,
             avoidTolls: true,
             avoidHighways: false,
-            
           }}
           callback={(res, status) => {
-            if (status === 'OK' && res) {
+            if (status === "OK" && res) {
+              hideAllLayer();
               setResponse(res);
             } else {
-              console.error('Directions request failed:', status);
+              console.error("Directions request failed:", status);
             }
           }}
         />
@@ -44,9 +47,9 @@ const DirectionsPair: React.FC<Props> = ({
           directions={response}
           options={{
             suppressMarkers: true,
-            
+
             polylineOptions: {
-              strokeColor: '#435ebe',
+              strokeColor: "#435ebe",
               strokeWeight: 5,
             },
             ...options,

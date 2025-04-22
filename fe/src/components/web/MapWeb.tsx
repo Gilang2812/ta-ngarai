@@ -25,7 +25,7 @@ import {
 } from "@/hooks";
 import { useGoToLocation } from "@/hooks/useGoToVillage";
 import { useRef } from "react";
-import { useTools } from "@/hooks/useTools";
+import { useTools } from "@/hooks/useTools"; 
 
 export default function MapWeb() {
   const { toggleOpen: togglePackage } = useTools();
@@ -41,12 +41,8 @@ export default function MapWeb() {
   const { airplanes, launchAllAirplanes, showAirPlane } =
     useAirPlaneController(mapRef);
   const { isShowLegend, toggleLegend } = useShowLegend();
-  const { 
-    handleLocateUser,
-    locationError,
-    tracking,
-    userLocation,
-  } = useUserNavigation(mapRef);
+  const { handleLocateUser, locationError, tracking, userLocation } =
+    useUserNavigation(mapRef);
   const {
     state: layers,
     setState: setLayers,
@@ -57,7 +53,6 @@ export default function MapWeb() {
     state: objects,
     setState: setObjects,
     toggleAllOptions: handleShowAllObject,
-    
   } = useToggleMapOptions(objectsData);
   const { toggleCheckBox } = useCheckBox();
   const { isLoading, mergedRegions } = useMapLayer(layers);
@@ -106,11 +101,12 @@ export default function MapWeb() {
         <MapLayout
           onLoad={(map) => {
             mapRef.current = map;
+
           }}
           origin={userLocation || clickedPosition}
           onClick={handleManualLocation}
           mapTypeId={`${isTerrain ? "terrain" : "satellite"}`}
-          hideAllLayer = {hideAllLayers}
+          hideAllLayer={hideAllLayers}
         >
           {mergedRegions && <GeoJsonLayer data={mergedRegions} />}
           {userLocation && <MapMarker position={userLocation} />}
