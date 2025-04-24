@@ -1,10 +1,9 @@
 import MapControlPanelLayout from "@/layouts/MapControlPanelLayout";
 import { AdvancedControlPanelProps } from "@/type/props";
 import React from "react";
-import AdvancedControlPanelItems from "./AdvancedControlPanelItems";
-import { ToggleType } from "@/type/common/ToggleType";
+import AdvancedControlPanelItems from "./AdvancedControlPanelItems"; 
 
-type Props = AdvancedControlPanelProps&ToggleType;
+type Props = AdvancedControlPanelProps 
 
 const AdvancedControlPanel = ({
   handleGoToVillage,
@@ -15,8 +14,7 @@ const AdvancedControlPanel = ({
   objects,
   setLayers,
   setObjects,
-  showAirPlane,
-  togglePackage
+  showAirPlane, 
 }: Props) => {
   return (
     <MapControlPanelLayout>
@@ -29,8 +27,7 @@ const AdvancedControlPanel = ({
         objects={objects}
         setLayers={setLayers}
         setObjects={setObjects}
-        showAirPlane={showAirPlane}
-        togglePackage={togglePackage}
+        showAirPlane={showAirPlane} 
       />
     </MapControlPanelLayout>
   );

@@ -1,10 +1,12 @@
-const { DataTypes } = require('sequelize');
-const sequelize = require('../config/db');
+const { DataTypes } = require("sequelize");
+const sequelize = require("../config/db");
 
-const TraditionalHouse = sequelize.define('TraditionalHouse', {
+const TraditionalHouse = sequelize.define(
+  "TraditionalHouse",
+  {
     id: {
-        type: DataTypes.STRING,
-        primaryKey: true,
+      type: DataTypes.STRING,
+      primaryKey: true,
     },
     name: DataTypes.STRING(255),
     address: DataTypes.STRING(255),
@@ -18,9 +20,11 @@ const TraditionalHouse = sequelize.define('TraditionalHouse', {
     status: DataTypes.TINYINT,
     video_url: DataTypes.TEXT,
     geom: DataTypes.GEOMETRY,
-}, {
-    tableName: 'traditional_house',
+  },
+  {
+    tableName: "traditional_house",
     timestamps: false,
-});
+  }
+);
 
 module.exports = { TraditionalHouse };

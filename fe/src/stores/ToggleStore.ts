@@ -1,12 +1,14 @@
 import { create } from "zustand";
 
+type ToggleType = "default" | "around" | "package";
+
 type ToggleStore = {
-  open: boolean;
-  toggleOpen: () => void;
+  open: ToggleType;
+  toggleOpen: (open: ToggleType) => void;
+  
 };
 
 export const useToggleStore = create<ToggleStore>((set) => ({
-  open: false,
-  toggleOpen: () => set((state) => ({ open: !state.open })),
+  open: "default",
+  toggleOpen: (open) => set({ open }),
 }));
- 

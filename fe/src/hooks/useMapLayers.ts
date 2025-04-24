@@ -4,14 +4,13 @@ import { useFetchKecamatan } from "@/features/map/useFetchKecamatan";
 import { useFetchProvince } from "@/features/map/useFetchProvince";
 import { useFetchVillage } from "@/features/map/useFetchVillage";
 import { useMergeGeoJSON } from "./useMergeGeoJSON";
+import { layerType } from "@/data/layers";
 
-export const useMapLayer = (layers: Record<string, boolean>) => {
+export const useMapLayer = (layers: layerType) => {
   const { data: country, isLoading: isCountryLoading } = useFetchCountry(
     layers.country
   );
-  const { data: province, isLoading: isProvinceLoading } = useFetchProvince(
-    layers.province
-  );
+  const { data: province, isLoading: isProvinceLoading } = useFetchProvince();
   const { data: kabKota, isLoading: isKabKotaLoading } = useFetchKabKota(
     layers.city
   );

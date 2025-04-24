@@ -1,12 +1,13 @@
 "use client";
 
-import { ButtonPrimary } from "@/components/common/ButtonPrimary";
 import { useState } from "react";
-import { FaCircleXmark, FaCompass } from "react-icons/fa6";
 import { Around } from "@/components/web/explore/Around";
 import { Package } from "@/components/web/explore/Package";
+import { motion } from "framer-motion";
+import { fadeMotion } from "@/utils/common/motionVariants";
+import { ButtonSearchArround } from "@/components/common/ButtonSearchArround";
 
-export const PackageSection = () => {
+export const PackageSection = ({ title }: { title: string }) => {
   const [search, setSearch] = useState(false);
 
   const handleSearchToggle = () => {
@@ -14,21 +15,20 @@ export const PackageSection = () => {
   };
 
   return (
-    <article className="col-span-4 p-5 bg-white rounded-lg">
-      {search ? <Around /> : <Package title="explore village with our package" />}
-      <footer className="pt-6">
-        <ButtonPrimary onClick={handleSearchToggle} expanded={search}>
-          {search ? (
-            <>
-              <FaCircleXmark /> Close
-            </>
-          ) : (
-            <>
-              <FaCompass /> Explore Around
-            </>
-          )}
-        </ButtonPrimary>
-      </footer>
-    </article>
+    <motion.article
+      className="col-span-4 p-5 bg-white rounded-lg"
+      {...fadeMotion}
+    >
+      {search ? (
+        <Around handleCloseAround={handleSearchToggle} isAroundOpen={search} />
+      ) : (
+        <>
+          <Package title={title} />
+          <footer className="pt-6">
+            <ButtonSearchArround onClick={handleSearchToggle} search={search} />
+          </footer>
+        </>
+      )}
+    </motion.article>
   );
 };

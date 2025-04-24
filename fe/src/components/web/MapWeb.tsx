@@ -25,10 +25,9 @@ import {
 } from "@/hooks";
 import { useGoToLocation } from "@/hooks/useGoToVillage";
 import { useRef } from "react";
-import { useTools } from "@/hooks/useTools"; 
+import { layerType } from "@/data/layers";
 
 export default function MapWeb() {
-  const { toggleOpen: togglePackage } = useTools();
   const mapRef = useRef<google.maps.Map | null>(null);
   const { isTerrain, setIsTerrain, setShowLabel, showLabel } = useMapTools();
   const {
@@ -55,7 +54,7 @@ export default function MapWeb() {
     toggleAllOptions: handleShowAllObject,
   } = useToggleMapOptions(objectsData);
   const { toggleCheckBox } = useCheckBox();
-  const { isLoading, mergedRegions } = useMapLayer(layers);
+  const { isLoading, mergedRegions } = useMapLayer(layers as layerType);
 
   if (isLoading) return <MapSkeletonLoader />;
 
@@ -94,19 +93,20 @@ export default function MapWeb() {
         objects={objects}
         setObjects={setObjects}
         handleShowAllObject={handleShowAllObject}
-        togglePackage={togglePackage}
       />
       <div className="relative">
         <MapLegend isOpen={isShowLegend} />
         <MapLayout
           onLoad={(map) => {
             mapRef.current = map;
-
           }}
           origin={userLocation || clickedPosition}
           onClick={handleManualLocation}
           mapTypeId={`${isTerrain ? "terrain" : "satellite"}`}
-          hideAllLayer={hideAllLayers}
+          options={{
+            mapTypeId: `${isTerrain ? "terrain" : "satellite"}`,
+          }}
+          hideAllLayer={hideAllLayers} 
         >
           {mergedRegions && <GeoJsonLayer data={mergedRegions} />}
           {userLocation && <MapMarker position={userLocation} />}

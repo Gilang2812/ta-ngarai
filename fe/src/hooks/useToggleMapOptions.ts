@@ -1,29 +1,31 @@
-import { useCallback, useState } from "react";
+import { useCallback, useState } from "react"; 
 
-export const useToggleMapOptions = (initialState: Record<string, boolean>) => {
-  const [state, setState] = useState(initialState);
+// Generic hook yang menerima tipe state boolean object (layerType atau ObjectDataType)
+export const useToggleMapOptions = <T extends Record<string, boolean>>(initialState: T) => {
+  const [state, setState] = useState<T>(initialState);
 
   const toggleAllOptions = useCallback(() => {
-    const allToggled = Object.fromEntries(
-      Object.entries(state).map(([keyframes, value]) => [keyframes, !value])
-    );
+    const toggledState = Object.fromEntries(
+      Object.entries(state).map(([key, value]) => [key, !value])
+    ) as T;
 
-    setState(allToggled);
+    setState(toggledState);
   }, [state]);
 
   const checkAllOptions = useCallback(() => {
-    const allToggled = Object.fromEntries(
-      Object.entries(state).map(([keyframes]) => [keyframes, true])
-    );
+    const checkedState = Object.fromEntries(
+      Object.keys(state).map((key) => [key, true])
+    ) as T;
 
-    setState(allToggled);
+    setState(checkedState);
   }, [state]);
-  const unCheckAllOptions = useCallback(() => {
-    const allToggled = Object.fromEntries(
-      Object.entries(state).map(([keyframes]) => [keyframes, false])
-    );
 
-    setState(allToggled);
+  const unCheckAllOptions = useCallback(() => {
+    const uncheckedState = Object.fromEntries(
+      Object.keys(state).map((key) => [key, false])
+    ) as T;
+
+    setState(uncheckedState);
   }, [state]);
 
   return {

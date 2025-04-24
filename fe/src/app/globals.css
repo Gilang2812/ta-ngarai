@@ -154,3 +154,113 @@ body {
     opacity: 1;
   }
 }
+
+input[type="range"] {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-color: transparent;
+  height: 1.5rem;
+  padding: 0;
+  width: 100%;
+}
+
+input[type="range"]:focus {
+  outline: 0;
+}
+
+input[type="range"]:focus::-webkit-slider-thumb {
+  box-shadow: 0 0 0 1px #f2f7ff, 0 0 0 0.25rem rgba(67, 94, 190, 0.25);
+}
+
+input[type="range"]:focus::-moz-range-thumb {
+  box-shadow: 0 0 0 1px #f2f7ff, 0 0 0 0.25rem rgba(67, 94, 190, 0.25);
+}
+
+input[type="range"]::-moz-focus-outer {
+  border: 0;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  background-color: #435ebe;
+  border: 0;
+  border-radius: 1rem;
+  height: 1rem;
+  margin-top: -0.25rem;
+  -webkit-transition: background-color 0.15s ease-in-out,
+    border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out,
+    box-shadow 0.15s ease-in-out;
+  width: 1rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-transition: none;
+    transition: none;
+  }
+}
+
+input[type="range"]::-webkit-slider-thumb:active {
+  background-color: #c7cfec;
+}
+
+input[type="range"]::-webkit-slider-runnable-track {
+  background-color: #dee2e6;
+  border-color: transparent;
+  border-radius: 1rem;
+  color: transparent;
+  cursor: pointer;
+  height: 0.5rem;
+  width: 100%;
+}
+
+input[type="range"]::-moz-range-thumb {
+  -moz-appearance: none;
+  appearance: none;
+  background-color: #435ebe;
+  border: 0;
+  border-radius: 1rem;
+  height: 1rem;
+  -moz-transition: background-color 0.15s ease-in-out,
+    border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out,
+    box-shadow 0.15s ease-in-out;
+  width: 1rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  input[type="range"]::-moz-range-thumb {
+    -moz-transition: none;
+    transition: none;
+  }
+}
+
+input[type="range"]::-moz-range-thumb:active {
+  background-color: #c7cfec;
+}
+
+input[type="range"]::-moz-range-track {
+  background-color: #dee2e6;
+  border-color: transparent;
+  border-radius: 1rem;
+  color: transparent;
+  cursor: pointer;
+  height: 0.5rem;
+  width: 100%;
+}
+
+input[type="range"]:disabled {
+  pointer-events: none;
+}
+
+input[type="range"]:disabled::-webkit-slider-thumb {
+  background-color: #adb5bd;
+}
+
+input[type="range"]:disabled::-moz-range-thumb {
+  background-color: #adb5bd;
+}
+

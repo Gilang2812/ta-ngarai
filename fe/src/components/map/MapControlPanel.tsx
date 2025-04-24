@@ -3,11 +3,8 @@
 import MapControlPanelLayout from "@/layouts/MapControlPanelLayout";
 import MainControlPanelItems from "./MainControlPanelItems";
 import AdvancedControlPanelItems from "./AdvancedControlPanelItems";
-import { AdvancedControlPanelProps, MainControlPanelProps } from "@/type/props";
-import { ToggleType } from "@/type/common/ToggleType";
-
-type Props = MainControlPanelProps & AdvancedControlPanelProps &ToggleType;
-
+import { AdvancedControlPanelProps, MainControlPanelProps } from "@/type/props"; 
+type Props = MainControlPanelProps & AdvancedControlPanelProps  
 export default function MapControlPanel({
   tracking,
   handleLocateUser,
@@ -23,8 +20,7 @@ export default function MapControlPanel({
   handleShowAllLayers,
   objects,
   setObjects,
-  handleShowAllObject,
-  togglePackage
+  handleShowAllObject, 
 }: Props) {
   return (
     <MapControlPanelLayout>
@@ -45,8 +41,7 @@ export default function MapControlPanel({
         objects={objects}
         setLayers={setLayers}
         setObjects={setObjects}
-        showAirPlane={showAirPlane}
-        togglePackage={togglePackage}
+        showAirPlane={showAirPlane} 
       />
     </MapControlPanelLayout>
   );

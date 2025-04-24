@@ -1,6 +1,5 @@
 'use client'
- 
-import { ButtonPrimary } from "@/components/common/ButtonPrimary"; 
+  
 import { useState } from "react";
 import { FaCircleXmark, FaCompass } from "react-icons/fa6";
 import { Around } from "@/components/web/explore/Around";
@@ -15,19 +14,9 @@ export const PackageSection = () => {
 
   return (
     <article className="col-span-4 p-5 bg-white rounded-lg">
-        {search?<Around />:<Package />} 
+        {search?<Around handleCloseAround={handleSearchToggle} isAroundOpen={search} />:<Package />} 
       <footer className="pt-6">
-        <ButtonPrimary onClick={handleSearchToggle} expanded={search}>
-          {search ? (
-            <>
-              <FaCircleXmark /> Close
-            </>
-          ) : (
-            <>
-              <FaCompass /> Explore Around
-            </>
-          )}
-        </ButtonPrimary>
+      
       </footer>
     </article>
   );

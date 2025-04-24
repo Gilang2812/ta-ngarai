@@ -8,8 +8,9 @@ import { LatLngLiteral } from "@/type/common/MapType";
 import { ActivityDirections } from "../map/ActivityDirections";
 import { useCallback, useState } from "react";
 import { FaSpa } from "react-icons/fa6";
-import { DirectionToKotoGadangButton } from "../map/DirectionToKotoGadangButton"; 
+import { DirectionToKotoGadangButton } from "../map/DirectionToKotoGadangButton";
 import { ObjectArea } from "../map/ObjectArea";
+import { ObjectAround } from "../map/ObjectAround";
 
 const containerStyle = {
   width: "100%",
@@ -19,11 +20,15 @@ const containerStyle = {
 type Props = React.ComponentProps<typeof GoogleMap> & {
   children?: React.ReactNode;
   origin?: LatLngLiteral | null;
-  hideAllLayer: () => void;
+  hideAllLayer: () => void; 
 };
 
-function MapLayout({ children, origin, hideAllLayer, ...props }: Props) { 
-
+function MapLayout({
+  children,
+  origin, 
+  hideAllLayer,
+  ...props
+}: Props) { 
   const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
   const { isLoaded } = useJsApiLoader({ googleMapsApiKey: apiKey || "" });
   const [isOpen, setIsOpen] = useState(false);
@@ -37,9 +42,8 @@ function MapLayout({ children, origin, hideAllLayer, ...props }: Props) {
     <GoogleMap
       mapContainerStyle={containerStyle}
       center={LANDMARK_POSITION}
-      zoom={6} 
+      zoom={6}
       mapTypeId="satellite"
-      
       options={{
         disableDefaultUI: true,
         mapTypeId: "satellite",
@@ -47,7 +51,7 @@ function MapLayout({ children, origin, hideAllLayer, ...props }: Props) {
         fullscreenControl: true,
         mapTypeControl: true,
         streetViewControl: true,
-        
+
         gestureHandling: "greedy",
       }}
       {...props}
@@ -76,10 +80,11 @@ function MapLayout({ children, origin, hideAllLayer, ...props }: Props) {
           </InfoWindow>
         )}
         <ObjectArea />
+        <ObjectAround />
         <ActivityDirections hideAllLayer={hideAllLayer} />
       </MapMarker>
     </GoogleMap>
   );
 }
-
+MapLayout.displayName= 'MapLayout'
 export default MapLayout;

@@ -1,4 +1,10 @@
-import { useState } from 'react';
+import { ButtonSearchArround } from "@/components/common/ButtonSearchArround";
+import { CheckBoxLabel } from "@/components/common/CheckBoxLabel"; 
+import { useUserPositionStore } from "@/stores/UserPositionStore";
+import { fadeMotion } from "@/utils/common/motionVariants";
+import { motion } from "framer-motion";
+import { ChangeEvent, useState } from "react";
+import Swal from "sweetalert2";
 
 type ObjectAroundProps = {
   lakeSingkarak: boolean;
@@ -7,9 +13,14 @@ type ObjectAroundProps = {
   culinaryPlace: boolean;
   souvenirPlace: boolean;
   worshipPlace: boolean;
-}
+};
 
-export const Around = () => {
+type AroundProps = {
+  handleCloseAround: () => void;
+  isAroundOpen: boolean;
+};
+
+export const Around = ({ handleCloseAround, isAroundOpen }: AroundProps) => {
   const [selectedOptions, setSelectedOptions] = useState<ObjectAroundProps>({
     lakeSingkarak: false,
     rumahGadang: false,
@@ -18,7 +29,19 @@ export const Around = () => {
     souvenirPlace: false,
     worshipPlace: false,
   });
-  const [radius, setRadius] = useState(0);
+ 
+  const { userPosition,radius,setRadius } = useUserPositionStore();
+  const handleArroundChange = (e: ChangeEvent<HTMLInputElement>) => {
+    if (!userPosition) {
+      Swal.fire(
+        "Determine your position first!",
+        "click current location or set manual location",
+        "info"
+      );
+      return setRadius(0);
+    }
+    setRadius(parseInt(e.target.value));
+  };
 
   const toggleOption = (option: keyof ObjectAroundProps) => {
     setSelectedOptions((prev) => ({
@@ -28,82 +51,65 @@ export const Around = () => {
   };
 
   return (
-    <div className=" ">
+    <motion.div {...fadeMotion}>
       <h2 className="text-xl font-semibold text-center mb-4">Object Around</h2>
 
-      <div className="space-y-2 grid grid-cols-2">
-        <div className="flex items-center">
-          <input
-            type="checkbox"
-            checked={selectedOptions.lakeSingkarak}
-            onChange={() => toggleOption('lakeSingkarak')}
-            className="text-blue-500 mr-2"
-          />
-          <label>Lake Singkarak</label>
-        </div>
-        
-        <div className="flex items-center">
-          <input
-            type="checkbox"
-            checked={selectedOptions.rumahGadang}
-            onChange={() => toggleOption('rumahGadang')}
-            className="text-blue-500 mr-2"
-          />
-          <label>Rumah Gadang</label>
-        </div>
-        
-        <div className="flex items-center">
-          <input
-            type="checkbox"
-            checked={selectedOptions.homestay}
-            onChange={() => toggleOption('homestay')}
-            className="text-blue-500 mr-2"
-          />
-          <label>Homestay</label>
-        </div>
+      <div className=" gap-2 grid grid-cols-2">
+        <CheckBoxLabel
+          id="lakeSingkarak"
+          label="Lake Singkarak"
+          checked={selectedOptions.lakeSingkarak}
+          onChange={() => toggleOption("lakeSingkarak")}
+        />
 
-        <div className="flex items-center">
-          <input
-            type="checkbox"
-            checked={selectedOptions.culinaryPlace}
-            onChange={() => toggleOption('culinaryPlace')}
-            className="text-blue-500 mr-2"
-          />
-          <label>Culinary Place</label>
-        </div>
-        
-        <div className="flex items-center">
-          <input
-            type="checkbox"
-            checked={selectedOptions.souvenirPlace}
-            onChange={() => toggleOption('souvenirPlace')}
-            className="text-blue-500 mr-2"
-          />
-          <label>Souvenir Place</label>
-        </div>
+        <CheckBoxLabel
+          id="rumahGadang"
+          label="Rumah Gadang"
+          checked={selectedOptions.rumahGadang}
+          onChange={() => toggleOption("rumahGadang")}
+        />
 
-        <div className="flex items-center">
-          <input
-            type="checkbox"
-            checked={selectedOptions.worshipPlace}
-            onChange={() => toggleOption('worshipPlace')}
-            className="text-blue-500 mr-2"
-          />
-          <label>Worship Place</label>
-        </div>
+        <CheckBoxLabel
+          id="homestay"
+          label="Homestay"
+          checked={selectedOptions.homestay}
+          onChange={() => toggleOption("homestay")}
+        />
+
+        <CheckBoxLabel
+          id="culinaryPlace"
+          label="Culinary Place"
+          checked={selectedOptions.culinaryPlace}
+          onChange={() => toggleOption("culinaryPlace")}
+        />
+
+        <CheckBoxLabel
+          id="souvenirPlace"
+          label="Souvenir Place"
+          checked={selectedOptions.souvenirPlace}
+          onChange={() => toggleOption("souvenirPlace")}
+        />
+
+        <CheckBoxLabel
+          id="worshipPlace"
+          label="Worship Place"
+          checked={selectedOptions.worshipPlace}
+          onChange={() => toggleOption("worshipPlace")}
+        />
       </div>
 
       <div className="mt-4">
-        <label className="block text-sm font-medium">Radius: {radius} m</label>
+        <label className="block text-sm ">Radius: {radius||0} m</label>
         <input
           type="range"
           min="0"
-          max="5000"
-          value={radius}
-          onChange={(e) => setRadius(Number(e.target.value))}
-          className="w-full mt-2"
+          max="2000"
+          value={radius||0}
+          onChange={handleArroundChange}
         />
       </div>
-    </div>
+
+      <ButtonSearchArround onClick={handleCloseAround} search={isAroundOpen} />
+    </motion.div>
   );
 };

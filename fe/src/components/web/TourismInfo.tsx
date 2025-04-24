@@ -3,17 +3,21 @@
 import { TourismGalleries } from "@/components/web/TourismGalleries";
 import { TourismData } from "@/components/web/TourismData";
 import { ContentHeader } from "../common/ContentHeader";
-import { useTools } from "@/hooks/useTools";
+import { motion } from "framer-motion";
+import { fadeMotion } from "@/utils/common/motionVariants";
+import { ButtonSearchArround } from "../common/ButtonSearchArround";
+import { useWebRightSection } from "@/hooks/useWebRightSection";
 
 export default function TourismInfo() {
-  const { open } = useTools();
+  const { toggleAround, aroundOpen } = useWebRightSection();
   return (
-    <div className={` bg-white ${open && "hidden"} overflow-clip  rounded-xl`}>
+    <motion.div {...fadeMotion} className={`space-y-2`}>
       <ContentHeader text="nagari koto gadang" />
-      <section className="overflow-x-hidden p-5 max-h-[550px]">
+      <section className="overflow-x-hidden max-h-[550px]">
         <TourismGalleries />
         <TourismData />
       </section>
-    </div>
+      <ButtonSearchArround onClick={toggleAround} search={aroundOpen} />
+    </motion.div>
   );
 }

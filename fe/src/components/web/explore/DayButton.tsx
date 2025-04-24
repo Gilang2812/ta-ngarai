@@ -80,7 +80,7 @@ export const DayButton = ({
     }
   };
 
-  return packageDays.map((day, index) => (
+  return packageDays?.map((day, index) => (
     <div key={index} className="flex   text-sm font-normal  ">
       <Button
         className="rounded-r-none px-2 "

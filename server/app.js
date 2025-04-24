@@ -19,7 +19,7 @@ app.use((req, res, next) => {
     console.log(`Received ${req.method} request for ${req.url}`);
     next();
 });
-app.use(errorHandler)
 app.use(router)
+app.use(errorHandler)
 
 module.exports = app;

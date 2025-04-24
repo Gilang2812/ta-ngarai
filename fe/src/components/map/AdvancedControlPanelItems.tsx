@@ -8,12 +8,11 @@ import {
 
 import ButtonMapNavigation from "../common/ButtonTooltip";
 import { MapSettingDropdown } from "./MapSettingDropdown";
-import { AdvancedControlPanelProps } from "@/type/props";
-import { ToggleType } from "@/type/common/ToggleType";
-import { useTools } from "@/hooks/useTools";
+import { AdvancedControlPanelProps } from "@/type/props"; 
 import { TbMapCancel } from "react-icons/tb";
 import { useDirectionStore } from "@/stores/DirectionStore";
-type Props = AdvancedControlPanelProps & ToggleType;
+import { useWebRightSection } from "@/hooks/useWebRightSection";
+type Props = AdvancedControlPanelProps;
 
 const AdvancedControlPanelItems = ({
   handleGoToVillage,
@@ -25,11 +24,14 @@ const AdvancedControlPanelItems = ({
   setLayers,
   setObjects,
   showAirPlane,
-  togglePackage,
 }: Props) => {
-  const { open } = useTools();
-  const { direction, clearDirection, objects:PackageObject, clearObject } =
-    useDirectionStore();
+  const { packageOpen, togglePackage } = useWebRightSection();
+  const {
+    direction,
+    clearDirection,
+    objects: PackageObject,
+    clearObject,
+  } = useDirectionStore();
   return (
     <>
       <ButtonMapNavigation
@@ -63,10 +65,10 @@ const AdvancedControlPanelItems = ({
       <ButtonMapNavigation
         onClick={togglePackage}
         Icon={FaSquarePollHorizontal}
-        label={`${open ? "close" : "open"} package`}
-        active={open}
+        label={`${packageOpen ? "close" : "open"} package`}
+        active={packageOpen}
       />
-      {!open && (direction||PackageObject.length>0) && (
+      {!open && (direction || PackageObject.length > 0) && (
         <ButtonMapNavigation
           label="Close Direction"
           variant={"regDanger"}

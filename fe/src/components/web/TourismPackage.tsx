@@ -1,26 +1,27 @@
-import { useTools } from "@/hooks/useTools";
-import React from "react";
-import { Package } from "./explore/Package";
+import React from "react"; 
 import Button from "../common/Button";
 import { FaCircleXmark } from "react-icons/fa6";
+import { useWebRightSection } from "@/hooks/useWebRightSection";
+import { motion } from "framer-motion";
+import { fadeMotion } from "@/utils/common/motionVariants";
+import { Package } from "./explore/Package";
 
 const TourismPackage = () => {
-  const { open,toggleOpen } = useTools();
+  const {  togglePackage } = useWebRightSection();
   return (
-    <section
-      className={`${
-        !open && "hidden"
-      } p-5 space-y-4 bg-white rounded-xl overflow-clip`}
+    <motion.section
+      className={`  p-5 space-y-4 bg-white rounded-xl overflow-clip`}
+      {...fadeMotion}
     >
       <Package title="Tourism Package" />
       <Button
         Icon={FaCircleXmark}
         text="close"
-        onClick={toggleOpen}
+        onClick={togglePackage}
         className="p-1"
         variant={"primary"}
       />
-    </section>
+    </motion.section>
   );
 };
 

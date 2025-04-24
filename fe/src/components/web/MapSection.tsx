@@ -1,6 +1,4 @@
-// import Weather from "@/components/weather/Weather";
-// import Map from "@/components/web/MapHome";
-import { ToggleType } from "@/type/common/ToggleType";
+ 
 import MapWeb from "./MapWeb";
 
 export default function MapSection() {
