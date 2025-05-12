@@ -1,23 +1,22 @@
-import { useFetchObjectAround } from "@/features/web/common/useFetchObjectAround";
-import useObjectAroundStore from "@/stores/ObjectAroundStore";
+import { useFetchObjects } from "@/features/web/common/useFetchObjects";
 
-import { SimplifiedObject } from "@/type/schema/PackageSchema";
+import { type SimplifiedObject } from "@/type/schema/PackageSchema";
 import { FeatureCollection } from "geojson";
+import { ObjectDataType } from "@/data/object";
 import { useReformatObject } from "@/utils/map/objectUtils";
 
-export const useObjectArround = () => {
-  const { object: layer } = useObjectAroundStore();
+export const useMergeALlObject = (layer: ObjectDataType) => {
   const { data: attraction, isLoading: isAttractionLoading } =
-    useFetchObjectAround("attractions");
+    useFetchObjects("attractions");
   const { data: culinary, isLoading: isCulinaryLoading } =
-    useFetchObjectAround("culinary");
+    useFetchObjects("culinary");
 
   const { data: souvenir, isLoading: isSouvenirLoading } =
-    useFetchObjectAround("souvenirs");
+    useFetchObjects("souvenirs");
   const { data: traditional, isLoading: isTraditionalLoading } =
-    useFetchObjectAround("traditional");
+    useFetchObjects("traditional");
   const { data: worship, isLoading: isWorshipLoading } =
-    useFetchObjectAround("worship");
+    useFetchObjects("worship");
 
   const allObjectLayer: SimplifiedObject[] = [
     ...(layer.attraction ? attraction ?? [] : []),
@@ -36,5 +35,5 @@ export const useObjectArround = () => {
     isTraditionalLoading ||
     isWorshipLoading;
 
-  return { objectGeom, isloading };
+  return { allObjectGeom: objectGeom, isloading };
 };

@@ -20,15 +20,10 @@ const containerStyle = {
 type Props = React.ComponentProps<typeof GoogleMap> & {
   children?: React.ReactNode;
   origin?: LatLngLiteral | null;
-  hideAllLayer: () => void; 
+  hideAllLayer: () => void;
 };
 
-function MapLayout({
-  children,
-  origin, 
-  hideAllLayer,
-  ...props
-}: Props) { 
+function MapLayout({ children, origin, hideAllLayer, ...props }: Props) {
   const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
   const { isLoaded } = useJsApiLoader({ googleMapsApiKey: apiKey || "" });
   const [isOpen, setIsOpen] = useState(false);
@@ -53,14 +48,14 @@ function MapLayout({
         streetViewControl: true,
 
         gestureHandling: "greedy",
-      }}
+    }}
       {...props}
     >
       {children}
       <MapMarker
         icon={{
           url: "/images/marker-kage.png",
-          scaledSize: new google.maps.Size(40, 70),
+          scaledSize: new google.maps.Size(30, 45),
         }}
         position={LANDMARK_POSITION}
         onClick={toggleInfoWindow}
@@ -79,12 +74,12 @@ function MapLayout({
             </article>
           </InfoWindow>
         )}
-        <ObjectArea />
-        <ObjectAround />
-        <ActivityDirections hideAllLayer={hideAllLayer} />
       </MapMarker>
+      <ActivityDirections hideAllLayer={hideAllLayer} />
+      <ObjectAround />
+      <ObjectArea />
     </GoogleMap>
   );
 }
-MapLayout.displayName= 'MapLayout'
+MapLayout.displayName = "MapLayout";
 export default MapLayout;

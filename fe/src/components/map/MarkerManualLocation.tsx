@@ -1,5 +1,5 @@
 import { Marker } from "@react-google-maps/api";
-import React from "react";
+import React, { memo } from "react";
 
 type Props = {
   position: google.maps.LatLngLiteral | null;
@@ -7,11 +7,12 @@ type Props = {
 const MarkerManualLocation = ({ position }: Props) => {
   return (
     position && (
-      <Marker animation={google.maps.Animation.DROP} position={position!}>
+      <Marker animation={google.maps.Animation.DROP} position={position}>
         MarkerManualLocation
       </Marker>
     )
   );
 };
 
-export default MarkerManualLocation;
+MarkerManualLocation.displayName = "MarkerManualLocation";
+export default memo(MarkerManualLocation);

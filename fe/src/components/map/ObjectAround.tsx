@@ -1,4 +1,3 @@
- 
 import { useUserPositionStore } from "@/stores/UserPositionStore";
 import { LatLngLiteral } from "@/type/common/MapType";
 import { useGoogleMap } from "@react-google-maps/api";
@@ -7,14 +6,12 @@ type ObjectAround = {
   center: LatLngLiteral | null;
 };
 export const ObjectAround = () => {
- 
-  const { userPosition: center,radius } = useUserPositionStore();
+  const { userPosition: center, radius } = useUserPositionStore();
   const map = useGoogleMap();
   const circleRef = useRef<google.maps.Circle | null>(null);
   useEffect(() => {
     if (!map || !center || !radius) return;
-    console.log(center);
-    console.log(radius);
+
     if (circleRef.current) {
       circleRef.current.setMap(null);
     }
@@ -35,6 +32,8 @@ export const ObjectAround = () => {
     if (bounds) {
       map.fitBounds(bounds);
     }
+
+    
     return () => {
       if (circleRef.current) {
         circleRef.current.setMap(null);

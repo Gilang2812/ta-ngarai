@@ -1,10 +1,10 @@
-import { useCallback, useState } from "react"; 
+import { useCallback, useState } from "react";  
 
 // Generic hook yang menerima tipe state boolean object (layerType atau ObjectDataType)
 export const useToggleMapOptions = <T extends Record<string, boolean>>(initialState: T) => {
-  const [state, setState] = useState<T>(initialState);
-
+  const [state, setState] = useState<T>(initialState); 
   const toggleAllOptions = useCallback(() => {
+    
     const toggledState = Object.fromEntries(
       Object.entries(state).map(([key, value]) => [key, !value])
     ) as T;

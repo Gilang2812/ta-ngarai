@@ -40,6 +40,7 @@ export type DetailPackageSchema = {
 };
 
 export type ObjectBase = {
+  id: string;
   name: string;
   geom: MultiPolygon;
   geom_area: MultiPolygon;

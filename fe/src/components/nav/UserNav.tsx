@@ -4,7 +4,7 @@ import { FaInstagram, FaList, FaMap, FaTiktok } from "react-icons/fa";
 import { FaCalendar, FaHouse, FaSquarePollHorizontal } from "react-icons/fa6";
 import { DropDownItem } from "@/components/nav/DropDownItem";
 import { DropDownChildrenItem } from "./DropDownChildren";
-
+import { TbNeedleThread } from "react-icons/tb";
 export const UserNav = () => {
   return (
     <nav className="mt-12 font-bold">
@@ -45,6 +45,13 @@ export const UserNav = () => {
             icon={FaCalendar}
             label="my reservation"
             link="/web/reservation"
+          />
+        </li>
+        <li>
+          <SideNavItem
+            icon={TbNeedleThread}
+            label="Craft"
+            link="/web/craft"
           />
         </li>
         <li className="flex flex-wrap ">

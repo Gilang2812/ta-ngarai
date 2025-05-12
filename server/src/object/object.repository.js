@@ -29,7 +29,7 @@ const findObjectAround = async (lat, long, radius, tableName, columns) => {
   const radiusKm = parseFloat(radius) / 1000;
   let query,
     replacements = {};
-  if (lat &&lat!=0 && long &&long!=0 && radius!=0) {
+  if (lat &&lat!=0 && long &&long!=0 && radius&& radius!=0) {
     query = generateDistanceQuery({
       tableName,
       columns,

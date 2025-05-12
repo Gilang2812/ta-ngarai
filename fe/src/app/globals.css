@@ -21,19 +21,21 @@
 } */
 input[type="time"]::-webkit-calendar-picker-indicator {
   display: block !important;
-  -webkit-appearance: auto  !important;
+  -webkit-appearance: auto !important;
 }
 
+input {
+  @apply focus:outline-none    focus:border-primary   ;
+}
 input[type="time"] {
-  -webkit-appearance: textfield; /* Mengatur ulang gaya */
-  appearance: auto; /* Untuk mendukung semua browser */
+  -webkit-appearance: textfield;
+  appearance: auto;
 }
 
 input[type="time"]::-webkit-calendar-picker-indicator {
-  display: block; /* Tampilkan ikon jam */
+  display: block;
   -webkit-appearance: auto;
 }
-
 
 body {
   color: var(--foreground);
@@ -263,4 +265,3 @@ input[type="range"]:disabled::-webkit-slider-thumb {
 input[type="range"]:disabled::-moz-range-thumb {
   background-color: #adb5bd;
 }
-

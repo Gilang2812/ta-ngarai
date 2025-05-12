@@ -1,7 +1,7 @@
 import { useGoogleMap } from "@react-google-maps/api";
 import React, { useEffect } from "react";
 
-interface GeoJsonLayerProps {
+export interface GeoJsonLayerProps {
   data: GeoJSON.FeatureCollection;
   style?: google.maps.Data.StyleOptions;
   onClick?: (feature: google.maps.Data.Feature) => void;

@@ -8,10 +8,12 @@ import {
 
 import ButtonMapNavigation from "../common/ButtonTooltip";
 import { MapSettingDropdown } from "./MapSettingDropdown";
-import { AdvancedControlPanelProps } from "@/type/props"; 
+import { AdvancedControlPanelProps } from "@/type/props";
 import { TbMapCancel } from "react-icons/tb";
 import { useDirectionStore } from "@/stores/DirectionStore";
 import { useWebRightSection } from "@/hooks/useWebRightSection";
+import { useTools } from "@/hooks/useTools";
+import { useUserPositionStore } from "@/stores/UserPositionStore";
 type Props = AdvancedControlPanelProps;
 
 const AdvancedControlPanelItems = ({
@@ -32,6 +34,8 @@ const AdvancedControlPanelItems = ({
     objects: PackageObject,
     clearObject,
   } = useDirectionStore();
+  const { toggleOpen } = useTools();
+  const { setRadius } = useUserPositionStore();
   return (
     <>
       <ButtonMapNavigation
@@ -58,7 +62,11 @@ const AdvancedControlPanelItems = ({
       <MapSettingDropdown
         label="object"
         data={objects}
-        leftButtonOnClick={handleShowAllObject}
+        leftButtonOnClick={() => {
+          handleShowAllObject();
+          setRadius(null);
+          toggleOpen("default");
+        }}
         onDropDownItemClick={setObjects}
       />
 

@@ -7,9 +7,14 @@ import { useModal } from "@/utils/ModalUtils";
 import { Form, Formik } from "formik";
 import { Spinner } from "@/components/loading/Spinner";
 import { useFetchUsers } from "@/features/dashboard/users/useFetchUser";
-import { confirmDeleteAlert, showCreateAlert, showDeleteAlert, showErrorAlert } from "@/utils/AlertUtils";
+import {
+  confirmDeleteAlert,
+  showCreateAlert,
+  showDeleteAlert,
+  showErrorAlert,
+} from "@/utils/AlertUtils";
 import Image from "next/image";
-import {  createUserSchema } from "@/validation/usersSchema";
+import { createUserSchema } from "@/validation/usersSchema";
 import { useCreateUser } from "@/features/dashboard/users/useCreateUser";
 import { useDeleteUser } from "@/features/dashboard/users/useDeleteUser";
 import { Modal } from "@/components/modal/Modal";
@@ -21,7 +26,7 @@ import { AuthGroupUser } from "@/type/schema/UsersSchema";
 export default function ManageUsers() {
   // const [errorInput, setErrorInput] = useState<{ [key: string]: string }>({});
   const [selectedUser, setSelectedUser] = useState<AuthGroupUser | null>(null);
- 
+
   const {
     isOpen: isModalInputOpen,
     closeModal: closeModalInput,
@@ -47,20 +52,19 @@ export default function ManageUsers() {
       showCreateAlert("user");
       closeModalInput();
     },
-    onError: ( ) => {
+    onError: () => {
       // const errorMessage = error?.response?.data || ["Terjadi kesalahan"];
       // setErrorInput(errorMessage);
     },
   });
 
-  const { mutate: deleteUser,   } = useDeleteUser({
+  const { mutate: deleteUser } = useDeleteUser({
     onSuccess: () => {
-    
       showDeleteAlert("user");
       refetchUser();
     },
-    onError: ( ) => {
-      showErrorAlert("Error deleting user:");
+    onError: (error) => {
+      showErrorAlert(error);
     },
   });
 
@@ -106,7 +110,6 @@ export default function ManageUsers() {
     ));
   };
 
-  
   return (
     <section
       className="p-5 bg-white rounded-xl"
@@ -135,10 +138,10 @@ export default function ManageUsers() {
         ))}
       </header>
       {userIsLoading && (
-          <TableRawSkeleton
-            tableHead={["#", "ID", "Username", "Fullname", "Email", "Action"]}
-          />
-        ) }
+        <TableRawSkeleton
+          tableHead={["#", "ID", "Username", "Fullname", "Email", "Action"]}
+        />
+      )}
       <motion.div
         key={activeTab}
         initial={{ opacity: 0 }}
@@ -156,24 +159,23 @@ export default function ManageUsers() {
           </button>
         )}
 
-          <table className="w-full">
-            <thead>
-              <tr className="border-b-2">
-                <th className="p-2 text-left">#</th>
-                <th className="p-2 text-left">ID</th>
-                <th className="p-2 text-left">Username</th>
-                <th className="p-2 text-left">Fullname</th>
-                <th className="p-2 text-left">Email</th>
-                <th className="p-2 text-left">Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              <RenderUser />
-            </tbody>
-          </table>
-      
+        <table className="w-full">
+          <thead>
+            <tr className="border-b-2">
+              <th className="p-2 text-left">#</th>
+              <th className="p-2 text-left">ID</th>
+              <th className="p-2 text-left">Username</th>
+              <th className="p-2 text-left">Fullname</th>
+              <th className="p-2 text-left">Email</th>
+              <th className="p-2 text-left">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <RenderUser />
+          </tbody>
+        </table>
       </motion.div>
- 
+
       <Modal
         isOpen={isModalInputOpen}
         onClose={closeModalInput}
@@ -190,11 +192,9 @@ export default function ManageUsers() {
         >
           <Form className="mt-2 space-y-2 font-normal leading-loose capitalize">
             <div>
-              
               <FormInput label="username" type="text" name="username" />
             </div>
             <div>
-            
               <FormInput label="email" type="text" name="email" />
             </div>
             <div>
@@ -209,11 +209,10 @@ export default function ManageUsers() {
           </Form>
         </Formik>
       </Modal>
-      <InfoModal 
+      <InfoModal
         isOpen={isModalInfoOpen}
         onClose={closeModalInfo}
         title="User Details"
-      
       >
         <section className="grid grid-cols-2">
           <center>
@@ -224,15 +223,15 @@ export default function ManageUsers() {
               width={500}
               height={500}
               loading="lazy"
-              />
-              </center>
+            />
+          </center>
 
           <div className=" self-auto pt-[1.5vh] leading-loose font-semibold [&_h1]:text-xl">
             <h1>{selectedUser?.user?.username}</h1>
-            <p>{selectedUser?.user?.fullname??'(Belum dilengkapi)'}</p>
+            <p>{selectedUser?.user?.fullname ?? "(Belum dilengkapi)"}</p>
             <p>Email : {selectedUser?.user?.email}</p>
-            <p>Adress: {selectedUser?.user?.address??'(Belum dilengkapi)'}</p>
-            <p>Phone: {selectedUser?.user?.phone??'(Belum dilengkapi)'}</p>
+            <p>Adress: {selectedUser?.user?.address ?? "(Belum dilengkapi)"}</p>
+            <p>Phone: {selectedUser?.user?.phone ?? "(Belum dilengkapi)"}</p>
           </div>
         </section>
       </InfoModal>

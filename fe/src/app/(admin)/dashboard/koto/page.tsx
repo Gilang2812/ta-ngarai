@@ -4,12 +4,12 @@ import { Profile } from "@/components/koto/Profile";
 
 export default function DataVillage() {
   return (
-    <section className=" bg-white w-full    overflow-hidden p-5 rounded-xl ">
+    <main className=" bg-white      overflow-hidden p-5 rounded-xl ">
       <KotoHeader />
       <section className="grid grid-cols-1 lg:grid-cols-2 ">
         <Profile />
         <Gallery />
       </section>
-    </section>
+    </main>
   );
 }
