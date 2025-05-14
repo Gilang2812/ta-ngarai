@@ -15,19 +15,11 @@ export default function UserSidebarLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const [isPending, startTransition] = useTransition();
-  const router = useRouter();
-
-  const handleNavigation = (url: string) => {
-    startTransition(() => {
-      router.push(url);
-    });
-  };
   return (
     <SidebarProvider>
       <main className="flex min-h-dvh items-stretch    bg-basic">
-        <Sidebar handleNavigation={handleNavigation}>
-          <UserNav handleNavigation={handleNavigation} />
+        <Sidebar>
+          <UserNav />
         </Sidebar>
         <section className="flex-1  w-10   p-8 overflow-hidden font-bold justify-items-stretch  font-nunito">
           <header className="flex justify-between mb-10">
@@ -53,7 +45,7 @@ export default function UserSidebarLayout({
               </div>
             </section>
           </header>
-          {isPending ? <Loading /> : children}
+          {children}
         </section>
       </main>
     </SidebarProvider>

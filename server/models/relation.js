@@ -23,9 +23,16 @@ const { FacilityHomestayDetail } = require("./FacilityHomestayDetail.js");
 const { FacilityHomestay } = require("./FacilityHomestay.js");
 const { GalleryHomestay } = require("./GalleryHomestayModel.js");
 const { Cart } = require("./CartModel.js");
-const { FacilityUnitDetail } = require("./FacilityUnitDetailModel.js.js");
+const { FacilityUnitDetail } = require("./FacilityUnitDetailModel.js");
 const { GalleryUnit } = require("./GalleryUnitModel.js");
-const { FacilityUnit } = require("./FacilityUnitModel.js");
+const { FacilityUnit } = require("./FacilityUnitModel.js"); 
+const CraftVariant = require("./CraftVariantModel.js");
+const { Craft } = require("./CraftModel.js");
+const ShippingAddress = require("./ShippingAddressModel.js");
+const { Checkout } = require("./CheckoutModel.js");
+const { ItemCheckout } = require("./ItemCheckoutModel.js");
+const CraftVariantGallery = require("./CraftVariantGalleryModel.js");
+const ItemCheckoutReviewGallery = require("./ItemCheckoutReviewGalleryModel.js");
 
 User.hasMany(AuthGroupUsers, { foreignKey: "user_id", as: "user" });
 AuthGroup.hasMany(AuthGroupUsers, { foreignKey: "group_id", as: "group" });
@@ -268,6 +275,67 @@ Homestay.hasMany(GalleryHomestay, {
   as: "galleries",
 });
 
+Craft.hasMany(CraftVariant, {
+  foreignKey: "id_craft",
+  as: "variants",
+});
+CraftVariant.belongsTo(Craft, {
+  foreignKey: "id_craft",
+  as: "craft",
+});
+
+// ShippingAddress and Checkout associations
+ShippingAddress.hasMany(Checkout, {
+  foreignKey: "adress_id",
+  as: "checkouts",
+});
+Checkout.belongsTo(ShippingAddress, {
+  foreignKey: "adress_id",
+  as: "shippingAddress",
+});
+
+// CraftVariant and ItemCheckout associations
+CraftVariant.hasMany(ItemCheckout, {
+  foreignKey: "craft_id",
+  as: "itemCheckouts",
+});
+ItemCheckout.belongsTo(CraftVariant, {
+  foreignKey: "craft_id",
+  as: "craftVariant",
+});
+
+// Checkout and ItemCheckout associations
+Checkout.hasMany(ItemCheckout, {
+  foreignKey: "checout_id",
+  as: "items",
+});
+ItemCheckout.belongsTo(Checkout, {
+  foreignKey: "checout_id",
+  as: "checkout",
+});
+
+// CraftVariant and CraftVariantGallery associations
+CraftVariant.hasMany(CraftVariantGallery, {
+  foreignKey: "id",
+  as: "craftGalleries",
+});
+CraftVariantGallery.belongsTo(CraftVariant, {
+  foreignKey: "id",
+  as: "variant",
+});
+
+// ItemCheckout and ItemCheckoutReviewGallery associations
+ItemCheckout.hasMany(ItemCheckoutReviewGallery, {
+  foreignKey: "checout_id",
+  sourceKey: "checout_id",
+  as: "reviewGalleries",
+});
+ItemCheckout.hasMany(ItemCheckoutReviewGallery, {
+  foreignKey: "craft_id",
+  sourceKey: "craft_id",
+  as: "craftReviewGalleries",
+});
+
 Cart.belongsTo(User, { foreignKey: "user_id", as: "user" });
 Cart.belongsTo(Package, { foreignKey: "package_id", as: "package" });
 User.hasMany(Cart, { foreignKey: "user_id", as: "userCart" });
@@ -300,5 +368,5 @@ module.exports = {
   FacilityUnitDetail,
   FacilityUnit,
   GalleryUnit,
-  GalleryHomestay
+  GalleryHomestay,
 };

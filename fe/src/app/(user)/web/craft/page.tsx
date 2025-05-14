@@ -14,7 +14,7 @@ const CraftPage = () => {
 
   return (
     <SinggleContentWrapper>
-      <ViewToggleButtons current={viewMode} onChange={setViewMode} />
+      <ViewToggleButtons views={["grid", "map"]} current={viewMode} onChange={setViewMode} />
 
       <div className="container min-w-[400px]  mx-auto px-4 py-8">
         < div >

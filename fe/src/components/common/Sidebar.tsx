@@ -6,11 +6,9 @@ import { FaX } from "react-icons/fa6";
 import Link from "next/link";
 
 export const Sidebar = ({
-  children,
-  handleNavigation,
+  children, 
 }: {
-  children: React.ReactNode;
-  handleNavigation: (url: string) => void;
+  children: React.ReactNode; 
 }) => {
   const { open, toggleSidebar } = useSidebar();
 
@@ -27,7 +25,7 @@ export const Sidebar = ({
         />
         <header className="flex flex-col items-center gap-8">
           <div className="flex justify-between w-full">
-            <Link onClick={() => handleNavigation("/web")} href="/web">
+            <Link   href="/web">
               <Logo className="size-8" />
             </Link>
             <div className="flex items-center gap-3">

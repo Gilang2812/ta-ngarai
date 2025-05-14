@@ -7,14 +7,14 @@ let host = process.env.HOST
 let db_name = process.env.DB_NAME
 let db  = process.env.DB
 
-const dbConf = new Sequelize(
+const sequelize = new Sequelize(
   `${db}://${user}:${password}@${host}/${db_name}`
 )
 try {
-   dbConf.authenticate();
+   sequelize.authenticate();
   console.log('Connection has been established successfully.');
 } catch (error) {
   console.error('Unable to connect to the database:', error);
 }
 
-module.exports = dbConf
+module.exports = sequelize

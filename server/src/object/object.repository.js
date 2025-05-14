@@ -1,4 +1,4 @@
-const dbConf = require("../../config/db");
+const sequelize = require("../../config/database");
 const { Attraction } = require("../../models/Attraction");
 const CulinaryPlace = require("../../models/CulinaryPlace");
 const { Facility } = require("../../models/Facility");
@@ -41,7 +41,7 @@ const findObjectAround = async (lat, long, radius, tableName, columns) => {
       columns,
     });
   }
-  let [objects] = await dbConf.query(query, {
+  let [objects] = await sequelize.query(query, {
     replacements,
   });
   if (tableName === "facility") {

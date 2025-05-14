@@ -19,9 +19,9 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
   const [selectedVariantId, setSelectedVariantId] = useState(
     product?.variants?.[0]?.id || ""
   );
-  const [quantity, setQuantity] = useState(1);
   const [isFavorite, setIsFavorite] = useState(false);
-
+  
+  const [quantity, setQuantity] = useState(1);
   const handleQuantityChange = (newQuantity: number) => {
     setQuantity(newQuantity);
   };

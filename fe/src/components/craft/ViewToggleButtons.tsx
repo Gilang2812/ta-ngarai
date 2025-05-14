@@ -1,24 +1,27 @@
 "use client";
- 
+
 import { motion } from "framer-motion";
 
-type ViewMode = "grid" | "map";
+type Props<T extends string> = {
+  current: T;
+  onChange: (view: T) => void;
+  views: T[];
+};
 
-interface Props {
-  current: ViewMode;
-  onChange: (view: ViewMode) => void;
-}
-
-export const ViewToggleButtons = ({ current, onChange }: Props) => {
+export const ViewToggleButtons = <T extends string>({
+  current,
+  onChange,
+  views,
+}: Props<T>) => {
   return (
     <header className="flex gap-4 border-b  p-4">
-      {["grid", "map"].map((tab) => (
+      {views.map((tab) => (
         <button
           key={tab}
           className="text-primary capitalize px-4 py-2 relative"
-          onClick={() => onChange(tab as ViewMode)}
+          onClick={() => onChange(tab)}
         >
-         {tab}
+          {tab}
           {current === tab && (
             <motion.div
               layoutId="underline"
