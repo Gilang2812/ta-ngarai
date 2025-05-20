@@ -1,30 +1,35 @@
 "use client";
-import { useFetchGalleries } from "@/features/web/useFetchGalleries";
-import { imageUrl } from "@/lib/baseUrl";
-import { GallerySchema } from "@/type/schema/GallerySchema";
-import Image from "next/image";
+import { useFetchGalleries } from "@/features/web/useFetchGalleries"; 
+import { GallerySchema } from "@/type/schema/GallerySchema"; 
 import { ImageSkeleton } from "@/components/loading/ImageSkeleton";
+import Img from "../common/Img";
 
 export const Gallery = () => {
   const { data, isLoading } = useFetchGalleries<GallerySchema>("tourism");
 
-  return (
-    <article className="col-span-1 space-y-4">
-      <h2 className="font-semibold max-w-max text-primary">Gallery</h2>
+  const RenderImage = () => {
+    return (
       <div className=" grid grid-cols-4 gap-4 ">
         {isLoading &&
           [...Array(4)].map((_, index) => <ImageSkeleton key={index} />)}
-        {data?.map((g:GallerySchema) => (
-          <Image
+        {data?.map((g: GallerySchema) => (
+          <Img
             key={g.id}
-            src={imageUrl + g.url}
-            alt={`Village gallery image  `}
-            width={500}
-            height={500}
-            className="rounded "
+            src={g.url}
+            alt={`Village gallery  image ${g.id} `}
+            width={100}
+            height={100}
+            className="rounded w-full"
           />
         ))}
       </div>
+    );
+  };
+  return (
+    <article className="  relative space-y-4">
+      <h2 className="font-semibold max-w-max text-primary">Gallery</h2>
+      <RenderImage />
+   
     </article>
   );
 };

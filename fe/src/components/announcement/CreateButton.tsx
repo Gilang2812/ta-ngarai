@@ -1,10 +1,12 @@
-import { ActionButtonProps } from "@/type/props/ActionButtonProps";
 import { FaPlus } from "react-icons/fa6";
+import Button from "../common/Button";
 
-export default function CreateButton({ onClick }: ActionButtonProps) {
+export default function CreateButton({
+  ...props
+}: React.ComponentProps<"button">) {
   return (
-    <button type="button" onClick={onClick} className="btn-fill-primary ">
+    <Button  {...props}>
       <FaPlus /> New Announcement
-    </button>
+    </Button>
   );
 }

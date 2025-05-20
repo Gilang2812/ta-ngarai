@@ -14,7 +14,11 @@ import { useEditAnnouncement } from "@/features/dashboard/announcement/useEditAn
 import { useFetchAnnouncements } from "@/features/web/useFetchAnnouncement";
 import { CustomError } from "@/type/props/ErrorProps";
 import { AnnouncementSchema } from "@/type/schema/AnnouncementSchema";
-import { confirmDeleteAlert, cornerAlert, cornerError } from "@/utils/AlertUtils";
+import {
+  confirmDeleteAlert,
+  cornerAlert,
+  cornerError,
+} from "@/utils/AlertUtils";
 import { useModal } from "@/utils/ModalUtils";
 import { Spinner } from "@material-tailwind/react";
 import { Formik, Form } from "formik";
@@ -29,39 +33,33 @@ const validationSchema = yup.object({
 
 export default function Announcement() {
   const [status, setStatus] = useState(1);
-  const [errorInput, setInputError] = useState<{ [key: string]: string |undefined}>({});
+  const [errorInput, setInputError] = useState<{
+    [key: string]: string | undefined;
+  }>({});
   const [selectedData, setSelectedData] = useState<AnnouncementSchema | null>(
     null
   );
   const { data, isLoading, refetch } = useFetchAnnouncements();
 
-  const {
-    isOpen: inputModal,
-    closeModal: closeInputModal,
-    openModal: openModalInput,
-  } = useModal();
-  const {
-    isOpen: infoModal,
-    closeModal: closeInfoModal,
-    openModal: openModalInfo,
-  } = useModal();
+  const { isOpen: inputModal, toggleModal: toggleInputModal } = useModal();
+  const { isOpen: infoModal, toggleModal: toggleInfoModal } = useModal();
 
   const { mutate, isPending } = useCreateAnnouncement({
     onSuccess: () => {
-      cornerAlert('create announcement ');
-      closeInputModal();
+      cornerAlert("create announcement ");
+      toggleInputModal();
       refetch();
     },
     onError: (error: CustomError) => {
       const errorMessage = error?.response?.data;
-       setInputError(errorMessage!);
+      setInputError(errorMessage!);
     },
   });
 
   const { mutate: editMutate, isPending: editPending } = useEditAnnouncement({
     onSuccess: () => {
-      closeInputModal();
-      cornerAlert('edit announcement ');
+      toggleInputModal();
+      cornerAlert("edit announcement ");
       refetch();
     },
     onError: (error: CustomError) => {
@@ -70,17 +68,17 @@ export default function Announcement() {
     },
   });
 
-  const { mutate:deleteMutate } = useDeleteAnnouncement({
+  const { mutate: deleteMutate } = useDeleteAnnouncement({
     onSuccess: () => {
-      cornerAlert('delete announcement ');
+      cornerAlert("delete announcement ");
       refetch();
     },
     onError: (error: CustomError) => {
       const errorMessage = error?.response?.data;
       setInputError(errorMessage!);
-      cornerError(errorMessage?.toString())
+      cornerError(errorMessage?.toString());
     },
-  })
+  });
   const handleCreate = async (values: AnnouncementSchema) => {
     mutate(values);
   };
@@ -90,27 +88,29 @@ export default function Announcement() {
   };
 
   const handleDelete = async (id: string) => {
-    await confirmDeleteAlert("announcement", id,() => deleteMutate(id));
- 
+    await confirmDeleteAlert("announcement", id, () => deleteMutate(id));
   };
-  const handleStatusChange = (value: number, setFieldValue: (field: string, value:unknown)=>void) => {
+  const handleStatusChange = (
+    value: number,
+    setFieldValue: (field: string, value: unknown) => void
+  ) => {
     setStatus(value);
     setFieldValue("status", value);
   };
 
   const handleOpenModalInput = () => {
-    openModalInput();
+    toggleInputModal();
   };
 
   const handleOpenModalInfo = (data: AnnouncementSchema) => {
     setSelectedData(data);
-    openModalInfo();
+    toggleInfoModal();
   };
 
   const handleOpenModalEdit = (data: AnnouncementSchema) => {
     setSelectedData(data);
     setStatus(data.status);
-    openModalInput();
+    toggleInputModal();
   };
 
   return (
@@ -141,8 +141,8 @@ export default function Announcement() {
         title={selectedData ? "Edit Announcement" : "New Announcement"}
         isOpen={inputModal}
         onClose={() => {
-          closeInputModal();
-          setSelectedData(null); 
+          toggleInputModal();
+          setSelectedData(null);
         }}
       >
         {typeof errorInput === "string" && (
@@ -150,9 +150,9 @@ export default function Announcement() {
         )}
         <Formik
           initialValues={{
-            id: selectedData?.id||"",
+            id: selectedData?.id || "",
             announcement: selectedData?.announcement || "",
-            status: selectedData?.status ||1,
+            status: selectedData?.status || 1,
           }}
           validationSchema={validationSchema}
           onSubmit={async (values) => {
@@ -161,12 +161,12 @@ export default function Announcement() {
             } else {
               await handleCreate(values);
             }
-           }}
+          }}
         >
           {({ values, handleChange, setFieldValue }) => (
             <Form>
               <div>
-                <FormInput name="id" type="text" readonly={!!selectedData}/>
+                <FormInput name="id" type="text" readonly={!!selectedData} />
               </div>
               <div>
                 <label htmlFor="announcement" className="font-semibold">
@@ -210,19 +210,22 @@ export default function Announcement() {
               <button
                 type="submit"
                 className="mt-4 px-4 py-2 text-white bg-primary rounded"
-                disabled={isPending||editPending}
+                disabled={isPending || editPending}
               >
-                {(isPending || editPending)? <Spinner />:'Submit'}   
+                {isPending || editPending ? <Spinner /> : "Submit"}
               </button>
             </Form>
           )}
         </Formik>
       </Modal>
 
-      <InfoModal isOpen={infoModal} onClose={()=>{
-        closeInfoModal()
-        setSelectedData(null)
-        }}>
+      <InfoModal
+        isOpen={infoModal}
+        onClose={() => {
+          toggleInfoModal();
+          setSelectedData(null);
+        }}
+      >
         <table className="table-fixed my-4">
           <tbody>
             <tr className="border-b [&_td]:p-2">

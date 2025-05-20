@@ -1,5 +1,6 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/database'); 
+const { generateCustomId } = require('../utils/generateId');
 
 
 const CraftVariantGallery = sequelize.define('CraftVariantGallery', {
@@ -20,5 +21,9 @@ const CraftVariantGallery = sequelize.define('CraftVariantGallery', {
   tableName: 'craft_variant_gallery',
   timestamps: false
 });
+
+CraftVariantGallery.beforeCreate(async(instance)=>{
+  instance.id = await generateCustomId('CG',CraftVariantGallery,5)
+})
 
 module.exports = CraftVariantGallery;

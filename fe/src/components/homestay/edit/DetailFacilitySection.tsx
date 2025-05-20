@@ -33,13 +33,11 @@ export const DetailFacilitySection = ({
 }: DetailFacilityProps) => {
   const {
     isOpen: openFacility,
-    closeModal: closeFacility,
-    openModal: createFacility,
+  toggleModal:toggleFacility
   } = useModal();
   const {
     isOpen: openDetailFacility,
-    closeModal: closeDetailFacility,
-    openModal: createDetailFacility,
+   toggleModal:toggleDetailFacility
   } = useModal();
   const { data, refetch } = useFetchHomestayFacilities();
 
@@ -55,7 +53,7 @@ export const DetailFacilitySection = ({
   const { mutate: createHomestayFacility } = useCreateHomestayFacility({
     onSuccess: async () => {
       showCreateAlert("facility");
-      closeFacility();
+      toggleFacility();
       refetch();
     },
   });
@@ -63,7 +61,7 @@ export const DetailFacilitySection = ({
   const { mutate: createDetailHF } = useCreateDetailHomestayFacility({
     onSuccess: () => {
       showCreateAlert("facility detail");
-      closeDetailFacility();
+      toggleDetailFacility();
       refetchHomestay();
     },
   });
@@ -96,13 +94,13 @@ export const DetailFacilitySection = ({
         <div className="flex">
           <button
             type="button"
-            onClick={createFacility}
+            onClick={toggleFacility}
             className="rounded-l border-y border-l border-primary font-normal hover:bg-primary hover:text-white transition-ease-in-out   text-primary flex gap-2 px-3 py-2 items-center "
           >
             <FaPlus /> New facility
           </button>
           <button
-            onClick={createDetailFacility}
+            onClick={toggleDetailFacility}
             type="button"
             className="rounded-r border border-cyan-400 font-normal text-cyan-400 hover:bg-cyan-400 hover:text-black transition-ease-in-out flex gap-2 px-3 py-2 items-center "
           >
@@ -148,7 +146,7 @@ export const DetailFacilitySection = ({
       <Modal
         isOpen={openFacility}
         title="data facility "
-        onClose={closeFacility}
+        onClose={toggleFacility}
       >
         <Formik
           initialValues={facilityInitialValues}
@@ -186,7 +184,7 @@ export const DetailFacilitySection = ({
       <Modal
         isOpen={openDetailFacility}
         title="facility homestay"
-        onClose={closeDetailFacility}
+        onClose={toggleDetailFacility}
       >
         <Formik
           initialValues={deatailFacilityInitialValues}

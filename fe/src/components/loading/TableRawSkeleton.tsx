@@ -9,11 +9,13 @@ interface RawSkeletonProps {
         <table className="w-full">
           <thead>
             <tr className="border-b-2">
+              <th>#</th>
               {tableHead?.map((title, index) => (
                 <th key={index} className="p-2 text-left">
                   {title}
                 </th>
               ))}
+              <th>action</th>
             </tr>
           </thead>
         </table>

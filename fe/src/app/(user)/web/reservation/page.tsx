@@ -17,10 +17,10 @@ const Reservation = () => {
     null
   );
   const { data } = useFetchReservations();
-  const { closeModal, isOpen, openModal } = useModal();
+  const {  isOpen, toggleModal } = useModal();
 
   const handleHistoryClick = (r: ReservationSchema) => {
-    openModal();
+    toggleModal();
     setReservation(r);
   };
 
@@ -109,7 +109,7 @@ const Reservation = () => {
         isOpen={isOpen}
         onClose={() => {
           setReservation(null);
-          closeModal();
+          toggleModal();
         }}
         title="history reservation"
       >

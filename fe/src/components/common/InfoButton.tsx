@@ -1,13 +1,12 @@
-import { ActionButtonProps } from "@/type/props/ActionButtonProps";
+ 
 import { FaCircleInfo } from "react-icons/fa6";
+import ButtonTooltip from "./ButtonTooltip";
 
-export const InfoButton = ({ onClick }: ActionButtonProps) => {
+export const InfoButton = ({ ...props }: React.ComponentProps<"button">) => {
   return (
-    <button onClick={onClick}
-      className="p-3 transition-ease-in-out bg-white border rounded border-primary text-primary hover:bg-primary hover:text-white"
-      aria-label="View Details"
-    >
+    <ButtonTooltip label="detail"  variant={"primary"} className="p-3" {...props}>
       <FaCircleInfo />
-    </button>
+    </ButtonTooltip>
   );
 };
+

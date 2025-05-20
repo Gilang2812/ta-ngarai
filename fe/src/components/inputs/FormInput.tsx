@@ -1,13 +1,13 @@
 import { ErrorMessage, Field, useField } from "formik";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
 
-export const FormInput = ({
+export const  FormInput = ({
   label,
   icon: Icon,
   id,
   name,
   as,
-  readonly,
+  readonly=false,
   children,
   ...props
 }: React.ComponentProps<typeof Field>) => {
@@ -32,8 +32,10 @@ export const FormInput = ({
         {as === "select" ? (
           <Field
             {...field}
-            className="font-normal w-full !border-none !p-0 bg-transparent text-black focus:!outline-none"
+            className="font-normal w-full !border-none focus:!ring-0 focus:!border-none !p-0 bg-transparent text-black focus:!outline-none"
             id={id || name}
+            as = {as}
+            readOnly={readonly}
             {...props}
           >
             <option defaultValue="">select</option>
@@ -47,6 +49,7 @@ export const FormInput = ({
               className="font-normal !appearance-none !border-none !p-0 w-full bg-transparent focus:!border-none focus:!ring-0 text-black focus:!outline-none"
               id={id || name}
               as={as || "input"}
+              readOnly={readonly}
               {...props}
             />
             {meta.touched && meta.error && (

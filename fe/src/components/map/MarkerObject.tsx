@@ -1,7 +1,14 @@
 import { LatLngLiteral } from "@/type/common/MapType";
 import MapMarker from "./MapMarker";
 import { InfoWindowF } from "@react-google-maps/api";
-import { FaAddressBook, FaInfo, FaMapPin, FaMoneyBill, FaPersonPraying, FaSpa } from "react-icons/fa6";
+import {
+  FaAddressBook,
+  FaInfo,
+  FaMapPin,
+  FaMoneyBill,
+  FaPersonPraying,
+  FaSpa,
+} from "react-icons/fa6";
 import { DirectionToKotoGadangButton } from "./DirectionToKotoGadangButton";
 import { SimplifiedObject } from "@/type/schema/PackageSchema";
 import Button from "../common/Button";
@@ -45,7 +52,7 @@ export const MarkerObject = ({
   };
 
   const { icon, text } = getIconAndTextSecondLine();
-  const { icon: thirdIcon, thirdText } = getIconAndTextThirdLine();
+  const { icon: thirdIcon, text:thirdText } = getIconAndTextThirdLine();
   return (
     <MapMarker
       icon={{
@@ -67,8 +74,8 @@ export const MarkerObject = ({
               <p>{text}</p>
             </section>
             <section className="text-sm gap-2 flex items-start justify-center ">
-              <FaSpa />
-              <p>{properties.address ?? properties.price}</p>
+              {thirdIcon}
+              <p>{thirdText}</p>
             </section>
             <section className="flex items-center justify-center gap-2">
               <DirectionToKotoGadangButton origin={origin} />

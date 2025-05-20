@@ -1,9 +1,10 @@
-import AdminSidebarLayout from "@/components/common/AdminSidebarLayout";
+'use client'
+import AdminLayout from "@/layouts/AdminLayout";
 
-export default function AdminLayout({ children }: { children: React.ReactNode }) {
-  return (
-    <AdminSidebarLayout  >
-      {children}
-    </AdminSidebarLayout>
-  );
+export default function Layout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return <AdminLayout >{children}</AdminLayout>;
 }

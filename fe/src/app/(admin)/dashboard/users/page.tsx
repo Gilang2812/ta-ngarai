@@ -27,16 +27,9 @@ export default function ManageUsers() {
   // const [errorInput, setErrorInput] = useState<{ [key: string]: string }>({});
   const [selectedUser, setSelectedUser] = useState<AuthGroupUser | null>(null);
 
-  const {
-    isOpen: isModalInputOpen,
-    closeModal: closeModalInput,
-    openModal: openModalInput,
-  } = useModal();
-  const {
-    isOpen: isModalInfoOpen,
-    closeModal: closeModalInfo,
-    openModal: openModalInfo,
-  } = useModal();
+  const { isOpen: isModalInputOpen, toggleModal: toggleModalInput } =
+    useModal();
+  const { isOpen: isModalInfoOpen, toggleModal: toggleModalInfo } = useModal();
 
   const [activeTab, setActiveTab] = useState("admin");
 
@@ -50,7 +43,7 @@ export default function ManageUsers() {
     onSuccess: () => {
       refetchUser();
       showCreateAlert("user");
-      closeModalInput();
+      toggleModalInput();
     },
     onError: () => {
       // const errorMessage = error?.response?.data || ["Terjadi kesalahan"];
@@ -75,7 +68,7 @@ export default function ManageUsers() {
   };
   const handleOpenInfoModal = (user: any) => {
     setSelectedUser(user);
-    openModalInfo();
+    toggleModalInfo();
   };
 
   const adminData = data?.filter((user: any) => user.group_id !== 2) || [];
@@ -151,7 +144,7 @@ export default function ManageUsers() {
       >
         {activeTab === "admin" && (
           <button
-            onClick={openModalInput}
+            onClick={toggleModalInput}
             className="flex items-center gap-2 p-2 px-3 mb-5 font-normal text-white rounded bg-primary hover:bg-secondary"
             type="button"
           >
@@ -178,7 +171,7 @@ export default function ManageUsers() {
 
       <Modal
         isOpen={isModalInputOpen}
-        onClose={closeModalInput}
+        onClose={toggleModalInput}
         title="New Admin Registration"
       >
         <Formik
@@ -186,7 +179,7 @@ export default function ManageUsers() {
           validationSchema={createUserSchema}
           onSubmit={async (values) => {
             await createUser(values);
-            closeModalInput();
+            toggleModalInput();
             refetchUser();
           }}
         >
@@ -211,7 +204,7 @@ export default function ManageUsers() {
       </Modal>
       <InfoModal
         isOpen={isModalInfoOpen}
-        onClose={closeModalInfo}
+        onClose={toggleModalInfo}
         title="User Details"
       >
         <section className="grid grid-cols-2">

@@ -4,17 +4,17 @@ import {
   FaBullhorn,
   FaHouse,
   FaPagelines,
+  FaPenToSquare,
   FaPuzzlePiece,
   FaScroll,
   FaSquarePollHorizontal,
+  FaStore,
   FaUsers,
 } from "react-icons/fa6";
 import { DropDownItem } from "@/components/nav/DropDownItem";
-import { useSidebar } from "@/context/SidebarContext";
 import { DropDownChildrenItem } from "./DropDownChildren";
 
 export const AdminNav = () => {
-  const { openDd } = useSidebar();
   return (
     <nav className="mt-12 font-bold">
       <ul className="space-y-1">
@@ -23,15 +23,19 @@ export const AdminNav = () => {
         </li>
         <li>
           <DropDownItem icon={FaPagelines} label="Manage Village">
-            <DropDownChildrenItem icon={FaPagelines} label="data village" link="/dashboard/koto" />
-            <DropDownChildrenItem icon={FaScroll} label="Announcement" link="/dashboard/announcement" />
+            <DropDownChildrenItem
+              icon={FaPagelines}
+              label="data village"
+              link="/dashboard/koto"
+            />
+            <DropDownChildrenItem
+              icon={FaScroll}
+              label="Announcement"
+              link="/dashboard/announcement"
+            />
           </DropDownItem>
         </li>
-        <li
-          className={`px-4 ${
-            openDd ? "max-h-96 " : "max-h-0"
-          } transition-ease-in-out-7    overflow-hidden `}
-        ></li>
+
         <li>
           <SideNavItem
             icon={FaBullhorn}
@@ -41,10 +45,22 @@ export const AdminNav = () => {
         </li>
         <li>
           <DropDownItem icon={FaSquarePollHorizontal} label="Manage Package">
-            <DropDownChildrenItem icon={FaSquarePollHorizontal} label="Data Package" link="/dashboard/package" />
-            <DropDownChildrenItem icon={FaPuzzlePiece} label="Package Type" link="/dashboard/packagetype" />
-            <DropDownChildrenItem icon={FaPuzzlePiece} label="Service Package" link="/dashboard/servicepackage" />
-          </DropDownItem> 
+            <DropDownChildrenItem
+              icon={FaSquarePollHorizontal}
+              label="Data Package"
+              link="/dashboard/package"
+            />
+            <DropDownChildrenItem
+              icon={FaPuzzlePiece}
+              label="Package Type"
+              link="/dashboard/packagetype"
+            />
+            <DropDownChildrenItem
+              icon={FaPuzzlePiece}
+              label="Service Package"
+              link="/dashboard/servicepackage"
+            />
+          </DropDownItem>
         </li>
         <li>
           <SideNavItem
@@ -58,6 +74,20 @@ export const AdminNav = () => {
             icon={FaUsers}
             label="Manage Users"
             link="/dashboard/users"
+          />
+        </li>
+        <li>
+          <SideNavItem
+            icon={FaStore}
+            label="Manage Marketplace"
+            link="/dashboard/umkm"
+          />
+        </li>
+        <li>
+          <SideNavItem
+            icon={FaPenToSquare}
+            label="Manage Craft"
+            link="/dashboard/craft"
           />
         </li>
       </ul>

@@ -1,14 +1,10 @@
-import { ActionButtonProps } from "@/type/props/ActionButtonProps";
-import { FaPencil } from "react-icons/fa6";
+import { FaPencil } from "react-icons/fa6"; 
+import ButtonTooltip from "./ButtonTooltip";
 
-export const EditButton = ({onClick}:ActionButtonProps) => {
+export const EditButton = ({ ...props }: React.ComponentProps<"button">) => {
   return (
-    <button
-    onClick={onClick}
-      className="p-3 transition-ease-in-out bg-white border rounded border-cyan-400 text-cyan-400 hover:bg-cyan-400 hover:text-white"
-      aria-label="Edit Announcement"
-    >
+    <ButtonTooltip label="edit" variant={"edit"} {...props}>
       <FaPencil />
-    </button>
+    </ButtonTooltip>
   );
 };

@@ -10,12 +10,12 @@ type GuideProps = {
 
 export const Guide:FC<GuideProps> = ({handleCheck,isLastStep}) => {
 
-  const { closeModal, isOpen, openModal } = useModal();
+  const { toggleModal, isOpen,} = useModal();
 
   return (
     <>
       <button
-        onClick={openModal}
+        onClick={toggleModal}
         type="button"
         className="btn btn-danger italic text-sm "
       >
@@ -33,7 +33,7 @@ export const Guide:FC<GuideProps> = ({handleCheck,isLastStep}) => {
         />
         <span className="ml-2 text-gray-700">I have read this guide</span>
       </label>
-      <InfoModal isOpen={isOpen} onClose={closeModal} title="reservation guide">
+      <InfoModal isOpen={isOpen} onClose={toggleModal} title="">
         <p>guiide</p>
       </InfoModal>
     </>

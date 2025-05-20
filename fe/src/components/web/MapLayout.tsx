@@ -1,6 +1,6 @@
 "use client";
 
-import { GoogleMap, InfoWindow, useJsApiLoader } from "@react-google-maps/api";
+import { GoogleMap, InfoWindow } from "@react-google-maps/api";
 import MapSkeleton from "../loading/MapSkeleton";
 import { LANDMARK_POSITION } from "@/lib/objectLandmark";
 import { MapMarker } from "../map";
@@ -11,6 +11,7 @@ import { FaSpa } from "react-icons/fa6";
 import { DirectionToKotoGadangButton } from "../map/DirectionToKotoGadangButton";
 import { ObjectArea } from "../map/ObjectArea";
 import { ObjectAround } from "../map/ObjectAround";
+import { useMapLoad } from "@/hooks/useMapLoad";
 
 const containerStyle = {
   width: "100%",
@@ -25,7 +26,7 @@ type Props = React.ComponentProps<typeof GoogleMap> & {
 
 function MapLayout({ children, origin, hideAllLayer, ...props }: Props) {
   const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
-  const { isLoaded } = useJsApiLoader({ googleMapsApiKey: apiKey || "" });
+  const { isLoaded } = useMapLoad()
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleInfoWindow = useCallback(() => setIsOpen((prev) => !prev), []);

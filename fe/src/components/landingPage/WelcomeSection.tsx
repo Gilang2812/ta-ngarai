@@ -5,7 +5,7 @@ import { useModal } from "@/utils/ModalUtils";
 import Image from "next/image";
 
 export default function WelcomeSection() {
-  const { isOpen, openModal, closeModal } = useModal();
+  const { isOpen, toggleModal } = useModal();
   return (
     <aside className="relative min-h-fit md:min-w-[640px] min-w-fit  font-quicksand  bg-red-400 z-20">
       <Image
@@ -30,7 +30,7 @@ export default function WelcomeSection() {
           <div className="animate-FadeIn ">
             <div className="absolute bg-white rounded-full h-16 w-16 flex items-center justify-center animate-ping"></div>
             <button
-              onClick={openModal}
+              onClick={toggleModal}
               id="buttonPlay"
               className="bg-white p-4 size-16  flex items-center justify-center rounded-full relative"
             >
@@ -40,7 +40,7 @@ export default function WelcomeSection() {
           <label htmlFor="buttonPlay">Watch Video</label>
         </div>
       </section>
-      <Modal isOpen={isOpen} closeModal={closeModal} />
+      <Modal isOpen={isOpen} closeModal={toggleModal} />
     </aside>
   );
 }

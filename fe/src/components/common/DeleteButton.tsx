@@ -1,14 +1,10 @@
-import { ActionButtonProps } from "@/type/props/ActionButtonProps";
-import { FaTrash } from "react-icons/fa";
+import { FaTrash } from "react-icons/fa"; 
+import ButtonTooltip from "./ButtonTooltip";
 
-export const DeleteButton = ({ onClick }: ActionButtonProps) => {
+export const DeleteButton = ({ ...props }: React.ComponentProps<"button">) => {
   return (
-    <button
-      onClick={onClick}
-      className="p-3 text-red-600 transition-ease-in-out bg-white border border-red-600 rounded hover:bg-red-600 hover:text-white"
-      aria-label="Delete Announcement"
-    >
+    <ButtonTooltip label="delete" variant={"regDanger"} className="p-3" {...props}>
       <FaTrash />
-    </button>
+    </ButtonTooltip>
   );
 };

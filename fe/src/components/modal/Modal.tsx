@@ -21,8 +21,8 @@ export const Modal = ({
 }) => {
   return (
     <Transition appear show={isOpen} as={Fragment}>
-      <Dialog as="div" className="relative z-10" onClose={onClose}>
-        <div className={`fixed inset-0 flex transition-ease-in-out ${isOpen ? "bg-black/25" : " bg-none"}  justify-center p-8`}>
+      <Dialog as="div" className="relative z-50 " onClose={onClose}>
+        <div className={`fixed overflow-x-hidden inset-0 flex transition-ease-in-out ${isOpen ? "bg-black/25" : " bg-none"}  justify-center p-8`}>
           <TransitionChild
             as={Fragment}
             enter="ease-out duration-500"

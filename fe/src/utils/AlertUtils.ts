@@ -1,4 +1,5 @@
-import { CustomError } from "@/type/props/ErrorProps";
+import { DataError } from "@/type/props/ErrorProps";
+import { AxiosError } from "axios";
 import Swal from "sweetalert2";
 
 export const showAlertOk = (message: string) => {
@@ -41,11 +42,18 @@ export const showDeleteAlert = (message: string) => {
   });
 };
 
-export const showErrorAlert = (error: CustomError) => {
+export const showErrorAlert = (error: AxiosError) => {
+  const errors = error.response?.data as DataError;
+
+  const errorMessages = errors.details.map((err) => err.message);
+
   return Swal.fire({
     icon: "error",
     title: error?.status || "Oops...",
-    text: `${error?.response?.data?.message || "request"} Error   `,
+    html: `<span class="text-red-600" >${
+      errors || errorMessages.join(", ") || "Request Error"
+    }</span>`,
+
     showConfirmButton: true,
     confirmButtonText: "OK",
     confirmButtonColor: "#2D499D",
@@ -75,9 +83,16 @@ export const confirmDeleteAlert = async (
     confirmButtonColor: "rgb(220, 53, 69)",
     cancelButtonColor: "rgb(52, 58, 64)",
     confirmButtonText: "Ok",
-  }).then((result) => {
+  }).then(async (result) => {
     if (result.isConfirmed) {
-      confirm(); // Call the confirm function only if confirmed
+      Swal.fire({
+        title: "Deleting...",
+        allowOutsideClick: false,
+        didOpen: () => Swal.showLoading(),
+      });
+
+      confirm();
+
       return true;
     } else {
       return false;
@@ -99,7 +114,7 @@ export const cornerAlert = (message: string) => {
   });
   Toast.fire({
     icon: "success",
-    title: message ,
+    title: message,
   });
 };
 

@@ -1,22 +1,17 @@
 "use client";
 
 import { Sidebar } from "@/components/common/Sidebar";
-import { OpenSidebar } from "@/components/common/SidebarButton";
-import { SidebarProvider } from "@/context/SidebarContext";
+import { OpenSidebar } from "@/components/common/SidebarButton"; 
 import Image from "next/image";
 import { UserNav } from "@/components/nav/UserNav";
-import { FaCartShopping } from "react-icons/fa6";
-import { useTransition } from "react";
-import { useRouter } from "next/navigation";
-import Loading from "@/app/loading";
+import { FaCartShopping } from "react-icons/fa6"; 
 
 export default function UserSidebarLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  return (
-    <SidebarProvider>
+  return ( 
       <main className="flex min-h-dvh items-stretch    bg-basic">
         <Sidebar>
           <UserNav />
@@ -47,7 +42,6 @@ export default function UserSidebarLayout({
           </header>
           {children}
         </section>
-      </main>
-    </SidebarProvider>
+      </main> 
   );
 }

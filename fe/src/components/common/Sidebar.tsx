@@ -1,23 +1,24 @@
-import { useSidebar } from "@/context/SidebarContext";
+ 'use client'
 import Image from "next/image";
 import { FaRegMoon, FaRegSun } from "react-icons/fa";
 import { Logo } from "@/components/Logo";
 import { FaX } from "react-icons/fa6";
 import Link from "next/link";
+import { useSidebarStore } from "@/stores/SidebarStore";
 
 export const Sidebar = ({
   children, 
 }: {
   children: React.ReactNode; 
 }) => {
-  const { open, toggleSidebar } = useSidebar();
+  const { open, toggleSidebar } = useSidebarStore();
 
   return (
     <div className="xl:w-[300px]">
       <aside
         className={`z-50 transform ${
           open ? "translate-x-0" : "-translate-x-full"
-        } fixed h-full left-0 bottom-0 transition-transform duration-500 ease-out min-w-[300px] bg-white  custom-scroll-bar ps__rail-y  overflow-x-hidden col-span-2 p-8 py-12 xl:translate-x-0 `}
+        } fixed xl:static h-full left-0 bottom-0 transition-transform duration-500 ease-out min-w-[300px] bg-white  custom-scroll-bar ps__rail-y  overflow-x-hidden col-span-2 p-8 py-12 xl:translate-x-0 `}
       >
         <FaX
           onClick={toggleSidebar}

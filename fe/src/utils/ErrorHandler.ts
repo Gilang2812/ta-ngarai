@@ -1,6 +1,8 @@
-import { CustomError } from "@/type/props/ErrorProps";
+ 
 import { showErrorAlert } from "./AlertUtils";
+import { AxiosError } from "axios";
 
-export const onError = (error: CustomError) => {
+export const onError = (error: AxiosError) => {
+  console.log(error.response?.data)
   showErrorAlert(error);
 };

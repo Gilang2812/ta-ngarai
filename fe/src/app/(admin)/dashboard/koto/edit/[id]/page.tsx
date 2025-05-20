@@ -13,6 +13,8 @@ import { FormInput } from "@/components/inputs/FormInput";
 import { useFetchGalleries } from "@/features/web/useFetchGalleries";
 import { useEditTourism } from "@/features/web/useEditTourism";
 import { showErrorAlert } from "@/utils/AlertUtils";
+import Button from "@/components/common/Button";
+import { AxiosError } from "axios";
 
 registerPlugin(FilePondPluginImagePreview);
 
@@ -48,7 +50,7 @@ const EditDataVillage = () => {
     onSuccess: () => {
       router.push("/dashboard/koto");
     },
-    onError: (error: unknown) => {
+    onError: (error: AxiosError) => {
       showErrorAlert("Editing Data");
     },
   });
@@ -140,7 +142,7 @@ const EditDataVillage = () => {
             </section>
 
             <div>
-              <button type="submit">{isPending ? "Loading" : "Save"}</button>
+              <Button type="submit">{isPending ? "Loading" : "Save"}</Button>
             </div>
           </section>
         </Form>

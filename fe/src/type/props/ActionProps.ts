@@ -1,6 +1,6 @@
-import { CustomError } from "./ErrorProps"
+import { AxiosError } from "axios" 
 
 export type ActionProps = {
     onSuccess: ()=>void
-    onError?: (e:CustomError)=>void
+    onError?: (e:AxiosError)=>void
 }

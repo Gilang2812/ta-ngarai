@@ -14,13 +14,15 @@ export const buttonVariants = cva(
           "bg-white text-primary border border-primary   hover:text-white hover:bg-secondary",
         danger:
           "text-white  bg-red-600 w-fit hover:text-white hover:bg-red-700",
-        regDanger: "text-red-600 border border-red-600 border-2 bg-red-600/10  hover:bg-red-600/70 hover:text-white ",
+        regDanger:
+          "text-red-600 border border-red-600 border-2 bg-red-600/10  hover:bg-red-600/70 hover:text-white ",
         success:
           "text-white  bg-green-600 w-fit hover:text-white hover:bg-green-800",
         regSuccess:
           "bg-white border border-green-600  text-green-600 w-fit  hover:text-white hover:bg-green-900",
         secondary:
-          "btn px-3 py-2 font-normal text-white  bg-gray-300 w-fit hover:text-white hover:bg-gray-400",
+          " px-3 py-2 font-normal text-white  bg-gray-300 w-fit hover:text-white hover:bg-gray-400",
+        edit: "p-3   bg-white border   border-cyan-400 text-cyan-400 hover:bg-cyan-400 hover:text-white",
       },
       isActive: {
         default: "",

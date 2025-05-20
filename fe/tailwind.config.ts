@@ -31,6 +31,7 @@ const config: Config =   {
         tertiary: "var(--tertiary)",
         success:'#4DC397',
         basic: '#f2f7ff'
+        
       },
     
       fontSize: {

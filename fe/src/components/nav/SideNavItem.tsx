@@ -1,10 +1,12 @@
 'use client';
+import { LucideProps } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { ForwardRefExoticComponent, RefAttributes } from "react";
 import { IconType } from "react-icons";
 
 type NavProps = {
-  icon: IconType;
+  icon: IconType|ForwardRefExoticComponent<Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>>;
   label: string;
   link: string; 
 };
