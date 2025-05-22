@@ -1,4 +1,4 @@
-import { DataError } from "@/type/props/ErrorProps";
+import { DataError, Message } from "@/type/props/ErrorProps";
 import { AxiosError } from "axios";
 import Swal from "sweetalert2";
 
@@ -43,18 +43,21 @@ export const showDeleteAlert = (message: string) => {
 };
 
 export const showErrorAlert = (error: AxiosError) => {
-  const errors = error.response?.data as DataError;
+  const responseData = error?.response?.data;
 
-  const errorMessages = errors.details.map((err) => err.message);
+  const dataError = responseData as DataError;
+  const messageError = responseData as Message;
+
+  const detailMessages = Array.isArray(dataError?.details)
+    ? dataError.details.map((d) => d?.message).filter(Boolean)
+    : [];
+
+  const fallbackMessage = messageError?.message || detailMessages.join(", ") || "Internal Server Error";
 
   return Swal.fire({
     icon: "error",
-    title: error?.status || "Oops...",
-    html: `<span class="text-red-600" >${
-      errors || errorMessages.join(", ") || "Request Error"
-    }</span>`,
-
-    showConfirmButton: true,
+    title: error?.response?.status?.toString() || "Oops...",
+    html: `<span class="text-red-600">${fallbackMessage}</span>`,
     confirmButtonText: "OK",
     confirmButtonColor: "#2D499D",
   });

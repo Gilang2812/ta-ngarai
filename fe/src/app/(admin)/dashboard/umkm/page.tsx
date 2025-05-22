@@ -4,7 +4,7 @@ import TableHeaderManagement from "@/components/admin/TableHeaderManagement";
 import Button from "@/components/common/Button";
 import { DeleteButton } from "@/components/common/DeleteButton";
 import { EditButton } from "@/components/common/EditButton";
-import { SinggleContentWrapper } from "@/components/common/SingleContentWrapper";
+import { SingleContentWrapper } from "@/components/common/SingleContentWrapper";
 import { FormInput } from "@/components/inputs/FormInput";
 import { TableRawSkeleton } from "@/components/loading/TableRawSkeleton";
 import GoogleMapDrawing from "@/components/map/GoogleMapDrawing";
@@ -83,7 +83,7 @@ const Umkm = () => {
   };
 
   return (
-    <SinggleContentWrapper>
+    <SingleContentWrapper>
       <ManagementHeader
         content="marketplace"
         title="manage marketplace"
@@ -130,7 +130,7 @@ const Umkm = () => {
           </Form>
         </Formik>
       </Modal>
-    </SinggleContentWrapper>
+    </SingleContentWrapper>
   );
 };
 

@@ -25,7 +25,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 }
 
 input {
-  @apply focus:outline-none    focus:border-primary   ;
+  @apply focus:outline-none    focus:border-primary;
 }
 input[type="time"] {
   -webkit-appearance: textfield;
@@ -265,3 +265,11 @@ input[type="range"]:disabled::-webkit-slider-thumb {
 input[type="range"]:disabled::-moz-range-thumb {
   background-color: #adb5bd;
 }
+
+.filepond--item {
+  padding: 0.5rem;
+}
+ 
+ 
+
+ 

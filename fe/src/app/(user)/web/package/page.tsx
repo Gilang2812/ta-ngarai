@@ -1,11 +1,11 @@
 import { ContentHeader } from "@/components/common/ContentHeader";
-import { SinggleContentWrapper } from "@/components/common/SingleContentWrapper";
+import { SingleContentWrapper } from "@/components/common/SingleContentWrapper";
 import { PackageList } from "@/components/web/package/PackageList";
 import { FaPlus } from "react-icons/fa6";
 
 export default function Package() {
   return (
-    <SinggleContentWrapper>
+    <SingleContentWrapper>
       <ContentHeader text="available packages" />
 
       <section className="min-w-fit space-y-6">
@@ -19,6 +19,6 @@ export default function Package() {
         </button>
         <PackageList />
       </section>
-    </SinggleContentWrapper>
+    </SingleContentWrapper>
   );
 }

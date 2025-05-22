@@ -16,6 +16,8 @@ const reserveationRouter = require("../src/reservation/reservation.controller");
 const tourismRouter = require("../src/tourismVillage/tourism.controller");
 const userRouter = require("../src/user/user.controller");
 const souvenirRouter = require("../src/souvenirPlace/souvenir.controller");
+const craftRouter = require("../src/craft/craft.controller");
+const craftVariantRouter = require("../src/craftVariant/variant.controller");
 
 router.use("/", authRouter);
 router.use("/announcement", announcementRouter);
@@ -33,6 +35,8 @@ router.use("/services", detailServiceRouter);
 router.use("/tourism", tourismRouter);
 router.use("/users", userRouter);
 router.use("/souvenirs", souvenirRouter);
+router.use("/crafts", craftRouter);
+router.use("/variants", craftVariantRouter);
 
 router.use("*", (req, res, next) => {
   res.status(404).json({ message: "Not Found" });

@@ -5,7 +5,7 @@ export type CustomError = {
   status?: number;
 };
 
-type Message = {
+export type Message = {
   message: string;
 };
 

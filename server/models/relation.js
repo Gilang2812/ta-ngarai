@@ -313,18 +313,16 @@ ItemCheckout.belongsTo(Checkout, {
   foreignKey: "checout_id",
   as: "checkout",
 });
-
-// CraftVariant and CraftVariantGallery associations
+ 
 CraftVariant.hasMany(CraftVariantGallery, {
-  foreignKey: "id",
+  foreignKey: "id_craft_variant",
   as: "craftGalleries",
 });
 CraftVariantGallery.belongsTo(CraftVariant, {
-  foreignKey: "id",
+  foreignKey: "id_craft_variant",
   as: "variant",
 });
-
-// ItemCheckout and ItemCheckoutReviewGallery associations
+ 
 ItemCheckout.hasMany(ItemCheckoutReviewGallery, {
   foreignKey: "checout_id",
   sourceKey: "checout_id",
@@ -369,4 +367,11 @@ module.exports = {
   FacilityUnit,
   GalleryUnit,
   GalleryHomestay,
+  Craft,
+  CraftVariant,
+  CraftVariantGallery,
+  ShippingAddress,
+  Checkout,
+  ItemCheckout,
+  ItemCheckoutReviewGallery, 
 };

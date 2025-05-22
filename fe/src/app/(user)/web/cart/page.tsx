@@ -1,7 +1,7 @@
 "use client";
 import CraftCart from "@/components/cart/CraftCart";
 import PackageCart from "@/components/cart/PackageCart";
-import { SinggleContentWrapper } from "@/components/common/SingleContentWrapper";
+import { SingleContentWrapper } from "@/components/common/SingleContentWrapper";
 
 import { ViewToggleButtons } from "@/components/craft/ViewToggleButtons";
 
@@ -12,7 +12,7 @@ const Cart = ({}) => {
   const [view, setView] = useState<ViewsProps>("package");
 
   return (
-    <SinggleContentWrapper>
+    <SingleContentWrapper>
       <ViewToggleButtons
         current={view}
         onChange={setView}
@@ -20,7 +20,7 @@ const Cart = ({}) => {
       />
 
       {view === "package" ? <PackageCart /> : <CraftCart />}
-    </SinggleContentWrapper>
+    </SingleContentWrapper>
   );
 };
 

@@ -13,7 +13,7 @@ import Button from '@/components/common/Button';
 import { AddressSelector } from '@/components/checkout/AddressSelectior';
 import { addresses } from '@/data/checkout';
 import { formatPrice } from '@/lib/priceFormatter';
-import { SinggleContentWrapper } from '@/components/common/SingleContentWrapper';
+import { SingleContentWrapper } from '@/components/common/SingleContentWrapper';
  
 type PaymentMethod = 'cod' | 'bank' | 'apar';
 // type CheckoutStep = 'address' | 'payment' | 'confirmation';
@@ -108,7 +108,7 @@ export default function CheckoutPage() {
   }
   
   return (
-    <SinggleContentWrapper>
+    <SingleContentWrapper>
       <h1 className="text-2xl font-bold mb-8">Checkout</h1>
       
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -216,6 +216,6 @@ export default function CheckoutPage() {
           </div>
         </div>
       </div>
-    </SinggleContentWrapper>
+    </SingleContentWrapper>
   );
 }

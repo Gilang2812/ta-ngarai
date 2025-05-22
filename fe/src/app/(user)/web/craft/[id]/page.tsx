@@ -6,7 +6,7 @@ import { Header } from "@/components/craft/Header";
 import { ProductImageGallery } from "@/components/craft/ProductImageGallery";
 import { MOCK_PRODUCT } from "@/data/craft";
 import { ProductInfo } from "@/components/craft/ProductInfo";
-import { SinggleContentWrapper } from "@/components/common/SingleContentWrapper";
+import { SingleContentWrapper } from "@/components/common/SingleContentWrapper";
 
 function ProductDetail() {
   const params = useParams();
@@ -59,8 +59,8 @@ function ProductDetail() {
 
 export default function ProductDetailPage() {
   return (
-    <SinggleContentWrapper>
+    <SingleContentWrapper>
       <ProductDetail />
-    </SinggleContentWrapper>
+    </SingleContentWrapper>
   );
 }

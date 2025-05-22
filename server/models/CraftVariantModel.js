@@ -8,11 +8,11 @@ const CraftVariant = sequelize.define(
     id: {
       type: DataTypes.STRING(5),
       primaryKey: true,
-      allowNull: false,
+      allowNull: true,
     },
     id_craft: {
       type: DataTypes.STRING(5),
-      allowNull: true,
+      allowNull: false,
     },
     name: {
       type: DataTypes.STRING(20),
@@ -34,10 +34,16 @@ const CraftVariant = sequelize.define(
       type: DataTypes.STRING(255),
       allowNull: true,
     },
+    deleted_at: {
+      type: DataTypes.DATE,
+      allowNull: true,
+    },
   },
   {
     tableName: "craft_variant",
     timestamps: false,
+    deletedAt: "deleted_at",
+    paranoid: true,
   }
 );
 

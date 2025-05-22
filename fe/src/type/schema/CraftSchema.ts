@@ -1,11 +1,9 @@
 import * as yup from "yup";
 
- 
-export const craftSchema = yup.object({ 
+export const craftSchema = yup.object({
   name: yup.string().required("Nama kerajinan wajib diisi"),
 });
 
- 
 export const craftVariantSchema = yup.object({
   id_craft: yup.string().required("ID kerajinan wajib dipilih"),
   name: yup.string().required("Nama varian wajib diisi"),
@@ -25,6 +23,11 @@ export const craftVariantSchema = yup.object({
     .min(0, "Modal tidak boleh negatif")
     .required("Modal wajib diisi"),
   description: yup.string().required("Deskripsi wajib diisi"),
+  images: yup
+    .array()
+    .min(1, "Minimal 1 gambar diperlukan")
+    .max(5, "Maksimal 5 gambar")
+    .nullable(),
 });
 
 export interface Products {
@@ -45,7 +48,7 @@ export type CraftVariant = yup.InferType<typeof craftVariantSchema> & {
 
 export interface CraftVariantGallery {
   id: string;
-  checout_id: string;
+  id_craft_variant: string;
   url: string;
 }
 

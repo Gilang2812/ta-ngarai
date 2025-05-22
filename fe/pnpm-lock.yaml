@@ -62,12 +62,18 @@ importers:
       filepond:
         specifier: ^4.32.7
         version: 4.32.7
+      filepond-plugin-file-validate-type:
+        specifier: ^1.2.9
+        version: 1.2.9(filepond@4.32.7)
       filepond-plugin-image-exif-orientation:
         specifier: ^1.0.11
         version: 1.0.11(filepond@4.32.7)
       filepond-plugin-image-preview:
         specifier: ^4.6.12
         version: 4.6.12(filepond@4.32.7)
+      filepond-plugin-image-resize:
+        specifier: ^2.0.10
+        version: 2.0.10(filepond@4.32.7)
       flowbite:
         specifier: ^2.5.2
         version: 2.5.2
@@ -141,6 +147,9 @@ importers:
       '@types/google.maps':
         specifier: ^3.58.1
         version: 3.58.1
+      '@types/lodash':
+        specifier: ^4.17.17
+        version: 4.17.17
       '@types/node':
         specifier: ^20
         version: 20.17.6
@@ -1196,6 +1205,9 @@ packages:
   '@types/json5@0.0.29':
     resolution: {integrity: sha512-dRLjCWHYg4oaA77cxO64oO+7JwCwnIzkZPdrrC71jQmQtlhM556pwKo5bUzqvZndkVbeFLIIi+9TC40JNF5hNQ==}
 
+  '@types/lodash@4.17.17':
+    resolution: {integrity: sha512-RRVJ+J3J+WmyOTqnz3PiBLA501eKwXl2noseKOrNo/6+XEHjTAxO4xHvxQB6QuNm+s4WRbn6rSiap8+EA+ykFQ==}
+
   '@types/node@20.17.6':
     resolution: {integrity: sha512-VEI7OdvK2wP7XHnsuXbAJnEpEkF6NjSN45QJlL4VGqZSXsnicpesdTWsg9RISeSdYd3yeRj/y3k5KGjUXYnFwQ==}
 
@@ -1813,6 +1825,11 @@ packages:
     resolution: {integrity: sha512-7Gps/XWymbLk2QLYK4NzpMOrYjMhdIxXuIvy2QBsLE6ljuodKvdkWs/cpyJJ3CVIVpH0Oi1Hvg1ovbMzLdFBBg==}
     engines: {node: ^10.12.0 || >=12.0.0}
 
+  filepond-plugin-file-validate-type@1.2.9:
+    resolution: {integrity: sha512-Tzv07aNdZvjUXDRA3XL16QMEvh6llDrXlcZ6W0eTHQ+taHaVg/JKJTFs/AViO+6ZcpPCcQStbhYEL2HoS+vldw==}
+    peerDependencies:
+      filepond: '>=1.x <5.x'
+
   filepond-plugin-image-exif-orientation@1.0.11:
     resolution: {integrity: sha512-hLBc12Fk6Zkj3L8mSAn+elugHOqT5rLUbgVXQQIQjMe0FsGjtpoxqeVR6jt4IWHGat2L9sFAgU2TGmd1mqosCg==}
     peerDependencies:
@@ -1822,6 +1839,11 @@ packages:
     resolution: {integrity: sha512-Y8ETX5QVV0mbPB0586UH8AUmG9tZg8PuN5bdEAIlZVJFTct5ebViJ7+Am94/VhTPjLqZjBf1zmDq5JU6XRsZKw==}
     peerDependencies:
       filepond: '>=4.x <5.x'
+
+  filepond-plugin-image-resize@2.0.10:
+    resolution: {integrity: sha512-irX+J275u8Ph1KcciCeSQmxeFjbu0+co5XVCkiwdSNnz6KiqrCKN7RXTvEbdgSdDzyi5omr2oP1rKWps5L1RsQ==}
+    peerDependencies:
+      filepond: '>=3.x <5.x'
 
   filepond@4.32.7:
     resolution: {integrity: sha512-L2idUfC31Qb2ZuFn8yAjX+Km6Ouq0kQn6JHcwhqrl5Ee9cB7xctLa0nkbbAeCML2+a1/cUsd0TqBgVcxYW08GA==}
@@ -4872,6 +4894,8 @@ snapshots:
 
   '@types/json5@0.0.29': {}
 
+  '@types/lodash@4.17.17': {}
+
   '@types/node@20.17.6':
     dependencies:
       undici-types: 6.19.8
@@ -5686,11 +5710,19 @@ snapshots:
     dependencies:
       flat-cache: 3.2.0
 
+  filepond-plugin-file-validate-type@1.2.9(filepond@4.32.7):
+    dependencies:
+      filepond: 4.32.7
+
   filepond-plugin-image-exif-orientation@1.0.11(filepond@4.32.7):
     dependencies:
       filepond: 4.32.7
 
   filepond-plugin-image-preview@4.6.12(filepond@4.32.7):
+    dependencies:
+      filepond: 4.32.7
+
+  filepond-plugin-image-resize@2.0.10(filepond@4.32.7):
     dependencies:
       filepond: 4.32.7
 
