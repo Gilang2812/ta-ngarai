@@ -8,18 +8,15 @@ const storage = multer.diskStorage({
     cb(null, "public/images");
   },
   filename: (req, file, cb) => {
-    const sanitizedName = file.originalname.replaceAll(" ", "-");
-    const filePath = path.join("public/images", sanitizedName);
+    let sanitizedName = file.originalname.replaceAll(" ", "-");
+    const ext = file.originalname.split(".")[1];
 
-    // Jika file sudah ada, gunakan nama aslinya (tidak upload ulang)
-    if (fs.existsSync(filePath)) {
-      console.log("File sudah ada:", sanitizedName);
-      return cb(null, sanitizedName); // pakai nama aslinya
+    if (!ext) {
+      sanitizedName = `${sanitizedName}.${file.mimetype.split("/")[1]}`;
     }
-
-    // Kalau belum ada, generate nama unik
     const uniqueSuffix = Math.floor(Math.random() * 1e6) + Date.now();
     const newFileName = `${uniqueSuffix}-${sanitizedName}`;
+
     cb(null, newFileName);
   },
 });

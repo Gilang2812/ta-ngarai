@@ -1,6 +1,6 @@
 const {
   findGalleries,
-  findGalleryById,
+  findGallery,
   createGallery,
   updateGallery,
   bulkInsertGalleries,
@@ -13,8 +13,8 @@ const getGalleries = async () => {
   const galleries = await findGalleries();
   return galleries;
 };
-const getGalleryById = async (id) => {
-  const gallery = await findGalleryById(id);
+const getGallery = async (condition) => {
+  const gallery = await findGallery(condition);
   if (!gallery) {
     throw new CustomError("Gallery not found", 404);
   }
@@ -26,14 +26,13 @@ const insertGallery = async (body) => {
   return newGallery;
 };
 const updateGalleryById = async (id, body) => {
-  const gallery = await getGalleryById(id);
+  const gallery = await getGallery({ id });
   await updateGallery(id, body);
   return gallery;
 };
-const deleteGalleryById = async (id) => {
-  const gallery = await getGalleryById(id);
-  await deleteGallery(id);
-  return;
+const deleteGalleryByAtribut = async (condition) => {
+  const galerry =await deleteGallery(condition);
+  return galerry;
 };
 
 const insertGalleries = async (galleries) => {
@@ -43,8 +42,8 @@ const insertGalleries = async (galleries) => {
 
 module.exports = {
   getGalleries,
-  getGalleryById,
+  getGallery,
   insertGallery,
   updateGalleryById,
-  deleteGalleryById,
+  deleteGalleryByAtribut,
 };

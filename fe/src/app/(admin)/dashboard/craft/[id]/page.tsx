@@ -10,7 +10,7 @@ export default async function EditVariantPage({
   console.log(id);
   return (
     <SingleContentWrapper>
-      <header className="py-2 text-2xl text-primary ">
+      <header className="py-2 text-2xl text-primary  ">
         <h1>Edit Craft</h1>
       </header>
       <EditCraftForm id={id} />

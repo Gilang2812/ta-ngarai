@@ -29,14 +29,14 @@ export const EditCraftForm = ({ id }: Props) => {
       <section className="mb-10">
         <h2>{`Edit ${variant?.craft.name} ${variant?.name}`}</h2>
       </section>
-      <section>
+      <section className="min-w-[300px]">
         <Formik
           initialValues={initialValues}
           validationSchema={craftVariantSchema}
           onSubmit={handleUpdateVariant}
         >
-          <Form className=" gap-4 grid grid-cols-5 ">
-            <section className="col-span-3 space-y-6">
+          <Form className=" gap-4 grid  lg:grid-cols-5 ">
+            <section className="order-2 lg:order-1 lg:col-span-3 space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                   <FormInput label="Craft" as="select" name="id_craft">
@@ -85,7 +85,7 @@ export const EditCraftForm = ({ id }: Props) => {
                 }`}</Button>
               </div>
             </section>
-            <section className="col-span-2 space-y-6">
+            <section className=" order-1 lg:order-2  w-full lg:col-span-2 space-y-6">
               <FilePondComponent />
             </section>
           </Form>

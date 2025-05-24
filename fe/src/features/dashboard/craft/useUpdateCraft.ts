@@ -7,7 +7,7 @@ import { useMutation } from "@tanstack/react-query";
 export const useUpdateCraft = ({ onSuccess }: ActionProps) => {
   return useMutation({
     mutationFn: async (craft: Craft) => {
-      const { data } = await axiosInstance.put(`/crafts/${craft.id}`, craft);
+      const { data } = await axiosInstance.patch(`/crafts/${craft.id}`, craft);
       return data;
     },
     onSuccess,

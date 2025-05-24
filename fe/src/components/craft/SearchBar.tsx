@@ -1,26 +1,43 @@
-import React from "react";
+import React, { useState } from "react";
+import { CraftProduct } from "@/type/schema/CraftSchema";
+import { motion } from "framer-motion";
+import Link from "next/link";
 
 interface SearchBarProps {
   onSearch?: (query: string) => void;
+  crafts: CraftProduct[];
 }
 
-export const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
+export const SearchBar: React.FC<SearchBarProps> = ({ onSearch, crafts }) => {
+  const [query, setQuery] = useState<string>("");
+
+  const result = crafts?.filter(
+    (craft) =>
+      craft.name.toLowerCase().includes(query.toLowerCase()) ||
+      craft.craft.name.toLowerCase().includes(query.toLowerCase())
+  );
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const formData = new FormData(e.currentTarget);
-    const query = formData.get("query") as string;
     if (onSearch) onSearch(query);
   };
-  
 
   return (
-    <form  onClick={handleSubmit}  className="relative">
-      <div className="relative">
+    <form onSubmit={handleSubmit} className="relative">
+      <div className="relative font-normal">
         <input
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          onBlur={() =>
+            setTimeout(() => {
+              setQuery("");
+            }, 200)
+          }
           type="text"
+          autoComplete="off"
           name="query"
           placeholder="Cari..."
-          className="w-full py-2 pl-4 pr-10 border border-gray-300  focus:border-primary/50 transition-ease-in-out rounded-full  focus:ring-4 focus:ring-primary/30   "
+          className="w-full py-2 pl-4 pr-10 border border-gray-300  focus:border-primary/50 transition-ease-in-out rounded-full  focus:ring-4 focus:ring-primary/30"
         />
         <button
           type="submit"
@@ -41,6 +58,35 @@ export const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
             />
           </svg>
         </button>
+
+        {query && (
+          <motion.div
+            layoutId="input value"
+            initial={{ height: 0 }}
+            animate={{ height: "auto" }}
+            exit={{ height: 0 }}
+            transition={{ duration: 0.2 }}
+            className="absolute bg-white w-full border rounded-xl z-20 max-h-[464px] overflow-x-hidden"
+          >
+            <div className="p-3">
+              {result.length === 0 ? (
+                <p>nothings found</p>
+              ) : (
+                result.map((rs) => (
+                  <Link
+                    aria-label={`Lihat detail produk ${rs.name}`}
+                    href={`./craft/${rs.id_craft}?idvr=${rs.id}`}
+                    key={rs.id}
+                    onMouseDown={(e) => e.stopPropagation()}
+                    className="block px-4 py-2 hover:bg-gray-100 text-sm text-black"
+                  >
+                    {rs.craft.name} {rs.name}
+                  </Link>
+                ))
+              )}
+            </div>
+          </motion.div>
+        )}
       </div>
     </form>
   );

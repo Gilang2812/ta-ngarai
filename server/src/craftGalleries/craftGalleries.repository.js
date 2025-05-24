@@ -4,11 +4,9 @@ const findGalleries = async (db, { limit, offset }) => {
   const craftGalleries = await CraftVariantGallery.findAll();
   return craftGalleries;
 };
-const findGalleryById = async (id) => {
+const findGallery = async (condition) => {
   const craftGallery = await CraftVariantGallery.findOne({
-    where: {
-      id: id,
-    },
+    where: condition,
   });
   return craftGallery;
 };
@@ -26,9 +24,7 @@ const updateGallery = async (id, body) => {
 };
 const deleteGallery = async (id) => {
   const deletedCraftGallery = await CraftVariantGallery.destroy({
-    where: {
-      id,
-    },
+    where: id,
   });
   return deletedCraftGallery;
 };
@@ -40,9 +36,9 @@ const bulkInsertGalleries = async (galleries) => {
 
 module.exports = {
   findGalleries,
-  findGalleryById,
+  findGallery,
   createGallery,
   updateGallery,
   deleteGallery,
-  bulkInsertGalleries,  
+  bulkInsertGalleries,
 };

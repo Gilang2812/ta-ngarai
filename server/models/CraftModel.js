@@ -15,7 +15,7 @@ const Craft = sequelize.define(
       allowNull: false,
     },
     name: {
-      type: DataTypes.STRING(20),
+      type: DataTypes.STRING(50),
       allowNull: false,
     },
     deleted_at: {

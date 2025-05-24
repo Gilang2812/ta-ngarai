@@ -3,7 +3,10 @@ const imageUpload = require("../../middlewares/imageUploads.js");
 const {
   bulkInsertGalleries,
 } = require("../craftGalleries/craftGalleries.repository");
-const { insertGallery } = require("../craftGalleries/craftGalleries.service");
+const {
+  insertGallery,
+  deleteGalleryByAtribut,
+} = require("../craftGalleries/craftGalleries.service");
 const { validateData } = require("../middlewares/validation");
 const {
   getVariants,
@@ -12,11 +15,16 @@ const {
   updateVariantById,
   deleteVariantById,
 } = require("./variant.service");
+const fs = require("fs");
 
 const { variantSchema } = require("./variant.validation");
+const { formatImageUrl } = require("../../utils/formatImageUrl.js");
 router.get("/", async (req, res, next) => {
   try {
-    const variants = await getVariants();
+    const includeKeys = req.query.include?.split(",") || [];
+
+    const variants = await getVariants(includeKeys);
+    console.log(req.query)
     res.status(200).json(variants);
   } catch (error) {
     next(error);
@@ -26,7 +34,9 @@ router.get("/", async (req, res, next) => {
 router.get("/:id", async (req, res, next) => {
   try {
     const { id } = req.params;
-    const variant = await getVariantById(id);
+    const includeKeys = req.query.include?.split(",") || [];
+
+    const variant = await getVariantById(id, includeKeys);
     if (!variant) {
       return res.status(404).json({ message: "Variant not found" });
     }
@@ -54,7 +64,7 @@ router.post(
       const images = req.files
         ? req.files.map((file) => ({
             id_craft_variant: newVariant.id,
-            url: file.path.split("\\").slice(1).join("/").replaceAll(" ", "-"),
+            url: formatImageUrl(file.path),
           }))
         : [];
 
@@ -76,8 +86,11 @@ router.patch(
   async (req, res, next) => {
     try {
       const { id } = req.params;
-      console.log("req.body", req.files);
-      const { name, description, id_craft, price, modal, stock } = req.body;
+      console.log("req.file", req.files);
+      console.log("req.body", req.body);
+      const { name, description, id_craft, price, modal, stock, isNewImage } =
+        req.body;
+
       const updatedVariant = await updateVariantById(id, {
         id_craft,
         name,
@@ -86,7 +99,28 @@ router.patch(
         modal,
         stock,
       });
-      console.log("updatedVariant", updatedVariant);
+      const existingGalleries = updatedVariant.craftGalleries || [];
+      if (!isNewImage) {
+        console.log("new galerry", isNewImage);
+        for (const image of req.files) {
+          fs.unlinkSync(image.path);
+        }
+      } else {
+        const images = req.files
+          ? req.files.map((file) => ({
+              id_craft_variant: id,
+              url: formatImageUrl(file.path),
+            }))
+          : [];
+        for (const image of existingGalleries) {
+          fs.unlinkSync(`public\\${image.url}`);
+        }
+        await deleteGalleryByAtribut({ id_craft_variant: id });
+        for (const image of images) {
+          await insertGallery(image);
+        }
+      }
+      console.log("updatedVariant", updatedVariant.craftGalleries);
       res.status(200).json(updatedVariant);
     } catch (error) {
       next(error);

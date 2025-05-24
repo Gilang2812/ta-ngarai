@@ -1,4 +1,5 @@
 import * as yup from "yup";
+import { ItemCheckoutType } from "./CheckoutSchema";
 
 export const craftSchema = yup.object({
   name: yup.string().required("Nama kerajinan wajib diisi"),
@@ -21,13 +22,10 @@ export const craftVariantSchema = yup.object({
     .number()
     .typeError("Modal harus berupa angka")
     .min(0, "Modal tidak boleh negatif")
-    .required("Modal wajib diisi"),
+    .nullable()
+    .optional(),
   description: yup.string().required("Deskripsi wajib diisi"),
-  images: yup
-    .array()
-    .min(1, "Minimal 1 gambar diperlukan")
-    .max(5, "Maksimal 5 gambar")
-    .nullable(),
+  images: yup.array().max(5, "Maksimal 5 gambar").nullable(),
 });
 
 export interface Products {
@@ -56,3 +54,18 @@ export interface CraftWithVariants extends Craft {
   variants: CraftVariant[];
   galleries: CraftVariantGallery[];
 }
+
+export type CraftVariantWithGalleriesSchema = CraftVariant & {
+  craft: Craft;
+  craftGalleries: CraftVariantGallery[];
+};
+
+export type CraftProduct = CraftVariantWithGalleriesSchema &{
+  itemCheckouts:ItemCheckoutType[]
+}
+export type CraftVariantInclude = (
+  | "craft"
+  | "craftGalleries"
+  | "checkout"
+  | "reviewGalleris"
+)[];

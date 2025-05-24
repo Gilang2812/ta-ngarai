@@ -20,8 +20,8 @@ const FilePondComponent = () => {
     useFormikContext<FormValues>();
   return (
     <>
-      <div className="form-group  ">
-        <label htmlFor="images">Gambar</label>
+      <div className="form-groupsa  ">
+        <p>Gambar</p>
         <FilePond
           files={values.images || []}
           onupdatefiles={(fileItems) => {

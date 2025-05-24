@@ -1,32 +1,26 @@
 "use client";
-import { imageUrl, notFoundImage } from "@/lib/baseUrl";
+import { baseUrl } from "@/lib/baseUrl";
 /* eslint-disable jsx-a11y/alt-text */
 
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 
-const Img = ({
+const ImgCraft = ({
   src,
   ...props
 }: { src: string } & React.ComponentProps<typeof Image>) => {
- 
-  const foundedSrc = imageUrl + src;
+  const notFound = "/images/Image_not_available.png";
+  const foundedSrc = `${baseUrl}/${src}`;
   const [imgSrc, setImgSrc] = useState(foundedSrc);
-
   useEffect(() => {
     setImgSrc(foundedSrc);
     return () => {
-      setImgSrc(notFoundImage);
+      setImgSrc(notFound);
     };
   }, [foundedSrc]);
-
-  return (
-    <Image
-      src={imgSrc}
-      {...props}
-      onError={() => setImgSrc(notFoundImage)}
-    />
-  );
+  
+  console.log(imgSrc)
+  return <Image src={imgSrc} {...props} onError={() => setImgSrc(notFound)} />;
 };
 
-export default Img;
+export default ImgCraft;

@@ -24,7 +24,7 @@ import {
         <Dialog as="div" className="relative z-50" onClose={onClose}>
      
   
-        <div className={`fixed inset-0 flex transition-ease-in-out ${isOpen ? "bg-black/25" : " bg-none"}  justify-center p-8`}>
+        <div className={`fixed overflow-x-hidden inset-0 flex transition-ease-in-out ${isOpen ? "bg-black/25" : " bg-none"}  justify-center p-8`}>
             <TransitionChild
               as={Fragment}
               enter="ease-out duration-500"
@@ -37,7 +37,7 @@ import {
               <DialogPanel className="w-full max-w-3xl   h-fit overflow-hidden bg-white rounded  shadow-lg transform transition-all">
                 <DialogTitle
                   as="h3"
-                  className="text-lg px-4 py-2 flex justify-between items-center font-bold border-b  text-gray-900"
+                  className="capitalize text-lg px-4 py-2 flex justify-between items-center font-bold border-b  text-gray-900"
                 >
                   {title}
                   <button

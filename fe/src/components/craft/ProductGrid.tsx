@@ -1,15 +1,16 @@
-import {  type Product } from '@/data/craft';
-import React from 'react';  
-import { ProductCard } from './ProductCard';
+
+import React from "react";
+import { ProductCard } from "./ProductCard";
+import { CraftProduct } from "@/type/schema/CraftSchema";
 
 interface ProductGridProps {
-  products: Product[]  
+  crafts: CraftProduct[];
 }
 
-export const ProductGrid: React.FC<ProductGridProps> = ({ products }) => {
+export const ProductGrid: React.FC<ProductGridProps> = ({ crafts }) => {
   return (
     <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-      {products.map((product) => (
+      {crafts.map((product) => (
         <ProductCard key={product.id} product={product} />
       ))}
     </div>

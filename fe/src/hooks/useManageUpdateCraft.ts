@@ -1,8 +1,11 @@
 import { useFetchCraft } from "@/features/dashboard/craft/useFetchCraft";
-import { useGetVariant } from "@/features/dashboard/craft/useGetVariant";
+import { useGetVariant } from "@/features/dashboard/craftVariant/useGetVariant";
 import { useUpdateCraftVariant } from "@/features/dashboard/craftVariant/useUpdateCraftVariant";
 import { baseUrl } from "@/lib/baseUrl";
-import { CraftVariant } from "@/type/schema/CraftSchema";
+import {
+  CraftVariant,
+  CraftVariantWithGalleriesSchema,
+} from "@/type/schema/CraftSchema";
 import { cornerAlert } from "@/utils/AlertUtils";
 import { createFormData } from "@/utils/common/createFormData";
 import { useMemo } from "react";
@@ -14,7 +17,10 @@ export const useManageUpdateCraft = (id: string) => {
     data: variant,
     isLoading: variantLoading,
     refetch: refetchVariant,
-  } = useGetVariant(id);
+  } = useGetVariant<CraftVariantWithGalleriesSchema>(id, [
+    "craft",
+    "craftGalleries",
+  ]);
   const { data: crafts, isLoading: craftLoading } = useFetchCraft();
   const { mutate: updateVariant, isPending } = useUpdateCraftVariant({
     onSuccess: () => {
@@ -42,6 +48,7 @@ export const useManageUpdateCraft = (id: string) => {
     stock: variant?.stock ?? 0,
     description: variant?.description ?? "",
     images: images ?? [],
+    isNewImage: 0,
   };
 
   const handleUpdateVariant = (values: CraftVariant) => {
@@ -54,11 +61,14 @@ export const useManageUpdateCraft = (id: string) => {
       initialImages ?? []
     );
 
-    console.log(isSameImageList)
+    console.log(isSameImageList);
     if (!isSameData || !isSameImageList) {
-    const formData = createFormData(values);
-    console.log(values);
-    updateVariant(formData);
+      const formData = createFormData(values);
+      console.log(values);
+      if (!isSameImageList) {
+        formData.set("isNewImage", "1");
+      }
+      updateVariant(formData);
     } else {
       cornerAlert("Tidak ada perubahan yang dilakukan");
     }

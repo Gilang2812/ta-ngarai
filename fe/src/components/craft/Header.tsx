@@ -1,15 +1,17 @@
+import { CraftProduct } from "@/type/schema/CraftSchema";
 import { SearchBar } from "./SearchBar";
 
 interface HeaderProps {
     onSearch?: (query: string) => void;
+    crafts:CraftProduct[]
   }
 
-export const Header: React.FC<HeaderProps> = ({ onSearch }) => {
+export const Header: React.FC<HeaderProps> = ({ onSearch,crafts }) => {
     return (
       <header className="flex items-center justify-between mb-6">
         <h1 className="text-2xl font-bold">Souvenir</h1>
         <div className="flex items-center space-x-4">
-          <SearchBar onSearch={onSearch} />
+          <SearchBar crafts={crafts} onSearch={onSearch} />
           <button className="p-2 text-gray-600 hover:text-gray-900">
             <svg
               className="w-6 h-6"

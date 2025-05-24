@@ -14,7 +14,7 @@ export default function SidebarLayout({
   NavComponent: () => JSX.Element;
 }) {
   return (
-    <main className=" flex h-lvh relative max-w-screen  max-h-screen overflow-clip   bg-basic">
+    <main className=" flex h-lvh relative min-w-fit max-w-screen  max-h-screen overflow-clip   bg-basic">
       <Sidebar>
         <NavComponent />
       </Sidebar>

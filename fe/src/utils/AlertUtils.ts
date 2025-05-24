@@ -52,7 +52,7 @@ export const showErrorAlert = (error: AxiosError) => {
     ? dataError.details.map((d) => d?.message).filter(Boolean)
     : [];
 
-  const fallbackMessage = messageError?.message || detailMessages.join(", ") || "Internal Server Error";
+  const fallbackMessage = messageError?.message || detailMessages.join(", ") ||responseData|| "Internal Server Error";
 
   return Swal.fire({
     icon: "error",

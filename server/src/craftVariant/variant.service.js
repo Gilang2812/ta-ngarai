@@ -8,13 +8,13 @@ const {
 
 const { CustomError } = require("../../utils/CustomError");
 
-const getVariants = async () => {
-  const variants = await findVariants();
+const getVariants = async (includeKeys) => {
+  const variants = await findVariants(includeKeys);
   return variants;
 };
 
-const getVariantById = async (id) => {
-  const variant = await findVariantById(id);
+const getVariantById = async (id,includeKeys) => {
+  const variant = await findVariantById(id,includeKeys);
   if (!variant) {
     throw new CustomError("Variant not found", 404);
   }
@@ -27,8 +27,8 @@ const insertVariant = async (body) => {
 };
 const updateVariantById = async (id, body) => {
   const variant = await getVariantById(id);
-  const result = await updateVariant(id, body);
-  return result;
+  await updateVariant(id, body);
+  return variant;
 };
 const deleteVariantById = async (id) => {
   const variant = await getVariantById(id);
