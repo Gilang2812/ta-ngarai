@@ -1,17 +1,36 @@
 import React from "react";
 import { CartItemComponent } from "../craft/CartItem";
-import { cartItems } from "@/data/craft";
 import { CartSummary } from "../craft/CartSummary";
 import { motion } from "framer-motion";
+import { useUserCraftCart } from "@/hooks/useUserCraftCart";
+import CraftCartSkeletonLoader from "../loading/CraftCartSkeletonLoader";
 
 const CraftCart = () => {
+  const {
+    carts,
+    isLoading,
+    isUpdating,
+    updateCraftCart,
+    isDirty,
+    setIsDirty,
+    handleDeleteCraftCart,
+    handleCheckedCraft,
+    selectedCraft,
+    handleCheckout,
+  } = useUserCraftCart();
+
+  if (isLoading) {
+    return <CraftCartSkeletonLoader />;
+  }
+
   return (
     <motion.div className="py-4 grid grid-cols-1 lg:grid-cols-3 gap-8">
       <div className="lg:col-span-2">
         <div className="p-6 border rounded-lg ">
           <table className="w-full [&_th]:p-4  [&_td]:p-2  ">
             <thead className="py-2 border-b">
-              <tr  >
+              <tr>
+                <th>#</th>
                 <th>PRODUCT</th>
                 <th>PRICE</th>
                 <th>QUANTITY</th>
@@ -20,8 +39,17 @@ const CraftCart = () => {
             </thead>
 
             <tbody className="space-y-4">
-              {cartItems.map((item) => (
-                <CartItemComponent key={item.id} item={item} />
+              {carts?.map((item, index) => (
+                <CartItemComponent
+                  setDirty={setIsDirty}
+                  selectedCraft={selectedCraft}
+                  isUpdating={isUpdating}
+                  updateCart={updateCraftCart}
+                  key={index}
+                  item={item}
+                  handleDeleteCart={handleDeleteCraftCart}
+                  handleCheckedCraft={handleCheckedCraft}
+                />
               ))}
             </tbody>
           </table>
@@ -29,7 +57,18 @@ const CraftCart = () => {
       </div>
 
       <div className="lg:col-span-1">
-        <CartSummary subtotal={1000} total={2000} />
+        <CartSummary
+          handleCheckout={handleCheckout}
+          isDirty={isDirty}
+          subtotal={selectedCraft.reduce(
+            (acc, curr) => acc + curr.jumlah * curr.price,
+            0
+          )}
+          total={selectedCraft.reduce(
+            (acc, curr) => acc + curr.jumlah * curr.price,
+            0
+          )}
+        />
       </div>
     </motion.div>
   );

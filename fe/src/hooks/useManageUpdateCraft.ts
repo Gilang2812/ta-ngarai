@@ -44,6 +44,7 @@ export const useManageUpdateCraft = (id: string) => {
     name: variant?.name ?? "",
     id_craft: variant?.id_craft ?? "",
     price: variant?.price ?? 0,
+    weight: variant?.weight ?? 0,
     modal: variant?.modal ?? 0,
     stock: variant?.stock ?? 0,
     description: variant?.description ?? "",

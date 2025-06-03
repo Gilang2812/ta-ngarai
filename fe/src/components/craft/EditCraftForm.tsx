@@ -37,7 +37,7 @@ export const EditCraftForm = ({ id }: Props) => {
         >
           <Form className=" gap-4 grid  lg:grid-cols-5 ">
             <section className="order-2 lg:order-1 lg:col-span-3 space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div>
                   <FormInput label="Craft" as="select" name="id_craft">
                     {crafts?.map((craft) => (
@@ -50,11 +50,14 @@ export const EditCraftForm = ({ id }: Props) => {
                 <div>
                   <FormInput label="Name" type="text" name="name" />
                 </div>
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div>
                   <FormInput label="Price" type="number" name="price" min="0" />
                 </div>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  <div>
+                    <FormInput label="Weight (gram)" type="float" name="weight" min="0" />
+                  </div>
 
                 <div>
                   <FormInput label="Modal" type="number" name="modal" min="0" />
@@ -78,7 +81,7 @@ export const EditCraftForm = ({ id }: Props) => {
                   href={`./`}
                   className=" p-2 rounded bg-gray-500 text-white hover:bg-gray-600 transition-colors  duration-200"
                 >
-                  Cancel
+                  back
                 </Link>
                 <Button type="submit">{`${
                   isPending ? <Spinner /> : "Save Changes"

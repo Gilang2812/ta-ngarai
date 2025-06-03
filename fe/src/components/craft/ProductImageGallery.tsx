@@ -1,104 +1,76 @@
 "use client";
-import React, { useState } from "react";
-import Image from "next/image";
+import React from "react";
+import { type VariantBelongCraftSchema } from "@/type/schema/CraftSchema";
+import ImgCraft from "../common/ImgCraft";
+import Button from "../common/Button";
+import { MdArrowForwardIos, MdOutlineArrowBackIosNew } from "react-icons/md";
+import { motion } from "framer-motion";
 
 interface ProductImageGalleryProps {
-  mainImage: string;
-  thumbnails?: string[];
-  productName: string;
+  selectedImage: string;
+  selectedVariant: VariantBelongCraftSchema;
+  activeIndex: number;
+  handleThumbnailClick: (url: string, index: number) => void;
+  handlePrevImageButton: () => void;
+  handleNextImageButton: () => void;
 }
-
 export const ProductImageGallery: React.FC<ProductImageGalleryProps> = ({
-  mainImage,
-  thumbnails,
-  productName,
+  selectedImage,
+  selectedVariant,
+  activeIndex,
+  handleNextImageButton,
+  handlePrevImageButton,
+  handleThumbnailClick,
 }) => {
-  const [currentImage, setCurrentImage] = useState(mainImage);
-  const [activeIndex, setActiveIndex] = useState(0);
-
-  const handleThumbnailClick = (image: string, index: number) => {
-    setCurrentImage(image);
-    setActiveIndex(index);
-  };
-
   return (
     <div className="w-full">
       <div className="relative h-96 w-full mb-4 rounded-lg overflow-hidden">
-        <Image
-          src={currentImage}
-          alt={productName}
+        <ImgCraft
+          src={selectedImage}
+          alt={selectedVariant.name}
           fill
           className="object-contain"
           sizes="(max-width: 768px) 100vw, 500px"
           priority
         />
       </div>
-      <div className="relative">
-        <button
-          className="absolute left-0 top-1/2 -translate-y-1/2 bg-white rounded-full shadow p-1 z-10"
-          onClick={() => {
-            const newIndex = Math.max(0, activeIndex - 1);
-            setActiveIndex(newIndex);
-            setCurrentImage(thumbnails[newIndex]);
-          }}
+      <div className="relative border p-4 rounded-xl">
+        <Button
+          className="absolute left-4 top-1/2 -translate-y-1/2 h-fit rounded-full shadow p-1 z-10"
+          onClick={handlePrevImageButton}
         >
-          <svg
-            className="w-5 h-5"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M15 19l-7-7 7-7"
-            />
-          </svg>
-        </button>
-        <div className="flex overflow-x-auto scrollbar-hide gap-2 px-8">
-          {thumbnails?.map((thumb, index) => (
-            <div
+          <MdOutlineArrowBackIosNew />
+        </Button>
+        <div className="flex overflow-x-auto scrollbar-hide gap-2 px-12">
+          {selectedVariant?.craftGalleries?.map((thumb, index) => (
+            <motion.div
+              layout
+              initial={{ opacity: 0, x: -50 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: 10 }}
+              transition={{ duration: 0.5 }}
               key={index}
-              className={`relative h-20 w-20 flex-shrink-0 cursor-pointer border-2 rounded-md overflow-hidden ${
+              className={`relative h-20 w-20 flex-shrink-0 cursor-pointer border-4 rounded-md overflow-hidden ${
                 activeIndex === index ? "border-blue-500" : "border-gray-200"
               }`}
-              onClick={() => handleThumbnailClick(thumb, index)}
+              onClick={() => handleThumbnailClick(thumb.url, index)}
             >
-              <Image
-                src={thumb}
-                alt={`${productName} thumbnail ${index + 1}`}
+              <ImgCraft
+                src={thumb.url}
+                alt={`${selectedVariant.name} thumbnail ${index + 1}`}
                 fill
                 className="object-cover"
                 sizes="80px"
               />
-            </div>
+            </motion.div>
           ))}
         </div>
-        <button
-          className="absolute right-0 top-1/2 -translate-y-1/2 bg-white rounded-full shadow p-1 z-10"
-          onClick={() => {
-            const newIndex = Math.min(thumbnails.length - 1, activeIndex + 1);
-            setActiveIndex(newIndex);
-            setCurrentImage(thumbnails[newIndex]);
-          }}
+        <Button
+          className="absolute right-4 top-1/2 -translate-y-1/2 w-fit h-fit rounded-full shadow p-1 z-10"
+          onClick={handleNextImageButton}
         >
-          <svg
-            className="w-5 h-5"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M9 5l7 7-7 7"
-            />
-          </svg>
-        </button>
+          <MdArrowForwardIos />
+        </Button>
       </div>
     </div>
   );

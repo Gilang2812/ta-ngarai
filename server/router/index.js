@@ -18,7 +18,11 @@ const userRouter = require("../src/user/user.controller");
 const souvenirRouter = require("../src/souvenirPlace/souvenir.controller");
 const craftRouter = require("../src/craft/craft.controller");
 const craftVariantRouter = require("../src/craftVariant/variant.controller");
-
+const cartCraftRouter = require("../src/craftCart/craftCart.controller");
+const checkout = require("../src/checkout/checkout.controller");
+const paymentRouter = require("../src/payment/payment.controller");
+const addressRouter = require("../src/address/address.controller");
+const shippingRouter = require("../src/shipping/shipping.controller");
 router.use("/", authRouter);
 router.use("/announcement", announcementRouter);
 router.use("/carts", cartRouter);
@@ -37,6 +41,11 @@ router.use("/users", userRouter);
 router.use("/souvenirs", souvenirRouter);
 router.use("/crafts", craftRouter);
 router.use("/variants", craftVariantRouter);
+router.use("/craft-carts", cartCraftRouter);
+router.use("/checkouts", checkout);
+router.use("/payment", paymentRouter);
+router.use("/addresses", addressRouter);
+router.use("/shipping", shippingRouter);
 
 router.use("*", (req, res, next) => {
   res.status(404).json({ message: "Not Found" });

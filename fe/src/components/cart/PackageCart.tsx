@@ -9,6 +9,7 @@ import { MdClose } from "react-icons/md";
 import Link from "next/link";
 import { Tooltip } from "flowbite-react";
 import { FaTrash } from "react-icons/fa6";
+import CraftCartSkeletonLoader from "../loading/CraftCartSkeletonLoader";
 
 const PackageCart = () => {
   const { data, refetch, isLoading } = useFetchUserCarts();
@@ -74,11 +75,7 @@ const PackageCart = () => {
 
   if (isLoading)
     return (
-      <div className="container mx-auto px-4 py-8">
-        <div className="flex justify-center items-center h-64">
-          <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-blue-500"></div>
-        </div>
-      </div>
+   <CraftCartSkeletonLoader />
     );
   return (
     <motion.div className="py-4">

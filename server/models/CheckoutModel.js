@@ -1,14 +1,15 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/database'); 
+const { generateCustomId } = require('../utils/generateId');
 
 
 const Checkout = sequelize.define('Checkout', {
   id: {
     type: DataTypes.STRING(5),
     primaryKey: true,
-    allowNull: false
+    allowNull: true
   },
-  adress_id: {
+  address_id: {
     type: DataTypes.STRING(5),
     allowNull: true
   },
@@ -32,5 +33,9 @@ const Checkout = sequelize.define('Checkout', {
   tableName: 'checkout',
   timestamps: false
 });
+
+Checkout.beforeCreate(async(instance)=>{
+  instance.id = await generateCustomId('CO',Checkout,5)
+})
 
 module.exports = {Checkout};

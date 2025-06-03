@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {   useMemo, useState } from "react";
 import { CraftProduct } from "@/type/schema/CraftSchema";
 import { motion } from "framer-motion";
 import Link from "next/link";
@@ -10,13 +10,15 @@ interface SearchBarProps {
 
 export const SearchBar: React.FC<SearchBarProps> = ({ onSearch, crafts }) => {
   const [query, setQuery] = useState<string>("");
-
-  const result = crafts?.filter(
-    (craft) =>
-      craft.name.toLowerCase().includes(query.toLowerCase()) ||
-      craft.craft.name.toLowerCase().includes(query.toLowerCase())
+  const result = useMemo(
+    () =>
+      crafts?.filter(
+        (craft) =>
+          craft.name.toLowerCase().includes(query.toLowerCase()) ||
+          craft.craft.name.toLowerCase().includes(query.toLowerCase())
+      ),
+    [crafts, query]
   );
-
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (onSearch) onSearch(query);
@@ -31,7 +33,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({ onSearch, crafts }) => {
           onBlur={() =>
             setTimeout(() => {
               setQuery("");
-            }, 200)
+            }, 500)
           }
           type="text"
           autoComplete="off"
@@ -61,18 +63,18 @@ export const SearchBar: React.FC<SearchBarProps> = ({ onSearch, crafts }) => {
 
         {query && (
           <motion.div
-            layoutId="input value"
+            layout
             initial={{ height: 0 }}
             animate={{ height: "auto" }}
             exit={{ height: 0 }}
             transition={{ duration: 0.2 }}
             className="absolute bg-white w-full border rounded-xl z-20 max-h-[464px] overflow-x-hidden"
           >
-            <div className="p-3">
-              {result.length === 0 ? (
+            <motion.div layout className="p-3">
+              {result && result.length === 0 ? (
                 <p>nothings found</p>
               ) : (
-                result.map((rs) => (
+                result?.map((rs) => (
                   <Link
                     aria-label={`Lihat detail produk ${rs.name}`}
                     href={`./craft/${rs.id_craft}?idvr=${rs.id}`}
@@ -84,7 +86,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({ onSearch, crafts }) => {
                   </Link>
                 ))
               )}
-            </div>
+            </motion.div>
           </motion.div>
         )}
       </div>

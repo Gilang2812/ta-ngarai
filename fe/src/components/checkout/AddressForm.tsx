@@ -1,66 +1,44 @@
 "use client";
 
-import { useState, useEffect } from "react";
-
-import { X } from "lucide-react";
+import { Search, X } from "lucide-react";
 import { Address } from "@/type/schema/CheckoutSchema";
 import Button from "../common/Button";
+import { motion } from "framer-motion";
+import { Form } from "formik";
+import { FormInput } from "../inputs/FormInput";
+import { CheckBoxLabel } from "../common/CheckBoxLabel";
+import { useAddessForm } from "@/hooks/useAddressForm";
 
 interface AddressFormProps {
-  address?: Address;
-  onSave: (address: Omit<Address, "id">) => void;
+  onSave: (values: Address) => void;
   onCancel: () => void;
+  addressInitialValues: Address;
+  isPending?: boolean;
 }
 
 export const AddressForm = ({
-  address,
-  onSave,
   onCancel,
+  addressInitialValues,
+  isPending,
 }: AddressFormProps) => {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    streetAddress: "",
-    postalCode: "",
-    isDefault: false,
-  });
-
-  useEffect(() => {
-    if (address) {
-      setFormData({
-        name: address.name,
-        email: address.email,
-        phone: address.phone,
-        streetAddress: address.streetAddress,
-        postalCode: address.postalCode,
-        isDefault: address.isDefault,
-      });
-    }
-  }, [address]);
-
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const { name, value, type } = e.target;
-
-    setFormData((prev) => ({
-      ...prev,
-      [name]:
-        type === "checkbox" ? (e.target as HTMLInputElement).checked : value,
-    }));
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    onSave(formData);
-  };
+  const {
+    district,
+    groupedDistrict,
+    handleCheckboxChange,
+    kota,
+    onVerify,
+    province,
+    values,
+  } = useAddessForm();
 
   return (
-    <div className="bg-white p-6 rounded-lg border border-gray-200">
+    <motion.div
+      layoutId="formAddress"
+      className="bg-white p-6 rounded-lg border border-gray-200"
+    >
       <div className="flex justify-between items-center mb-4">
         <h3 className="text-lg font-semibold">
-          {address ? "Edit Address" : "Add New Address"}
+          {addressInitialValues.id ? "Edit Address" : "Add New Address"}
         </h3>
         <button
           className="text-gray-400 hover:text-gray-600"
@@ -69,126 +47,135 @@ export const AddressForm = ({
           <X className="w-5 h-5" />
         </button>
       </div>
-
-      <form onSubmit={handleSubmit}>
-        <div className="grid grid-cols-1 gap-4">
-          <div>
-            <label
-              htmlFor="name"
-              className="block text-sm font-medium text-gray-700 mb-1"
-            >
-              Name
-            </label>
-            <input
-              type="text"
-              id="name"
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-              required
+      <Form>
+        <div className="grid grid-cols-1 gap-2">
+          <FormInput
+            type="text"
+            name="destination_id"
+            label="destination id"
+            readonly
+          />
+          <div className="flex [&_>div]:flex-1 items-center  [&_>div]:mr-2">
+            <FormInput
+              type="number"
+              name="kode_post"
+              label="Postal Code"
+              autoFocus
             />
+            <Button className="h-fit p-1 " type="button" onClick={onVerify}>
+              <Search />
+            </Button>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 gap-y-6">
+            <FormInput
+              name="label"
+              label="label"
+              placeholder="ex : home , office"
+            />
+            <FormInput name="recipient_name" label="Recipient Name" />
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label
-                htmlFor="email"
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
-                Email
-              </label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                required
-              />
+            <FormInput name="recipient_phone" label="Phone" />
+            <FormInput name="negara" label="Country" />
+          </div>
+
+          <>
+            <div className="grid grid-cols-1 md:grid-cols-2  gap-4">
+              <FormInput as="select" name="kelurahan" label="Subdistrict">
+                {!groupedDistrict?.[values.kecamatan] ||
+                groupedDistrict[values.kecamatan].length === 0 ? (
+                  <option value="" disabled>
+                    select district first
+                  </option>
+                ) : (
+                  <>
+                    {groupedDistrict[values.kecamatan]?.map((item, index) => (
+                      <option key={index} value={item}>
+                        {item}
+                      </option>
+                    ))}
+                  </>
+                )}
+              </FormInput>
+              <FormInput as="select" name="kecamatan" label="District">
+                {!district || district.length === 0 ? (
+                  <option value="" disabled>
+                    No District Available
+                  </option>
+                ) : (
+                  <>
+                    {district?.map((item, index) => (
+                      <option key={index} value={item}>
+                        {item}
+                      </option>
+                    ))}
+                  </>
+                )}
+              </FormInput>
             </div>
-
-            <div>
-              <label
-                htmlFor="phone"
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
-                Phone
-              </label>
-              <input
-                type="tel"
-                id="phone"
-                name="phone"
-                value={formData.phone}
-                onChange={handleChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                required
-              />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <FormInput as="select" name="kota" label="City">
+                {!kota || kota.length === 0 ? (
+                  <option value="" disabled>
+                    No City Available
+                  </option>
+                ) : (
+                  <>
+                    {kota?.map((item, index) => (
+                      <option key={index} value={item}>
+                        {item}
+                      </option>
+                    ))}
+                  </>
+                )}
+              </FormInput>
+              <FormInput as="select" name="provinsi" label="State/Province">
+                {!province || province.length === 0 ? (
+                  <option value="" disabled>
+                    No Province Available
+                  </option>
+                ) : (
+                  <>
+                    {province?.map((item, index) => (
+                      <option key={index} value={item}>
+                        {item}
+                      </option>
+                    ))}
+                  </>
+                )}
+              </FormInput>
             </div>
-          </div>
+          </>
 
-          <div>
-            <label
-              htmlFor="streetAddress"
-              className="block text-sm font-medium text-gray-700 mb-1"
-            >
-              Street Address
-            </label>
-            <textarea
-              id="streetAddress"
-              name="streetAddress"
-              value={formData.streetAddress}
-              onChange={handleChange}
-              rows={2}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-              required
-            />
-          </div>
+          <FormInput name="street" label="Street" />
+          <FormInput
+            name="details"
+            label="Address Details"
+            placeholder="Apartment, suite, etc. (optional)"
+            as="textarea"
+            rows={3}
+          />
 
-          <div>
-            <label
-              htmlFor="postalCode"
-              className="block text-sm font-medium text-gray-700 mb-1"
-            >
-              Postal Code
-            </label>
-            <input
-              type="text"
-              id="postalCode"
-              name="postalCode"
-              value={formData.postalCode}
-              onChange={handleChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-              required
-            />
-          </div>
-
-          <div className="flex items-center">
-            <input
-              type="checkbox"
-              id="isDefault"
-              name="isDefault"
-              checked={formData.isDefault}
-              onChange={handleChange}
-              className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-            />
-            <label
-              htmlFor="isDefault"
-              className="ml-2 block text-sm text-gray-700"
-            >
-              Set as default address
-            </label>
-          </div>
+          <CheckBoxLabel
+            checked={values.is_primary === 1}
+            id="is_primary"
+            name="is_primary"
+            label={`set as default address ${values.is_primary}`}
+            onChange={handleCheckboxChange}
+          />
         </div>
 
         <div className="mt-6 flex justify-end space-x-3">
           <Button type="button" onClick={onCancel}>
             Cancel
           </Button>
-          <Button type="submit">Save Address</Button>
+          <Button type="submit" isLoading={isPending}>
+            Save Address
+          </Button>
         </div>
-      </form>
-    </div>
+      </Form>
+    </motion.div>
   );
 };

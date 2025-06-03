@@ -44,7 +44,9 @@ const GoogleMapDrawing = ({ geom, formType, ...props }: Props) => {
   return (
     <GoogleMap
       mapContainerStyle={containerStyle}
-      center={formType == "edit" ? getCentroid(geom) : LANDMARK_POSITION}
+      center={
+        formType == "edit" && geom ? getCentroid(geom) : LANDMARK_POSITION
+      }
       zoom={20}
       mapTypeId="satellite"
       options={{
@@ -58,7 +60,7 @@ const GoogleMapDrawing = ({ geom, formType, ...props }: Props) => {
       }}
       {...props}
     >
-      {formType == "edit" && (
+      {formType == "edit" && geom ? (
         <>
           <Polygon
             path={coordinates}
@@ -77,8 +79,7 @@ const GoogleMapDrawing = ({ geom, formType, ...props }: Props) => {
           />
           <MapMarker position={getCentroid(geom)} />
         </>
-      )}
-      {formType === "create" && (
+      ) : (
         <DrawingManager
           onPolygonComplete={(poly) => {
             onPolygonComplete(poly);

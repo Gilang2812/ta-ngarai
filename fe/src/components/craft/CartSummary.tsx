@@ -4,13 +4,17 @@ import Button from "../common/Button";
 interface CartSummaryProps {
   subtotal: number;
   shippingCost?: number;
-  total: number; 
+  total: number;
+  isDirty?: boolean;
+  handleCheckout?: () => void;
 }
 
 export const CartSummary = ({
   subtotal,
   shippingCost = 0,
-  total, 
+  total,
+  isDirty,
+  handleCheckout,
 }: CartSummaryProps) => {
   return (
     <div className="bg-white p-6 rounded-lg border border-gray-200">
@@ -24,9 +28,7 @@ export const CartSummary = ({
 
         <div className="flex justify-between">
           <span className="text-gray-600">Shipping:</span>
-          <span>
-            {shippingCost === 0 ? "Free" : formatPrice(shippingCost)}
-          </span>
+          <span>{shippingCost === 0 ? "-" : formatPrice(shippingCost)}</span>
         </div>
 
         <div className="border-t border-gray-200 pt-2 mt-2">
@@ -37,7 +39,9 @@ export const CartSummary = ({
         </div>
       </div>
 
-      <Button  >Checkout</Button>
+      <Button disabled={isDirty} onClick={handleCheckout}>
+        Checkout
+      </Button>
     </div>
   );
 };

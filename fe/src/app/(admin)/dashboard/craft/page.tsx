@@ -37,7 +37,7 @@ import FilePondComponent from "@/components/common/Filepond";
 import { InfoModal } from "@/components/modal/InfoModal";
 import ButtonTooltip from "@/components/common/ButtonTooltip";
 import { AnimatePresence, motion } from "framer-motion";
-import DetailCraftHeader from "@/components/craft/DetailCraftHeader"; 
+import DetailCraftHeader from "@/components/craft/DetailCraftHeader";
 import DetailCraftMainImage from "@/components/craft/DetailCraftMainImag";
 import DetailCraftThubnails from "@/components/craft/DetailCraftThubnails";
 import DetailCraftInfo from "@/components/craft/DetailCraftInfo";
@@ -69,7 +69,15 @@ const Craft = () => {
     selectedImg,
     setSelectedImg,
   } = useCraftManagement();
-  const tableHeaders = ["id", "name", "price", "stock", "modal", "images"];
+  const tableHeaders = [
+    "id",
+    "name",
+    "price",
+    "weight",
+    "stock",
+    "modal",
+    "images",
+  ];
 
   const RenderCraft = () => {
     if (variants?.length === 0) {
@@ -88,6 +96,7 @@ const Craft = () => {
               <td className="text-center">{variant.id}</td>
               <td> {`${variant.craft.name} ${variant.name}`}</td>
               <td className="text-right">{formatPrice(variant.price || 0)}</td>
+              <td className="text-right">{variant.weight} gram</td>
               <td className="text-right">
                 {variant.stock.toLocaleString()} units
               </td>
@@ -178,6 +187,7 @@ const Craft = () => {
                 </FormInput>
                 <FormInput type="text" label="name" name="name" />
                 <FormInput type="number" label="price" name="price" />
+                <FormInput type="number" label="weight (gram)" name="weight" />
                 <FormInput type="number" label="modal" name="modal" />
                 <FormInput type="number" label="stock" name="stock" />
                 <FormInput

@@ -20,7 +20,11 @@ const CraftVariant = sequelize.define(
     },
     price: {
       type: DataTypes.INTEGER,
-      allowNull: true,
+      allowNull: false,
+    },
+    weight: {
+      type: DataTypes.FLOAT,
+      allowNull: false,
     },
     stock: {
       type: DataTypes.INTEGER,

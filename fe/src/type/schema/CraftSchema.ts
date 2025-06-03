@@ -13,6 +13,11 @@ export const craftVariantSchema = yup.object({
     .typeError("Harga harus berupa angka")
     .min(0, "Harga tidak boleh negatif")
     .required("Harga wajib diisi"),
+  weight: yup
+    .number()
+    .typeError("Berat harus berupa angka, ganti tanda koma (',') dengan titik ('.') jika ada")
+    .moreThan(0, "Berat harus lebih dari 0")
+    .required("Berat wajib diisi"),
   stock: yup
     .number()
     .typeError("Stok harus berupa angka")
@@ -28,41 +33,45 @@ export const craftVariantSchema = yup.object({
   images: yup.array().max(5, "Maksimal 5 gambar").nullable(),
 });
 
-export interface Products {
+ 
+
+export type Craft = yup.InferType<typeof craftSchema> & {
   id: string;
-  name: string;
-  price: number;
-  image: string;
-}
-
-export interface CartItem extends Products {
-  quantity: number;
-}
-
-export type Craft = yup.InferType<typeof craftSchema> & { id: string };
+  id_souvenir_place?: string;
+};
 export type CraftVariant = yup.InferType<typeof craftVariantSchema> & {
   id: string;
 };
 
-export interface CraftVariantGallery {
+export type CraftVariantGallery = {
   id: string;
   id_craft_variant: string;
   url: string;
-}
+};
 
-export interface CraftWithVariants extends Craft {
-  variants: CraftVariant[];
-  galleries: CraftVariantGallery[];
-}
+export type CraftWithVariants = Craft & {
+  souvenirPlace: {
+    name:string;
+    address:string
+  }
+};
 
 export type CraftVariantWithGalleriesSchema = CraftVariant & {
   craft: Craft;
   craftGalleries: CraftVariantGallery[];
 };
 
-export type CraftProduct = CraftVariantWithGalleriesSchema &{
-  itemCheckouts:ItemCheckoutType[]
-}
+export type CraftProduct = CraftVariantWithGalleriesSchema & {
+  itemCheckouts: ItemCheckoutType[];
+};
+
+export type VariantBelongCraftSchema = CraftVariant & {
+  craftGalleries: CraftVariantGallery[];
+  itemCheckouts: ItemCheckoutType[];
+};
+export type CraftDetailSchema = CraftWithVariants & {
+  variants: VariantBelongCraftSchema[];
+};
 export type CraftVariantInclude = (
   | "craft"
   | "craftGalleries"

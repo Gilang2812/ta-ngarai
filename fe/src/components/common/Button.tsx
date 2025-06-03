@@ -3,6 +3,7 @@ import { cn } from "@/utils/common/cn";
 import React from "react";
 import { cva } from "class-variance-authority";
 import { Slot } from "@radix-ui/react-slot";
+import { Spinner } from "flowbite-react";
 
 export const buttonVariants = cva(
   "flex items-center transition justify-center px-3 py-2 gap-2 h-full  rounded transition-ease-in-out font-normal",
@@ -11,7 +12,7 @@ export const buttonVariants = cva(
       variant: {
         default: "text-white bg-primary hover:bg-secondary",
         primary:
-          "bg-white text-primary border border-primary   hover:text-white hover:bg-secondary",
+          "bg-white text-primary border border-primary   hover:text-white hover:bg-primary",
         danger:
           "text-white  bg-red-600 w-fit hover:text-white hover:bg-red-700",
         regDanger:
@@ -36,6 +37,7 @@ export const buttonVariants = cva(
   }
 );
 const Button = ({
+  isLoading = false,
   active,
   className,
   variant,
@@ -56,11 +58,15 @@ const Button = ({
       )}
       {...props}
     >
-      {props.children ?? (
-        <>
-          {Icon && <Icon />}
-          {text}
-        </>
+      {isLoading ? (
+        <Spinner />
+      ) : (
+        props.children ?? (
+          <>
+            {Icon && <Icon />}
+            {text}
+          </>
+        )
       )}
     </Comp>
   );

@@ -23,8 +23,9 @@ const findSouvenirPlaceById = async (id) => {
 };
 const updateSouvenirPlace = async (id, body) => {
   const { geom, ...rest } = body;
+  console.log(rest)
   const updatedSP = await SouvenirPlace.update(
-    { ...rest, geom: typeof geom !== "object" ? JSON.parse(geom) : geom },
+    { ...rest, geom: JSON.parse(geom) },
     { where: { id: id } }
   );
 

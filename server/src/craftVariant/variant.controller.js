@@ -24,7 +24,7 @@ router.get("/", async (req, res, next) => {
     const includeKeys = req.query.include?.split(",") || [];
 
     const variants = await getVariants(includeKeys);
-    console.log(req.query)
+
     res.status(200).json(variants);
   } catch (error) {
     next(error);
@@ -51,13 +51,14 @@ router.post(
   validateData(variantSchema),
   async (req, res, next) => {
     try {
-      const { id_craft, name, description, price, modal, stock } = req.body;
+      const { id_craft, name, description, price, weight, modal, stock } = req.body;
 
       const newVariant = await insertVariant({
         id_craft,
         name,
         description,
         price: Number(price),
+        weight: Number(weight),
         modal: Number(modal),
         stock: Number(stock),
       });
@@ -88,7 +89,7 @@ router.patch(
       const { id } = req.params;
       console.log("req.file", req.files);
       console.log("req.body", req.body);
-      const { name, description, id_craft, price, modal, stock, isNewImage } =
+      const { name, description, id_craft, price, weight, modal, stock, isNewImage } =
         req.body;
 
       const updatedVariant = await updateVariantById(id, {
@@ -96,6 +97,7 @@ router.patch(
         name,
         description,
         price,
+        weight,
         modal,
         stock,
       });

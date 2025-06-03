@@ -25,7 +25,7 @@ const { GalleryHomestay } = require("./GalleryHomestayModel.js");
 const { Cart } = require("./CartModel.js");
 const { FacilityUnitDetail } = require("./FacilityUnitDetailModel.js");
 const { GalleryUnit } = require("./GalleryUnitModel.js");
-const { FacilityUnit } = require("./FacilityUnitModel.js"); 
+const { FacilityUnit } = require("./FacilityUnitModel.js");
 const CraftVariant = require("./CraftVariantModel.js");
 const { Craft } = require("./CraftModel.js");
 const ShippingAddress = require("./ShippingAddressModel.js");
@@ -33,6 +33,9 @@ const { Checkout } = require("./CheckoutModel.js");
 const { ItemCheckout } = require("./ItemCheckoutModel.js");
 const CraftVariantGallery = require("./CraftVariantGalleryModel.js");
 const ItemCheckoutReviewGallery = require("./ItemCheckoutReviewGalleryModel.js");
+const { SouvenirPlace } = require("./SouvenirPlace.js");
+const CraftCart = require("./CartCraftModel.js");
+const Shipping = require("./ShippingModel.js");
 
 User.hasMany(AuthGroupUsers, { foreignKey: "user_id", as: "user" });
 AuthGroup.hasMany(AuthGroupUsers, { foreignKey: "group_id", as: "group" });
@@ -286,34 +289,34 @@ CraftVariant.belongsTo(Craft, {
 
 // ShippingAddress and Checkout associations
 ShippingAddress.hasMany(Checkout, {
-  foreignKey: "adress_id",
+  foreignKey: "address_id",
   as: "checkouts",
 });
 Checkout.belongsTo(ShippingAddress, {
-  foreignKey: "adress_id",
+  foreignKey: "address_id",
   as: "shippingAddress",
 });
 
 // CraftVariant and ItemCheckout associations
 CraftVariant.hasMany(ItemCheckout, {
-  foreignKey: "craft_id",
+  foreignKey: "craft_variant_id",
   as: "itemCheckouts",
 });
 ItemCheckout.belongsTo(CraftVariant, {
-  foreignKey: "craft_id",
+  foreignKey: "craft_variant_id",
   as: "craftVariant",
 });
 
 // Checkout and ItemCheckout associations
 Checkout.hasMany(ItemCheckout, {
-  foreignKey: "checout_id",
+  foreignKey: "checkout_id",
   as: "items",
 });
 ItemCheckout.belongsTo(Checkout, {
-  foreignKey: "checout_id",
+  foreignKey: "checkout_id",
   as: "checkout",
 });
- 
+
 CraftVariant.hasMany(CraftVariantGallery, {
   foreignKey: "id_craft_variant",
   as: "craftGalleries",
@@ -322,16 +325,22 @@ CraftVariantGallery.belongsTo(CraftVariant, {
   foreignKey: "id_craft_variant",
   as: "variant",
 });
- 
+
 ItemCheckout.hasMany(ItemCheckoutReviewGallery, {
-  foreignKey: "checout_id",
-  sourceKey: "checout_id",
+  foreignKey: "checkout_id",
+  sourceKey: "checkout_id",
   as: "reviewGalleries",
 });
 ItemCheckout.hasMany(ItemCheckoutReviewGallery, {
-  foreignKey: "craft_id",
-  sourceKey: "craft_id",
+  foreignKey: "craft_variant_id",
+  sourceKey: "craft_variant_id",
   as: "craftReviewGalleries",
+});
+
+SouvenirPlace.hasMany(Craft, { foreignKey: "id_souvenir_place", as: "crafts" });
+Craft.belongsTo(SouvenirPlace, {
+  foreignKey: "id_souvenir_place",
+  as: "souvenirPlace",
 });
 
 Cart.belongsTo(User, { foreignKey: "user_id", as: "user" });
@@ -339,11 +348,21 @@ Cart.belongsTo(Package, { foreignKey: "package_id", as: "package" });
 User.hasMany(Cart, { foreignKey: "user_id", as: "userCart" });
 Package.hasMany(Cart, { foreignKey: "package_id", as: "packageCart" });
 
+CraftVariant.hasMany(CraftCart, { foreignKey: "craft_variant_id", as: "craftCarts" });
+CraftCart.belongsTo(CraftVariant, { foreignKey: "craft_variant_id", as: "cartCraft" });
+User.hasMany(CraftCart, { foreignKey: "user_id", as: "userCarts" });
+
+User.hasMany(ShippingAddress,{ foreignKey: "customer_id", as: "addresses" });
+ShippingAddress.belongsTo(User, { foreignKey: "customer_id", as: "addressCustomer" });
+CraftCart.belongsTo(User, { foreignKey: "user_id", as: "cartUser" });
+Shipping.hasMany(ItemCheckout,{ foreignKey: "shipping_id", as: "shippingItems" });
+ItemCheckout.belongsTo(Shipping, { foreignKey: "shipping_id", as: "shipping" });
 module.exports = {
   AuthGroup,
   AuthGroupUsers,
   User,
   Announcement,
+  CraftCart,
   TourismVillage,
   GalleryTourism,
   Package,
@@ -370,8 +389,10 @@ module.exports = {
   Craft,
   CraftVariant,
   CraftVariantGallery,
+  SouvenirPlace,
   ShippingAddress,
   Checkout,
   ItemCheckout,
-  ItemCheckoutReviewGallery, 
+  ItemCheckoutReviewGallery,
+  Shipping
 };

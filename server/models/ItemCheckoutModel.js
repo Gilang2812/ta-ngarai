@@ -4,17 +4,21 @@ const sequelize = require("../config/database");
 const ItemCheckout = sequelize.define(
   "ItemCheckout",
   {
-    checout_id: {
+    checkout_id: {
       type: DataTypes.STRING(5),
       primaryKey: true,
       allowNull: false,
     },
-    craft_id: {
+    craft_variant_id: {
       type: DataTypes.STRING(5),
       primaryKey: true,
       allowNull: false,
     },
-    total: {
+    shipping_id: {
+      type: DataTypes.STRING(5),
+      allowNull: true,
+    },
+    jumlah: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },

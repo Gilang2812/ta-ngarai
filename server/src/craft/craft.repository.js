@@ -1,4 +1,5 @@
-const { CraftVariant, Craft } = require("../../models/relation");
+const { CraftVariant, Craft,SouvenirPlace } = require("../../models/relation"); 
+const { buildIncludeModels } = require("../craftVariant/variant.utils");
 
 const findCrafts = async () => {
   const craft = await Craft.findAll();
@@ -6,6 +7,7 @@ const findCrafts = async () => {
 };
 
 const findCraftById = async (id) => {
+  const include = buildIncludeModels(['checkout','craftGalleries'])
   const craft = await Craft.findOne({
     where: {
       id: id,
@@ -14,9 +16,18 @@ const findCraftById = async (id) => {
       {
         model: CraftVariant,
         as: "variants",
+        attributes:['id','id_craft','name','price','stock','modal','description'],
+        include
       },
+      {
+        model:SouvenirPlace,
+        as:'souvenirPlace',
+        attributes:['name', 'address']
+      }
     ],
-  });
+    attributes:['id','id_souvenir_place','name'
+    ]
+  },);
   return craft;
 };
 

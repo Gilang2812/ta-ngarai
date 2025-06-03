@@ -47,12 +47,13 @@ export const showErrorAlert = (error: AxiosError) => {
 
   const dataError = responseData as DataError;
   const messageError = responseData as Message;
+  const detailMessages = dataError?.details?.map((d) => d?.message) || [];
 
-  const detailMessages = Array.isArray(dataError?.details)
-    ? dataError.details.map((d) => d?.message).filter(Boolean)
-    : [];
-
-  const fallbackMessage = messageError?.message || detailMessages.join(", ") ||responseData|| "Internal Server Error";
+  const fallbackMessage =
+    detailMessages.join(", ") ||
+    messageError?.message ||
+    responseData ||
+    "Internal Server Error";
 
   return Swal.fire({
     icon: "error",
@@ -137,4 +138,15 @@ export const cornerError = (message: string | undefined) => {
     icon: "error",
     title: message,
   });
+};
+
+export const showLoadingAlert = () => {
+  Swal.fire({
+    title: "Loading...",
+    allowOutsideClick: false,
+    didOpen: () => Swal.showLoading(),
+  });
+};
+export const hideLoadingAlert = () => {
+  Swal.close();
 };

@@ -3,6 +3,7 @@ import { type VariantProps } from "class-variance-authority";
 import { IconType } from "react-icons";
 
 export type Button = {
+  isLoading?:  boolean;
   Icon?: IconType;
   active?: boolean;
   text?: string;

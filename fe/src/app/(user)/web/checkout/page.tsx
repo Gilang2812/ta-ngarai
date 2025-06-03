@@ -1,221 +1,242 @@
-// src/app/checkout/page.tsx
-'use client';
+"use client";
 
-import { useState } from 'react';
-import Image from 'next/image';
-import { useRouter } from 'next/navigation';
- 
-import { AddressForm } from '@/components/checkout/AddressForm';
-import { PaymentMethodSelector } from '@/components/checkout/PaymentMethodSelector';
-import { Address } from '@/type/schema/CheckoutSchema';
-import { cartItems } from '@/data/craft';
-import Button from '@/components/common/Button';
-import { AddressSelector } from '@/components/checkout/AddressSelectior';
-import { addresses } from '@/data/checkout';
-import { formatPrice } from '@/lib/priceFormatter';
-import { SingleContentWrapper } from '@/components/common/SingleContentWrapper';
- 
-type PaymentMethod = 'cod' | 'bank' | 'apar';
-// type CheckoutStep = 'address' | 'payment' | 'confirmation';
+import { ShippingMethodSelector } from "@/components/checkout/ShippingMethodSelector";
+import Button from "@/components/common/Button";
+import { AddressSection } from "@/components/checkout/AddressSection";
+import { formatPrice } from "@/lib/priceFormatter";
+import { SingleContentWrapper } from "@/components/common/SingleContentWrapper";
+import { useCheckout } from "@/hooks/useCheckout";
+import CheckoutSkeletonLoader from "@/components/loading/CheckoutSkeletonLoader";
+import Link from "next/link";
+import { useFormik } from "formik";
+import {
+  cornerAlert,
+  cornerError,
+  hideLoadingAlert,
+  showLoadingAlert,
+} from "@/utils/AlertUtils";
+import { useEffect } from "react";
+import { createShippingStoreBody } from "@/lib/createShippingStoreBody";
+import { useCompleteCheckout } from "@/features/web/checkout/useCompleteCheckout";
+import { CheckoutPayload } from "@/type/schema/CheckoutSchema";
+import { useRouter } from "next/navigation";
 
 export default function CheckoutPage() {
+  //   const selectedAddress = addressList.find(addr => addr.id === selectedAddressId);
+
+  const {
+    checkout,
+    checkoutLoading,
+    editingAddress,
+    handleSaveAddress,
+    handleCancelAddressForm,
+    selectedAddress,
+    handleSelectAddress,
+    handleAddNewAddress,
+    handleEditAddress,
+    showAddressForm,
+    addressInitialValues,
+    isPending,
+    shippingMethods,
+    itemShipping,
+    setItemShipping,
+    setShippingMethods,
+    groupedItems,
+  } = useCheckout();
   const router = useRouter();
-   
-  
-  const [addressList, setAddressList] = useState(addresses);
-  const [selectedAddressId, setSelectedAddressId] = useState(
-    addressList.find(addr => addr.isDefault)?.id || addressList[0]?.id || ''
-  );
-  const [showAddressForm, setShowAddressForm] = useState(false);
-  const [editingAddress, setEditingAddress] = useState<Address | undefined>(undefined);
-  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>('cod');
-  const [orderNotes, setOrderNotes] = useState('');
-  
-  const handleSelectAddress = (addressId: string) => {
-    setSelectedAddressId(addressId);
-  };
-  
-  const handleAddNewAddress = () => {
-    setEditingAddress(undefined);
-    setShowAddressForm(true);
-  };
-  
-  const handleEditAddress = (address: Address) => {
-    setEditingAddress(address);
-    setShowAddressForm(true);
-  };
-  
-  const handleSaveAddress = (addressData: Omit<Address, 'id'>) => {
-    if (editingAddress) {
-      // Update existing address
-      setAddressList(prev => 
-        prev.map(addr => 
-          addr.id === editingAddress.id 
-            ? { ...addr, ...addressData } 
-            : addressData.isDefault ? { ...addr, isDefault: false } : addr
+  const { mutate, isPending: checkoutPending } = useCompleteCheckout({
+    onSuccess: async (data) => {
+      cornerAlert("Order placed successfully");
+
+      const paymentData = data as { token: string };
+      window.snap.pay(paymentData.token, {
+        onSuccess: () => {
+          router.push("./cart");
+        },
+        onPending: () => {
+          router.push("./cart");
+        },
+        onError: () => {
+          cornerError("Payment failed, please try again");
+        },
+        onClose: () => {
+          router.push("./cart");
+        },
+      });
+    },
+  });
+
+  useEffect(() => {
+    if (checkoutPending || isPending) {
+      showLoadingAlert();
+    }
+    return () => {
+      hideLoadingAlert();
+    };
+  }, [isPending, checkoutPending]);
+
+  const formikOrder = useFormik({
+    initialValues: {
+      checkout_id: "checkout?.id",
+      total_shipping_cost: 0,
+      sub_total: 0,
+      total: 0,
+      items: [],
+      item_details: [],
+      shippings: [],
+    },
+    onSubmit: (values: CheckoutPayload) => {
+      if (groupedItems.length !== itemShipping.filter((i) => i).length) {
+        return cornerError("Please select shipping method for all items");
+      }
+
+      mutate(values);
+    },
+  });
+
+  useEffect(() => {
+    if (groupedItems.length > 0) {
+      formikOrder.setFieldValue("items", groupedItems.flat());
+      formikOrder.setFieldValue("checkout_id", checkout?.id);
+      formikOrder.setFieldValue(
+        "sub_total",
+        groupedItems
+          .flat()
+          .reduce((acc, item) => acc + item.craftVariant.price * item.jumlah, 0)
+      );
+      formikOrder.setFieldValue(
+        "shippings",
+        createShippingStoreBody(
+          groupedItems,
+          checkout,
+          itemShipping,
+          selectedAddress
         )
       );
-      if (addressData.isDefault) {
-        setSelectedAddressId(editingAddress.id);
-      }
-    } else {
-      // Add new address
-      const newAddress = {
-        ...addressData,
-        id: `addr_${Date.now()}`,
-      };
-      
-      setAddressList(prev => {
-        const newList = addressData.isDefault
-          ? prev.map(addr => ({ ...addr, isDefault: false }))
-          : [...prev];
-        
-        return [...newList, newAddress];
-      });
-      
-      if (addressData.isDefault) {
-        setSelectedAddressId(newAddress.id);
-      }
     }
-    
-    setShowAddressForm(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [groupedItems, checkout, itemShipping, selectedAddress]);
+
+  useEffect(() => {
+    if (itemShipping.length > 0) {
+      formikOrder.setFieldValue(
+        "total_shipping_cost",
+        itemShipping?.reduce((acc, item) => acc + item?.shipping_cost_net, 0)
+      );
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [itemShipping]);
+
+  const handleNoteChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+    index: number
+  ) => {
+    const prevItemLength = groupedItems.slice(0, index)?.flat().length ?? 0;
+
+    groupedItems[index].forEach((item, groupIndex) => {
+      formikOrder.setFieldValue(
+        `items[${prevItemLength + groupIndex}].note`,
+        event.target.value
+      );
+    });
   };
-  
-  const handleCancelAddressForm = () => {
-    setShowAddressForm(false);
-    setEditingAddress(undefined);
-  };
-  
-  const handleSubmitOrder = () => {
-    // In a real app, this would make an API call to process the order
-    alert('Order placed successfully!');
-  
-    router.push('/thank-you');
-  };
-  
-//   const selectedAddress = addressList.find(addr => addr.id === selectedAddressId);
-  
-  if (cartItems.length === 0) {
+
+  if (checkoutLoading && !checkout) return <CheckoutSkeletonLoader />;
+  if (checkout && checkout?.items.length === 0) {
     return (
       <div className="container mx-auto px-4 py-16 text-center">
         <h1 className="text-2xl font-bold mb-4">Your cart is empty</h1>
         <p className="mb-6">You dont have any items in your cart.</p>
-        <Button onClick={() => router.push('/products')}>
-          Browse Products
-        </Button>
+        <Link href="/products">Browse Products</Link>
       </div>
     );
   }
-  
+
   return (
-    <SingleContentWrapper>
-      <h1 className="text-2xl font-bold mb-8">Checkout</h1>
-      
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <div className="lg:col-span-2">
-          <div className="bg-white rounded-lg border border-gray-200 p-6 mb-6">
-            <h2 className="text-xl font-semibold mb-6">Billing Information</h2>
-            
-            {showAddressForm ? (
-              <AddressForm 
-                address={editingAddress}
-                onSave={handleSaveAddress}
-                onCancel={handleCancelAddressForm}
-              />
-            ) : (
-              <>
-                <AddressSelector
-                  addresses={addressList}
-                  selectedAddressId={selectedAddressId}
-                  onSelectAddress={handleSelectAddress}
-                  onAddNewAddress={handleAddNewAddress}
-                  onEditAddress={handleEditAddress}
-                />
-                
-                <PaymentMethodSelector
-                  selectedMethod={paymentMethod}
-                  onSelectMethod={setPaymentMethod}
-                />
-              </>
-            )}
-          </div>
-          
-          <div className="bg-white rounded-lg border border-gray-200 p-6">
-            <h2 className="text-xl font-semibold mb-4">Additional Info</h2>
-            <div>
-              <label htmlFor="orderNotes" className="block text-sm font-medium text-gray-700 mb-1">
-                Order Notes (Optional)
-              </label>
-              <textarea
-                id="orderNotes"
-                rows={3}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                placeholder="Notes about your order, e.g. special notes for delivery"
-                value={orderNotes}
-                onChange={(e) => setOrderNotes(e.target.value)}
+    checkout &&
+    selectedAddress && (
+      <SingleContentWrapper>
+        <h1 className="text-2xl font-bold mb-8">Checkout</h1>
+
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="lg:col-span-2">
+            <div className="bg-white rounded-lg border border-gray-200 p-6 mb-6">
+              <h2 className="text-xl font-semibold mb-6">
+                Billing Information
+              </h2>
+
+              <ShippingMethodSelector
+                shippingMethods={shippingMethods}
+                groupedItems={groupedItems}
+                selectedAddressId={selectedAddress.destination_id}
+                itemShipping={itemShipping}
+                setItemShipping={setItemShipping}
+                setShippingMethods={setShippingMethods}
+                handleNoteChange={handleNoteChange}
               />
             </div>
           </div>
-        </div>
-        
-        <div className="lg:col-span-1">
-          <div className="bg-white rounded-lg border border-gray-200 p-6 sticky top-6">
-            <h2 className="text-lg font-semibold mb-4">Order Summary</h2>
-            
-            <div className="space-y-4 mb-6">
-              {cartItems.map((item) => (
-                <div key={item.id} className="flex items-center">
-                  <div className="flex-shrink-0 w-16 h-16 mr-4 relative overflow-hidden rounded">
-                    <Image 
-                      src={item.image || "/api/placeholder/100/100"} 
-                      alt={item.name} 
-                      fill
-                      className="object-cover"
-                    />
+
+          <div className="lg:col-span-1">
+            <div className="bg-white rounded-lg border border-gray-200 p-6 sticky top-6 space-y-6">
+              <AddressSection
+                editingAddress={editingAddress}
+                handleSaveAddress={handleSaveAddress}
+                handleCancelAddressForm={handleCancelAddressForm}
+                addresses={checkout?.shippingAddress.addressCustomer.addresses}
+                isPending={isPending}
+                addressInitialValues={addressInitialValues}
+                selectedAddress={selectedAddress}
+                onSelectAddress={handleSelectAddress}
+                onAddNewAddress={handleAddNewAddress}
+                onEditAddress={handleEditAddress}
+                showAddressForm={showAddressForm}
+              />
+
+              <form onSubmit={formikOrder.handleSubmit}>
+                <h2 className="text-lg font-semibold  py-4 border-t">
+                  Order Summary
+                </h2>
+
+                <div className="border-t border-gray-200 pt-4 space-y-2">
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Subtotal:</span>
+                    <span>{formatPrice(formikOrder.values.sub_total)}</span>
                   </div>
-                  <div className="flex-grow">
-                    <h3 className="font-medium text-gray-800">{item.name}</h3>
-                    <p className="text-gray-600 text-sm">
-                      {formatPrice(item.price)} × {item.quantity}
-                    </p>
+
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Shipping:</span>
+                    <span>
+                      {formatPrice(formikOrder.values.total_shipping_cost)}
+                    </span>
                   </div>
-                  <div className="font-medium text-right">
-                    {formatPrice(item.price * item.quantity)}
+
+                  <div className="border-t border-gray-200 pt-2 mt-2">
+                    <div className="flex justify-between font-semibold">
+                      <span>Total:</span>
+                      <span>
+                        {formatPrice(
+                          formikOrder.values.sub_total +
+                            formikOrder.values.total_shipping_cost
+                        )}
+                      </span>
+                    </div>
                   </div>
                 </div>
-              ))}
+
+                <Button
+                  variant="primary"
+                  className="mt-6"
+                  type="submit"
+                  disabled={!selectedAddress}
+                >
+                  Place Order
+                </Button>
+              </form>
             </div>
-            
-            <div className="border-t border-gray-200 pt-4 space-y-2">
-              <div className="flex justify-between">
-                <span className="text-gray-600">Subtotal:</span>
-                <span>{formatPrice(100000)}</span>
-              </div>
-              
-              <div className="flex justify-between">
-                <span className="text-gray-600">Shipping:</span>
-                <span>Free</span>
-              </div>
-              
-              <div className="border-t border-gray-200 pt-2 mt-2">
-                <div className="flex justify-between font-semibold">
-                  <span>Total:</span>
-                  <span>{formatPrice(100000)}</span>
-                </div>
-              </div>
-            </div>
-            
-            <Button 
-              variant="primary"  
-              className="mt-6" 
-              onClick={handleSubmitOrder}
-              disabled={!selectedAddressId}
-            >
-              Place Order
-            </Button>
           </div>
         </div>
-      </div>
-    </SingleContentWrapper>
+      </SingleContentWrapper>
+    )
   );
 }

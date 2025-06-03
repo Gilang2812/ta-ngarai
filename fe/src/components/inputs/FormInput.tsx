@@ -38,7 +38,7 @@ export const  FormInput = ({
             readOnly={readonly}
             {...props}
           >
-            <option value="">select</option>
+            <option >select</option>
             {children}
           </Field>
         ) : (

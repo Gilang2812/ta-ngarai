@@ -1,48 +1,40 @@
 "use client";
 import React, { useState } from "react";
 
-import { Product } from "@/data/craft";
 import { Rating } from "./Rating";
 import { formatPrice } from "@/lib/priceFormatter";
-import { ColorVariantSelector } from "./ColorVariantSelector";
+import { VariantSelector } from "./VariantSelector";
 import { QuantitySelector } from "./QuantitySelector";
 import { BsBagCheck, BsCart } from "react-icons/bs";
 import ButtonTooltip from "../common/ButtonTooltip";
-import { FaFacebook, FaPinterest, FaTiktok } from "react-icons/fa6";
+import { FaFacebook, FaPinterest, FaStore, FaTiktok } from "react-icons/fa6";
 import { MdFavorite } from "react-icons/md";
+import {
+  VariantBelongCraftSchema,
+  type CraftDetailSchema,
+} from "@/type/schema/CraftSchema";
+import { Form, Formik } from "formik";
+import { CraftCartForm } from "@/type/schema/CraftCartSchema";
+import { motion } from "framer-motion";
 
 interface ProductInfoProps {
-  product: Product;
+  craft: CraftDetailSchema;
+  selectedVariant: VariantBelongCraftSchema;
+  setSelectedVariant: (variant: VariantBelongCraftSchema) => void;
+  initialValues: CraftCartForm;
+  handleSubmit: (values: CraftCartForm) => void;
+  actionRef: React.MutableRefObject<string>;
 }
 
-export const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
-  const [selectedVariantId, setSelectedVariantId] = useState(
-    product?.variants?.[0]?.id || ""
-  );
+export const ProductInfo: React.FC<ProductInfoProps> = ({
+  craft,
+  selectedVariant,
+  setSelectedVariant,
+  initialValues,
+  handleSubmit,
+  actionRef,
+}) => {
   const [isFavorite, setIsFavorite] = useState(false);
-  
-  const [quantity, setQuantity] = useState(1);
-  const handleQuantityChange = (newQuantity: number) => {
-    setQuantity(newQuantity);
-  };
-
-  const handleIncreaseQuantity = () => {
-    setQuantity((prev) => Math.min(prev + 1, product.stock));
-  };
-
-  const handleDecreaseQuantity = () => {
-    setQuantity((prev) => Math.max(prev - 1, 1));
-  };
-
-  const handleAddToCart = () => {
-    alert(`Added ${quantity} items to cart!`);
-    // Here you would implement your actual cart logic
-  };
-
-  const handleBuyNow = () => {
-    alert(`Proceeding to checkout with ${quantity} items!`);
-    // Here you would implement your checkout logic
-  };
 
   const toggleFavorite = () => {
     setIsFavorite(!isFavorite);
@@ -51,77 +43,68 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
   return (
     <div className="space-y-4 font-normal">
       <div className="flex items-center">
-        <Rating rating={product.bintang} showText={true} />
+        <Rating rating={selectedVariant.itemCheckouts.length} showText={true} />
       </div>
 
-      <h1 className="text-2xl font-bold text-gray-900">{product.name}</h1>
+      <h1 className="text-2xl font-bold capitalize text-gray-900">
+        {craft.name} {selectedVariant.name}
+      </h1>
 
       <div className="grid grid-cols-2 text-sm text-gray-600">
-        <div>Stok: {product.stock}</div>
-        <div>Terjual: {product.sold}</div>
+        <div>Stok: {selectedVariant.stock}</div>
+        <div>Terjual: {selectedVariant.itemCheckouts.length}</div>
       </div>
 
       <div className="flex items-center gap-2">
         <span className="text-2xl font-bold text-red-600">
-          {formatPrice(product.currentPrice)}
+          {formatPrice(selectedVariant.price)}
         </span>
-        {product.price && (
+        {selectedVariant.price && (
           <span className="text-base text-gray-400 line-through">
-            {formatPrice(product.price)}
+            {formatPrice(selectedVariant.price)}
           </span>
         )}
       </div>
 
-      {product.voucherInfo && (
-        <div className="bg-blue-50 text-blue-700 p-3 rounded-md text-sm">
-          {product.voucherInfo}
-        </div>
-      )}
-      <div className="grid grid-cols-2 justify-between">
-        <section className="w-[500px]  ">
-          <div className="py-2">
-            <h3 className="text-sm  font-bold text-gray-900 mb-2">Variasi</h3>
-            <ColorVariantSelector
-              variants={product.variants}
-              selectedVariantId={selectedVariantId}
-              onSelect={setSelectedVariantId}
-            />
-          </div>
-          {product.warranty && (
-            <div className="py-2">
-              <p className="text-sm font-bold text-gray-600">{product.warranty}</p>
-            </div>
-          )}
+      <div className="bg-primary/10 text-secondary flex items-center gap-4 font-body p-3 rounded-md text-lg capitalize">
+        <FaStore /> {craft.souvenirPlace.name}
+      </div>
+
+      <div className="grid lg:grid-cols-2">
+        <section className=" py-2 w- grow  ">
+          <h3 className="text-sm  font-bold text-gray-900 mb-2">Variasi</h3>
+          <VariantSelector
+            variants={craft.variants}
+            selectedVariantId={selectedVariant.id}
+            onSelect={setSelectedVariant}
+          />
         </section>
-        <section className="py-4 ">
+        <motion.section layout className="py-4 grow">
           <h3 className="text-lg font-medium text-gray-900 mb-2">Deskripsi</h3>
-          <p className="text-gray-700">{product.description}</p>
-        </section>
+          <p className="text-gray-700">{selectedVariant.description}</p>
+        </motion.section>
       </div>
+      <Formik onSubmit={handleSubmit} initialValues={initialValues}>
+        <Form className="flex gap-3">
+          <QuantitySelector />
+          <ButtonTooltip
+            label={"KERANJANG"}
+            type="submit"
+            className="w-full"
+            Icon={BsCart}
+            onClick={() => (actionRef.current = "cart")}
+          />
 
-      <div className="flex gap-3">
-        <QuantitySelector
-          quantity={quantity}
-          onIncrease={handleIncreaseQuantity}
-          onDecrease={handleDecreaseQuantity}
-          onChange={handleQuantityChange}
-          max={product.stock}
-        />
-        <ButtonTooltip
-          label={"KERANJANG"}
-          className="w-full"
-          onClick={handleAddToCart}
-          Icon={BsCart}
-        />
-
-        <ButtonTooltip
-          label=" BELI SEKARANG"
-          Icon={BsBagCheck}
-          variant="primary"
-          className="w-full"
-          onClick={handleBuyNow}
-        />
-      </div>
+          <ButtonTooltip
+            label=" BELI SEKARANG"
+            Icon={BsBagCheck}
+            type="submit"
+            variant="primary"
+            className="w-full"
+            onClick={() => (actionRef.current = "buy")}
+          />
+        </Form>
+      </Formik>
 
       <div className="pt-4 flex items-center justify-between border-t border-gray-200">
         <button

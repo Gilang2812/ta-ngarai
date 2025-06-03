@@ -1,31 +1,30 @@
 "use client";
 import {
   FaCircleInfo,
+  FaPuzzlePiece,
   FaRegClock,
-  FaSquarePlus,
   FaUserGroup,
-} from "react-icons/fa6"; 
+} from "react-icons/fa6";
 import { ImagePlaceHoldeSkeleton } from "@/components/loading/ImagePlaceHolderSkeleton";
 
-import { imageNotFound, imageUrl } from "@/lib/baseUrl";
 import Link from "next/link";
 
 import {
   PackageGallery,
   useFetchPackages,
 } from "@/features/web/package/useFetchPackage";
-import { Tooltip } from "flowbite-react";
 import Img from "@/components/common/Img";
+import Button from "@/components/common/Button";
+import ButtonTooltip from "@/components/common/ButtonTooltip";
+import { FaPlusSquare } from "react-icons/fa";
 export const PackageList = () => {
   const { data, isLoading } = useFetchPackages<PackageGallery>({
     package: true,
     gallery: true,
   });
-  
+
   const RenderPackage = () => {
-    if (!data || !Array.isArray(data)) return null; 
-    
-  
+    if (!data || !Array.isArray(data)) return null;
     return (
       data &&
       data?.map((item, index) => (
@@ -36,11 +35,7 @@ export const PackageList = () => {
         >
           <figure className="w-44 basis-full grow md:grow-0 md:basis-[200px] min-w-[200px]  shrink rounded overflow-hidden aspect-[4/5]">
             <Img
-              src={
-                item?.packageGalleries?.[0]?.url
-                  ? imageUrl + "package/" + item?.packageGalleries[0]?.url
-                  : imageNotFound
-              }
+              src={"package/" + item?.packageGalleries[0]?.url}
               alt="P "
               width={500}
               height={500}
@@ -74,25 +69,22 @@ export const PackageList = () => {
               </p>
 
               <div className="flex items-stretch gap-2 ">
-                <Tooltip placement="bottom" content="more info">
+                <ButtonTooltip variant={"primary"} label="more infos">
                   <Link
                     href={"/web/package/" + item?.id}
-                    className="btn-primary h-full text-nowrap  capitalize bg-white border rounded  "
-                    title="more infos"
+                    className="  text-nowrap  capitalize    "
                     aria-label="More info about Basic Package"
                   >
                     <FaCircleInfo />
                   </Link>
-                </Tooltip>
-                <Tooltip placement="bottom" content="extend package">
-                  <a
-                    href="#"
-                    className="btn-primary capitalize bg-white border rounded "
-                    aria-label="Extend Basic Package"
-                  >
-                    <FaSquarePlus /> Extend
-                  </a>
-                </Tooltip>
+                </ButtonTooltip>
+
+                <Button variant={"primary"} type="button">
+                  <FaPlusSquare /> Extend
+                </Button>
+                <Button variant={"primary"} type="button">
+                  <FaPuzzlePiece /> custom
+                </Button>
               </div>
             </section>
           </div>

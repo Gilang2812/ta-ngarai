@@ -23,7 +23,7 @@ router.post("/", validateData(souvenirPlaceSchema), async (req, res, next) => {
   try {
     const { name, address, contact_person, open, close, description, geom } =
       req.body;
-
+    console.log(geom)
     const souvenir = await createSouvenirPlace({
       name,
       contact_person,
@@ -40,13 +40,12 @@ router.post("/", validateData(souvenirPlaceSchema), async (req, res, next) => {
   }
 });
 
-router.patch("/:id", async (req, res, next) => {
+router.patch("/:id",validateData(souvenirPlaceSchema) ,async (req, res, next) => {
   try {
     const { id } = req.params;
     const { name, address, contact_person, open, close, description, geom } =
       req.body;
-
-    handleInput(req.body, souvenirPlaceSchema);
+    console.log(open)
     const souvenirPlace = await editSouvenirPlaceById(id, {
       name,
       address,

@@ -1,5 +1,4 @@
-import { CartItem } from "@/type/schema/CraftSchema";
-
+ 
 export interface Product {
   id: string;
   name: string;
@@ -127,33 +126,4 @@ export const MOCK_PRODUCT: Product = {
   voucherInfo: "Dapatkan Voucher s/d Rp10.000 jika pesanan tertambah",
 };
 
-export const cartItems: CartItem[] = [
-  {
-    id: '1',
-    name: 'Keychain with Rumah Gadang Design',
-    price: 10000,
-    image: '/kotoGadang/images/carousel-1.jpg',
-    quantity:1
-  },
-  {
-    id: '2',
-    name: 'I Love Apar T-Shirt',
-    price: 35000,
-    image: '/kotoGadang/images/carousel-2.jpg',
-    quantity:1
-  },
-  {
-    id: '3',
-    name: 'Traditional Batik Pouch',
-    price: 25000,
-    image: '/kotoGadang/images/carousel-3.jpg',
-    quantity:1
-  },
-  {
-    id: '4',
-    name: 'Hand-painted Coffee Mug',
-    price: 45000,
-    image: '/kotoGadang/images/carousel-1.jpg',
-    quantity:1
-  },
-];
+ 

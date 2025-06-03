@@ -5,6 +5,7 @@ import Image from "next/image";
 import { Suspense } from "react";
 import ManagementSkeletonLoader from "../components/loading/ManagementSkeletonLoader";
 import { FaCartShopping } from "react-icons/fa6";
+import Link from "next/link";
 
 export default function SidebarLayout({
   children,
@@ -27,12 +28,10 @@ export default function SidebarLayout({
           </section>
           <div>
             <section className="grid grid-cols-2 gap-2">
-              <div className="flex items-center justify-center p-4 bg-white rounded-lg cursor-pointer">
-                <a href="/web/cart">
-                  <FaCartShopping />
-                </a>
-              </div>
-              <aside className="flex items-center justify-center p-4 bg-white rounded-lg cursor-pointer">
+              <Link className="flex items-center justify-center p-4 bg-white rounded-lg cursor-pointer" href="/web/cart">
+                <FaCartShopping />
+              </Link>
+              <Link href={'/web/profile'} className="flex items-center justify-center p-4 bg-white rounded-lg cursor-pointer">
                 <Image
                   src="/images/profile.png"
                   width={1000}
@@ -40,7 +39,7 @@ export default function SidebarLayout({
                   height={1000}
                   className="size-12"
                 />
-              </aside>
+              </Link>
             </section>
           </div>
         </header>

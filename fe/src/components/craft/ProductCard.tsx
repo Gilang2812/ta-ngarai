@@ -13,7 +13,7 @@ interface ProductCardProps {
 
 export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   return (
-    <Link href={`craft/${product.craft.id}`}>
+    <Link href={`craft/${product.id_craft}?idvr=${product.id}`}>
       <div
         aria-label={`Go to ${product.name} details`}
         className="relative border p-2 hover:cursor-pointer bg-white  hover:shadow-primary/30 shadow-sm overflow-hidden hover:shadow-md transition-shadow duration-300"

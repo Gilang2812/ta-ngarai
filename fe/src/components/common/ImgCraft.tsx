@@ -6,6 +6,8 @@ import Image from "next/image";
 import React, { useEffect, useState } from "react";
 
 const ImgCraft = ({
+  width = 64,
+  height = 64,
   src,
   ...props
 }: { src: string } & React.ComponentProps<typeof Image>) => {
@@ -18,9 +20,8 @@ const ImgCraft = ({
       setImgSrc(notFound);
     };
   }, [foundedSrc]);
-  
-  console.log(imgSrc)
-  return <Image src={imgSrc} {...props} onError={() => setImgSrc(notFound)} />;
+
+  return <Image src={imgSrc} {...(!props.fill ? { width, height } : {})} {...props} onError={() => setImgSrc(notFound)} />;
 };
 
 export default ImgCraft;

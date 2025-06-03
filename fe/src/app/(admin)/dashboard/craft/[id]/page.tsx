@@ -7,7 +7,6 @@ export default async function EditVariantPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  console.log(id);
   return (
     <SingleContentWrapper>
       <header className="py-2 text-2xl text-primary  ">

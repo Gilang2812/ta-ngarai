@@ -51,6 +51,7 @@ export const useCraftManagement = () => {
     id_craft: "",
     name: "",
     price: "" as unknown as number,
+    weight: "" as unknown as number,
     modal: "" as unknown as number,
     stock: "" as unknown as number,
     description: "",
