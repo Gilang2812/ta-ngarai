@@ -5,7 +5,7 @@ type Props = {
   }>;
 };
 export const InfoGrid = ({ items }: Props) => (
-  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
     {items.map((item, idx) => (
       <div key={idx} className="bg-gray-50 p-4 rounded-lg">
         <div className="text-xs text-gray-500 uppercase font-semibold mb-1">

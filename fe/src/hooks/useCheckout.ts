@@ -3,12 +3,14 @@ import { useUpdateAddress } from "@/features/web/address/useUpdateAddress";
 import { useGetUserCheckout } from "@/features/web/checkout/useGetUserCheckout";
 import { CheckoutItem, type Address } from "@/type/schema/CheckoutSchema";
 import { ShippingItem } from "@/type/schema/ShippingSchema";
-import { cornerAlert } from "@/utils/AlertUtils";
+import { cornerAlert } from "@/utils/AlertUtils"; 
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 type PaymentMethod = "cod" | "bank" | "apar";
 
 export const useCheckout = () => {
+  const router = useRouter();
   const [itemShipping, setItemShipping] = useState<ShippingItem[]>([]);
   const [showAddressForm, setShowAddressForm] = useState(false);
   const [editingAddress, setEditingAddress] = useState<Address | undefined>(
@@ -20,6 +22,7 @@ export const useCheckout = () => {
     data: checkout,
     isLoading: checkoutLoading,
     refetch,
+    error,
   } = useGetUserCheckout();
   const addressList = checkout?.shippingAddress.addressCustomer.addresses;
 
@@ -34,6 +37,11 @@ export const useCheckout = () => {
       setSelectedAddress(addressList[0]);
     }
   }, [addressList]);
+  useEffect(() => {
+    if (error?.status === 404) {
+      router.push("/web/craft");
+    }
+  }, [error, router]);
 
   const { mutate: createAddress, isPending: creating } = useCreateAddress({
     onSuccess: () => {

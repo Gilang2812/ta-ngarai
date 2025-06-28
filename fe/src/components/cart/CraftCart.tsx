@@ -24,7 +24,7 @@ const CraftCart = () => {
   }
 
   return (
-    <motion.div className="py-4 grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <motion.div layoutId="cartPage" className="py-4 grid grid-cols-1 lg:grid-cols-3 gap-8">
       <div className="lg:col-span-2">
         <div className="p-6 border rounded-lg ">
           <table className="w-full [&_th]:p-4  [&_td]:p-2  ">

@@ -12,12 +12,11 @@ import { useCreateAnnouncement } from "@/features/dashboard/announcement/useCrea
 import { useDeleteAnnouncement } from "@/features/dashboard/announcement/useDeleteAnnouncement";
 import { useEditAnnouncement } from "@/features/dashboard/announcement/useEditAnnouncement";
 import { useFetchAnnouncements } from "@/features/web/useFetchAnnouncement";
-import { CustomError } from "@/type/props/ErrorProps";
+ 
 import { AnnouncementSchema } from "@/type/schema/AnnouncementSchema";
 import {
   confirmDeleteAlert,
-  cornerAlert,
-  cornerError,
+  cornerAlert 
 } from "@/utils/AlertUtils";
 import { useModal } from "@/utils/ModalUtils";
 import { Spinner } from "@material-tailwind/react";
@@ -33,9 +32,7 @@ const validationSchema = yup.object({
 
 export default function Announcement() {
   const [status, setStatus] = useState(1);
-  const [errorInput, setInputError] = useState<{
-    [key: string]: string | undefined;
-  }>({});
+ 
   const [selectedData, setSelectedData] = useState<AnnouncementSchema | null>(
     null
   );
@@ -50,10 +47,7 @@ export default function Announcement() {
       toggleInputModal();
       refetch();
     },
-    onError: (error: CustomError) => {
-      const errorMessage = error?.response?.data;
-      setInputError(errorMessage!);
-    },
+ 
   });
 
   const { mutate: editMutate, isPending: editPending } = useEditAnnouncement({
@@ -62,21 +56,12 @@ export default function Announcement() {
       cornerAlert("edit announcement ");
       refetch();
     },
-    onError: (error: CustomError) => {
-      const errorMessage = error?.response?.data;
-      setInputError(errorMessage!);
-    },
   });
 
   const { mutate: deleteMutate } = useDeleteAnnouncement({
     onSuccess: () => {
       cornerAlert("delete announcement ");
       refetch();
-    },
-    onError: (error: CustomError) => {
-      const errorMessage = error?.response?.data;
-      setInputError(errorMessage!);
-      cornerError(errorMessage?.toString());
     },
   });
   const handleCreate = async (values: AnnouncementSchema) => {
@@ -145,9 +130,7 @@ export default function Announcement() {
           setSelectedData(null);
         }}
       >
-        {typeof errorInput === "string" && (
-          <p className="text-red-500 mb-2">{errorInput}</p>
-        )}
+      
         <Formik
           initialValues={{
             id: selectedData?.id || "",

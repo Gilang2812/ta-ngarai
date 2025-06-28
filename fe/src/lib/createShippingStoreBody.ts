@@ -8,7 +8,7 @@ export const createShippingStoreBody = (
   selectedAddress: Address | undefined
 ) => {
   return groupedItems.map((items, index) => ({
-    order_date: new Date(),
+    order_date: new Date(new Date().getTime() - new Date().getTimezoneOffset() * 60000).toISOString(),
     brand_name: "Craft",
     shipper_name: checkout?.items?.[0]?.craftVariant?.craft?.souvenirPlace.name,
     shipper_phone:
@@ -46,23 +46,6 @@ export const createShippingStoreBody = (
           : Math.round(i.craftVariant.weight),
       qty: i.jumlah,
       subtotal: i.craftVariant.price * i.jumlah,
-    })),
-    item_details: [
-      ...groupedItems.flat().map((item) => ({
-        id: item.craftVariant.id,
-        name: `${item.craftVariant.craft.name} - ${item.craftVariant.name}`,
-        price: item.craftVariant.price,
-        quantity: item.jumlah,
-      })),
-      {
-        id: "shipping",
-        name: "Shipping Cost",
-        price: itemShipping.reduce(
-          (acc, curr) => acc + curr.shipping_cost_net,
-          0
-        ),
-        quantity: 1,
-      },
-    ],
+    })),  
   }));
 };

@@ -1,4 +1,3 @@
-import { useCreateCheckout } from "@/features/web/checkout/useCreateCheckout";
 import { useDeleteCraftCart } from "@/features/web/craftCart/useDeleteCraftCart";
 import { useFetchCraftCart } from "@/features/web/craftCart/useFetchCraftCart";
 import { useUpdateCraftCart } from "@/features/web/craftCart/useUpdateCraftCart";
@@ -7,16 +6,19 @@ import {
   confirmDeleteAlert,
   cornerAlert,
   cornerError,
+  hideLoadingAlert,
+  showLoadingAlert,
 } from "@/utils/AlertUtils";
-import { useRouter } from "next/navigation";
 
 import { useEffect, useState } from "react";
+import useCheckoutCart from "./useCheckoutCart";
 
 export const useUserCraftCart = () => {
-  const router = useRouter();
   const { data: carts, isLoading, refetch } = useFetchCraftCart();
   const [isDirty, setIsDirty] = useState(false);
   const [selectedCraft, setSelectedCraft] = useState<CraftCartSchema[]>([]);
+  const { createCheckout } = useCheckoutCart();
+
   const { mutate: updateCraftCart, isPending: isUpdating } = useUpdateCraftCart(
     {
       onSuccess: () => {
@@ -38,12 +40,7 @@ export const useUserCraftCart = () => {
       await deleteCraftCart(idVariant);
     });
   };
-  const { mutateAsync: createCheckout } = useCreateCheckout({
-    onSuccess: () => {
-      cornerAlert("akan segera dialihkan ke halaman pembayaran!");
-      router.push("./checkout");
-    },
-  });
+
   const handleCheckout = () => {
     if (selectedCraft.length === 0) {
       cornerError("Silakan pilih craft yang ingin dibeli!");
@@ -58,11 +55,11 @@ export const useUserCraftCart = () => {
         const filteredCarts = carts.filter((item) =>
           prev.map((i) => i.craft_variant_id).includes(item.craft_variant_id)
         );
-        return filteredCarts.map(item=>({
+        return filteredCarts.map((item) => ({
           craft_variant_id: item.craft_variant_id,
           jumlah: item.jumlah,
           price: item.cartCraft.price,
-        }))
+        }));
       });
     }
   }, [carts]);
@@ -81,6 +78,16 @@ export const useUserCraftCart = () => {
       }
     });
   };
+
+  useEffect(() => {
+    if (isUpdating) {
+      showLoadingAlert();
+    }
+    return () => {
+      hideLoadingAlert();
+    };
+  }, [isUpdating]);
+
   return {
     carts,
     isLoading,

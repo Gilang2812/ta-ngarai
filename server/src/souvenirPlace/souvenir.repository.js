@@ -1,7 +1,34 @@
-const { SouvenirPlace } = require("../../models/SouvenirPlace");
+const {
+  SouvenirPlace,
+  CraftVariantGallery,
+  Craft,
+  CraftVariant,
+} = require("../../models/relation");
 
-const findSouvenirPlace = async () => {
-  const souvenirPlace = await SouvenirPlace.findAll();
+const findSouvenirPlace = async (include = false) => {
+  const souvenirPlace = await SouvenirPlace.findAll({
+    include: include
+      ? [
+          {
+            model: Craft,
+            as: "crafts",
+            include: [
+              {
+                model: CraftVariant,
+                as: "variants",
+                include: [
+                  {
+                    model: CraftVariantGallery,
+                    as: "craftGalleries",
+                    limit: 1
+                  },
+                ],
+              },
+            ],
+          },
+        ]
+      : [],
+  });
 
   return souvenirPlace;
 };
@@ -23,7 +50,7 @@ const findSouvenirPlaceById = async (id) => {
 };
 const updateSouvenirPlace = async (id, body) => {
   const { geom, ...rest } = body;
-  console.log(rest)
+  console.log(rest);
   const updatedSP = await SouvenirPlace.update(
     { ...rest, geom: JSON.parse(geom) },
     { where: { id: id } }

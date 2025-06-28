@@ -78,7 +78,7 @@ export const MarkerObject = ({
               <p>{thirdText}</p>
             </section>
             <section className="flex items-center justify-center gap-2">
-              <DirectionToKotoGadangButton origin={origin} />
+              <DirectionToKotoGadangButton destination={position} />
               <Button className="p-2" variant={"primary"} asChild>
                 <Link href={"/web/explore"}>
                   <FaInfo />

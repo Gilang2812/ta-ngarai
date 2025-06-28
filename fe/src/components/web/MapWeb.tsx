@@ -24,13 +24,17 @@ import {
   useUserNavigation,
 } from "@/hooks";
 import { useGoToLocation } from "@/hooks/useGoToVillage";
-import { memo, useRef } from "react";
+import { memo, useEffect, useRef } from "react";
 import { layerType } from "@/data/layers";
 import { useObjectArround } from "@/hooks/useMergeObjectLayer";
 import ObjectGeoJSON from "../map/ObjectGeoJSON";
-import { useMergeALlObject } from "@/hooks/useMergeAllObject";
-function MapWeb() {
+import { useMergeALlObject } from "@/hooks/useMergeAllObject"; 
+import { GoogleMap } from "@react-google-maps/api";
+
+function MapWeb({zoom,children,souvenir=false}:{souvenir?:boolean}& React.ComponentProps<typeof GoogleMap>) {
   const mapRef = useRef<google.maps.Map | null>(null);
+
+
 
   const { isTerrain, setIsTerrain, setShowLabel, showLabel } = useMapTools();
 
@@ -69,6 +73,15 @@ function MapWeb() {
   const { toggleCheckBox } = useCheckBox();
 
   const { isLoading, mergedRegions } = useMapLayer(layers as layerType);
+ 
+  useEffect(() => {
+    if (souvenir) {
+      setObjects((prev) => ({
+        ...prev,
+        souvenir,
+      }));
+    }
+  }, [souvenir, setObjects]);
 
   if (isLoading) return <MapSkeletonLoader />;
 
@@ -117,8 +130,10 @@ function MapWeb() {
           origin={userLocation || clickedPosition}
           onClick={handleManualLocation}
           mapTypeId={`${isTerrain ? "terrain" : "satellite"}`}
+          zoom={zoom || 17}
           options={{
             mapTypeId: `${isTerrain ? "terrain" : "satellite"}`,
+       
           }}
           hideAllLayer={hideAllLayers}
         >
@@ -129,6 +144,7 @@ function MapWeb() {
           <MarkerManualLocation position={clickedPosition} />
           {objectGeom && <ObjectGeoJSON data={objectGeom} />}
           {allObjectGeom && <ObjectGeoJSON data={allObjectGeom} />}
+          {children}
         </MapLayout>
       </div>
       {locationError && <p className="text-red-500 text-sm">{locationError}</p>}

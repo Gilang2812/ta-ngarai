@@ -19,7 +19,7 @@ export const TourismGalleries = ({ id }: { id?: string }) => {
           loop={true}
           pagination={{
             type: "custom",
-            renderCustom: (swiper:number, current:number, total:number) => {
+            renderCustom: (swiper: import("swiper").Swiper, current: number, total: number) => {
               let bullets = "";
               for (let i = 1; i <= total; i++) {
                 if (i === current) {

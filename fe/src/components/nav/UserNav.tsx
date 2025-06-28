@@ -43,16 +43,12 @@ export const UserNav = () => {
         <li>
           <SideNavItem
             icon={FaCalendar}
-            label="my reservation"
+            label="my transaction"
             link="/web/reservation"
           />
         </li>
         <li>
-          <SideNavItem
-            icon={TbNeedleThread}
-            label="Craft"
-            link="/web/craft"
-          />
+          <SideNavItem icon={TbNeedleThread} label="Craft" link="/web/craft" />
         </li>
         <li className="flex flex-wrap ">
           <SideNavItem icon={FaInstagram} label="Instagram" link="#" />

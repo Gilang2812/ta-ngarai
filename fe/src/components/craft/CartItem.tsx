@@ -8,12 +8,13 @@ import {
   CraftCartSchema,
   type CartItemProps,
 } from "@/type/schema/CraftCartSchema";
-import ImgCraft from "../common/ImgCraft"; 
+import ImgCraft from "../common/ImgCraft";
 import { CheckBoxInput } from "../common/CheckBoxInput";
+import { hideLoadingAlert, showLoadingAlert } from "@/utils/AlertUtils";
 
 type Props = {
   item: CartItemProps;
-  updateCart: (values: CraftCartForm) => void; 
+  updateCart: (values: CraftCartForm) => void;
   isUpdating?: boolean;
   setDirty: Dispatch<SetStateAction<boolean>>;
   handleDeleteCart: (idVariant: string, name: string) => void;
@@ -22,7 +23,7 @@ type Props = {
 };
 
 export const CartItemComponent = ({
-  item, 
+  item,
   updateCart,
   isUpdating,
   setDirty,
@@ -31,7 +32,8 @@ export const CartItemComponent = ({
   selectedCraft,
 }: Props) => {
   const AutoSubmitOnChange = () => {
-    const { values, submitForm } = useFormikContext<CraftCartForm>();
+    const { values, submitForm, setFieldValue } =
+      useFormikContext<CraftCartForm>();
     const prevJumlah = useRef(values.jumlah);
     const timeoutRef = useRef<NodeJS.Timeout | null>(null);
     const isDirty = prevJumlah.current !== values.jumlah;
@@ -62,9 +64,15 @@ export const CartItemComponent = ({
         window.removeEventListener("beforeunload", handleBeforeUnload);
       };
     }, [isDirty]);
+
+    useEffect(() => {
+      setFieldValue("jumlah", item.jumlah);
+    }, [setFieldValue]);
+
     return null;
   };
 
+  
   const handleSubmit = (values: CraftCartForm) => {
     updateCart(values);
   };
@@ -111,7 +119,7 @@ export const CartItemComponent = ({
           initialValues={{
             craft_variant_id: item.craft_variant_id,
             jumlah: item.jumlah,
-            price:item.cartCraft.price
+            price: item.cartCraft.price,
           }}
           onSubmit={handleSubmit}
         >

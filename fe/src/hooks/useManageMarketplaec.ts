@@ -6,7 +6,7 @@ import { FormMarketplace } from "@/type/schema/MarketplaceSchema";
 import { SouvenirPlaceSchema } from "@/type/schema/PackageSchema";
 import { confirmDeleteAlert, cornerAlert } from "@/utils/AlertUtils";
 import { useModal } from "@/utils/ModalUtils";
-import { useState } from "react"; 
+import { useState } from "react";
 
 export const useManageMarketplace = () => {
   const { data, isLoading, refetch } = useFetchSouvenirPlace();
@@ -21,7 +21,7 @@ export const useManageMarketplace = () => {
     close: "",
     open: "",
     description: "",
-  geom: "",
+    geom: "",
   });
 
   const { mutate: createMarketplace, isPending: isPendingCreate } =

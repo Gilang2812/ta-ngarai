@@ -1,24 +1,19 @@
 "use client";
 import { useState } from "react";
-import { Header } from "@/components/craft/Header";
-import { ProductGrid } from "@/components/craft/ProductGrid";
 import { ViewToggleButtons } from "@/components/craft/ViewToggleButtons";
 import { SingleContentWrapper } from "@/components/common/SingleContentWrapper";
-import MapWeb from "@/components/web/MapWeb";
-import { useProductCraft } from "@/hooks/useProductCraft";
-import CraftSkeleton from "@/components/loading/CraftSkeleton";
+import MapCraft from "@/components/craft/MapCraft";
+import CraftGrid from "@/components/craft/CraftGrid";
 
 export type ViewMode = "grid" | "map";
 
 const CraftPage = () => {
-  const [viewMode, setViewMode] = useState<ViewMode>("grid");
-  const { crafts, isLoading } = useProductCraft();
+  const [viewMode, setViewMode] = useState<ViewMode>("map");
 
-  if (isLoading || !crafts) return <CraftSkeleton />;
   return (
     <SingleContentWrapper>
       <ViewToggleButtons
-        views={["grid", "map"]}
+        views={["map", "grid"]}
         current={viewMode}
         onChange={setViewMode}
       />
@@ -27,11 +22,10 @@ const CraftPage = () => {
         <div>
           {viewMode === "grid" ? (
             <>
-              <Header crafts={crafts} />
-              <ProductGrid crafts={crafts} />
+              <CraftGrid />
             </>
           ) : (
-            <MapWeb />
+            <MapCraft />
           )}
         </div>
       </div>

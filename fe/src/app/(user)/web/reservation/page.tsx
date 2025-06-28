@@ -1,7 +1,7 @@
 "use client";
 import { SingleContentWrapper } from "@/components/common/SingleContentWrapper";
 import { ViewToggleButtons } from "@/components/craft/ViewToggleButtons";
-import CraftReservation from "@/components/reservation/CraftReservation";
+import CraftTransaction from "@/components/reservation/CraftTransaction";
 import PackageReservation from "@/components/reservation/PackageReservation";
 
 import { useState } from "react";
@@ -18,13 +18,13 @@ const Reservation = () => {
         onChange={setView}
         views={["craft", "package"]}
       />
-      <header className="text-center capitalize mb-12">
-        <h2>List{ view==='package'? ' Package Reservation' : ' Craft Reservation'}</h2>
+      <header className="text-center capitalize my-6">
+        <h2>List{ view==='package'? ' Package Reservation' : ' Craft Transaction'}</h2>
       </header>
       {view === "package" ? (
         <PackageReservation />
       ) : (
-        <CraftReservation />
+        <CraftTransaction />
       )}
     </SingleContentWrapper>
   );

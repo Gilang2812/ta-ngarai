@@ -1,11 +1,10 @@
 import type { Metadata } from "next";
 import { ReactQueryProvider } from "@/context/ReactQueryClientProvider";
 import "./globals.css";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
 import "swiper/css/bundle";
 import "swiper/css";
 import Script from "next/script";
+import { ResultProps } from "@/type/props/ResultProps";
 
 export const metadata: Metadata = {
   title: "Desa Wisata Koto Gadang",
@@ -19,9 +18,9 @@ declare global {
       pay: (
         token: string,
         options: {
-          onSuccess: (result: unknown) => void;
-          onPending: (result: unknown) => void;
-          onError: (result: unknown) => void;
+          onSuccess: (result: ResultProps) => void;
+          onPending: (result: ResultProps) => void;
+          onError: (result: ResultProps) => void;
           onClose: () => void;
         }
       ) => void;

@@ -20,6 +20,7 @@ import { createShippingStoreBody } from "@/lib/createShippingStoreBody";
 import { useCompleteCheckout } from "@/features/web/checkout/useCompleteCheckout";
 import { CheckoutPayload } from "@/type/schema/CheckoutSchema";
 import { useRouter } from "next/navigation";
+import { useUpdateStatus } from "@/features/web/checkout/useUpdateStatus";
 
 export default function CheckoutPage() {
   //   const selectedAddress = addressList.find(addr => addr.id === selectedAddressId);
@@ -44,40 +45,60 @@ export default function CheckoutPage() {
     groupedItems,
   } = useCheckout();
   const router = useRouter();
+
+  const { mutateAsync: updateStatus, isPending: updatingStatus } =
+    useUpdateStatus({
+      onSuccess: () => {
+        cornerAlert("Checkout status updated successfully");
+      },
+    });
+
   const { mutate, isPending: checkoutPending } = useCompleteCheckout({
     onSuccess: async (data) => {
       cornerAlert("Order placed successfully");
 
       const paymentData = data as { token: string };
       window.snap.pay(paymentData.token, {
-        onSuccess: () => {
+        onSuccess: async (result) => {
+          console.log("Payment success:", result);
+          await updateStatus({
+            id: result.order_id,
+            status: 2,
+            payment_date: result.transaction_time,
+          });
           router.push("./cart");
         },
-        onPending: () => {
+        onPending: async (result) => {
+          console.log("Payment pending:", result);
+          await updateStatus({ id: result.order_id, status: 1 });
           router.push("./cart");
         },
-        onError: () => {
+        onError: async (result) => {
+          console.error("Payment error:", result);
+          await updateStatus({ id: result.order_id, status: 6 });
+
           cornerError("Payment failed, please try again");
         },
-        onClose: () => {
-          router.push("./cart");
-        },
+        onClose: async () => {
+          console.log("Payment closed");
+          if (checkout) await updateStatus({ id: checkout.id, status: 6 });
+        }
       });
     },
   });
 
   useEffect(() => {
-    if (checkoutPending || isPending) {
+    if (checkoutPending || isPending || updatingStatus) {
       showLoadingAlert();
     }
     return () => {
       hideLoadingAlert();
     };
-  }, [isPending, checkoutPending]);
+  }, [isPending, checkoutPending, updatingStatus]);
 
   const formikOrder = useFormik({
     initialValues: {
-      checkout_id: "checkout?.id",
+      checkout_id: "",
       total_shipping_cost: 0,
       sub_total: 0,
       total: 0,
@@ -98,12 +119,32 @@ export default function CheckoutPage() {
     if (groupedItems.length > 0) {
       formikOrder.setFieldValue("items", groupedItems.flat());
       formikOrder.setFieldValue("checkout_id", checkout?.id);
+
+      formikOrder.setFieldValue("item_details", [
+        ...groupedItems.flat().map((item) => ({
+          id: item.craftVariant.id,
+          name: `${item.craftVariant.craft.name} - ${item.craftVariant.name}`,
+          price: item.craftVariant.price,
+          quantity: item.jumlah,
+        })),
+        {
+          id: "shipping",
+          name: "Shipping Cost",
+          price: itemShipping.reduce(
+            (acc, curr) => acc + curr.shipping_cost_net,
+            0
+          ),
+          quantity: 1,
+        },
+      ]);
+
       formikOrder.setFieldValue(
         "sub_total",
         groupedItems
           .flat()
           .reduce((acc, item) => acc + item.craftVariant.price * item.jumlah, 0)
       );
+
       formikOrder.setFieldValue(
         "shippings",
         createShippingStoreBody(

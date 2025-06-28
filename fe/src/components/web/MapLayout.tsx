@@ -24,9 +24,9 @@ type Props = React.ComponentProps<typeof GoogleMap> & {
   hideAllLayer: () => void;
 };
 
-function MapLayout({ children, origin, hideAllLayer, ...props }: Props) {
+function MapLayout({ children, origin, hideAllLayer, zoom, ...props }: Props) {
   const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
-  const { isLoaded } = useMapLoad()
+  const { isLoaded } = useMapLoad();
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleInfoWindow = useCallback(() => setIsOpen((prev) => !prev), []);
@@ -38,7 +38,7 @@ function MapLayout({ children, origin, hideAllLayer, ...props }: Props) {
     <GoogleMap
       mapContainerStyle={containerStyle}
       center={LANDMARK_POSITION}
-      zoom={6}
+      zoom={zoom || 6}
       mapTypeId="satellite"
       options={{
         disableDefaultUI: true,
@@ -49,7 +49,7 @@ function MapLayout({ children, origin, hideAllLayer, ...props }: Props) {
         streetViewControl: true,
 
         gestureHandling: "greedy",
-    }}
+      }}
       {...props}
     >
       {children}

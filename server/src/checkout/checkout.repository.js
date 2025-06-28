@@ -1,3 +1,4 @@
+const { Op } = require("sequelize");
 const sequelize = require("../../config/database");
 const {
   Checkout,
@@ -8,6 +9,7 @@ const {
   Craft,
   CraftVariantGallery,
   SouvenirPlace,
+  Shipping,
 } = require("../../models/relation");
 const {
   include,
@@ -30,6 +32,7 @@ const findCheckouts = async (key) => {
 };
 
 const editCheckout = async (key, body) => {
+  console.log("body edit", body);
   return Checkout.update(body, {
     where: key,
   });
@@ -123,6 +126,65 @@ const editItemsCheckout = async (key, body) => {
   });
 };
 
+const userHistory = async (condition) => {
+  const checkout = await Checkout.findAll({
+    where: { status: { [Op.ne]: condition.status } },
+    include: [
+      // {
+      //   model: ShippingAddress,
+      //   as: "shippingAddress",
+      //   where: { customer_id: condition.customer_id },
+      //   include: {
+      //     model: User,
+      //     as: "addressCustomer",
+      //     attributes: ["id", "fullname", "email", "phone"],
+      //     include: [
+      //       {
+      //         model: ShippingAddress,
+      //         as: "addresses",
+      //       },
+      //     ],
+      //   },
+      // },
+      {
+        model: ItemCheckout,
+        as: "items",
+        include: [
+          {
+            model: CraftVariant,
+            as: "craftVariant",
+            attributes: ["id", "name", "price", "weight"],
+            include: [
+              {
+                model: Craft,
+                as: "craft",
+                attributes: ["id", "name", "id_souvenir_place"],
+                include: [
+                  {
+                    model: SouvenirPlace,
+                    as: "souvenirPlace",
+                    attributes: ["id", "name", "address", "contact_person"],
+                  },
+                ],
+              },
+              {
+                model: CraftVariantGallery,
+                as: "craftGalleries",
+                limit: 1,
+              },
+            ],
+          },
+          {
+            model: Shipping,
+            as: "shipping",
+          },
+        ],
+      },
+    ],
+  });
+  return checkout;
+};
+
 module.exports = {
   insertCheckout,
   destroyCheckout,
@@ -132,5 +194,6 @@ module.exports = {
   insertItemCheckouts,
   findUserCheckouts,
   destroyItemsCheckout,
-  editItemsCheckout
+  editItemsCheckout,
+  userHistory,
 };

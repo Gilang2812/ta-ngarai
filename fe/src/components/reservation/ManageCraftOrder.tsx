@@ -2,52 +2,42 @@ import React from "react";
 import Button from "../common/Button";
 import Link from "next/link";
 import { EyeIcon } from "lucide-react";
- 
+import TableHeaderManagement from "../admin/TableHeaderManagement";
+
 const ManageCraftOrder = () => {
   return (
     <div className="bg-white rounded-xl overflow-hidden shadow-sm">
       <div className="overflow-x-auto">
         <table className="w-full font-normal [&_td]:p-2 [&_td]:border-b [&_td]:border-gray-200 hover:[&_tr]:bg-primary/25 transition-colors">
-          <thead className="bg-primary-50">
-            <tr>
-              <th className="px-4 py-4 text-left font-semibold text-gray-700 border-b border-gray-200">
-                ID Transaksi
-              </th>
-              <th className="px-4 py-4 text-left font-semibold text-gray-700 border-b border-gray-200">
-                User
-              </th>
-              <th className="px-4 py-4 text-left font-semibold text-gray-700 border-b border-gray-200">
-                Produk
-              </th>
-              <th className="px-4 py-4 text-left font-semibold text-gray-700 border-b border-gray-200">
-                Total
-              </th>
-              <th className="px-4 py-4 text-left font-semibold text-gray-700 border-b border-gray-200">
-                Status
-              </th>
-              <th className="px-4 py-4 text-left font-semibold text-gray-700 border-b border-gray-200">
-                Tanggal
-              </th>
-              <th className="px-4 py-4 text-left font-semibold text-gray-700 border-b border-gray-200">
-                Aksi
-              </th>
-            </tr>
-          </thead>
+          <TableHeaderManagement
+            headers={["user", "Produks", "Total", "Status", "Tanggal Order"]}
+          />
+
           <tbody>
             <tr>
-              <td>#TRX-001-2024</td>
-              <td>John Doe</td>
-              <td>Sepatu Nike Air Max</td>
-              <td>Rp 250.000</td>
-              <td>
-                <span className="bg-green-500 text-white px-3 py-1 rounded-full text-xs font-semibold uppercase">
+              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                #TRX-001-2024
+              </td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                John Doe
+              </td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                Sepatu Nike Air Max
+              </td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                Rp 250.000
+              </td>
+              <td className="px-6 py-4 whitespace-nowrap">
+                <span className="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs">
                   Berhasil
                 </span>
               </td>
-              <td>15 Mei 2024</td>
-              <td>
-                <button className="bg-primary-500 text-white px-4 py-2 rounded-md text-xs font-medium transition-all duration-300 hover:bg-primary-600">
-                  Lihat
+              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                2 15 Mei 2024
+              </td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm">
+                <button className="text-primary-600 hover:text-primary-900">
+                  Detail
                 </button>
               </td>
             </tr>
@@ -85,7 +75,7 @@ const ManageCraftOrder = () => {
                 </button>
               </td>
             </tr>
-            <tr >
+            <tr>
               <td>#TRX-004-2024</td>
               <td className="px-4 py-4 ">Alice Brown</td>
               <td>Jaket Denim</td>

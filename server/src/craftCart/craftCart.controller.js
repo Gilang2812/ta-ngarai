@@ -42,6 +42,28 @@ router.post("/", async (req, res, next) => {
     next(error);
   }
 });
+
+router.post("/bulk", async (req, res, next) => {
+  try {
+    const { items } = req.body;
+    const user_id = 1; // Assuming user_id is 1 for testing purposes
+
+    const craftCarts = await Promise.all(
+      items.map((item) =>
+        createCraftCart({
+          user_id,
+          craft_variant_id: item.craft_variant_id,
+          jumlah: item.jumlah,
+        })
+      )
+    );
+
+    res.status(201).json(craftCarts);
+  } catch (error) {
+    next(error);
+  }
+});
+
 router.patch("/:craft_variant_id", async (req, res, next) => {
   try {
     const { jumlah } = req.body;

@@ -4,12 +4,15 @@ import PackageCart from "@/components/cart/PackageCart";
 import { SingleContentWrapper } from "@/components/common/SingleContentWrapper";
 
 import { ViewToggleButtons } from "@/components/craft/ViewToggleButtons";
+import { useSearchParams } from "next/navigation";
 
 import { useState } from "react";
 
 type ViewsProps = "package" | "craft";
 const Cart = ({}) => {
-  const [view, setView] = useState<ViewsProps>("package");
+  const searchParams = useSearchParams();
+  const tab = (searchParams.get("tab") as ViewsProps) || "package";
+  const [view, setView] = useState<ViewsProps>(tab);
 
   return (
     <SingleContentWrapper>

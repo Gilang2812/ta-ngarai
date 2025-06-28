@@ -1,8 +1,6 @@
 const express = require("express");
-const router = express.Router();
-const axios = require("axios");
-const axiosShipping = require("../../config/axiosShipping");
-const { getDestination, calculateShipping } = require("./shipping.service");
+const router = express.Router(); 
+const { getDestination, calculateShipping, getUserHistoryById } = require("./shipping.service");
 
 // GET /api/shipping/destination?keyword=...
 router.get("/destination", async (req, res) => {
@@ -27,6 +25,16 @@ router.get("/calculate", async (req, res) => {
     res.status(err.response?.status || 500).json({ message: err.message });
   }
 });
+
+router.get("/:id", async (req, res,next) => {
+  try { 
+    const { id } = req.params;
+    const shipping = await getUserHistoryById(id);
+    return res.json(shipping);
+  } catch (err) {
+    next(err);
+  }
+}); 
 
 router.post("/store", async (req, res) => {
   try {
@@ -117,5 +125,7 @@ router.post("/store", async (req, res) => {
     res.status(err.response?.status || 500).json({ message: err.message });
   }
 });
+
+
 
 module.exports = router;

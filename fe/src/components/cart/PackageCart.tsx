@@ -78,7 +78,7 @@ const PackageCart = () => {
    <CraftCartSkeletonLoader />
     );
   return (
-    <motion.div className="py-4">
+    <motion.div layoutId="cartPage" className="py-4">
       <section aria-labelledby="data-table-section">
         <div className="flex justify-between w-full mb-4">
           <label htmlFor="entries" className="font-semibold">

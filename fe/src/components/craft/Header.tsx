@@ -8,7 +8,7 @@ interface HeaderProps {
 
 export const Header: React.FC<HeaderProps> = ({ onSearch,crafts }) => {
     return (
-      <header className="flex items-center justify-between mb-6">
+      <header className="flex sticky gap-4  items-center justify-between mb-6">
         <h1 className="text-2xl font-bold">Souvenir</h1>
         <div className="flex items-center space-x-4">
           <SearchBar crafts={crafts} onSearch={onSearch} />

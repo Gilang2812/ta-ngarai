@@ -104,6 +104,29 @@ export const confirmDeleteAlert = async (
   });
 };
 
+export const confirmAlert = async (
+  title: string,
+  message: string,
+  confirm: () => void
+) => {
+  return Swal.fire({
+    title: title,
+    text: message,
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "rgb(220, 53, 69)",
+    cancelButtonColor: "rgb(52, 58, 64)",
+    confirmButtonText: "Ok",
+  }).then(async (result) => {
+    if (result.isConfirmed) {
+      confirm()
+      return true;
+    } else {
+      return false;
+    }
+  });
+};
+
 export const cornerAlert = (message: string) => {
   const Toast = Swal.mixin({
     toast: true,
@@ -140,9 +163,9 @@ export const cornerError = (message: string | undefined) => {
   });
 };
 
-export const showLoadingAlert = () => {
+export const showLoadingAlert = (message?: string) => {
   Swal.fire({
-    title: "Loading...",
+    title: message || "Loading...",
     allowOutsideClick: false,
     didOpen: () => Swal.showLoading(),
   });

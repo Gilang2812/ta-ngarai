@@ -1,19 +1,16 @@
 import { useGetCraft } from "@/features/dashboard/craft/useGetCraft";
-import { useCreateCheckout } from "@/features/web/checkout/useCreateCheckout";
-import { useCreateCraftCart } from "@/features/web/craftCart/useCreateCraftCart";
-import { CraftCartForm, CraftCartSchema } from "@/type/schema/CraftCartSchema";
+import { CraftCartForm } from "@/type/schema/CraftCartSchema";
 import { VariantBelongCraftSchema } from "@/type/schema/CraftSchema";
-import { cornerAlert } from "@/utils/AlertUtils";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useCallback, useEffect, useRef, useState } from "react";
-import Swal from "sweetalert2";
+import { useCallback, useEffect, useState } from "react";
+import { useOrderCraft } from "./useOrderCraft";
 
 export const useDetailProductCraft = (id: string, idVariant: string) => {
-  const actionRef = useRef("");
   const searchParms = useSearchParams();
   const router = useRouter();
   const pathName = usePathname();
 
+  const { handleSubmit, actionRef, isCraftPending, isChecking, handleBuy, handleCart } = useOrderCraft();
   const createQueryString = useCallback(
     (name: string, value: string) => {
       const params = new URLSearchParams(searchParms.toString());
@@ -23,25 +20,13 @@ export const useDetailProductCraft = (id: string, idVariant: string) => {
     [searchParms]
   );
 
-  const initialValues: CraftCartSchema = {
+  const initialValues: CraftCartForm = {
     craft_variant_id: idVariant,
     jumlah: 1,
   };
 
   const { data: craft, isLoading } = useGetCraft(id);
-  const { mutate: createCraftCart, isPending: isCraftPending } =
-    useCreateCraftCart({
-      onSuccess: () => {
-        cornerAlert("Cart updated!");
-      },
-    });
 
-  const { mutateAsync: checkout, isPending: isChecking } = useCreateCheckout({
-    onSuccess: () => {
-      cornerAlert("Checkout created successfully!");
-      router.push("/web/checkout");
-    },
-  });
   const initalVariant =
     craft?.variants.find(
       (vr) => vr.id.toLowerCase() === idVariant.toLowerCase()
@@ -93,37 +78,12 @@ export const useDetailProductCraft = (id: string, idVariant: string) => {
     setSelectedImage(selectedVariant?.craftGalleries?.[imageIndex]?.url || "");
   };
 
-  const handleSubmit = async (values: CraftCartForm) => {
-    if (actionRef.current === "cart") {
-      await createCraftCart({
-        jumlah: values.jumlah,
-        craft_variant_id: searchParms.get("idvr") || values.craft_variant_id,
-      });
-      console.log("Craft cart submitted:", values);
-    } else if (actionRef.current === "buy") {
-      Swal.fire({
-        title: "checking out",
-        allowOutsideClick: false,
-        didOpen: () => {
-          Swal.showLoading();
-        },
-      });
-      await checkout({
-        items: [
-          {
-            jumlah: values.jumlah,
-            craft_variant_id:
-              searchParms.get("idvr") || values.craft_variant_id,
-          },
-        ],
-      });
-    }
-  };
-
   const handleSelectedVariant = (variant: VariantBelongCraftSchema) => {
     setSelectedVariant(variant);
     router.push(`${pathName}?${createQueryString("idvr", variant.id)}`);
   };
+
+  
   return {
     craft,
     isLoading,
@@ -139,5 +99,7 @@ export const useDetailProductCraft = (id: string, idVariant: string) => {
     isCraftPending,
     isChecking,
     handleSubmit,
+    handleBuy,
+    handleCart,
   };
 };

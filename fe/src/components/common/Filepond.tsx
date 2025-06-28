@@ -24,6 +24,7 @@ const FilePondComponent = () => {
         <p>Gambar</p>
         <FilePond
           files={values.images || []}
+          acceptedFileTypes={["image/*"]}
           onupdatefiles={(fileItems) => {
             const files = fileItems.map((fileItem) => fileItem.file);
             setFieldValue("images", files);

@@ -19,7 +19,8 @@ function ProductDetail({ id }: { id: string }) {
     handleThumbnailClick,
     setSelectedVariant,
     initialValues,
-    actionRef,
+    handleCart,
+    handleBuy,
     handleSubmit
   } = useDetailProductCraft(id, idVariant);
 
@@ -73,9 +74,10 @@ function ProductDetail({ id }: { id: string }) {
               setSelectedVariant={setSelectedVariant}
               selectedVariant={selectedVariant}
               craft={craft}
-              initialValues={initialValues}
-              actionRef={actionRef}
+              initialValues={initialValues} 
               handleSubmit={handleSubmit}
+              handleCart={handleCart}
+              handleBuy={handleBuy}
             />
         )}
       </div>

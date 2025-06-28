@@ -23,6 +23,9 @@ const insertCraftCart = (body) => {
   return CraftCart.create(body);
 };
 
+const insertBulkCraftCart = (body) => {
+  return CraftCart.bulkCreate(body);
+};
 const editCraftCart = (key, body) => {
   return CraftCart.update(body, {
     where: { craft_variant_id: key.craft_variant_id, user_id: key.user_id },

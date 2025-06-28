@@ -10,6 +10,7 @@ import Link from "next/link";
 import { FaHistory } from "react-icons/fa";
 
 import { FaCircleInfo, FaComments } from "react-icons/fa6";
+import { motion } from "framer-motion";
 
  
 const PackageReservation = () => {
@@ -68,7 +69,7 @@ const PackageReservation = () => {
 
   return (
     <>
-      <section>
+      <motion.section layoutId="reservation-list" >
         <table className="w-full ">
           <thead>
             <tr className="border-b-2 ">
@@ -99,7 +100,7 @@ const PackageReservation = () => {
             <RenderReservation />
           </tbody>
         </table>
-      </section>
+      </motion.section>
       <InfoModal
         isOpen={isOpen}
         onClose={() => {

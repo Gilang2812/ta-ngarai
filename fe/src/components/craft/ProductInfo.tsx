@@ -22,8 +22,9 @@ interface ProductInfoProps {
   selectedVariant: VariantBelongCraftSchema;
   setSelectedVariant: (variant: VariantBelongCraftSchema) => void;
   initialValues: CraftCartForm;
-  handleSubmit: (values: CraftCartForm) => void;
-  actionRef: React.MutableRefObject<string>;
+  handleSubmit: (values: CraftCartForm) => void; 
+  handleCart : () => void;
+  handleBuy : () => void;
 }
 
 export const ProductInfo: React.FC<ProductInfoProps> = ({
@@ -31,8 +32,9 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({
   selectedVariant,
   setSelectedVariant,
   initialValues,
-  handleSubmit,
-  actionRef,
+  handleSubmit, 
+  handleCart,
+  handleBuy
 }) => {
   const [isFavorite, setIsFavorite] = useState(false);
 
@@ -92,7 +94,7 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({
             type="submit"
             className="w-full"
             Icon={BsCart}
-            onClick={() => (actionRef.current = "cart")}
+            onClick={handleCart}
           />
 
           <ButtonTooltip
@@ -101,7 +103,7 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({
             type="submit"
             variant="primary"
             className="w-full"
-            onClick={() => (actionRef.current = "buy")}
+            onClick={handleBuy}
           />
         </Form>
       </Formik>

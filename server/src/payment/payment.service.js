@@ -15,10 +15,10 @@ const createPayment = async (body) => {
   };
 
   const transaction = await snap.createTransaction(parameter);
- 
+
   await updateCheckout(
     { id: body.order_id },
-    { checkout_date: new Date(), status: 1, total_price: body.gross_amount }
+    { checkout_date: new Date(), status: 2, total_price: body.gross_amount }
   );
 
   return {
@@ -28,4 +28,8 @@ const createPayment = async (body) => {
   };
 };
 
-module.exports = { createPayment };
+const getPaymentStatus = async (orderId) => {
+  const status = await core.transaction.status(orderId);
+  return status;
+};
+module.exports = { createPayment, getPaymentStatus };

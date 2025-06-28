@@ -1,13 +1,11 @@
-'use client'
-import {Header} from "@/components/landingPage/Header";
-import WelcomeSection from "@/components/landingPage/WelcomeSection"; 
+"use client";
+import { Header } from "@/components/landingPage/Header";
+import WelcomeSection from "@/components/landingPage/WelcomeSection";
 import CarouselArticle from "@/components/landingPage/CarouselArticle";
-import {WhyVisitSection} from "@/components/landingPage/WhyVisitSection";
-import {GeoparkSection} from "@/components/landingPage/GeoparkSection"; 
-import {Footer} from "@/components/landingPage/Footer";
-import React, { useRef } from "react";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css"; 
+import { WhyVisitSection } from "@/components/landingPage/WhyVisitSection";
+import { GeoparkSection } from "@/components/landingPage/GeoparkSection";
+import { Footer } from "@/components/landingPage/Footer";
+import React, { useRef } from "react"; 
 import ScrollToTop from "@/components/landingPage/ScrollToTop";
 
 export default function Home() {
@@ -23,15 +21,17 @@ export default function Home() {
   };
 
   return (
-    <main className="mx-auto overflow-x-hidden">
-      <Header 
-        onAboutClick={() => scrollToSection(whyVisitRef)} 
-        onAwardClick={() => scrollToSection(geoparkRef)} 
-      />
-      <section className="z-10 min-w-[640px] grid grid-cols-1 lg:grid-cols-2">
-        <WelcomeSection />
-        <CarouselArticle />
-      </section>
+    <main className="relative mx-auto overflow-x-hidden">
+      <div className =" min-h-dvh flex flex-col items-stretch  ">
+        <Header 
+          onAboutClick={() => scrollToSection(whyVisitRef)}
+          onAwardClick={() => scrollToSection(geoparkRef)}
+        />
+        <section className="z-10 min-w-[640px] h-max grow grid  grid-cols-2  ">
+          <WelcomeSection />
+          <CarouselArticle />
+        </section>
+      </div>
       {/* Attach ref to WhyVisitSection */}
       <section ref={whyVisitRef}>
         <WhyVisitSection />

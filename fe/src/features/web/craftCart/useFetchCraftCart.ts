@@ -7,6 +7,6 @@ export const useFetchCraftCart = () => {
     queryFn: async () => {
       const { data } = await axiosInstance.get("/craft-carts");
       return data;
-    },
+    }
   });
 };

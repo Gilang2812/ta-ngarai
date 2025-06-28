@@ -14,11 +14,24 @@ const Shipping = sequelize.define(
       type: DataTypes.STRING(50),
       allowNull: true,
     },
+    
     awb: {
       type: DataTypes.STRING(20),
       allowNull: true,
     },
+    shipping_name: {
+      type: DataTypes.STRING(20),
+      allowNull: true,
+    },
+    shipping_type: {
+      type: DataTypes.STRING(20),
+      allowNull: true,
+    },
     total_shipping_cost: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+    },
+    grand_total: {
       type: DataTypes.INTEGER,
       allowNull: true,
     },

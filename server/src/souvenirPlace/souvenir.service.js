@@ -7,8 +7,8 @@ const {
   deleteSouvenirPlace,
 } = require("./souvenir.repository");
 
-const getSouvenirPlace = async () => {
-  const souvenirPlace = await findSouvenirPlace();
+const getSouvenirPlace = async (include = false) => {
+  const souvenirPlace = await findSouvenirPlace(include);
   return souvenirPlace;
 };
 

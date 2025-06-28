@@ -68,7 +68,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({ onSearch, crafts }) => {
             animate={{ height: "auto" }}
             exit={{ height: 0 }}
             transition={{ duration: 0.2 }}
-            className="absolute bg-white w-full border rounded-xl z-20 max-h-[464px] overflow-x-hidden"
+            className="absolute bg-white w-full border rounded-xl z-30 max-h-[464px] overflow-x-hidden"
           >
             <motion.div layout className="p-3">
               {result && result.length === 0 ? (

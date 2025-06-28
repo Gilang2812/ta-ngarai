@@ -1,5 +1,5 @@
-import { useTools } from "@/hooks/useTools";
-import { SimplifiedObject } from "@/type/schema/PackageSchema";
+import { useTools } from "@/hooks/useTools"; 
+import { SimplifiedObject, SouvenirPlaceSchema } from "@/type/schema/PackageSchema";
 import { type FeatureCollection } from "geojson";
 
 export const useReformatObject = (
@@ -28,6 +28,25 @@ export const useReformatObject = (
     : null;
 };
 
- 
+export const useReformatSouvenirPlace = <T>(data: (SouvenirPlaceSchema & T)[]) => {
+  return {
+    type: "FeatureCollection",
+    features: data.map((item) => {
+      return {
+        type: "Feature",
+        geometry: item.geom,
+        properties: {
+          id: item.id,
+          name: item.name,
+          type: item.type,
+          price: item.price,
+          contact_person: item.contact_person,
+          address: item.address,
+          capacity: item.capacity,
+        },
+      };
+    }),
+  };
+};
 
 

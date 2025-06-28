@@ -15,7 +15,9 @@ export const craftVariantSchema = yup.object({
     .required("Harga wajib diisi"),
   weight: yup
     .number()
-    .typeError("Berat harus berupa angka, ganti tanda koma (',') dengan titik ('.') jika ada")
+    .typeError(
+      "Berat harus berupa angka, ganti tanda koma (',') dengan titik ('.') jika ada"
+    )
     .moreThan(0, "Berat harus lebih dari 0")
     .required("Berat wajib diisi"),
   stock: yup
@@ -33,8 +35,6 @@ export const craftVariantSchema = yup.object({
   images: yup.array().max(5, "Maksimal 5 gambar").nullable(),
 });
 
- 
-
 export type Craft = yup.InferType<typeof craftSchema> & {
   id: string;
   id_souvenir_place?: string;
@@ -51,9 +51,9 @@ export type CraftVariantGallery = {
 
 export type CraftWithVariants = Craft & {
   souvenirPlace: {
-    name:string;
-    address:string
-  }
+    name: string;
+    address: string;
+  };
 };
 
 export type CraftVariantWithGalleriesSchema = CraftVariant & {
@@ -78,3 +78,6 @@ export type CraftVariantInclude = (
   | "checkout"
   | "reviewGalleris"
 )[];
+
+export type CraftWithVariantsGalleries = (Craft &
+  { variants: (CraftVariant & { craftGalleries: CraftVariantGallery[] })[] })[];

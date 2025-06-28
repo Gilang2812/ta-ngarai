@@ -10,6 +10,7 @@ const {
   findUserCheckouts,
   destroyItemsCheckout,
   editItemsCheckout,
+  userHistory,
 } = require("./checkout.repository");
 
 const getCheckout = async (key) => {
@@ -77,7 +78,6 @@ const checkoutOrder = async (body) => {
   let existingCheckout = await getCheckout({ checkout_date: null });
 
   if (!existingCheckout) {
-
     existingCheckout = await getCheckout({ payment_date: null });
     if (existingCheckout && existingCheckout.checkout_date) {
       const oneDay = 24 * 60 * 60 * 1000;
@@ -92,7 +92,7 @@ const checkoutOrder = async (body) => {
   }
 
   await deleteItemsCheckout({ checkout_id: existingCheckout.id });
-  
+
   const newItems = await createItemCheckouts(
     body.map((item) => ({
       craft_variant_id: item.craft_variant_id,
@@ -101,6 +101,12 @@ const checkoutOrder = async (body) => {
     }))
   );
   return newItems;
+};
+
+const getUserHistory = async (condition) => {
+  const checkout = await userHistory(condition);
+
+  return checkout;
 };
 
 module.exports = {
@@ -115,4 +121,5 @@ module.exports = {
   deleteItemsCheckout,
   updateItemsCheckout,
   checkoutOrder,
+  getUserHistory
 };

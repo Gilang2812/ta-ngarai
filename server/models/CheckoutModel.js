@@ -5,12 +5,16 @@ const { generateCustomId } = require('../utils/generateId');
 
 const Checkout = sequelize.define('Checkout', {
   id: {
-    type: DataTypes.STRING(5),
+    type: DataTypes.STRING(10),
     primaryKey: true,
     allowNull: true
   },
   address_id: {
     type: DataTypes.STRING(5),
+    allowNull: true
+  },
+  payment:{
+    type: DataTypes.STRING(30),
     allowNull: true
   },
   checkout_date: {
@@ -35,7 +39,7 @@ const Checkout = sequelize.define('Checkout', {
 });
 
 Checkout.beforeCreate(async(instance)=>{
-  instance.id = await generateCustomId('CO',Checkout,5)
+  instance.id = await generateCustomId('test',Checkout,10)
 })
 
 module.exports = {Checkout};

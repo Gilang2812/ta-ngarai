@@ -1,100 +1,85 @@
-'use client'
+"use client";
 
-import React, { useRef, useState } from 'react'
-import Slider from 'react-slick'
-import Image from 'next/image'
-import { NextButton, PrevButton } from '@/components/landingPage/CarouselButtons'
- 
-const images = [{
-  src: '/images/carousel-1.jpg',
-  alt: 'First slide',
-},{
-  src: '/images/carousel-2.jpg',
-  alt: 'Second slide',
-},{
-  src: '/images/carousel-2.jpg',
-  alt: 'Third slide',
-}]
+import React from "react";
+import Image from "next/image";
+import {
+  NextButton,
+  PrevButton,
+} from "@/components/landingPage/CarouselButtons";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay, Navigation, Pagination } from "swiper/modules";
+
+const images = [
+  { src: "/images/carousel-1.jpg", alt: "First slide" },
+  { src: "/images/carousel-2.jpg", alt: "Second slide" },
+  { src: "/images/carousel-3.jpg", alt: "Third slide" },
+];
+
+const CustomPagination = ({
+  current,
+  total,
+}: {
+  current: number;
+  total: number;
+}) => {
+  return (
+    <div className="flex justify-center items-center gap-2">
+      {Array.from({ length: total }).map((_, i) => {
+        const isActive = i === current;
+        return (
+          <div
+            key={i}
+            className={`p-1 flex items-center border justify-center transition-all duration-300 ${
+              isActive ? "bg-primary border-primary" : "bg-transparent border-white"
+            }`}
+          >
+            <span className={`size-1 rounded-full bg-white`}></span>
+          </div>
+        );
+      })}
+    </div>
+  );
+};
 
 const CarouselArticle = () => {
-  const sliderRef = useRef<Slider | null>(null)
-  const [currentSlide, setCurrentSlide] = useState(0)
-
-  const next = () => {
-    sliderRef.current?.slickNext()
-  }
-
-  const previous = () => {
-    sliderRef.current?.slickPrev()
-  }
-
-  const settings = {
-    dots: true,
-    infinite: true,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    autoplay: true,
-    speed: 2000,
-    pauseOnHover: true,
-    autoplaySpeed: 4000,
-    beforeChange: (oldIndex: number, newIndex: number) => {
-      setCurrentSlide(newIndex)
-    },
-    appendDots: (dots:React.ReactNode) => (
-      <div
-        style={{
-          backgroundColor: 'transparent',
-          borderRadius: '10px',
-          padding: '25px'
-        }}
-      >
-        <ul style={{ margin: '20px ' }}> {dots} </ul>
-      </div>
-    ),
-    customPaging: (i: number) => (
-      <div className={`${i === currentSlide ?'bg-primary border-primary' :'border-white'} p-1 border `}>
-      <div
-        style={{
-          width: "8px",
-          height: "8px",
-          borderRadius: "100%",
-          border: "2px solid inset  transparent",
-          backgroundColor: i === currentSlide ? "white" : "white",
-          transition: "background-color 0.3s ease",
-        }}
-      />
-      </div>
-
-    ),
-  }
+  const [activeIndex, setActiveIndex] = React.useState(0);
 
   return (
-    <div className='bg-blue-500 relative col-span-1'>
-      <div className='z-10 mt-20 bottom-0 text-white absolute left-1/2 transform translate-x-[-50%] translate-y-[-50%] space-x-40'>
-        <PrevButton onClick={previous} />
-        <NextButton onClick={next} />
-      </div>
-      <div className='relative z-0'>
-        <Slider
-          ref={slider => {
-            sliderRef.current = slider
+    <div className="h-full relative col-span-1">
+      <div className="relative h-full">
+        <Swiper
+          className="h-full shadow-lg border-4 border-primary"
+          spaceBetween={30}
+          modules={[Navigation, Pagination, Autoplay]}
+          slidesPerView={1}
+          loop={true}
+          autoplay={{ delay: 3000 }}
+          onSlideChange={(swiper) => {
+            setActiveIndex(swiper.realIndex); // realIndex = current slide in loop
           }}
-          {...settings}
         >
           {images.map((image, index) => (
-            <Image
-              key={index}
-              src={image.src}
-              alt={image.alt}
-              width={500}
-              height={500}
-              className='h-full'
-            />
+            <SwiperSlide key={index}>
+              <Image
+                src={image.src}
+                alt={image.alt}
+                width={500}
+                height={500}
+                className="h-full w-full object-cover"
+                priority={index === 0}
+              />
+            </SwiperSlide>
           ))}
-        </Slider>
+
+          <div className="absolute font-light z-50 bottom-2 w-full flex gap-4 items-center justify-center px-4 py-2">
+            <PrevButton />
+            <CustomPagination current={activeIndex} total={images.length} />
+            <NextButton />
+          </div>
+        </Swiper>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default CarouselArticle
+export default CarouselArticle;

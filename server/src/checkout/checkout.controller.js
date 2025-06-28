@@ -1,20 +1,22 @@
-const { getOneAddress } = require("../address/address.service");
 const { deleteCraftCart } = require("../craftCart/craftCart.service");
-const { createPayment } = require("../payment/payment.service");
+const { validateData } = require("../middlewares/validation");
+const {
+  createPayment,
+  getPaymentStatus,
+} = require("../payment/payment.service");
 const {
   storeShipment,
   createShipping,
+  getUserHistory,
 } = require("../shipping/shipping.service");
 const {
-  createCheckout,
-  createItemCheckouts,
-  getCheckout,
   getUserCheckouts,
-  deleteItemsCheckout,
   updateCheckout,
   updateItemsCheckout,
   checkoutOrder,
+  // getUserHistory
 } = require("./checkout.service");
+const { updateStatusSchema } = require("./checout.validation");
 
 const router = require("express").Router();
 
@@ -65,20 +67,26 @@ router.get("/", async (req, res, next) => {
 router.patch("/:id", async (req, res, next) => {
   try {
     const { id } = req.params;
-    const { items, item_details, shippings,sub_total,total_shipping_cost } = req.body;
-    console.log(req.body)
+    const { items, item_details, shippings, sub_total, total_shipping_cost } =
+      req.body;
+    console.log(req.body);
     const transaction = await createPayment({
       order_id: id,
-      gross_amount: sub_total + total_shipping_cost ,
+      gross_amount: sub_total + total_shipping_cost,
       item_details: item_details,
     });
+
+    console.log("shippings", shippings);
     for (const [index, item] of shippings.entries()) {
       const { data } = await storeShipment(item);
       const prevIndex = item.order_details.slice(0, index).length ?? 0;
       const newShipping = await createShipping({
         shipping_id: data.data.order_id,
-        shipping_cost: item.shipping_cost,
         shipping_no: data.data.order_no,
+        shipping_name: item.shipping,
+        shipping_type: item.shipping_type,
+        total_shipping_cost: item.shipping_cost,
+        grand_total: item.grand_total,
       });
       for (const [detailIndex, detail] of item.order_details.entries()) {
         detail.shipping_id = data.data.order_id;
@@ -96,6 +104,51 @@ router.patch("/:id", async (req, res, next) => {
     }
     console.log(items);
     res.status(200).json(transaction);
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.patch(
+  "/status/:id",
+  validateData(updateStatusSchema),
+  async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      const { status } = req.body;
+  
+      if (!status ||status === 6 || !status.success) {
+        await updateCheckout(
+          { id },
+          {
+            status: status || 6,
+          }
+        );
+      } else {
+        const paymentStatus = await getPaymentStatus(id);
+        const checkout = await updateCheckout(
+          { id },
+          {
+            status: status || 6,
+            payment: paymentStatus?.payment_type ?? null,
+            payment_date: paymentStatus?.settlement_time ?? null,
+          }
+        );
+      }
+      res.status(200).json(id);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+router.get("/history", async (req, res, next) => {
+  try {
+    const checkout = await getUserHistory({
+      status: 0,
+      customer_id: 1,
+    }); // Assuming customer_id is 1 for testing purposes
+    res.status(200).json(checkout);
   } catch (error) {
     next(error);
   }

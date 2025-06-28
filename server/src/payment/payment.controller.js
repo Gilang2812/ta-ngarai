@@ -1,13 +1,13 @@
 const { snap, core } = require("../../config/midtrans");
 const crypto = require("crypto");
-const { createPayment } = require("./payment.service");
+const { createPayment, getPaymentStatus } = require("./payment.service");
 const { updateCheckout } = require("../checkout/checkout.service");
 const router = require("express").Router();
 
 router.post("/create", async (req, res) => {
   try {
     const { order_id, gross_amount, item_details } = req.body;
-    console.log(item_details)
+    console.log(item_details);
     const transaction = await createPayment({
       order_id,
       gross_amount,
@@ -88,7 +88,7 @@ router.post("/notification", async (req, res) => {
 router.get("/status/:orderId", async (req, res) => {
   try {
     const { orderId } = req.params;
-    const status = await core.transaction.status(orderId);
+    const status = await getPaymentStatus(orderId);
 
     res.json({
       success: true,
