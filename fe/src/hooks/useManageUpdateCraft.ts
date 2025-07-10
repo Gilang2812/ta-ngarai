@@ -1,7 +1,6 @@
 import { useFetchCraft } from "@/features/dashboard/craft/useFetchCraft";
 import { useGetVariant } from "@/features/dashboard/craftVariant/useGetVariant";
 import { useUpdateCraftVariant } from "@/features/dashboard/craftVariant/useUpdateCraftVariant";
-import { baseUrl } from "@/lib/baseUrl";
 import {
   CraftVariant,
   CraftVariantWithGalleriesSchema,
@@ -11,6 +10,7 @@ import { createFormData } from "@/utils/common/createFormData";
 import { useMemo } from "react";
 import isEqual from "lodash/isEqual";
 import { isSameImages } from "@/utils/common/isSamgeImages";
+import { formatImageUrls } from "@/lib/imgUrlFormatter";
 
 export const useManageUpdateCraft = (id: string) => {
   const {
@@ -30,13 +30,8 @@ export const useManageUpdateCraft = (id: string) => {
   });
   const images = useMemo(() => {
     if (!variant?.craftGalleries?.length) return [];
-
-    return variant.craftGalleries.map((image) => ({
-      source: `${baseUrl}/${image.url}?v=${new Date().getTime()}`,
-      option: {
-        type: "local",
-      },
-    }));
+    const urls = variant.craftGalleries.map((image) => image.url);
+    return formatImageUrls(urls);
   }, [variant]);
 
   const initialValues = {

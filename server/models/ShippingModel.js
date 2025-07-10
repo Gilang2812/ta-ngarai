@@ -35,6 +35,11 @@ const Shipping = sequelize.define(
       type: DataTypes.INTEGER,
       allowNull: true,
     },
+    status: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      defaultValue: 1,  
+    },
   },
   {
     tableName: "shipping",

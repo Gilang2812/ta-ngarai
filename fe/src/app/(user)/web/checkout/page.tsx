@@ -53,39 +53,41 @@ export default function CheckoutPage() {
       },
     });
 
-  const { mutate, isPending: checkoutPending } = useCompleteCheckout({
-    onSuccess: async (data) => {
-      cornerAlert("Order placed successfully");
+  const { mutate: checkoutOrder, isPending: checkoutPending } =
+    useCompleteCheckout({
+      onSuccess: async (data) => {
+        cornerAlert("Order placed successfully");
+        console.log(data);
+        const paymentData = data as { token: string; shippings: number[] };
+        window.snap.pay(paymentData.token, {
+          onSuccess: async (result) => {
+            cornerAlert("Payment success:" + result.order_id);
+            await updateStatus({
+              id: result.order_id,
+              status: 2,
+              payment_date: result.transaction_time,
+              shippings: paymentData.shippings,
+            });
+            router.push("./cart?tab=craft");
+          },
+          onPending: async (result) => {
+            cornerAlert("Payment pending:" + result.order_id);
+            await updateStatus({ id: result.order_id, status: 1, shippings: paymentData.shippings });
+            router.push("./reservation?tab=craft");
+          },
+          onError: async (result) => {
+            cornerError("Payment error:" + result.order_id);
+            await updateStatus({ id: result.order_id, status: 6, shippings: paymentData.shippings });
 
-      const paymentData = data as { token: string };
-      window.snap.pay(paymentData.token, {
-        onSuccess: async (result) => {
-          console.log("Payment success:", result);
-          await updateStatus({
-            id: result.order_id,
-            status: 2,
-            payment_date: result.transaction_time,
-          });
-          router.push("./cart");
-        },
-        onPending: async (result) => {
-          console.log("Payment pending:", result);
-          await updateStatus({ id: result.order_id, status: 1 });
-          router.push("./cart");
-        },
-        onError: async (result) => {
-          console.error("Payment error:", result);
-          await updateStatus({ id: result.order_id, status: 6 });
-
-          cornerError("Payment failed, please try again");
-        },
-        onClose: async () => {
-          console.log("Payment closed");
-          if (checkout) await updateStatus({ id: checkout.id, status: 6 });
-        }
-      });
-    },
-  });
+            cornerError("Payment failed, please try again");
+          },
+          onClose: async () => {
+            cornerAlert("Payment closed");
+            if (checkout) await updateStatus({ id: checkout.id, status: 6, shippings: paymentData.shippings });
+          },
+        });
+      },
+    });
 
   useEffect(() => {
     if (checkoutPending || isPending || updatingStatus) {
@@ -111,7 +113,7 @@ export default function CheckoutPage() {
         return cornerError("Please select shipping method for all items");
       }
 
-      mutate(values);
+      checkoutOrder(values);
     },
   });
 

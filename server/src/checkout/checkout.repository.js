@@ -41,12 +41,19 @@ const editCheckout = async (key, body) => {
 const findCheckout = async (key) => {
   return Checkout.findOne({
     where: key,
+    include: [
+      {
+        model: ItemCheckout,
+        as: "items",
+      },
+
+    ],
   });
 };
 
 const findUserCheckouts = async (condition) => {
   const checkout = await Checkout.findOne({
-    where: { status: condition.status },
+    where: { checkout_date: null },
     include: [
       {
         model: ShippingAddress,
@@ -128,7 +135,7 @@ const editItemsCheckout = async (key, body) => {
 
 const userHistory = async (condition) => {
   const checkout = await Checkout.findAll({
-    where: { status: { [Op.ne]: condition.status } },
+    where: { checkout_date: { [Op.ne]: null } },
     include: [
       // {
       //   model: ShippingAddress,

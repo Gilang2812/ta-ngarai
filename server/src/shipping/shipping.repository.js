@@ -9,6 +9,7 @@ const {
   ShippingAddress,
   User,
   CraftVariantGallery,
+  ItemCheckoutReviewGallery,
 } = require("../../models/relation");
 
 const findShippingById = async (shippingId) => {
@@ -19,7 +20,16 @@ const findShippingById = async (shippingId) => {
         model: ItemCheckout,
         required: true,
         as: "shippingItems",
-        attributes: ["checkout_id", "craft_variant_id", "jumlah"],
+        attributes: [
+          "checkout_id",
+          "craft_variant_id",
+          "jumlah",
+          "review_text",
+          "shipping_id",
+          "review_date",
+          "review_rating",
+          "seller_response",
+        ],
         include: [
           {
             model: CraftVariant,
@@ -47,13 +57,16 @@ const findShippingById = async (shippingId) => {
             ],
           },
           {
+            model: ItemCheckoutReviewGallery,
+            as: "reviewGalleries",
+          },
+          {
             model: Checkout,
             as: "checkout",
             attributes: [
               "id",
               "address_id",
               "total_price",
-              "status",
               "payment",
               "checkout_date",
             ],
@@ -95,6 +108,7 @@ const findShippingById = async (shippingId) => {
       "shipping_name",
       "shipping_type",
       "total_shipping_cost",
+      "status",
     ],
   });
 
@@ -108,12 +122,23 @@ const insertShipping = async (body) => {
 
 const userHistory = async (condition) => {
   const shipping = await Shipping.findAll({
+    order: [["shippingItems", "checkout", "checkout_date", "DESC"]],
+
     include: [
       {
         model: ItemCheckout,
         required: true,
         as: "shippingItems",
-        attributes: ["checkout_id", "craft_variant_id", "jumlah"],
+        attributes: [
+          "checkout_id",
+          "craft_variant_id",
+          "jumlah",
+          "review_text",
+          "shipping_id",
+          "review_date",
+          "review_rating",
+          "seller_response",
+        ],
         include: [
           {
             model: CraftVariant,
@@ -147,11 +172,10 @@ const userHistory = async (condition) => {
               "id",
               "address_id",
               "total_price",
-              "status",
               "payment",
               "checkout_date",
             ],
-            where: { status: { [Op.ne]: condition.status } },
+            where: { checkout_date: { [Op.ne]: null } },
             required: true,
             include: [
               {
@@ -193,6 +217,7 @@ const userHistory = async (condition) => {
       "shipping_name",
       "shipping_type",
       "total_shipping_cost",
+      "status",
     ],
     limit: 10,
     offset: 0,
@@ -204,9 +229,16 @@ const userHistory = async (condition) => {
   return shipping;
 };
 
+const editShipping = async (key, body) => {
+  console.log("body edit", body);
+  return Shipping.update(body, {
+    where: key,
+  });
+};
 module.exports = {
   insertShipping,
   userHistory,
   userHistory,
   findShippingById,
+  editShipping,
 };

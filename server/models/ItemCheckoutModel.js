@@ -1,5 +1,6 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../config/database");
+const { generateCustomId } = require("../utils/generateId");
 
 const ItemCheckout = sequelize.define(
   "ItemCheckout",
@@ -34,6 +35,10 @@ const ItemCheckout = sequelize.define(
       type: DataTypes.STRING(255),
       allowNull: true,
     },
+    review_date: {
+      type: DataTypes.DATE,
+      allowNull: true,
+    },
     seller_response: {
       type: DataTypes.STRING(255),
       allowNull: true,
@@ -44,5 +49,7 @@ const ItemCheckout = sequelize.define(
     timestamps: false,
   }
 );
+
+
 
 module.exports = { ItemCheckout };

@@ -327,13 +327,11 @@ CraftVariantGallery.belongsTo(CraftVariant, {
 });
 
 ItemCheckout.hasMany(ItemCheckoutReviewGallery, {
-  foreignKey: "checkout_id",
-  sourceKey: "checkout_id",
+  foreignKey: "checkout_id",  
   as: "reviewGalleries",
 });
 ItemCheckout.hasMany(ItemCheckoutReviewGallery, {
-  foreignKey: "craft_variant_id",
-  sourceKey: "craft_variant_id",
+  foreignKey: "craft_id", 
   as: "craftReviewGalleries",
 });
 

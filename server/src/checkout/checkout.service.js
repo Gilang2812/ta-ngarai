@@ -109,6 +109,8 @@ const getUserHistory = async (condition) => {
   return checkout;
 };
 
+ 
+
 module.exports = {
   getCheckout,
   getCheckouts,

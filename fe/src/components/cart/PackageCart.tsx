@@ -1,61 +1,54 @@
 import { useDeleteCart } from "@/features/web/cart/useDeleteCart";
-import { useFetchUserCarts } from "@/features/web/cart/useFetchUserCarts";
+import {
+  CartProps,
+  useFetchUserCarts,
+} from "@/features/web/cart/useFetchUserCarts";
 import { CartSchema } from "@/type/schema/CartSchema";
 import { confirmDeleteAlert, showDeleteAlert } from "@/utils/AlertUtils";
-import { motion } from "framer-motion";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useMemo } from "react";
 import { EmptyCart } from "../craft/EmptyCart";
-import { MdClose } from "react-icons/md";
 import Link from "next/link";
 import { Tooltip } from "flowbite-react";
 import { FaTrash } from "react-icons/fa6";
 import CraftCartSkeletonLoader from "../loading/CraftCartSkeletonLoader";
+import Button from "../common/Button";
+import useTableManagement from "@/hooks/useTableManagement";
+import useSearchTable from "@/hooks/useSearchTable";
+import TableManagementHeader from "../admin/TableManagementHeader";
+import ManagementFooter from "../admin/ManagementFooter";
 
 const PackageCart = () => {
   const { data, refetch, isLoading } = useFetchUserCarts();
-  const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(5);
-  const [searchTerm, setSearchTerm] = useState("");
+  const { searchTerm, handleSearch, clearSearchTerm } = useSearchTable();
 
   const filteredData = useMemo(() => {
-    return data?.filter((item) => {
-      const { package: p, ...rest } = item;
-      const flat = { ...rest, ...(p || {}) };
-      return Object.keys(flat).some((key) => {
-        const value = flat[key as keyof CartSchema];
-        return String(value).toLowerCase().includes(searchTerm.toLowerCase());
-      });
-    });
+    return (
+      data?.filter((item) => {
+        const { package: p, ...rest } = item;
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const { id, ...restOfItem } = p;
+        const flat = { ...rest, ...(restOfItem || {}) };
+        console.log("Flat Data:", flat);
+        return Object.keys(flat).some((key) => {
+          const value = flat[key as keyof CartSchema];
+          return String(value).toLowerCase().includes(searchTerm.toLowerCase());
+        });
+      }) || []
+    );
   }, [searchTerm, data]);
 
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = filteredData?.slice(indexOfFirstItem, indexOfLastItem);
-  const totalPages = data && Math.ceil(filteredData!.length / itemsPerPage);
+  const {
+    handleNextPage,
+    handlePrevPage,
+    handleItemsPerPage,
+    itemsPerPage,
+    currentItems,
+    currentPage,
+    totalPages,
+    indexOfFirstItem,
+    indexOfLastItem,
+  } = useTableManagement<CartProps>(filteredData);
 
-  useEffect(() => {
-    if (totalPages == 1) setCurrentPage(1);
-  }, [totalPages]);
-
-  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(e.target.value);
-  };
-
-  const handleNextPage = () => {
-    setCurrentPage((prev) => Math.min(prev + 1, Number(totalPages)));
-  };
-
-  const handlePrevPage = () => {
-    setCurrentPage((prev) => Math.max(prev - 1, 1));
-  };
-
-  const handleItemsPerPage = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setItemsPerPage(parseInt(e.target.value, 10));
-  };
-
-  const clearSearchTerm = () => {
-    setSearchTerm("");
-  };
   const { mutate } = useDeleteCart({
     onSuccess: () => {
       showDeleteAlert("Cart");
@@ -73,51 +66,17 @@ const PackageCart = () => {
       </div>
     );
 
-  if (isLoading)
-    return (
-   <CraftCartSkeletonLoader />
-    );
+  if (isLoading) return <CraftCartSkeletonLoader />;
   return (
-    <motion.div layoutId="cartPage" className="py-4">
+    <div className="py-4">
       <section aria-labelledby="data-table-section">
-        <div className="flex justify-between w-full mb-4">
-          <label htmlFor="entries" className="font-semibold">
-            Show&nbsp;
-            <select
-              name="entries"
-              id="entries"
-              className="p-1 !border rounded !border-slate-400 focus:outline-none ring-0 focus:border focus:ring-4 transition-ease-in-out focus:ring-primary/30 "
-              value={itemsPerPage}
-              onChange={handleItemsPerPage}
-            >
-              <option value="5">5</option>
-              <option value="10">10</option>
-              <option value="20">20</option>
-              <option value="50">50</option>
-              <option value="100">100</option>
-            </select>
-            &nbsp;entries
-          </label>
-
-          <label
-            htmlFor=""
-            className=" [&_svg]:text-transparent [&_svg]:focus-within:text-slate-500 rounded border p-2 flex items-center justify-between  "
-          >
-            <input
-              type="text"
-              placeholder="Search"
-              className=" focus:outline-none border-none !ring-0 border-0  p-0 "
-              value={searchTerm}
-              onChange={handleSearch}
-              aria-label="Search packages"
-            />
-            <MdClose
-              onClick={() => clearSearchTerm()}
-              className="cursor-pointer hover:text-slate-500 transition-ease-in-out"
-            />
-          </label>
-        </div>
-
+        <TableManagementHeader
+          itemsPerPage={itemsPerPage}
+          handleItemsPerPage={handleItemsPerPage}
+          searchTerm={searchTerm}
+          handleSearch={handleSearch}
+          clearSearchTerm={clearSearchTerm}
+        />
         <h2 id="data-table-section" className="sr-only">
           Package Data Table
         </h2>
@@ -147,20 +106,21 @@ const PackageCart = () => {
                   >
                     More Info
                   </Link>
-                  <button
-                    className="px-4 py-2 text-white capitalize transition-all duration-300 ease-linear bg-green-700 rounded hover:bg-green-800 text-nowrap disabled:opacity-50"
+                  <Button
+                    variant={"success"}
+                    className="text-nowrap"
                     aria-label={`Book ${item.package_id}`}
                   >
                     Book Now
-                  </button>
+                  </Button>
                   <Tooltip content="delete" placement="bottom">
-                    <button
+                    <Button
+                      variant={"regDanger"}
                       onClick={() => handleDeleteCart(String(item.id))}
-                      className="p-3  text-red-500 transition duration-300 ease-linear bg-white border border-red-500 rounded hover:bg-red-500 hover:text-white disabled:opacity-50"
                       aria-label={`Delete ${item.package_id}`}
                     >
                       <FaTrash />
-                    </button>
+                    </Button>
                   </Tooltip>
                 </td>
               </tr>
@@ -168,38 +128,16 @@ const PackageCart = () => {
           </tbody>
         </table>
       </section>
-      <nav
-        aria-label="Pagination"
-        className="flex items-center justify-between mt-4"
-      >
-        <div>
-          Showing {indexOfFirstItem + 1} to{" "}
-          {Math.min(indexOfLastItem, Number(filteredData?.length))} of{" "}
-          {filteredData?.length} entries
-        </div>
-        <div className="flex items-center space-x-2">
-          <button
-            onClick={handlePrevPage}
-            disabled={currentPage === 1}
-            className="px-4 py-2 transition duration-200 ease-linear bg-gray-300 rounded hover:bg-gray-500 disabled:opacity-50"
-            aria-label="Previous Page"
-          >
-            Previous
-          </button>
-          <span className="px-4 py-2 border rounded-sm border-stone-500 bg-gradient-to-b from-white to-gray-300">
-            {currentPage}
-          </span>
-          <button
-            onClick={handleNextPage}
-            disabled={currentPage === totalPages}
-            className="px-4 py-2 transition duration-200 ease-linear bg-gray-300 rounded hover:text-white hover:bg-gray-500 disabled:opacity-50"
-            aria-label="Next Page"
-          >
-            Next
-          </button>
-        </div>
-      </nav>
-    </motion.div>
+      <ManagementFooter
+        indexOfFirstItem={indexOfFirstItem}
+        indexOfLastItem={indexOfLastItem}
+        totalItems={filteredData.length}
+        currentPage={currentPage}
+        totalPages={totalPages}
+        handlePrevPage={handlePrevPage}
+        handleNextPage={handleNextPage}
+      />
+    </div>
   );
 };
 

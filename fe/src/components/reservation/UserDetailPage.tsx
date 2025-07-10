@@ -18,16 +18,15 @@ export const UserDetailPage: FC<Props> = ({ history }) => {
     <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
       <div className="mb-4">
         <div className="flex items-center justify-between">
-          <h2 className="text-xl font-bold mb-3 text-primary">
-            {history.shipping_no}
-          </h2>
+          <div>
+            <h2 className="text-xl font-bold mb-3 text-primary">
+              Shipping No.{history.shipping_no}
+            </h2>
+            <p>OrderID. {history.shippingItems[0].checkout.id}</p>
+          </div>
           <StatusBadge
-            status={getCraftTransactionStatusColor(
-              history.shippingItems[0].checkout.status
-            )}
-            text={getCraftTransactionStatus(
-              history.shippingItems[0].checkout.status
-            )}
+            status={getCraftTransactionStatusColor(history.status)}
+            text={getCraftTransactionStatus(history.status)}
           />
         </div>
 

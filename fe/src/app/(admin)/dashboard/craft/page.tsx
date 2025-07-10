@@ -69,6 +69,7 @@ const Craft = () => {
     selectedImg,
     setSelectedImg,
   } = useCraftManagement();
+  
   const tableHeaders = [
     "id",
     "name",

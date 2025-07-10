@@ -1,3 +1,5 @@
+const imageUpload = require("../../middlewares/imageUploads");
+const { formatImageUrl } = require("../../utils/formatImageUrl");
 const { deleteCraftCart } = require("../craftCart/craftCart.service");
 const { validateData } = require("../middlewares/validation");
 const {
@@ -5,9 +7,15 @@ const {
   getPaymentStatus,
 } = require("../payment/payment.service");
 const {
+  createReviewGallery,
+  getReviewGalleries,
+  deleteReviewGalleryById,
+} = require("../reviewGallery/reviewGallery.service");
+const {
   storeShipment,
   createShipping,
   getUserHistory,
+  updateShipping,
 } = require("../shipping/shipping.service");
 const {
   getUserCheckouts,
@@ -16,6 +24,7 @@ const {
   checkoutOrder,
   // getUserHistory
 } = require("./checkout.service");
+const fs = require("fs");
 const { updateStatusSchema } = require("./checout.validation");
 
 const router = require("express").Router();
@@ -75,7 +84,7 @@ router.patch("/:id", async (req, res, next) => {
       gross_amount: sub_total + total_shipping_cost,
       item_details: item_details,
     });
-
+    const shippingsResult = [];
     console.log("shippings", shippings);
     for (const [index, item] of shippings.entries()) {
       const { data } = await storeShipment(item);
@@ -88,6 +97,7 @@ router.patch("/:id", async (req, res, next) => {
         total_shipping_cost: item.shipping_cost,
         grand_total: item.grand_total,
       });
+      shippingsResult.push(newShipping.shipping_id);
       for (const [detailIndex, detail] of item.order_details.entries()) {
         detail.shipping_id = data.data.order_id;
         await updateItemsCheckout(
@@ -102,8 +112,9 @@ router.patch("/:id", async (req, res, next) => {
         );
       }
     }
-    console.log(items);
-    res.status(200).json(transaction);
+    const response = { token: transaction.token, shippings: shippingsResult };
+    console.log("response", response);
+    res.status(200).json(response);
   } catch (error) {
     next(error);
   }
@@ -115,21 +126,35 @@ router.patch(
   async (req, res, next) => {
     try {
       const { id } = req.params;
-      const { status } = req.body;
-  
-      if (!status ||status === 6 || !status.success) {
-        await updateCheckout(
-          { id },
-          {
-            status: status || 6,
-          }
-        );
+      const { status, shippings } = req.body;
+      console.log("data checkout update", req.body);
+      const paymentStatus = await getPaymentStatus(id);
+      if (!status || status === 6) {
+        if (shippings.length > 0) {
+          shippings.forEach(async (shipping_id) => {
+            await updateShipping(
+              { shipping_id },
+              {
+                status: status || 6,
+              }
+            );
+          });
+        }
       } else {
-        const paymentStatus = await getPaymentStatus(id);
+        if (shippings.length > 0) {
+          for (const shipping_id of shippings) {
+            await updateShipping(
+              { shipping_id },
+              {
+                status: status,
+              }
+            );
+          }
+        }
+
         const checkout = await updateCheckout(
           { id },
           {
-            status: status || 6,
             payment: paymentStatus?.payment_type ?? null,
             payment_date: paymentStatus?.settlement_time ?? null,
           }
@@ -153,5 +178,53 @@ router.get("/history", async (req, res, next) => {
     next(error);
   }
 });
+
+router.patch(
+  "/:shipping_id/:craft_variant_id",
+  imageUpload.array("images"),
+  async (req, res, next) => {
+    try {
+      const { shipping_id, craft_variant_id } = req.params;
+      const { review_text, review_rating } = req.body;
+      console.log("ini lagi di test");
+      console.log(req.files);
+      const updatedItem = await updateItemsCheckout(
+        { checkout_id, craft_variant_id },
+        { review_text, review_rating, review_date: new Date() }
+      );
+
+      const images = req.files
+        ? req.files.map((file) => ({
+            url: formatImageUrl(file.path),
+            checkout_id,
+            craft_id: craft_variant_id,
+          }))
+        : [];
+      await getReviewGalleries({
+        checkout_id,
+        craft_id: craft_variant_id,
+      }).then((galleries) => {
+        galleries.forEach(async (gallery) => {
+          console.log("gallery", gallery);
+          await deleteReviewGalleryById({
+            id: gallery.id,
+          });
+          fs.unlinkSync(`public\\${gallery.url}`);
+        });
+      });
+      if (images.length > 0) {
+        for (const image of images) {
+          await createReviewGallery(image);
+        }
+      }
+      if (updatedItem) {
+        await updateShipping({ shipping_id }, { status: 5 });
+      }
+      res.status(200).json(updatedItem);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
 
 module.exports = router;

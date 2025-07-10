@@ -1,7 +1,6 @@
 const { snap, core } = require("../../config/midtrans");
 const crypto = require("crypto");
 const { createPayment, getPaymentStatus } = require("./payment.service");
-const { updateCheckout } = require("../checkout/checkout.service");
 const router = require("express").Router();
 
 router.post("/create", async (req, res) => {
@@ -90,16 +89,51 @@ router.get("/status/:orderId", async (req, res) => {
     const { orderId } = req.params;
     const status = await getPaymentStatus(orderId);
 
-    res.json({
-      success: true,
-      data: status,
-    });
+    res.json(status);
   } catch (error) {
     console.error("Error getting transaction status:", error);
     res.status(500).json({
       success: false,
       message: "Failed to get transaction status",
     });
+  }
+});
+
+router.get("/:id", async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const transactionStatus = await getPaymentStatus(id);
+    let paymentStatus = "";
+    if (transactionStatus.transaction_status === "capture") {
+      if (transactionStatus.fraud_status === "challenge") {
+        paymentStatus = "challenge";
+      } else if (transactionStatus.fraud_status === "accept") {
+        paymentStatus = "success";
+      }
+    } else if (transactionStatus.transaction_status === "settlement") {
+      paymentStatus = "success";
+    } else if (transactionStatus.transaction_status === "deny") {
+      paymentStatus = "deny";
+    } else if (
+      transactionStatus.transaction_status === "cancel" ||
+      transactionStatus.transaction_status === "expire"
+    ) {
+      paymentStatus = "failure";
+    } else if (transactionStatus.transaction_status === "pending") {
+      paymentStatus = "pending";
+    }
+    res.json({
+      order_id: transactionStatus.order_id,
+      total_pembayaran: transactionStatus.gross_amount,
+      waktu_transaksi: transactionStatus.transaction_time,
+      waktu_kadaluarsa: transactionStatus.expire_time,
+      status: paymentStatus,
+      payment_type: transactionStatus.payment_type,
+      virtual_account: transactionStatus.va_numbers,
+      transactionStatus
+    });
+  } catch (error) {
+    next(error);
   }
 });
 

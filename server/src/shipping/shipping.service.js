@@ -3,6 +3,7 @@ const {
   insertShipping,
   userHistory,
   findShippingById,
+  editShipping,
 } = require("./shipping.repository");
 
 const getDestination = async (params) => {
@@ -34,11 +35,17 @@ const getUserHistoryById = async (id) => {
   const shipping = await findShippingById(id);
   return shipping;
 };
+
+const updateShipping = async (key, body) => {
+  return await editShipping(key, body);
+};
+
 module.exports = {
   getDestination,
   calculateShipping,
   storeShipment,
   createShipping,
   getUserHistory,
-  getUserHistoryById
+  getUserHistoryById,
+  updateShipping,
 };

@@ -38,10 +38,10 @@ const HistoryList: FC<Props> = ({
         </h4>
         <span
           className={`${getCraftTransactionStatusColor(
-            history.shippingItems[0].checkout.status
+            history.status
           )} text-white px-3 py-1 rounded-full text-xs font-semibold uppercase`}
         >
-          {getCraftTransactionStatus(history.shippingItems[0].checkout.status)}
+          {getCraftTransactionStatus(history.status)}
         </span>
       </div>
       <div className="flex gap-4 mb-4">
@@ -95,7 +95,7 @@ const HistoryList: FC<Props> = ({
       <div className="flex justify-end gap-2 items-center">
         <ItemReservationButton
           order_id={history.shippingItems[0].checkout_id}
-          status={history.shippingItems[0].checkout.status}
+          status={history.status}
           handleCompleteOrder={handleCompleteOrder}
           shipping_id={history.shipping_id}
           handleRateClick={handleRateClick}

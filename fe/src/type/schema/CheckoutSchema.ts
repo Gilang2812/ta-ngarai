@@ -85,10 +85,6 @@ export const checkoutSchema = yup.object({
     .date()
     .required("Tanggal pembayaran wajib diisi")
     .typeError("Format tanggal tidak valid"),
-  status: yup
-    .date()
-    .required("Status wajib diisi")
-    .typeError("Format tanggal status tidak valid"),
 });
 
 // Item Checkout Schema
@@ -156,7 +152,6 @@ export interface Checkout {
   checkout_date: string | null;
   total_price: number | null;
   payment_date: string | null;
-  status: number;
   shippingAddress: ShippingAddress;
   items: CheckoutItem[];
 }

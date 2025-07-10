@@ -121,7 +121,7 @@ export const ShippingMethodSelector = ({
               <div>
                 <p className="text-sm text-gray-600">Estimasi Tiba</p>
                 <p className="font-semibold text-gray-900">
-                  {shipping.etd === "-" ? "Segera" : shipping.etd}
+                  {shipping.etd === "-" ? "Besok" : shipping.etd}
                 </p>
               </div>
             </div>

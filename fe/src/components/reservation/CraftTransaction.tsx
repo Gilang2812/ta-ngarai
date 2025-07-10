@@ -7,7 +7,7 @@ import { ModalDetail } from "../modal/ModalDetail";
 import { UserDetailPage } from "./UserDetailPage";
 import Link from "next/link";
 import Button from "../common/Button";
-import ReviewHistory from "./ReviewHistory";
+import ReviewHistory from "../review/ReviewHistory";
 
 const CraftTransaction = () => {
   const {

@@ -12,6 +12,7 @@ export const useUpdateStatus = ({ onSuccess }: ActionProps) => {
       id: string;
       status: number;
       payment_date?: string;
+      shippings?: number[];
     }) => { 
       const { data } = await axiosInstance.patch(`/checkouts/status/${id}`, {
         ...rest,

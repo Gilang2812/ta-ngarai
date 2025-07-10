@@ -12,18 +12,18 @@ export const buttonVariants = cva(
       variant: {
         default: "text-white bg-primary hover:bg-secondary",
         primary:
-          "bg-white text-primary border border-primary   hover:text-white hover:bg-primary",
+          "bg-white text-primary disabled:hover:bg-white border border-primary   hover:text-white hover:bg-primary",
         danger:
-          "text-white  bg-red-600 w-fit hover:text-white hover:bg-red-700",
+          "text-white   bg-red-600 disabled:hover:bg-red-600 w-fit hover:text-white hover:bg-red-700",
         regDanger:
-          "text-red-600 border border-red-600 border-2 bg-red-600/10  hover:bg-red-600/70 hover:text-white ",
+          "text-red-600 border border-red-600 border-2 bg-red-600/10 disabled:hover:bg-red-600/10  hover:bg-red-600/70 hover:text-white ",
         success:
-          "text-white  bg-green-600 w-fit hover:text-white hover:bg-green-800",
+          "text-white  bg-green-600 disabled:hover:bg-green-600 w-fit hover:text-white hover:bg-green-800",
         regSuccess:
-          "bg-white border border-green-600  text-green-600 w-fit  hover:text-white hover:bg-green-900",
+          "bg-white border border-green-600 disabled:hover:bg-white text-green-600 w-fit  hover:text-white hover:bg-green-900",
         secondary:
-          " px-3 py-2 font-normal text-white  bg-gray-300 w-fit hover:text-white hover:bg-gray-400",
-        edit: "p-3   bg-white border   border-cyan-400 text-cyan-400 hover:bg-cyan-400 hover:text-white",
+          " px-3 py-2 font-normal text-black disabled:text-white disabled:hover:bg-gray-300 bg-gray-300  w-fit hover:text-white hover:bg-gray-400",
+        edit: "p-3   bg-white disabled:hover:bg-white border   border-cyan-400 text-cyan-400 hover:bg-cyan-400 hover:text-white",
       },
       isActive: {
         default: "",

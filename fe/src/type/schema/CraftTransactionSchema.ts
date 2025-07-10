@@ -1,3 +1,5 @@
+import { ReviewGallerySchema } from "./ReviewSchema";
+
 export type ShippingData = {
   shipping_id: string;
   shipping_no: string;
@@ -5,14 +7,32 @@ export type ShippingData = {
   total_shipping_cost: number;
   shipping_type: string;
   shipping_name: string;
-  shippingItems: ShippingItem[];
+  status: number;
+  shippingItems: ShippingItem[]; 
+};
+
+export type ShippingDataWithReviewGallery = {
+  shipping_id: string;
+  shipping_no: string;
+  grand_total: number;
+  total_shipping_cost: number;
+  shipping_type: string;
+  shipping_name: string;
+  shippingItems: (ShippingItem & {
+    reviewGalleries: ReviewGallerySchema[];
+  })[];
 };
 
 export type ShippingItem = {
   checkout_id: string;
   craft_variant_id: string;
+  shipping_id: string;
   jumlah: number;
   craftVariant: CraftVariant;
+  review_text: string;
+  review_rating: number;
+  review_date: string;
+  seller_response: string;
   checkout: Checkout;
 };
 
@@ -44,8 +64,7 @@ export type CraftGallery = {
 export type Checkout = {
   id: string;
   address_id: string;
-  total_price: number | null;
-  status: number;
+  total_price: number | null; 
   payment: string;
   shippingAddress: ShippingAddress;
   checkout_date: string;

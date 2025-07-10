@@ -53,7 +53,7 @@ const PaymentTransaction = () => {
           <h3 className="text-lg font-semibold text-gray-900 mb-4">
             Nomor Virtual Account
           </h3>
-          <div className="bg-gray-50 rounded-lg p-4 mb-3">
+          <div className="bg-gray-50 rounded-lg p -4 mb-3">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-gray-500">🏦 BNI</p>

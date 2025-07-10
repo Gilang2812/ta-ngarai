@@ -124,7 +124,7 @@ const ShippingMethodItems = ({
               <p className="font-normal flex items-center gap-2 text-slate-800">
                 <Clock />
                 {itemShipping[index].etd === "-"
-                  ? "Segera"
+                  ? "Besok"
                   : itemShipping[index].etd}
               </p>
             </div>

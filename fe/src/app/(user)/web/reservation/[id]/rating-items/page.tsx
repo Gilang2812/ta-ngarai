@@ -1,5 +1,5 @@
 import { SingleContentWrapper } from "@/components/common/SingleContentWrapper";
-import ReviewItems from "@/components/reservation/ReviewItems";
+import ReviewItemCard from "@/components/review/ReviewItemCard";
 
 const ReviewTransaction = async ({
   params,
@@ -12,7 +12,7 @@ const ReviewTransaction = async ({
       <header className="mb-8">
         <h3>Review Transaction</h3>
       </header>
-      <ReviewItems id={id} />
+      <ReviewItemCard id={id} />
     </SingleContentWrapper>
   );
 };

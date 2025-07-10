@@ -25,7 +25,7 @@ export const useCheckout = () => {
     error,
   } = useGetUserCheckout();
   const addressList = checkout?.shippingAddress.addressCustomer.addresses;
-
+  console.log(error)
   const [selectedAddress, setSelectedAddress] = useState<Address | undefined>(
     addressList?.find((addr) => addr.is_primary) ||
       addressList?.[0] ||

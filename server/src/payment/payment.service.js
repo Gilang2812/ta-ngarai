@@ -18,7 +18,11 @@ const createPayment = async (body) => {
 
   await updateCheckout(
     { id: body.order_id },
-    { checkout_date: new Date(), status: 2, total_price: body.gross_amount }
+    {
+      checkout_date: new Date(),
+      total_price: body.gross_amount,
+      transaction_token: transaction.token,
+    }
   );
 
   return {
@@ -32,4 +36,5 @@ const getPaymentStatus = async (orderId) => {
   const status = await core.transaction.status(orderId);
   return status;
 };
+
 module.exports = { createPayment, getPaymentStatus };

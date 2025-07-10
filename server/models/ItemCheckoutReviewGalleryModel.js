@@ -1,20 +1,21 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/database'); 
+const { generateCustomId } = require('../utils/generateId');
 
 
 const ItemCheckoutReviewGallery = sequelize.define('ItemCheckoutReviewGallery', {
   id: {
     type: DataTypes.STRING(5),
     primaryKey: true,
-    allowNull: false
-  },
-  checout_id: {
-    type: DataTypes.STRING(5),
     allowNull: true
+  },
+  checkout_id: {
+    type: DataTypes.STRING(5),
+    allowNull: false
   },
   craft_id: {
     type: DataTypes.STRING(5),
-    allowNull: true
+    allowNull: false
   },
   url: {
     type: DataTypes.STRING(255),
@@ -24,5 +25,9 @@ const ItemCheckoutReviewGallery = sequelize.define('ItemCheckoutReviewGallery', 
   tableName: 'item_checkout_review_gallery',
   timestamps: false
 });
+
+ItemCheckoutReviewGallery.beforeCreate(async(instance)=>{
+  instance.id =  await generateCustomId("CG", ItemCheckoutReviewGallery, 5);
+})
 
 module.exports = ItemCheckoutReviewGallery;
