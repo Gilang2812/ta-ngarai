@@ -1,4 +1,4 @@
-"use client";
+ "use client";
 import { useState } from "react";
 import { ViewToggleButtons } from "@/components/craft/ViewToggleButtons";
 import { SingleContentWrapper } from "@/components/common/SingleContentWrapper";

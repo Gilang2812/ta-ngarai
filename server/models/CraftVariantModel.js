@@ -18,26 +18,7 @@ const CraftVariant = sequelize.define(
       type: DataTypes.STRING(50),
       allowNull: true,
     },
-    price: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-    },
-    weight: {
-      type: DataTypes.FLOAT,
-      allowNull: false,
-    },
-    stock: {
-      type: DataTypes.INTEGER,
-      allowNull: true,
-    },
-    modal: {
-      type: DataTypes.INTEGER,
-      allowNull: true,
-    },
-    description: {
-      type: DataTypes.STRING(255),
-      allowNull: true,
-    },
+
     deleted_at: {
       type: DataTypes.DATE,
       allowNull: true,

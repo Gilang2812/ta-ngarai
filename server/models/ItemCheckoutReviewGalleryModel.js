@@ -13,7 +13,11 @@ const ItemCheckoutReviewGallery = sequelize.define('ItemCheckoutReviewGallery', 
     type: DataTypes.STRING(5),
     allowNull: false
   },
-  craft_id: {
+  craft_variant_id: {
+    type: DataTypes.STRING(5),
+    allowNull: false
+  },
+  id_souvenir_place: {
     type: DataTypes.STRING(5),
     allowNull: false
   },

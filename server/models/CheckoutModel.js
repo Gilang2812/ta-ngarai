@@ -14,6 +14,10 @@ const Checkout = sequelize.define(
       type: DataTypes.STRING(5),
       allowNull: true,
     },
+    customer_id: {
+      type: DataTypes.STRING(5),
+      allowNull: true,
+    },
     payment: {
       type: DataTypes.STRING(30),
       allowNull: true,

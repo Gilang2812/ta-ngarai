@@ -6,46 +6,28 @@ export const craftSchema = yup.object({
 });
 
 export const craftVariantSchema = yup.object({
-  id_craft: yup.string().required("ID kerajinan wajib dipilih"),
-  name: yup.string().required("Nama varian wajib diisi"),
-  price: yup
-    .number()
-    .typeError("Harga harus berupa angka")
-    .min(0, "Harga tidak boleh negatif")
-    .required("Harga wajib diisi"),
-  weight: yup
-    .number()
-    .typeError(
-      "Berat harus berupa angka, ganti tanda koma (',') dengan titik ('.') jika ada"
-    )
-    .moreThan(0, "Berat harus lebih dari 0")
-    .required("Berat wajib diisi"),
-  stock: yup
-    .number()
-    .typeError("Stok harus berupa angka")
-    .min(0, "Stok tidak boleh negatif")
-    .required("Stok wajib diisi"),
-  modal: yup
-    .number()
-    .typeError("Modal harus berupa angka")
-    .min(0, "Modal tidak boleh negatif")
-    .nullable()
-    .optional(),
-  description: yup.string().required("Deskripsi wajib diisi"),
-  images: yup.array().max(5, "Maksimal 5 gambar").nullable(),
+  id_craft: yup.string().required("Please select a craft first"),
+  name: yup.string().required("Variant name is required"),
 });
-
 export type Craft = yup.InferType<typeof craftSchema> & {
   id: string;
-  id_souvenir_place?: string;
-};
-export type CraftVariant = yup.InferType<typeof craftVariantSchema> & {
-  id: string;
 };
 
+export type CraftResponse = Craft & {
+  variants: CraftVariant[];
+};
+export type CraftVariant = {
+  id: string;
+  id_craft: string;
+  name: string;
+};
+export type FetchCraftVariant = CraftVariant & {
+  craft: Craft;
+};
 export type CraftVariantGallery = {
   id: string;
   id_craft_variant: string;
+  id_souvenir_place: string;
   url: string;
 };
 
@@ -79,5 +61,6 @@ export type CraftVariantInclude = (
   | "reviewGalleris"
 )[];
 
-export type CraftWithVariantsGalleries = (Craft &
-  { variants: (CraftVariant & { craftGalleries: CraftVariantGallery[] })[] })[];
+export type CraftWithVariantsGalleries = (Craft & {
+  variants: (CraftVariant & { craftGalleries: CraftVariantGallery[] })[];
+})[];

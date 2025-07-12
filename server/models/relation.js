@@ -36,6 +36,7 @@ const ItemCheckoutReviewGallery = require("./ItemCheckoutReviewGalleryModel.js")
 const { SouvenirPlace } = require("./SouvenirPlace.js");
 const CraftCart = require("./CartCraftModel.js");
 const Shipping = require("./ShippingModel.js");
+const DetailMarketplaceCraft = require("./DetailMarketplaceCraft.js");
 
 User.hasMany(AuthGroupUsers, { foreignKey: "user_id", as: "user" });
 AuthGroup.hasMany(AuthGroupUsers, { foreignKey: "group_id", as: "group" });
@@ -292,53 +293,102 @@ ShippingAddress.hasMany(Checkout, {
   foreignKey: "address_id",
   as: "checkouts",
 });
+ShippingAddress.hasMany(Checkout, {
+  foreignKey: "customer_id",
+  as: "usercheckouts",
+});
 Checkout.belongsTo(ShippingAddress, {
   foreignKey: "address_id",
   as: "shippingAddress",
 });
+Checkout.belongsTo(ShippingAddress, {
+  foreignKey: "customer_id",
+  as: "shippingCustomer",
+});
 
 // CraftVariant and ItemCheckout associations
-CraftVariant.hasMany(ItemCheckout, {
+CraftVariant.hasMany(DetailMarketplaceCraft, {
   foreignKey: "craft_variant_id",
-  as: "itemCheckouts",
+  as: "marketplaceCrafts",
 });
-ItemCheckout.belongsTo(CraftVariant, {
+
+DetailMarketplaceCraft.belongsTo(CraftVariant, {
+  foreignKey: "craft_variant_id",
+  as: "variant",
+});
+DetailMarketplaceCraft.belongsTo(SouvenirPlace, {
+  foreignKey: "id_souvenir_place",
+  as: "marketplace",
+});
+
+SouvenirPlace.hasMany(DetailMarketplaceCraft, {
+  foreignKey: "id_souvenir_place",
+  as: "marketplaceCrafts",
+});
+
+DetailMarketplaceCraft.hasMany(CraftVariantGallery, {
+  foreignKey: "craft_variant_id",
+  as: "craftGalleries",
+});
+DetailMarketplaceCraft.hasMany(CraftVariantGallery, {
+  foreignKey: "id_souvenir_place",
+});
+CraftVariantGallery.belongsTo(SouvenirPlace, {
+  foreignKey: "id_souvenir_place",
+});
+CraftVariantGallery.belongsTo(DetailMarketplaceCraft, {
   foreignKey: "craft_variant_id",
   as: "craftVariant",
 });
 
-// Checkout and ItemCheckout associations
+DetailMarketplaceCraft.hasMany(ItemCheckout, {
+  foreignKey: "craft_variant_id",
+  as: "items",
+});
+DetailMarketplaceCraft.hasMany(ItemCheckout, {
+  foreignKey: "id_souvenir_place",
+});
+
+ItemCheckout.belongsTo(DetailMarketplaceCraft, {
+  foreignKey: "craft_variant_id",
+  as: "detailCraft",
+});
+ItemCheckout.belongsTo(DetailMarketplaceCraft, {
+  foreignKey: "id_souvenir_place",
+});
+
 Checkout.hasMany(ItemCheckout, {
   foreignKey: "checkout_id",
   as: "items",
 });
+
 ItemCheckout.belongsTo(Checkout, {
   foreignKey: "checkout_id",
   as: "checkout",
 });
 
-CraftVariant.hasMany(CraftVariantGallery, {
-  foreignKey: "id_craft_variant",
-  as: "craftGalleries",
-});
-CraftVariantGallery.belongsTo(CraftVariant, {
-  foreignKey: "id_craft_variant",
-  as: "variant",
-});
-
 ItemCheckout.hasMany(ItemCheckoutReviewGallery, {
-  foreignKey: "checkout_id",  
+  foreignKey: "checkout_id",
   as: "reviewGalleries",
 });
 ItemCheckout.hasMany(ItemCheckoutReviewGallery, {
-  foreignKey: "craft_id", 
-  as: "craftReviewGalleries",
+  foreignKey: "craft_variant_id",
+});
+ItemCheckout.hasMany(ItemCheckoutReviewGallery, {
+  foreignKey: "id_souvenir_place",
 });
 
-SouvenirPlace.hasMany(Craft, { foreignKey: "id_souvenir_place", as: "crafts" });
-Craft.belongsTo(SouvenirPlace, {
+ItemCheckoutReviewGallery.belongsTo(ItemCheckout, {
+  foreignKey: "checkout_id",
+  as: "GalleryItemCheckout",
+});
+ItemCheckoutReviewGallery.belongsTo(ItemCheckout, {
+  foreignKey: "craft_variant_id",
+  as: "GalleryCraftVariantItemCheckout",
+});
+ItemCheckoutReviewGallery.belongsTo(ItemCheckout, {
   foreignKey: "id_souvenir_place",
-  as: "souvenirPlace",
+  as: "GallerySouvenirPlaceItemCheckout",
 });
 
 Cart.belongsTo(User, { foreignKey: "user_id", as: "user" });
@@ -346,15 +396,29 @@ Cart.belongsTo(Package, { foreignKey: "package_id", as: "package" });
 User.hasMany(Cart, { foreignKey: "user_id", as: "userCart" });
 Package.hasMany(Cart, { foreignKey: "package_id", as: "packageCart" });
 
-CraftVariant.hasMany(CraftCart, { foreignKey: "craft_variant_id", as: "craftCarts" });
-CraftCart.belongsTo(CraftVariant, { foreignKey: "craft_variant_id", as: "cartCraft" });
-User.hasMany(CraftCart, { foreignKey: "user_id", as: "userCarts" });
+User.hasMany(ShippingAddress, { foreignKey: "customer_id", as: "addresses" });
+ShippingAddress.belongsTo(User, {
+  foreignKey: "customer_id",
+  as: "addressCustomer",
+});
 
-User.hasMany(ShippingAddress,{ foreignKey: "customer_id", as: "addresses" });
-ShippingAddress.belongsTo(User, { foreignKey: "customer_id", as: "addressCustomer" });
-CraftCart.belongsTo(User, { foreignKey: "user_id", as: "cartUser" });
-Shipping.hasMany(ItemCheckout,{ foreignKey: "shipping_id", as: "shippingItems" });
+User.belongsTo(SouvenirPlace, {
+  foreignKey: "id_souvenir_place",
+  as: "souvenirPlace",
+});
+
+SouvenirPlace.hasMany(User, {
+  foreignKey: "id_souvenir_place",
+  as: "owners",
+});
+
+Shipping.hasMany(ItemCheckout, {
+  foreignKey: "shipping_id",
+  as: "shippingItems",
+});
+
 ItemCheckout.belongsTo(Shipping, { foreignKey: "shipping_id", as: "shipping" });
+
 module.exports = {
   AuthGroup,
   AuthGroupUsers,
@@ -392,5 +456,6 @@ module.exports = {
   Checkout,
   ItemCheckout,
   ItemCheckoutReviewGallery,
-  Shipping
+  Shipping,
+  DetailMarketplaceCraft,
 };

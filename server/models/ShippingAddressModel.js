@@ -12,6 +12,7 @@ const ShippingAddress = sequelize.define(
     },
     customer_id: {
       type: DataTypes.STRING(5),
+      primaryKey: true,
       allowNull: true,
     },
     destination_id: {

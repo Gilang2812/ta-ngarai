@@ -9,11 +9,7 @@ const Craft = sequelize.define(
       type: DataTypes.STRING(5),
       primaryKey: true,
       allowNull: true,
-    },
-    id_souvenir_place: {
-      type: DataTypes.STRING(5),
-      allowNull: false,
-    },
+    }, 
     name: {
       type: DataTypes.STRING(50),
       allowNull: false,

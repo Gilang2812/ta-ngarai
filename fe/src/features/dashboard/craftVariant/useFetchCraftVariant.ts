@@ -1,18 +1,12 @@
 import { axiosInstance } from "@/lib/axios";
-import {
-
-  CraftVariantInclude,
-} from "@/type/schema/CraftSchema";
+import { FetchCraftVariant } from "@/type/schema/CraftSchema";
 import { useQuery } from "@tanstack/react-query";
 
-
-export const useFetchCraftVariant = <T>(option: CraftVariantInclude) => {
-  return useQuery<T[]>({
-    queryKey: ["craftVariant", option],
+export const useFetchCraftVariant = () => {
+  return useQuery<FetchCraftVariant[]>({
+    queryKey: ["craftVariant"],
     queryFn: async () => {
-      const { data } = await axiosInstance.get("/variants", {
-        params: { include: option.toString() },
-      });
+      const { data } = await axiosInstance.get("/variants");
       return data;
     },
   });

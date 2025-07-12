@@ -126,7 +126,8 @@ router.patch(
   async (req, res, next) => {
     try {
       const { id } = req.params;
-      const { status, shippings } = req.body;
+      const { status } = req.body;
+      const shippings = req.body.shippings || [];
       console.log("data checkout update", req.body);
       const paymentStatus = await getPaymentStatus(id);
       if (!status || status === 6) {

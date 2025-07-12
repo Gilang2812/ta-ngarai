@@ -1,23 +1,23 @@
 export const getCraftTransactionStatus = (status: number) => {
   switch (status) {
     case 0:
-      return "belum dipesan";
+      return "Not ordered yet";
     case 1:
-      return "menunggu pembayaran";
+      return "Awaiting payment";
     case 2:
-      return "sedang diproses";
+      return "Processing your order";
     case 3:
-      return "dikirim";
+      return "On the way";
     case 4:
-      return "done";
+      return "Completed";
     case 5:
-      return "Rated";
+      return "Thank you for your rating!";
     case 6:
-      return "dibatalkan";
+      return "Order cancelled";
     default:
-      return "status tidak diketahui";
+      return "Unknown status";
   }
-}
+};
 
 export const getCraftTransactionStatusColor = (status: number) => {
   switch (status) {
@@ -26,7 +26,7 @@ export const getCraftTransactionStatusColor = (status: number) => {
     case 1:
       return "bg-yellow-400";
     case 2:
-      return "bg-blue-500";
+      return "bg-primary";
     case 3:
       return "bg-green-500";
     case 4:
@@ -38,4 +38,4 @@ export const getCraftTransactionStatusColor = (status: number) => {
     default:
       return "bg-gray-500";
   }
-}
+};

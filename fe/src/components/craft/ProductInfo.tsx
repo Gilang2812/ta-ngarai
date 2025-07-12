@@ -122,7 +122,7 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({
         <div className="flex items-center space-x-3">
           <span className="text-sm text-gray-500">Bagikan:</span>
           <div className="flex space-x-2">
-            <button className="text-gray-500 hover:text-blue-600 transition-ease-in-out">
+            <button className="text-gray-500 hover:text-primary transition-ease-in-out">
               <FaFacebook />
             </button>
             <button className="text-gray-500 hover:text-white hover:bg-black transition-ease-in-out rounded-full">

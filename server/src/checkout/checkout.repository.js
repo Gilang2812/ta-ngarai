@@ -39,14 +39,20 @@ const editCheckout = async (key, body) => {
 };
 
 const findCheckout = async (key) => {
+  console.log("key", key);
   return Checkout.findOne({
     where: key,
     include: [
       {
         model: ItemCheckout,
         as: "items",
+        include: [
+          {
+            model: Shipping,
+            as: "shipping",
+          },
+        ],
       },
-
     ],
   });
 };
@@ -191,6 +197,8 @@ const userHistory = async (condition) => {
   });
   return checkout;
 };
+
+
 
 module.exports = {
   insertCheckout,

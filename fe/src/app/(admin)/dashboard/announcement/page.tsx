@@ -173,7 +173,7 @@ export default function Announcement() {
                       value={1}
                       checked={status === 1}
                       onChange={() => handleStatusChange(1, setFieldValue)}
-                      className="form-radio text-blue-500"
+                      className="form-radio text-primary"
                     />
                     <span>Active</span>
                   </label>

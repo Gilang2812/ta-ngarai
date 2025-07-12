@@ -77,7 +77,7 @@ export const ShippingMethodSelector = ({
             className={`border-2 rounded-lg flex items-center justify-between p-4 cursor-pointer transition-all duration-200 hover:shadow-md ${
               JSON.stringify(itemShipping?.[shippingIndex!]) ===
               JSON.stringify(shipping)
-                ? "border-blue-500 bg-blue-50 shadow-md"
+                ? "border-primary bg-blue-50 shadow-md"
                 : "border-gray-200 bg-white hover:border-gray-300"
             }`}
           >
@@ -90,7 +90,7 @@ export const ShippingMethodSelector = ({
               </div>
               {JSON.stringify(itemShipping?.[shippingIndex!]) ===
                 JSON.stringify(shipping) && (
-                <CheckCircle className="text-blue-600 w-6 h-6" />
+                <CheckCircle className="text-primary w-6 h-6" />
               )}
             </div>
 

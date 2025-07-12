@@ -1,13 +1,13 @@
 import { ErrorMessage, Field, useField } from "formik";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
 
-export const  FormInput = ({
+export const FormInput = ({
   label,
   icon: Icon,
   id,
   name,
   as,
-  readonly=false,
+  readonly = false,
   children,
   ...props
 }: React.ComponentProps<typeof Field>) => {
@@ -32,13 +32,13 @@ export const  FormInput = ({
         {as === "select" ? (
           <Field
             {...field}
-            className="font-normal w-full !border-none focus:!ring-0 focus:!border-none !p-0 bg-transparent text-black focus:!outline-none"
+            className="font-normal [&_option]:px-1 w-full !border-none focus:!ring-0 focus:!border-none !p-0 bg-transparent text-black focus:!outline-none"
             id={id || name}
-            as = {as}
+            as={as}
             readOnly={readonly}
             {...props}
           >
-            <option >select</option>
+            <option value="">select</option>
             {children}
           </Field>
         ) : (
@@ -53,7 +53,7 @@ export const  FormInput = ({
               {...props}
             />
             {meta.touched && meta.error && (
-              <HiOutlineExclamationCircle className="text-red-500 text-lg" />
+              <HiOutlineExclamationCircle className="text-red-600 text-lg" />
             )}
           </>
         )}
@@ -61,7 +61,7 @@ export const  FormInput = ({
 
       <ErrorMessage
         component="p"
-        className="text-red-500 font-bold text-sm"
+        className="text-red-600 font-bold text-sm"
         name={name}
       />
     </div>

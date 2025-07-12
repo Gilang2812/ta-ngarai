@@ -15,6 +15,11 @@ const ItemCheckout = sequelize.define(
       primaryKey: true,
       allowNull: false,
     },
+    id_souvenir_place: {
+      type: DataTypes.STRING(5),
+      primaryKey: true,
+      allowNull: false,
+    },
     shipping_id: {
       type: DataTypes.STRING(5),
       allowNull: true,

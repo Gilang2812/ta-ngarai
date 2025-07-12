@@ -1,6 +1,7 @@
 const { snap, core } = require("../../config/midtrans");
 const crypto = require("crypto");
 const { createPayment, getPaymentStatus } = require("./payment.service");
+const { takeCheckout } = require("../checkout/checkout.service");
 const router = require("express").Router();
 
 router.post("/create", async (req, res) => {
@@ -103,6 +104,13 @@ router.get("/:id", async (req, res, next) => {
   try {
     const { id } = req.params;
     const transactionStatus = await getPaymentStatus(id);
+    const checkout = await takeCheckout({ id });
+    const shippings = checkout.items.reduce((acc, item) => {
+      if (!acc.includes(item.shipping.shipping_id)) {
+        acc.push(item.shipping.shipping_id);
+      }
+      return acc;
+    }, []);
     let paymentStatus = "";
     if (transactionStatus.transaction_status === "capture") {
       if (transactionStatus.fraud_status === "challenge") {
@@ -126,11 +134,14 @@ router.get("/:id", async (req, res, next) => {
       order_id: transactionStatus.order_id,
       total_pembayaran: transactionStatus.gross_amount,
       waktu_transaksi: transactionStatus.transaction_time,
-      waktu_kadaluarsa: transactionStatus.expire_time,
+      expire: transactionStatus.expiry_time,
       status: paymentStatus,
       payment_type: transactionStatus.payment_type,
       virtual_account: transactionStatus.va_numbers,
-      transactionStatus
+      token: checkout.transaction_token,
+      shippings: shippings,
+      transactionStatus,
+      checkout,
     });
   } catch (error) {
     next(error);

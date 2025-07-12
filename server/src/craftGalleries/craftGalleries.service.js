@@ -3,7 +3,7 @@ const {
   findGallery,
   createGallery,
   updateGallery,
-  bulkInsertGalleries,
+  bulkCreateGalleries,
   deleteGallery,
 } = require("./craftGalleries.repository");
 
@@ -31,12 +31,12 @@ const updateGalleryById = async (id, body) => {
   return gallery;
 };
 const deleteGalleryByAtribut = async (condition) => {
-  const galerry =await deleteGallery(condition);
+  const galerry = await deleteGallery(condition);
   return galerry;
 };
 
 const insertGalleries = async (galleries) => {
-  const newGalleries = await bulkInsertGalleries(galleries);
+  const newGalleries = await bulkCreateGalleries(galleries);
   return newGalleries;
 };
 
@@ -46,4 +46,5 @@ module.exports = {
   insertGallery,
   updateGalleryById,
   deleteGalleryByAtribut,
+  insertGalleries,
 };

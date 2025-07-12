@@ -29,7 +29,7 @@ const deleteGallery = async (id) => {
   return deletedCraftGallery;
 };
 
-const bulkInsertGalleries = async (galleries) => {
+const bulkCreateGalleries = async (galleries) => {
   const newGalleries = await CraftVariantGallery.bulkCreate(galleries);
   return newGalleries;
 };
@@ -40,5 +40,5 @@ module.exports = {
   createGallery,
   updateGallery,
   deleteGallery,
-  bulkInsertGalleries,
+  bulkCreateGalleries,
 };

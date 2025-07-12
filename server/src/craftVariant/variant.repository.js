@@ -1,20 +1,33 @@
 const { Craft } = require("../../models/CraftModel");
-const CraftVariantGallery = require("../../models/CraftVariantGalleryModel");
 const CraftVariant = require("../../models/CraftVariantModel");
-const { buildIncludeModels } = require("./variant.utils");
 
 const findVariants = async (includes = []) => {
-  const include = buildIncludeModels(includes);
-  return CraftVariant.findAll({ include });
+  const variants = await CraftVariant.findAll({
+    include: [
+      {
+        model: Craft,
+        as: "craft",
+        attributes: ["id", "name"],
+      },
+    ],
+    attributes: ["id", "name", "id_craft"],
+  });
+  return variants;
 };
 
 const findVariantById = async (id, includes = []) => {
-  const include = buildIncludeModels(includes);
   return CraftVariant.findOne({
     where: {
       id: id,
     },
-    include,
+    attributes: ["id", "name", "id_craft"],
+    include: [
+      {
+        model: Craft,
+        as: "craft",
+        attributes: ["id", "name"],
+      },
+    ],
   });
 };
 

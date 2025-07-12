@@ -1,9 +1,9 @@
 import { formatPrice } from "@/lib/priceFormatter";
-import { CraftVariantWithGalleriesSchema } from "@/type/schema/CraftSchema";
+import { DetailCraftManagementResponse } from "@/type/schema/DetailCraftSchema";
 import React from "react";
 
 type Props = {
-  data: CraftVariantWithGalleriesSchema;
+  data: DetailCraftManagementResponse;
 };
 
 const DetailCraftInfo = ({ data }: Props) => {
@@ -14,10 +14,10 @@ const DetailCraftInfo = ({ data }: Props) => {
           {data.id}
         </div>
         <h2 className="text-4xl capitalize font-bold text-slate-900 mb-4 leading-tight">
-          {`${data.craft.name} ${data.name}`}
+          {`${data.variant.craft.name} ${data.variant.name}`}
         </h2>
         <div className="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold text-white bg-gradient-to-r from-primary to-secondary uppercase tracking-wide">
-          {data.craft.name}
+          {data.variant.craft.name}
         </div>
       </div>
       {/* Price Section */}

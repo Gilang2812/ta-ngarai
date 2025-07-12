@@ -1,19 +1,15 @@
 import { axiosInstance } from "@/lib/axios";
 import { ActionProps } from "@/type/props/ActionProps";
+import { CraftVariant } from "@/type/schema/CraftSchema";
 import { onError } from "@/utils/ErrorHandler";
 import { useMutation } from "@tanstack/react-query";
 
 export const useUpdateCraftVariant = ({ onSuccess }: ActionProps) => {
   return useMutation({
-    mutationFn: async (craftVariant: FormData) => {
+    mutationFn: async (craftVariant: CraftVariant) => {
       const { data } = await axiosInstance.patch(
-        `/variants/${craftVariant.get("id")}`,
-        craftVariant,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
+        `/variants/${craftVariant.id}`,
+        craftVariant
       );
       return data;
     },

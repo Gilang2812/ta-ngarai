@@ -23,6 +23,8 @@ const checkout = require("../src/checkout/checkout.controller");
 const paymentRouter = require("../src/payment/payment.controller");
 const addressRouter = require("../src/address/address.controller");
 const shippingRouter = require("../src/shipping/shipping.controller");
+const detailCraftRouter = require("../src/detailMarketplaceCraft/detailCraft.controller");
+
 router.use("/", authRouter);
 router.use("/announcement", announcementRouter);
 router.use("/carts", cartRouter);
@@ -46,6 +48,7 @@ router.use("/checkouts", checkout);
 router.use("/payment", paymentRouter);
 router.use("/addresses", addressRouter);
 router.use("/shipping", shippingRouter);
+router.use("/detail-crafts", detailCraftRouter);
 
 router.use("*", (req, res, next) => {
   res.status(404).json({ message: "Not Found" });

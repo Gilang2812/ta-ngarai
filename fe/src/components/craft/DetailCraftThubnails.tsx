@@ -1,4 +1,4 @@
-import { CraftVariantGallerySchema } from "@/features/dashboard/craftVariant/useFetchCraftVariant";
+
 import { CraftVariantGallery } from "@/type/schema/CraftSchema";
 import React from "react";
 import ImgCraft from "../common/ImgCraft";

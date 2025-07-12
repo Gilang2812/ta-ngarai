@@ -6,16 +6,9 @@ const {
 } = require("../../models/relation");
 
 const includeMap = {
-  craft: { model: Craft, as: "craft" },
-  craftGalleries: { model: CraftVariantGallery, as: "craftGalleries" },
-  checkout: { model: ItemCheckout, as: "itemCheckouts" },
-  reviewGalleries: {
-    model: ItemCheckout,
-    as: "itemCheckouts",
-    include: [{ model: ItemCheckoutReviewGallery, as: "reviewGalleries" }],
-  },
+  craft: { model: Craft, as: "craft" }, 
 };
-
+   
 const buildIncludeModels = (include = []) => {
   return include
     .filter((key) => key in includeMap)

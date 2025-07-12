@@ -1,61 +1,81 @@
-import { type CraftVariantWithGalleriesSchema } from "./../type/schema/CraftSchema";
-
 import { useCreateCraft } from "@/features/dashboard/craft/useCreateCraft";
 import { useDeleteCraft } from "@/features/dashboard/craft/useDeleteCraft";
 import { useFetchCraft } from "@/features/dashboard/craft/useFetchCraft";
 import { useUpdateCraft } from "@/features/dashboard/craft/useUpdateCraft";
 import { useCreateCraftVariant } from "@/features/dashboard/craftVariant/useCreateCraftVariant";
 import { useDeleteCraftVariant } from "@/features/dashboard/craftVariant/useDeleteCraftVariant";
-import { useFetchCraftVariant } from "@/features/dashboard/craftVariant/useFetchCraftVariant";
+import { useUpdateCraftVariant } from "@/features/dashboard/craftVariant/useUpdateCraftVariant";
+import { useCreateDetailCraft } from "@/features/detailCraft/useCreateDetailCraft";
+import { useFetchDetailCrafts } from "@/features/detailCraft/useFetchDetailCrafts";
 import { type CraftVariant, type Craft } from "@/type/schema/CraftSchema";
+import {
+  DetailCraftManagementResponse,
+  DetailCraftSchema,
+} from "@/type/schema/DetailCraftSchema";
 import { confirmDeleteAlert, cornerAlert } from "@/utils/AlertUtils";
 import { createFormData } from "@/utils/common/createFormData";
 import { useModal } from "@/utils/ModalUtils";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 export const useCraftManagement = () => {
-  const [isFormCraft, setFormType] = useState<boolean>(true);
+  const [formType, setFormType] = useState<"craft" | "variant" | "detail">(
+    "craft"
+  );
+
+  const [view, setView] = useState<"craft" | "variant">("craft");
   const [isEditCraft, setEditCraft] = useState<string | null>(null);
   const { isOpen: isOpenForm, toggleModal: toggleForm } = useModal();
   const { isOpen: isOpenList, toggleModal: toggleList } = useModal();
-  const [selectedVariant, setSelectedVariant] =
-    useState<CraftVariantWithGalleriesSchema | null>(null);
+
+  const [selectedDetailVariant, setSelectedDetailVariant] =
+    useState<DetailCraftManagementResponse | null>(null);
   const [selectedImg, setSelectedImg] = useState<string>(
-    selectedVariant?.craftGalleries?.[0].url ?? ""
+    selectedDetailVariant?.craftGalleries?.[0].url ?? ""
   );
+
   useEffect(() => {
-    if (selectedVariant?.craftGalleries?.[0]?.url) {
-      setSelectedImg(selectedVariant.craftGalleries[0].url);
+    if (selectedDetailVariant?.craftGalleries?.[0]?.url) {
+      setSelectedImg(selectedDetailVariant.craftGalleries[0].url);
     }
-  }, [selectedVariant]);
-  const getDefaultCraft = (): Craft => ({
-    id: "",
-    name: "",
-  });
+  }, [selectedDetailVariant]);
+
   const {
     data: crafts,
     isLoading: craftsLoading,
     refetch: refetchCrafts,
   } = useFetchCraft();
+
   const {
-    data: variants,
-    isLoading: variantsLoading,
-    refetch: refetchVariants,
-  } = useFetchCraftVariant<CraftVariantWithGalleriesSchema>([
+    data: detailCrafts,
+    isLoading: detailCraftsLoading,
+    refetch: refetchDetailCraft,
+  } = useFetchDetailCrafts<DetailCraftManagementResponse>([
     "craft",
     "craftGalleries",
   ]);
 
-  const getDefaultVariant = (): CraftVariant => ({
+  const getDefaultCraft = (): Craft => ({
     id: "",
-    id_craft: "",
     name: "",
+  });
+
+  const getDefaultDetailCraft = (): DetailCraftSchema & {
+    id_craft: string;
+  } => ({ 
+    id_craft: "",
+    craft_variant_id: "",
     price: "" as unknown as number,
     weight: "" as unknown as number,
     modal: "" as unknown as number,
     stock: "" as unknown as number,
     description: "",
     images: [],
+  });
+
+  const getDefaultVariant = (): CraftVariant => ({
+    id: "",
+    id_craft: "",
+    name: "",
   });
   const toggleEditCraft = useCallback((id: string | null) => {
     setEditCraft((prev) => {
@@ -69,7 +89,7 @@ export const useCraftManagement = () => {
   const { mutate: createCraft, isPending: craftPending } = useCreateCraft({
     onSuccess: () => {
       toggleForm();
-      cornerAlert("kerajinan berhasil ditambahkan");
+      cornerAlert("Craft added successfully");
       refetchCrafts();
     },
   });
@@ -77,49 +97,80 @@ export const useCraftManagement = () => {
     useCreateCraftVariant({
       onSuccess: () => {
         toggleForm();
-        cornerAlert("variasi kerajinan  berhasil ditambahkan");
-        refetchVariants();
+        cornerAlert("Craft variant added successfully");
+        refetchCrafts();
+      },
+    });
+
+  const { mutate: updateVariant, isPending: updateVariantPending } =
+    useUpdateCraftVariant({
+      onSuccess: () => {
+        cornerAlert("Craft variant updated successfully");
+        toggleEditCraft(null);
+        refetchCrafts();
       },
     });
   const { mutateAsync: deleteVariant } = useDeleteCraftVariant({
     onSuccess: () => {
-      cornerAlert("variasi kerajinan  berhasil dihapus");
-      refetchVariants();
+      cornerAlert("Craft variant deleted successfully");
     },
   });
   const { mutate: updateCraft, isPending: updateCraftPending } = useUpdateCraft(
     {
       onSuccess: async () => {
         toggleEditCraft(null);
-        cornerAlert(" kerajinan  berhasil di edit");
+        cornerAlert("Craft edited successfully");
 
         refetchCrafts();
-        refetchVariants();
       },
     }
   );
+
   const { mutateAsync: deleteCraft } = useDeleteCraft({
     onSuccess: () => {
-      cornerAlert("variasi kerajinan  berhasil dihapus");
+      cornerAlert("Craft deleted successfully");
       refetchCrafts();
-      refetchVariants();
     },
   });
 
-  const isLoading = craftsLoading || variantsLoading;
-  const isPending = craftPending || variantPending;
+  const { mutate: createDetailCraft, isPending: detailCraftPending } =
+    useCreateDetailCraft({
+      onSuccess: () => {
+        cornerAlert("Craft detail added successfully");
 
-  const initialValues: Craft | CraftVariant = useMemo(() => {
-    return isFormCraft ? getDefaultCraft() : getDefaultVariant();
-  }, [isFormCraft]);
+        refetchDetailCraft();
+        toggleForm();
+      },
+    });
+
+  const isLoading = craftsLoading || detailCraftsLoading;
+  const isPending = craftPending || variantPending || detailCraftPending;
+
+  const initialValues: Craft | CraftVariant | DetailCraftSchema =
+    useMemo(() => {
+      switch (formType) {
+        case "craft":
+          return getDefaultCraft();
+        case "variant":
+          return getDefaultVariant();
+        case "detail":
+          return getDefaultDetailCraft();
+      }
+    }, [formType]);
 
   const handleCraftForm = useCallback(() => {
     toggleForm();
-    setFormType(true);
+    setFormType("craft");
   }, [toggleForm]);
+
   const handleVariantForm = useCallback(() => {
     toggleForm();
-    setFormType(false);
+    setFormType("variant");
+  }, [toggleForm]);
+
+  const handleDetailCraftForm = useCallback(() => {
+    toggleForm();
+    setFormType("detail");
   }, [toggleForm]);
 
   const handleDeleteVariant = async (variantId: string, name: string) => {
@@ -138,34 +189,63 @@ export const useCraftManagement = () => {
   }) => {
     const currentCraft = crafts?.find((cr) => cr.id === values.id);
     if (currentCraft?.name === values.craft_name) {
+      toggleEditCraft(null);
+
       return cornerAlert("nothing change");
     }
     updateCraft({ id: values.id, name: values.craft_name });
   };
 
-  const handleSubmit = (values: CraftVariant | Craft) => {
-    const variantValues = values as CraftVariant;
+  const handleEditVariant = async (values: {
+    id: string;
+    id_craft: string;
+    variant_name: string;
+  }) => {
     console.log(values);
-    if (!isFormCraft) {
-      const formData = createFormData<CraftVariant>(variantValues);
-      console.log(formData);
-      return createVariant(formData);
+    const currentCraft = crafts?.find((v) =>
+      v.variants.find((variant) => variant.id === values.id)
+    );
+    const currentVariant = currentCraft?.variants.find(
+      (variant) => variant.id === values.id
+    );
+    console.log("currentVariant", currentVariant);
+    if (currentVariant?.name === values.variant_name) {
+      toggleEditCraft(null);
+      return cornerAlert("nothing change");
     }
-
-    return createCraft(values);
+    updateVariant({
+      id: values.id,
+      id_craft: values.id_craft,
+      name: values.variant_name,
+    });
   };
+
+  const handleSubmit = (values: CraftVariant | Craft | DetailCraftSchema) => {
+    console.log("handleSubmit", values);
+    const detailValues = values as DetailCraftSchema;
+    console.log(values);
+    if (formType === "variant") {
+      return createVariant(values as CraftVariant);
+    } else if (formType === "craft") {
+      return createCraft(values as Craft);
+    } else if (formType === "detail") {
+      const formData = createFormData<DetailCraftSchema>(detailValues);
+      return createDetailCraft(formData);
+    }
+  };
+
   return {
     isOpenForm,
     isOpenList,
     toggleList,
     handleVariantForm,
-    isFormCraft,
-    initialValues: initialValues as Craft | CraftVariant,
+    formType,
+    initialValues: initialValues as Craft | CraftVariant | DetailCraftSchema,
     handleSubmit,
     isPending,
     crafts,
+    detailCrafts,
     handleCraftForm,
-    variants,
     isLoading,
     handleDeleteVariant,
     handleEditCraft,
@@ -173,9 +253,15 @@ export const useCraftManagement = () => {
     isEditCraft,
     toggleEditCraft,
     handleDeleteCraft,
-    selectedVariant,
-    setSelectedVariant,
+    toggleForm,
+    selectedDetailVariant,
+    setSelectedDetailVariant,
     selectedImg,
     setSelectedImg,
+    handleDetailCraftForm,
+    view,
+    setView,
+    handleEditVariant,
+    updateVariantPending,
   };
 };

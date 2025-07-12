@@ -26,11 +26,6 @@ class CustomError extends Error {
             statusCode: this.statusCode
         };
     }
-}
-
-module.exports = { CustomBulkError };
-
-  
-  
+}  
   module.exports = {CustomError,CustomBulkError};
   

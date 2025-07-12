@@ -10,7 +10,11 @@ const CraftVariantGallery = sequelize.define(
       primaryKey: true,
       allowNull: true,
     },
-    id_craft_variant: {
+    craft_variant_id: {
+      type: DataTypes.STRING(5),
+      allowNull: true,
+    },
+    id_souvenir_place: {
       type: DataTypes.STRING(5),
       allowNull: true,
     },
