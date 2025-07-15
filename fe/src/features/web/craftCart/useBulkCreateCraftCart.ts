@@ -11,9 +11,9 @@ export const useBulkCreateCraftCart = ({ onSuccess }: ActionProps) => {
       const { data } = await axiosInstance.post("/craft-carts/bulk", body);
       return data;
     },
-    onSuccess: async () => {
+    onSuccess: async (data) => {
       await queryClient.refetchQueries({ queryKey: ["craftCart"] });
-      onSuccess();
+      onSuccess(data);
     },
     onError,
   });

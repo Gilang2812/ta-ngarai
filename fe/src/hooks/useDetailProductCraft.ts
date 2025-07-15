@@ -1,16 +1,23 @@
-import { useGetCraft } from "@/features/dashboard/craft/useGetCraft";
 import { CraftCartForm } from "@/type/schema/CraftCartSchema";
-import { VariantBelongCraftSchema } from "@/type/schema/CraftSchema";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import { useOrderCraft } from "./useOrderCraft";
+import { useFetchOrderDetailCraft } from "@/features/detailCraft/useFetchOrderDetailCraft";
+import { DetailCraftOrderResponse } from "@/type/schema/DetailCraftSchema";
 
-export const useDetailProductCraft = (id: string, idVariant: string) => {
+export const useDetailProductCraft = (id: string[], idVariant: string) => {
   const searchParms = useSearchParams();
   const router = useRouter();
   const pathName = usePathname();
 
-  const { handleSubmit, actionRef, isCraftPending, isChecking, handleBuy, handleCart } = useOrderCraft();
+  const {
+    handleSubmit,
+    actionRef,
+    isCraftPending,
+    isChecking,
+    handleBuy,
+    handleCart,
+  } = useOrderCraft();
   const createQueryString = useCallback(
     (name: string, value: string) => {
       const params = new URLSearchParams(searchParms.toString());
@@ -22,27 +29,29 @@ export const useDetailProductCraft = (id: string, idVariant: string) => {
 
   const initialValues: CraftCartForm = {
     craft_variant_id: idVariant,
+    id_souvenir_place: id[1],
     jumlah: 1,
   };
 
-  const { data: craft, isLoading } = useGetCraft(id);
+  const { data: crafts, isLoading } = useFetchOrderDetailCraft(id);
 
-  const initalVariant =
-    craft?.variants.find(
-      (vr) => vr.id.toLowerCase() === idVariant.toLowerCase()
-    ) || craft?.variants?.[0];
+  const initalDetailCraft =
+    crafts?.find(
+      (vr) => vr.craft_variant_id.toLowerCase() === idVariant.toLowerCase()
+    ) || crafts?.[0];
 
-  const [selectedVariant, setSelectedVariant] = useState<
-    VariantBelongCraftSchema | undefined
-  >(initalVariant);
+  const [selectedDetailCraft, setSelectedDetailCraft] = useState<
+    DetailCraftOrderResponse | undefined
+  >(initalDetailCraft);
 
-  const mainImage = selectedVariant?.craftGalleries?.[0].url || "";
+  const mainImage = selectedDetailCraft?.craftGalleries?.[0]?.url || "";
   const [selectedImage, setSelectedImage] = useState<string>(mainImage);
 
   useEffect(() => {
-    if (initalVariant && !selectedVariant) setSelectedVariant(initalVariant);
+    if (initalDetailCraft && !selectedDetailCraft)
+      setSelectedDetailCraft(initalDetailCraft);
     if (mainImage) setSelectedImage(mainImage);
-  }, [initalVariant, mainImage, selectedVariant]);
+  }, [initalDetailCraft, mainImage, selectedDetailCraft]);
 
   const [activeIndex, setActiveIndex] = useState(0);
 
@@ -52,20 +61,22 @@ export const useDetailProductCraft = (id: string, idVariant: string) => {
   };
 
   const handlePrevImageButton = () => {
-    const maxLength = (selectedVariant?.craftGalleries?.length ?? 1) - 1;
+    const maxLength = (selectedDetailCraft?.craftGalleries?.length ?? 1) - 1;
     const imageIndex = activeIndex === 0 ? maxLength : activeIndex - 1;
     setActiveIndex((prev) => {
       if (prev === 0) {
-        return (selectedVariant?.craftGalleries?.length ?? 1) - 1;
+        return (selectedDetailCraft?.craftGalleries?.length ?? 1) - 1;
       }
       return Math.max(0, prev - 1);
     });
 
-    setSelectedImage(selectedVariant?.craftGalleries?.[imageIndex]?.url || "");
+    setSelectedImage(
+      selectedDetailCraft?.craftGalleries?.[imageIndex]?.url || ""
+    );
   };
 
   const handleNextImageButton = () => {
-    const maxLength = (selectedVariant?.craftGalleries?.length ?? 1) - 1;
+    const maxLength = (selectedDetailCraft?.craftGalleries?.length ?? 1) - 1;
     const imageIndex = activeIndex === maxLength ? 0 : activeIndex + 1;
 
     setActiveIndex((prev) => {
@@ -75,21 +86,24 @@ export const useDetailProductCraft = (id: string, idVariant: string) => {
       return Math.min(maxLength, prev + 1);
     });
 
-    setSelectedImage(selectedVariant?.craftGalleries?.[imageIndex]?.url || "");
+    setSelectedImage(
+      selectedDetailCraft?.craftGalleries?.[imageIndex]?.url || ""
+    );
   };
 
-  const handleSelectedVariant = (variant: VariantBelongCraftSchema) => {
-    setSelectedVariant(variant);
-    router.push(`${pathName}?${createQueryString("idvr", variant.id)}`);
+  const handleSelectedDetailCraft = (detailCraft: DetailCraftOrderResponse) => {
+    setSelectedDetailCraft(detailCraft);
+    router.push(
+      `${pathName}?${createQueryString("idvr", detailCraft.craft_variant_id)}`
+    );
   };
 
-  
   return {
-    craft,
+    crafts,
     isLoading,
-    selectedVariant,
+    selectedDetailCraft,
     selectedImage,
-    setSelectedVariant: handleSelectedVariant,
+    setSelectedDetailCraft: handleSelectedDetailCraft,
     activeIndex,
     handleThumbnailClick,
     handleNextImageButton,

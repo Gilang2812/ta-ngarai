@@ -1,53 +1,57 @@
 import { useFetchCraft } from "@/features/dashboard/craft/useFetchCraft";
-import { useGetVariant } from "@/features/dashboard/craftVariant/useGetVariant";
-import { useUpdateCraftVariant } from "@/features/dashboard/craftVariant/useUpdateCraftVariant";
-import {
-  CraftVariant,
-  CraftVariantWithGalleriesSchema,
-} from "@/type/schema/CraftSchema";
 import { cornerAlert } from "@/utils/AlertUtils";
 import { createFormData } from "@/utils/common/createFormData";
 import { useMemo } from "react";
 import isEqual from "lodash/isEqual";
 import { isSameImages } from "@/utils/common/isSamgeImages";
 import { formatImageUrls } from "@/lib/imgUrlFormatter";
+import { useUpdateDetailCraft } from "@/features/detailCraft/useUpdateDetailCraft";
+import { useGetDetailCraft } from "@/features/detailCraft/useGetDetailCraft";
+import {
+  DetailCraftManagementResponse,
+  DetailCraftSchema,
+} from "@/type/schema/DetailCraftSchema";
 
 export const useManageUpdateCraft = (id: string) => {
   const {
-    data: variant,
-    isLoading: variantLoading,
+    data: detailCraft,
+    isLoading: detailCraftLoading,
     refetch: refetchVariant,
-  } = useGetVariant<CraftVariantWithGalleriesSchema>(id, [
-    "craft",
-    "craftGalleries",
-  ]);
+  } = useGetDetailCraft<DetailCraftManagementResponse>({
+    craft_variant_id: id,
+    include: ["craft", "craftGalleries"],
+  });
   const { data: crafts, isLoading: craftLoading } = useFetchCraft();
-  const { mutate: updateVariant, isPending } = useUpdateCraftVariant({
+  const { mutate: updateDetailCraft, isPending } = useUpdateDetailCraft({
     onSuccess: () => {
       cornerAlert("variasi kerajinan berhasil diperbarui");
       refetchVariant();
     },
   });
   const images = useMemo(() => {
-    if (!variant?.craftGalleries?.length) return [];
-    const urls = variant.craftGalleries.map((image) => image.url);
+    if (!detailCraft?.craftGalleries?.length) return [];
+    const urls = detailCraft.craftGalleries.map((image) => image.url);
     return formatImageUrls(urls);
-  }, [variant]);
+  }, [detailCraft]);
 
   const initialValues = {
-    id: variant?.id ?? "",
-    name: variant?.name ?? "",
-    id_craft: variant?.id_craft ?? "",
-    price: variant?.price ?? 0,
-    weight: variant?.weight ?? 0,
-    modal: variant?.modal ?? 0,
-    stock: variant?.stock ?? 0,
-    description: variant?.description ?? "",
+    craft_variant_id: detailCraft?.craft_variant_id ?? "",
+    id_souvenir_place: detailCraft?.id_souvenir_place ?? "",
+    name: `${detailCraft?.variant?.craft?.name ?? ""} ${
+      detailCraft?.variant?.name ?? ""
+    }`,
+    price: detailCraft?.price ?? 0,
+    weight: detailCraft?.weight ?? 0,
+    modal: detailCraft?.modal ?? 0,
+    stock: detailCraft?.stock ?? 0,
+    description: detailCraft?.description ?? "",
     images: images ?? [],
     isNewImage: 0,
   };
 
-  const handleUpdateVariant = (values: CraftVariant) => {
+  const handleUpdateDetailCraft = (
+    values: DetailCraftSchema & { isNewImage: number }
+  ) => {
     const { images: currentImages, ...restValues } = values;
     const { images: initialImages, ...restInitialValues } = initialValues;
 
@@ -64,18 +68,18 @@ export const useManageUpdateCraft = (id: string) => {
       if (!isSameImageList) {
         formData.set("isNewImage", "1");
       }
-      updateVariant(formData);
+      updateDetailCraft(formData);
     } else {
       cornerAlert("Tidak ada perubahan yang dilakukan");
     }
   };
 
   return {
-    isLoading: variantLoading || craftLoading,
+    isLoading: detailCraftLoading || craftLoading,
     crafts,
     initialValues,
-    variant,
-    handleUpdateVariant,
+    detailCraft,
+    handleUpdateDetailCraft,
     isPending,
   };
 };

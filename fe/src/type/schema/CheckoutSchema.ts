@@ -1,4 +1,5 @@
 import * as yup from "yup";
+import {   DetailCraftResponseSouvenirPlace } from "./DetailCraftSchema";
 
 export const addressFormSchema = yup.object({
   destination_id: yup
@@ -171,13 +172,14 @@ export interface AddressCustomer {
 export interface CheckoutItem {
   checkout_id: string;
   craft_variant_id: string;
+  id_souvenir_place: string;
+  shipping_id: string | null;
   jumlah: number;
   note: string | null;
-  shipping_id: string | null;
   review_rating: number | null;
   review_text: string | null;
   seller_response: string | null;
-  craftVariant: CraftVariant;
+  detailCraft: DetailCraftResponseSouvenirPlace;
 }
 
 export interface CraftVariant {
@@ -204,7 +206,7 @@ export interface Craft {
 
 export interface CraftGallery {
   id: string;
-  id_craft_variant: string;
+  craft_variant_id: string;
   url: string;
   deleted_at: string | null;
 }
@@ -279,4 +281,10 @@ export type OrderDetail = {
   subtotal: number;
   note: string | null;
   shipping_id: string | null;
+};
+
+export type CraftCartCheckout = {
+  id: string;
+  address_id: string;
+  customer_id: number;
 };

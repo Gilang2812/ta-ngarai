@@ -13,7 +13,6 @@ export default async function EditVariantPage({
         <h1>Edit Craft</h1>
       </header>
       <EditCraftForm id={id} />
-      
     </SingleContentWrapper>
   );
 }

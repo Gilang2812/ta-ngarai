@@ -6,18 +6,29 @@ import { Form, Formik, useFormikContext } from "formik";
 import {
   CraftCartForm,
   CraftCartSchema,
+  UpdateCraftCartForm,
   type CartItemProps,
 } from "@/type/schema/CraftCartSchema";
 import ImgCraft from "../common/ImgCraft";
 import { CheckBoxInput } from "../common/CheckBoxInput";
-import { hideLoadingAlert, showLoadingAlert } from "@/utils/AlertUtils";
 
 type Props = {
   item: CartItemProps;
-  updateCart: (values: CraftCartForm) => void;
+  updateCart: (values: UpdateCraftCartForm) => void;
   isUpdating?: boolean;
   setDirty: Dispatch<SetStateAction<boolean>>;
-  handleDeleteCart: (idVariant: string, name: string) => void;
+  handleDeleteCart: (
+    {
+      craft_variant_id,
+      id_souvenir_place,
+      checkout_id,
+    }: {
+      craft_variant_id: string;
+      id_souvenir_place: string;
+      checkout_id: string;
+    },
+    name: string
+  ) => void;
   handleCheckedCraft: (craft: CraftCartSchema) => void;
   selectedCraft: CraftCartForm[];
 };
@@ -72,8 +83,7 @@ export const CartItemComponent = ({
     return null;
   };
 
-  
-  const handleSubmit = (values: CraftCartForm) => {
+  const handleSubmit = (values: UpdateCraftCartForm) => {
     updateCart(values);
   };
 
@@ -84,42 +94,51 @@ export const CartItemComponent = ({
           name={`cartItems.${item.craft_variant_id}`}
           onChange={() =>
             handleCheckedCraft({
-              craft_variant_id: item.craft_variant_id,
-              jumlah: item.jumlah,
-              price: item.cartCraft.price,
+              craft_variant_id: item?.craft_variant_id,
+              id_souvenir_place: item?.id_souvenir_place,
+              checkout_id: item?.checkout_id,
+              jumlah: item?.jumlah,
+              price: item?.detailCraft?.price,
             })
           }
           checked={selectedCraft.some(
             (itemChecked) =>
-              itemChecked.craft_variant_id.toLowerCase() ===
-              item.craft_variant_id.toLowerCase()
+              itemChecked?.craft_variant_id?.toLowerCase() ===
+                item?.craft_variant_id?.toLowerCase() &&
+              itemChecked?.id_souvenir_place?.toLowerCase() ===
+                item?.id_souvenir_place?.toLowerCase() &&
+              itemChecked?.checkout_id?.toLowerCase() ===
+                item?.checkout_id?.toLowerCase()
           )}
         />
       </td>
       <td className="flex items-center">
         <div className="flex-shrink-0 w-16 h-16 mr-4 relative overflow-hidden rounded">
           <ImgCraft
-            src={item.cartCraft.craftGalleries?.[0].url}
-            alt={item.cartCraft.name}
+            src={item?.detailCraft?.craftGalleries?.[0]?.url}
+            alt={item?.detailCraft?.variant?.name}
             fill
             className="object-cover"
           />
         </div>
         <p className="font-bold align-middle text-gray-800">
-          {item.cartCraft.craft.name} {item.cartCraft.name}
+          {item?.detailCraft?.variant?.craft?.name}{" "}
+          {item?.detailCraft?.variant?.name}
         </p>
       </td>
 
       <td className="mx-4">
-        <p className="text-gray-600">{formatPrice(item.cartCraft.price)}</p>
+        <p className="text-gray-600">{formatPrice(item?.detailCraft?.price)}</p>
       </td>
 
       <td className="">
         <Formik
           initialValues={{
-            craft_variant_id: item.craft_variant_id,
-            jumlah: item.jumlah,
-            price: item.cartCraft.price,
+            craft_variant_id: item?.craft_variant_id,
+            checkout_id: item?.checkout_id,
+            id_souvenir_place: item?.id_souvenir_place,
+            jumlah: item?.jumlah,
+            price: item?.detailCraft?.price,
           }}
           onSubmit={handleSubmit}
         >
@@ -131,15 +150,19 @@ export const CartItemComponent = ({
       </td>
       <td className="w-24 text-center">
         <span className="font-medium text-nowrap">
-          {formatPrice(item.cartCraft.price * item.jumlah)}
+          {formatPrice(item?.detailCraft?.price * item?.jumlah)}
         </span>
       </td>
       <td>
         <button
           onClick={() =>
             handleDeleteCart(
-              item.craft_variant_id,
-              `${item.cartCraft.craft.name} ${item.cartCraft.name}`
+              {
+                craft_variant_id: item?.craft_variant_id,
+                id_souvenir_place: item?.id_souvenir_place,
+                checkout_id: item?.checkout_id,
+              },
+              `${item?.detailCraft?.variant?.craft?.name} ${item?.detailCraft?.variant?.name}`
             )
           }
           className="p-1 text-gray-400 hover:text-gray-600"

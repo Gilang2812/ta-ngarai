@@ -34,7 +34,7 @@ const HistoryList: FC<Props> = ({
     >
       <div className="flex justify-between items-center mb-4">
         <h4 className="font-semibold ">
-          {history.shippingItems[0].craftVariant.craft.souvenirPlace.name}
+          {history?.shippingItems?.[0]?.craftVariant?.craft?.souvenirPlace?.name}
         </h4>
         <span
           className={`${getCraftTransactionStatusColor(
@@ -51,7 +51,7 @@ const HistoryList: FC<Props> = ({
             width={50}
             className="aspect-square overflow-hidden rounded-lg"
             height={50}
-            src={history.shippingItems[0].craftVariant.craftGalleries[0].url}
+            src={history?.shippingItems?.[0]?.craftVariant?.craftGalleries?.[0]?.url}
           />
         </div>
         <div className="flex-1">
@@ -59,7 +59,7 @@ const HistoryList: FC<Props> = ({
             <div>
               <p className="">Tanggal</p>
               <p className="font-medium ">
-                {dayjs(history.shippingItems[0].checkout.checkout_date).format(
+                {dayjs(history?.shippingItems?.[0]?.checkout?.checkout_date).format(
                   "DD MMMM YYYY"
                 )}
               </p>
@@ -68,7 +68,7 @@ const HistoryList: FC<Props> = ({
               <div className="">Total</div>
               <p className="font-extrabold text-xl text-secondary">
                 {formatPrice(
-                  history.shippingItems[0].checkout.total_price ?? 0
+                  history?.shippingItems?.[0]?.checkout?.total_price ?? 0
                 )}
               </p>
             </div>
@@ -78,12 +78,12 @@ const HistoryList: FC<Props> = ({
                 {history.shippingItems
                   .map(
                     (item) =>
-                      `${item.craftVariant.craft.name} ${item.craftVariant.name}`
+                      `${item?.craftVariant?.craft?.name} ${item?.craftVariant?.name}`
                   )
                   .join("+")}
               </p>
               <p className="text-base  ">
-                {`x${history.shippingItems.reduce(
+                {`x${history?.shippingItems?.reduce(
                   (acc, item) => acc + item.jumlah,
                   0
                 )} items`}

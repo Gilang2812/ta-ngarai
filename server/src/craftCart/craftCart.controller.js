@@ -10,7 +10,9 @@ const router = require("express").Router();
 
 router.get("/", async (req, res, next) => {
   try {
-    const craftCarts = await getCraftCarts();
+    const craftCarts = await getCraftCarts({
+      customer_id: 1,
+    });
     res.status(200).json(craftCarts);
   } catch (error) {
     next(error);
@@ -19,7 +21,7 @@ router.get("/", async (req, res, next) => {
 router.get("/:craft_variant_id", async (req, res, next) => {
   try {
     const craftCart = await getCraftCart({
-      user_id: 1, // Assuming user_id is 1 for testing purposes
+      customer_id: 1, // Assuming user_id is 1 for testing purposes
       craft_variant_id: req.params.craft_variant_id,
     });
     res.status(200).json(craftCart);
@@ -31,10 +33,11 @@ router.get("/:craft_variant_id", async (req, res, next) => {
 router.post("/", async (req, res, next) => {
   try {
     console.log("Request body:", req.body);
-    const { craft_variant_id, jumlah } = req.body;
+    const { craft_variant_id, id_souvenir_place, jumlah } = req.body;
     const craftCart = await createCraftCart({
-      user_id: 1,
+      customer_id: 1,
       craft_variant_id,
+      id_souvenir_place,
       jumlah,
     });
     res.status(201).json(craftCart);
@@ -46,12 +49,13 @@ router.post("/", async (req, res, next) => {
 router.post("/bulk", async (req, res, next) => {
   try {
     const { items } = req.body;
-    const user_id = 1; // Assuming user_id is 1 for testing purposes
+    const customer_id = 1;
 
     const craftCarts = await Promise.all(
       items.map((item) =>
         createCraftCart({
-          user_id,
+          checkout_id: 1,
+          id_souvenir_place: item.id_souvenir_place,
           craft_variant_id: item.craft_variant_id,
           jumlah: item.jumlah,
         })
@@ -64,30 +68,35 @@ router.post("/bulk", async (req, res, next) => {
   }
 });
 
-router.patch("/:craft_variant_id", async (req, res, next) => {
-  try {
-    const { jumlah } = req.body;
-    const { craft_variant_id } = req.params;
-    const craftCart = await updateCraftCart(
-      {
-        user_id: 1, // Assuming user_id is 1 for testing purposes
-        craft_variant_id,
-      },
-      {
-        jumlah,
-      }
-    );
-    res.status(200).json(craftCart);
-  } catch (error) {
-    next(error);
+router.patch(
+  "/:craft_variant_id/:id_souvenir_place/:checkout_id",
+  async (req, res, next) => {
+    try {
+      const { jumlah } = req.body;
+      const { craft_variant_id, id_souvenir_place, checkout_id } = req.params;
+      const craftCart = await updateCraftCart(
+        {
+          checkout_id,
+          craft_variant_id,
+          id_souvenir_place,
+        },
+        {
+          jumlah,
+        }
+      );
+      res.status(200).json(craftCart);
+    } catch (error) {
+      next(error);
+    }
   }
-});
+);
 
-router.delete("/:craft_variant_id", async (req, res, next) => {
+router.delete("/:craft_variant_id/:id_souvenir_place/:checkout_id", async (req, res, next) => {
   try {
-    const craftCart = await deleteCraftCart({
-      user_id: 1, // Assuming user_id is 1 for testing purposes
+    const craftCart = await deleteCraftCart({ 
       craft_variant_id: req.params.craft_variant_id,
+      id_souvenir_place: req.params.id_souvenir_place,
+      checkout_id: req.params.checkout_id,
     });
     res.status(200).json(craftCart);
   } catch (error) {

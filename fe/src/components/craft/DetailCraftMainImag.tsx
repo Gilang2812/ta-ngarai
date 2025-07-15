@@ -13,7 +13,7 @@ const DetailCraftMainImage = ({ imgCount, selectedImg }: Props) => {
             alt="main image"
             key={selectedImg}
             src={`${baseUrl}/${selectedImg}`}
-            className="w-full shadow"
+            className="w-full aspect-square shadow"
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}

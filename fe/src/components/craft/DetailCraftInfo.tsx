@@ -11,7 +11,7 @@ const DetailCraftInfo = ({ data }: Props) => {
     <article className="space-y-8">
       <div>
         <div className="text-sm font-semibold text-slate-500 mb-2 tracking-wider uppercase">
-          {data.id}
+          {data.craft_variant_id}
         </div>
         <h2 className="text-4xl capitalize font-bold text-slate-900 mb-4 leading-tight">
           {`${data.variant.craft.name} ${data.variant.name}`}

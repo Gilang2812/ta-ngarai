@@ -25,10 +25,13 @@ export const useOrderCraft = () => {
     },
   });
   const handleSubmit = async (values: CraftCartForm) => {
+    console.log(values)
+    const { id_souvenir_place, craft_variant_id, jumlah } = values;
     if (actionRef.current === "cart") {
       await createCraftCart({
-        jumlah: values.jumlah,
-        craft_variant_id: searchParms.get("idvr") || values.craft_variant_id,
+        jumlah,
+        id_souvenir_place,
+        craft_variant_id: searchParms.get("idvr") || craft_variant_id,
       });
     } else if (actionRef.current === "buy") {
       Swal.fire({
@@ -41,9 +44,9 @@ export const useOrderCraft = () => {
       await checkout({
         items: [
           {
-            jumlah: values.jumlah,
-            craft_variant_id:
-              searchParms.get("idvr") || values.craft_variant_id,
+            jumlah,
+            craft_variant_id: searchParms.get("idvr") || craft_variant_id,
+            id_souvenir_place,
           },
         ],
       });

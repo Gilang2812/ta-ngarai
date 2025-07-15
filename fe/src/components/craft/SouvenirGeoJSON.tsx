@@ -1,7 +1,6 @@
 import React, { useEffect, useMemo } from "react";
 import { InfoWindow, useGoogleMap } from "@react-google-maps/api";
 import { SouvenirPlaceSchema } from "@/type/schema/PackageSchema";
-import { CraftWithVariantsGalleries } from "@/type/schema/CraftSchema";
 import { getCentroid } from "@/utils/common/getCentroid";
 import { MapMarker } from "../map";
 import { getIconUrl } from "@/utils/map/getIconUrl";
@@ -13,9 +12,10 @@ import Link from "next/link";
 import { FeatureCollection } from "geojson";
 import ImgCraft from "../common/ImgCraft";
 import { formatPrice } from "@/lib/priceFormatter";
+import { DetailCraftManagementResponse } from "@/type/schema/DetailCraftSchema";
 
 type Props = {
-  data: (SouvenirPlaceSchema & { crafts: CraftWithVariantsGalleries })[];
+  data: (SouvenirPlaceSchema & { crafts: DetailCraftManagementResponse[] })[];
 };
 
 const SouvenirGeoJSON = ({ data }: Props) => {
@@ -73,34 +73,34 @@ const SouvenirGeoJSON = ({ data }: Props) => {
                   <p>{sp.contact_person}</p>
                 </section>
                 <section className="text-sm max-w-[300px] overflow-y-hidden grid grid-flow-col gap-2 ">
-                  {sp.crafts.map((cr) =>
-                    cr.variants.map((vr) => (
-                      <article
-                        key={vr.id}
-                        className="min-w-fit flex flex-col items-center border rounded shadow p-2 capitalize gap-2"
-                      >
-                        <ImgCraft
-                          width={50}
-                          height={50}
-                          className=" w-10 aspect-square rounded"
-                          alt="craft-items"
-                          src={vr.craftGalleries[0].url}
-                        />
+                  {sp.crafts.map((cr, index) => (
+                    <article
+                      key={index}
+                      className="min-w-fit flex flex-col items-center border rounded shadow p-2 capitalize gap-2"
+                    >
+                      <ImgCraft
+                        width={50}
+                        height={50}
+                        className=" w-10 aspect-square rounded"
+                        alt="craft-items"
+                        src={cr?.craftGalleries?.[0]?.url}
+                      />
 
-                        <h4 className="font-bold text-wrap ">
-                          {`${cr.name} ${vr.name}`}
-                        </h4>
-                        <p className="text-sm text-orange-500">
-                          {formatPrice(vr.price)}
-                        </p>
-                        <Button>
-                          <Link href={`./craft/${cr.id}?idvr=${vr.id}`}>
-                            Order Now
-                          </Link>
-                        </Button>
-                      </article>
-                    ))
-                  )}
+                      <h4 className="font-bold text-wrap ">
+                        {`${cr?.variant?.craft?.name} ${cr?.variant?.name}`}
+                      </h4>
+                      <p className="text-sm text-orange-500">
+                        {formatPrice(cr.price)}
+                      </p>
+                      <Button>
+                        <Link
+                          href={`/web/craft/${cr?.variant?.id_craft}/${cr?.id_souvenir_place}?idvr=${cr?.craft_variant_id}`}
+                        >
+                          Order Now
+                        </Link>
+                      </Button>
+                    </article>
+                  ))}
                 </section>
                 <section className="flex items-center justify-center gap-2">
                   <DirectionToKotoGadangButton

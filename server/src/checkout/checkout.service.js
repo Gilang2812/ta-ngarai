@@ -1,5 +1,6 @@
+const { Op } = require("sequelize");
 const { CustomError } = require("../../utils/CustomError");
-const { getOneAddress } = require("../address/address.service");
+const { getOneAddress, getUserAddress } = require("../address/address.service");
 const {
   insertCheckout,
   destroyCheckout,
@@ -64,42 +65,62 @@ const updateItemsCheckout = async (key, body) => {
   return checkout;
 };
 
-const checkoutOrder = async (body) => {
-  let address = await getOneAddress({ is_primary: 1, customer_id: 1 }); // Assuming customer_id is 1 for testing purposes
-  if (!address) {
-    address = await getOneAddress({ is_primary: 0, customer_id: 1 }); // Assuming customer_id is 1 for testing purposes
-    if (!address) {
-      return res
-        .status(404)
-        .json({ message: "user does not set the address yet" });
-    }
-  }
-
-  let existingCheckout = await getCheckout({ checkout_date: null });
+const getIncompleteCheckout = async ({
+  customer_id,
+  checkout_date = null,
+  isCheckout = false,
+}) => {
+  let existingCheckout = await getCheckout({
+    customer_id,
+    checkout_date: isCheckout ? { [Op.not]: null } : checkout_date,
+    transaction_token: null,
+  });
 
   if (!existingCheckout) {
-    existingCheckout = await getCheckout({ payment_date: null });
-    if (existingCheckout && existingCheckout.checkout_date) {
-      const oneDay = 24 * 60 * 60 * 1000;
-      const currentTime = new Date();
-      const checkoutTime = new Date(existingCheckout.checkout_date);
-      if (currentTime - checkoutTime > oneDay) {
-        existingCheckout.status = 3;
-        await existingCheckout.save();
-      }
-    }
-    existingCheckout = await createCheckout({ address_id: address.id });
+    console.log("dont exist");
+    const address = await getUserAddress({ customer_id });
+    existingCheckout = await createCheckout({
+      address_id: address?.address_id ?? null,
+      customer_id,
+      checkout_date: isCheckout ? new Date() : null,
+    });
   }
+  return existingCheckout;
+};
 
+const checkoutOrder = async (body, customer_id) => {
+  let existingCheckout = await getIncompleteCheckout({
+    customer_id,
+    isCheckout: true,
+  });
+  console.log("existingCheckout", existingCheckout);
   await deleteItemsCheckout({ checkout_id: existingCheckout.id });
-
-  const newItems = await createItemCheckouts(
-    body.map((item) => ({
-      craft_variant_id: item.craft_variant_id,
-      jumlah: item.jumlah,
-      checkout_id: existingCheckout.id,
-    }))
+  const newItems = await Promise.all(
+    body.map(async (item) => {
+      if (item.checkout_id) {
+        const updated = await updateItemsCheckout(
+          {
+            checkout_id: item.checkout_id,
+            id_souvenir_place: item.id_souvenir_place,
+            craft_variant_id: item.craft_variant_id,
+          },
+          {
+            checkout_id: existingCheckout.id,
+          }
+        );
+        return updated;
+      }
+      return createItemCheckouts([
+        {
+          checkout_id: existingCheckout.id,
+          id_souvenir_place: item.id_souvenir_place,
+          craft_variant_id: item.craft_variant_id,
+          jumlah: item.jumlah,
+        },
+      ]);
+    })
   );
+  console.log("newItems", newItems);
   return newItems;
 };
 
@@ -108,8 +129,6 @@ const getUserHistory = async (condition) => {
 
   return checkout;
 };
-
- 
 
 module.exports = {
   getCheckout,
@@ -123,5 +142,6 @@ module.exports = {
   deleteItemsCheckout,
   updateItemsCheckout,
   checkoutOrder,
-  getUserHistory
+  getIncompleteCheckout,
+  getUserHistory,
 };

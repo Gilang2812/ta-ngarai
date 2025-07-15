@@ -8,14 +8,15 @@ export const createShippingStoreBody = (
   selectedAddress: Address | undefined
 ) => {
   return groupedItems.map((items, index) => ({
-    order_date: new Date(new Date().getTime() - new Date().getTimezoneOffset() * 60000).toISOString(),
+    order_date: new Date(
+      new Date().getTime() - new Date().getTimezoneOffset() * 60000
+    ).toISOString(),
     brand_name: "Craft",
-    shipper_name: checkout?.items?.[0]?.craftVariant?.craft?.souvenirPlace.name,
+    shipper_name: checkout?.items?.[0]?.detailCraft?.souvenirPlace.name,
     shipper_phone:
-      checkout?.items?.[0]?.craftVariant?.craft?.souvenirPlace.contact_person,
+      checkout?.items?.[0]?.detailCraft?.souvenirPlace.contact_person,
     shipper_destination_id: 49279,
-    shipper_address:
-      checkout?.items?.[0]?.craftVariant?.craft?.souvenirPlace.address,
+    shipper_address: checkout?.items?.[0]?.detailCraft?.souvenirPlace.address,
     shipper_email: "not registered",
     receiver_name: checkout?.shippingAddress.addressCustomer.fullname,
     receiver_phone: checkout?.shippingAddress.addressCustomer.phone,
@@ -34,18 +35,19 @@ export const createShippingStoreBody = (
     cod_value: itemShipping[index]?.grandtotal,
     insurance_value: 0,
     order_details: items.map((i) => ({
-      product_id: i.craftVariant.id,
-      product_name: i.craftVariant.craft.name,
-      product_variant_name: i.craftVariant.name,
+      product_id: `${i.detailCraft.id_souvenir_place}-${i.detailCraft.craft_variant_id}`,
+      product_name: i.detailCraft?.variant.craft.name,
+      product_variant_name: i.detailCraft?.variant.name,
+      id_souvenir_place: i.detailCraft?.id_souvenir_place,
       note: i.note,
       shipping_id: i.shipping_id,
-      product_price: i.craftVariant.price,
+      product_price: i.detailCraft?.price,
       product_weight:
-        i.craftVariant.weight < 1
-          ? Math.ceil(i.craftVariant.weight)
-          : Math.round(i.craftVariant.weight),
+        i.detailCraft?.weight < 1
+          ? Math.ceil(i.detailCraft?.weight)
+          : Math.round(i.detailCraft?.weight),
       qty: i.jumlah,
-      subtotal: i.craftVariant.price * i.jumlah,
-    })),  
+      subtotal: i.detailCraft.price * i.jumlah,
+    })),
   }));
 };

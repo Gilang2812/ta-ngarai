@@ -3,7 +3,7 @@ import { useUpdateAddress } from "@/features/web/address/useUpdateAddress";
 import { useGetUserCheckout } from "@/features/web/checkout/useGetUserCheckout";
 import { CheckoutItem, type Address } from "@/type/schema/CheckoutSchema";
 import { ShippingItem } from "@/type/schema/ShippingSchema";
-import { cornerAlert } from "@/utils/AlertUtils"; 
+import { cornerAlert } from "@/utils/AlertUtils";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -25,7 +25,6 @@ export const useCheckout = () => {
     error,
   } = useGetUserCheckout();
   const addressList = checkout?.shippingAddress.addressCustomer.addresses;
-  console.log(error)
   const [selectedAddress, setSelectedAddress] = useState<Address | undefined>(
     addressList?.find((addr) => addr.is_primary) ||
       addressList?.[0] ||
@@ -91,7 +90,7 @@ export const useCheckout = () => {
     setGroupedItems(
       Object.values(
         checkout?.items.reduce((acc, item) => {
-          const key = item.craftVariant.craft.id_souvenir_place;
+          const key = item.id_souvenir_place;
           if (!acc[key]) {
             acc[key] = [];
           }

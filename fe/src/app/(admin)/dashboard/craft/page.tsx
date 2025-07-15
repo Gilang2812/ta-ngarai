@@ -70,15 +70,7 @@ const Craft = () => {
     updateVariantPending,
   } = useCraftManagement();
 
-  const tableHeaders = [
-    "id",
-    "name",
-    "price",
-    "weight",
-    "stock",
-    "modal",
-    "images",
-  ];
+  const tableHeaders = ["name", "price", "weight", "stock", "modal", "images"];
 
   const RenderCraft = () => {
     if (detailCrafts?.length === 0) {
@@ -89,10 +81,9 @@ const Craft = () => {
         <TableHeaderManagement headers={tableHeaders} />
         <tbody>
           {detailCrafts?.map((detail, index) => (
-            <tr className="hover:bg-gray-100 transition-colors" key={detail.id}>
+            <tr className="hover:bg-gray-100 transition-colors" key={index}>
               <td>{index + 1}</td>
-              <td className="text-center">{detail.id}</td>
-              <td> {`${detail.variant.name} ${detail.variant.craft.name}`}</td>
+              <td> {` ${detail.variant.craft.name} ${detail.variant.name}`}</td>
               <td className="text-right">{formatPrice(detail.price || 0)}</td>
               <td className="text-right">{detail.weight} gram</td>
               <td className="text-right">
@@ -101,13 +92,13 @@ const Craft = () => {
               <td className="text-right">
                 {detail.modal ? formatPrice(detail.modal) : "-"}
               </td>
-              <td className="text-center">{detail.craftGalleries.length}</td>
+              <td className="text-center">{detail?.craftGalleries?.length}</td>
               <td>
                 <div className="flex gap-2 items-center justify-center  ">
                   <Link
                     title="edit"
                     className="p-3 bg-white border   rounded border-cyan-400 text-cyan-400 transition-ease-in-out hover:bg-cyan-300 hover:text-white"
-                    href={`./craft/${detail.id}`}
+                    href={`./craft/${detail.craft_variant_id}`}
                   >
                     <FaPencil />
                   </Link>
@@ -118,7 +109,7 @@ const Craft = () => {
                   <DeleteButton
                     onClick={() =>
                       handleDeleteVariant(
-                        detail.id,
+                        detail.craft_variant_id,
                         `${detail.variant.name} ${detail.variant.craft.name}`
                       )
                     }
@@ -243,12 +234,12 @@ const Craft = () => {
                 <article className=" space-y-6">
                   <DetailCraftMainImage
                     selectedImg={selectedImg}
-                    imgCount={selectedDetailVariant.craftGalleries.length}
+                    imgCount={selectedDetailVariant?.craftGalleries?.length}
                   />
                   <DetailCraftThubnails
                     selectedImg={selectedImg}
                     setSelectedImg={setSelectedImg}
-                    data={selectedDetailVariant.craftGalleries}
+                    data={selectedDetailVariant?.craftGalleries}
                   />
                 </article>
                 <DetailCraftInfo data={selectedDetailVariant} />

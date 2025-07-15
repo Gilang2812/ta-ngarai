@@ -5,23 +5,23 @@ import { ProductInfo } from "./ProductInfo";
 import { useDetailProductCraft } from "@/hooks/useDetailProductCraft";
 import { useSearchParams } from "next/navigation";
 
-function ProductDetail({ id }: { id: string }) {
+function ProductDetail({ id }: { id: string[] }) {
   const searchParms = useSearchParams();
   const idVariant = searchParms.get("idvr") || "";
   const {
     isLoading,
     selectedImage,
-    selectedVariant,
-    craft,
+    selectedDetailCraft,
     activeIndex,
     handleNextImageButton,
     handlePrevImageButton,
     handleThumbnailClick,
-    setSelectedVariant,
+    setSelectedDetailCraft,
     initialValues,
     handleCart,
     handleBuy,
-    handleSubmit
+    handleSubmit,
+    crafts,
   } = useDetailProductCraft(id, idVariant);
 
   if (isLoading) {
@@ -53,35 +53,35 @@ function ProductDetail({ id }: { id: string }) {
   //   }
 
   return (
-    <div className="container mx-auto px-4 pb-10">
-      <header className="mb-6">
-        <h1 className="text-2xl font-bold">Souvenir</h1>
-      </header>
+    selectedDetailCraft &&
+    crafts && (
+      <div className="container mx-auto px-4 pb-10">
+        <header className="mb-6">
+          <h1 className="text-2xl font-bold">Souvenir</h1>
+        </header>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
-        {selectedVariant && (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
           <ProductImageGallery
-            selectedVariant={selectedVariant}
+            selectedDetailCraft={selectedDetailCraft}
             selectedImage={selectedImage}
             activeIndex={activeIndex}
             handleNextImageButton={handleNextImageButton}
             handlePrevImageButton={handlePrevImageButton}
             handleThumbnailClick={handleThumbnailClick}
           />
-        )}
-        {craft && selectedVariant && (
-            <ProductInfo
-              setSelectedVariant={setSelectedVariant}
-              selectedVariant={selectedVariant}
-              craft={craft}
-              initialValues={initialValues} 
-              handleSubmit={handleSubmit}
-              handleCart={handleCart}
-              handleBuy={handleBuy}
-            />
-        )}
+
+          <ProductInfo
+            setSelectedDetailCraft={setSelectedDetailCraft}
+            selectedDetailCraft={selectedDetailCraft}
+            initialValues={initialValues}
+            handleSubmit={handleSubmit}
+            handleCart={handleCart}
+            handleBuy={handleBuy}
+            crafts={crafts}
+          />
+        </div>
       </div>
-    </div>
+    )
   );
 }
 

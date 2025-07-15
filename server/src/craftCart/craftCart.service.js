@@ -1,3 +1,4 @@
+const { getIncompleteCheckout } = require("../checkout/checkout.service");
 const {
   insertCraftCart,
   destroyCraftCart,
@@ -10,6 +11,7 @@ const getCraftCarts = async (key) => {
   const craftCart = await findCraftCarts(key);
   return craftCart;
 };
+
 const getCraftCart = async (key) => {
   const craftCart = await findCraftCart(key);
   if (!craftCart) {
@@ -18,26 +20,37 @@ const getCraftCart = async (key) => {
   return craftCart;
 };
 
-const createCraftCart = async (body) => {
+const createCraftCart = async ({
+  id_souvenir_place,
+  craft_variant_id,
+  jumlah,
+  customer_id,
+}) => {
+  const checkout = await getIncompleteCheckout({ customer_id });
   const condition = {
-    user_id: body.user_id,
-    craft_variant_id: body.craft_variant_id,
+    checkout_id: checkout.id,
+    craft_variant_id,
+    id_souvenir_place,
   };
-
-  const craftCart = await getCraftCarts(condition); 
-  if (craftCart.length > 0) {
-    const updated = await editCraftCart(
-      { craft_variant_id: craftCart[0].craft_variant_id,
-        user_id: craftCart[0].user_id
+  const existingItemCart = await findCraftCart(condition);
+  if (existingItemCart) {
+      await editCraftCart(
+      { 
+        checkout_id: existingItemCart.checkout_id,
+        id_souvenir_place: existingItemCart.id_souvenir_place,
       },
       {
-        jumlah: body.jumlah + craftCart[0].jumlah,
+        jumlah: existingItemCart.jumlah + jumlah,
       }
     );
-    console.log("updated:", updated);
-    return updated;
+    return existingItemCart;
   }
-  return await insertCraftCart(body);
+  return await insertCraftCart({
+    id_souvenir_place,
+    craft_variant_id,
+    jumlah,
+    checkout_id: checkout.id,
+  });
 };
 
 const updateCraftCart = async (key, body) => {
@@ -46,7 +59,6 @@ const updateCraftCart = async (key, body) => {
 };
 
 const deleteCraftCart = async (key) => {
- 
   return await destroyCraftCart(key);
 };
 

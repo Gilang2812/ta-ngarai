@@ -27,8 +27,7 @@ const PackageCart = () => {
         const { package: p, ...rest } = item;
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { id, ...restOfItem } = p;
-        const flat = { ...rest, ...(restOfItem || {}) };
-        console.log("Flat Data:", flat);
+        const flat = { ...rest, ...(restOfItem || {}) }; 
         return Object.keys(flat).some((key) => {
           const value = flat[key as keyof CartSchema];
           return String(value).toLowerCase().includes(searchTerm.toLowerCase());

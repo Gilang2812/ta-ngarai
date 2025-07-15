@@ -30,12 +30,12 @@ export const useCraftManagement = () => {
   const [selectedDetailVariant, setSelectedDetailVariant] =
     useState<DetailCraftManagementResponse | null>(null);
   const [selectedImg, setSelectedImg] = useState<string>(
-    selectedDetailVariant?.craftGalleries?.[0].url ?? ""
+    selectedDetailVariant?.craftGalleries?.[0]?.url ?? ""
   );
 
   useEffect(() => {
     if (selectedDetailVariant?.craftGalleries?.[0]?.url) {
-      setSelectedImg(selectedDetailVariant.craftGalleries[0].url);
+      setSelectedImg(selectedDetailVariant?.craftGalleries?.[0]?.url);
     }
   }, [selectedDetailVariant]);
 
@@ -61,7 +61,7 @@ export const useCraftManagement = () => {
 
   const getDefaultDetailCraft = (): DetailCraftSchema & {
     id_craft: string;
-  } => ({ 
+  } => ({
     id_craft: "",
     craft_variant_id: "",
     price: "" as unknown as number,
@@ -113,6 +113,7 @@ export const useCraftManagement = () => {
   const { mutateAsync: deleteVariant } = useDeleteCraftVariant({
     onSuccess: () => {
       cornerAlert("Craft variant deleted successfully");
+      refetchCrafts();
     },
   });
   const { mutate: updateCraft, isPending: updateCraftPending } = useUpdateCraft(

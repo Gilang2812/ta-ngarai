@@ -23,8 +23,6 @@ import { useRouter } from "next/navigation";
 import { useUpdateStatus } from "@/features/web/checkout/useUpdateStatus";
 
 export default function CheckoutPage() {
-  //   const selectedAddress = addressList.find(addr => addr.id === selectedAddressId);
-
   const {
     checkout,
     checkoutLoading,
@@ -109,7 +107,9 @@ export default function CheckoutPage() {
       showLoadingAlert();
     }
     return () => {
-      hideLoadingAlert();
+      setTimeout(() => {
+        hideLoadingAlert();
+      }, 3000);
     };
   }, [isPending, checkoutPending, updatingStatus]);
 
@@ -139,16 +139,16 @@ export default function CheckoutPage() {
 
       formikOrder.setFieldValue("item_details", [
         ...groupedItems.flat().map((item) => ({
-          id: item.craftVariant.id,
-          name: `${item.craftVariant.craft.name} - ${item.craftVariant.name}`,
-          price: item.craftVariant.price,
-          quantity: item.jumlah,
+          id: `${item.id_souvenir_place}-${item?.craft_variant_id}`,
+          name: `${item?.detailCraft?.variant?.craft?.name} - ${item?.detailCraft?.variant?.name}`,
+          price: item?.detailCraft?.price,
+          quantity: item?.jumlah,
         })),
         {
           id: "shipping",
           name: "Shipping Cost",
           price: itemShipping.reduce(
-            (acc, curr) => acc + curr.shipping_cost_net,
+            (acc, curr) => acc + (curr?.shipping_cost_net || 0),
             0
           ),
           quantity: 1,
@@ -159,7 +159,7 @@ export default function CheckoutPage() {
         "sub_total",
         groupedItems
           .flat()
-          .reduce((acc, item) => acc + item.craftVariant.price * item.jumlah, 0)
+          .reduce((acc, item) => acc + item.detailCraft.price * item.jumlah, 0)
       );
 
       formikOrder.setFieldValue(

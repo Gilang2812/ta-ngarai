@@ -34,9 +34,9 @@ const ShippingMethodItems = ({
   const { data, isLoading, refetch } = useFetchShippingMethod({
     receiver_destination_id: selectedAddressId || "", // Example ID, replace with actual
     weight:
-      items.reduce((acc, item) => acc + item.craftVariant.weight, 0) / 1000,
+      items.reduce((acc, item) => acc + item?.detailCraft?.weight, 0) / 1000,
     item_value: items.reduce(
-      (access, item) => access + item.craftVariant.price * item.jumlah,
+      (access, item) => access + item?.detailCraft?.price * item.jumlah,
       0
     ),
   });
@@ -75,8 +75,8 @@ const ShippingMethodItems = ({
         <section key={index} className="flex items-center">
           <div className="flex-shrink-0 w-16 h-16 mr-4 relative overflow-hidden rounded">
             <ImgCraft
-              src={item.craftVariant.craftGalleries[0]?.url}
-              alt={item.craftVariant.name}
+              src={item.detailCraft?.craftGalleries?.[0]?.url}
+              alt={item.detailCraft?.variant?.name}
               width={64}
               height={64}
               className="object-cover"
@@ -84,14 +84,15 @@ const ShippingMethodItems = ({
           </div>
           <div className="flex-grow">
             <h3 className="font-medium text-gray-800">
-              {item.craftVariant.craft.name} {item.craftVariant.name}
+              {item?.detailCraft?.variant.craft?.name}{" "}
+              {item?.detailCraft?.variant.name}
             </h3>
             <p className="text-gray-600 text-sm">
-              {formatPrice(item.craftVariant.price)} × {item.jumlah}
+              {formatPrice(item?.detailCraft?.price)} × {item.jumlah}
             </p>
           </div>
           <div className="font-medium text-right text-nowrap">
-            {formatPrice(item.craftVariant.price * item.jumlah)}
+            {formatPrice(item?.detailCraft?.price * item.jumlah)}
           </div>
         </section>
       ))}

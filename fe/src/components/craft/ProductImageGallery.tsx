@@ -1,14 +1,14 @@
 "use client";
 import React from "react";
-import { type VariantBelongCraftSchema } from "@/type/schema/CraftSchema";
 import ImgCraft from "../common/ImgCraft";
 import Button from "../common/Button";
 import { MdArrowForwardIos, MdOutlineArrowBackIosNew } from "react-icons/md";
 import { motion } from "framer-motion";
+import { DetailCraftUserResponse } from "@/type/schema/DetailCraftSchema";
 
 interface ProductImageGalleryProps {
   selectedImage: string;
-  selectedVariant: VariantBelongCraftSchema;
+  selectedDetailCraft: DetailCraftUserResponse;
   activeIndex: number;
   handleThumbnailClick: (url: string, index: number) => void;
   handlePrevImageButton: () => void;
@@ -16,7 +16,7 @@ interface ProductImageGalleryProps {
 }
 export const ProductImageGallery: React.FC<ProductImageGalleryProps> = ({
   selectedImage,
-  selectedVariant,
+  selectedDetailCraft,
   activeIndex,
   handleNextImageButton,
   handlePrevImageButton,
@@ -27,7 +27,7 @@ export const ProductImageGallery: React.FC<ProductImageGalleryProps> = ({
       <div className="relative h-96 w-full mb-4 rounded-lg overflow-hidden">
         <ImgCraft
           src={selectedImage}
-          alt={selectedVariant.name}
+          alt={selectedDetailCraft.variant.name}
           fill
           className="object-contain"
           sizes="(max-width: 768px) 100vw, 500px"
@@ -42,7 +42,7 @@ export const ProductImageGallery: React.FC<ProductImageGalleryProps> = ({
           <MdOutlineArrowBackIosNew />
         </Button>
         <div className="flex overflow-x-auto scrollbar-hide gap-2 px-12">
-          {selectedVariant?.craftGalleries?.map((thumb, index) => (
+          {selectedDetailCraft?.craftGalleries?.map((thumb, index) => (
             <motion.div
               layout
               initial={{ opacity: 0, x: -50 }}
@@ -57,7 +57,7 @@ export const ProductImageGallery: React.FC<ProductImageGalleryProps> = ({
             >
               <ImgCraft
                 src={thumb.url}
-                alt={`${selectedVariant.name} thumbnail ${index + 1}`}
+                alt={`${selectedDetailCraft.variant.name} thumbnail ${index + 1}`}
                 fill
                 className="object-cover"
                 sizes="80px"

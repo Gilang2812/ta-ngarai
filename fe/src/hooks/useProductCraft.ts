@@ -1,12 +1,13 @@
-import { useFetchCraftVariant } from "@/features/dashboard/craftVariant/useFetchCraftVariant";
-import { CraftProduct } from "@/type/schema/CraftSchema";
+import { useFetchUserDetailCrafts } from "@/features/detailCraft/useFetchUserDetailCraft";
+import { DetailCraftUserResponse } from "@/type/schema/DetailCraftSchema";
 
 export const useProductCraft = () => {
-  const { data: crafts, isLoading } = useFetchCraftVariant<CraftProduct>([
-    "checkout",
-    "craft",
-    "craftGalleries",
-  ]);
+  const { data: crafts, isLoading } =
+    useFetchUserDetailCrafts<DetailCraftUserResponse>([
+      "checkout",
+      "craft",
+      "craftGalleries",
+    ]);
   return {
     crafts,
     isLoading,

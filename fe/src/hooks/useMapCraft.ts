@@ -1,12 +1,12 @@
-import { useFetchSouvenirPlace } from "@/features/dashboard/marketplace/useFetchSouvenirPlace";
-import { CraftWithVariantsGalleries } from "@/type/schema/CraftSchema";
+import { useFetchSouvenirPlace } from "@/features/dashboard/marketplace/useFetchSouvenirPlace"; 
 import { hideLoadingAlert, showLoadingAlert } from "@/utils/AlertUtils";
 import { useEffect } from "react";
 import { useOrderCraft } from "./useOrderCraft";
+import { DetailCraftManagementResponse } from "@/type/schema/DetailCraftSchema";
 
 export const useMapCraft = () => {
   const { data, isLoading } = useFetchSouvenirPlace<{
-    crafts: CraftWithVariantsGalleries;
+    crafts: DetailCraftManagementResponse[];
   }>(true);
 
   useEffect(() => {

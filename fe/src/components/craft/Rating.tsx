@@ -4,7 +4,7 @@ interface RatingProps {
   showText?: boolean;
 }
 
-export const Rating: React.FC<RatingProps> = ({ rating, reviewCount, showText = false }) => {
+export const Rating: React.FC<RatingProps> = ({ rating=0, reviewCount, showText = false }) => {
   return (
     <div className="flex items-center">
       <div className="flex">

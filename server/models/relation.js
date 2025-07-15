@@ -33,8 +33,7 @@ const { Checkout } = require("./CheckoutModel.js");
 const { ItemCheckout } = require("./ItemCheckoutModel.js");
 const CraftVariantGallery = require("./CraftVariantGalleryModel.js");
 const ItemCheckoutReviewGallery = require("./ItemCheckoutReviewGalleryModel.js");
-const { SouvenirPlace } = require("./SouvenirPlace.js");
-const CraftCart = require("./CartCraftModel.js");
+const { SouvenirPlace } = require("./SouvenirPlace.js"); 
 const Shipping = require("./ShippingModel.js");
 const DetailMarketplaceCraft = require("./DetailMarketplaceCraft.js");
 
@@ -309,7 +308,7 @@ Checkout.belongsTo(ShippingAddress, {
 // CraftVariant and ItemCheckout associations
 CraftVariant.hasMany(DetailMarketplaceCraft, {
   foreignKey: "craft_variant_id",
-  as: "marketplaceCrafts",
+  as: "crafts",
 });
 
 DetailMarketplaceCraft.belongsTo(CraftVariant, {
@@ -318,12 +317,12 @@ DetailMarketplaceCraft.belongsTo(CraftVariant, {
 });
 DetailMarketplaceCraft.belongsTo(SouvenirPlace, {
   foreignKey: "id_souvenir_place",
-  as: "marketplace",
+  as: "souvenirPlace",
 });
 
 SouvenirPlace.hasMany(DetailMarketplaceCraft, {
   foreignKey: "id_souvenir_place",
-  as: "marketplaceCrafts",
+  as: "crafts",
 });
 
 DetailMarketplaceCraft.hasMany(CraftVariantGallery, {
@@ -332,9 +331,11 @@ DetailMarketplaceCraft.hasMany(CraftVariantGallery, {
 });
 DetailMarketplaceCraft.hasMany(CraftVariantGallery, {
   foreignKey: "id_souvenir_place",
+  as: "souvenirPlaceGalleries",
 });
 CraftVariantGallery.belongsTo(SouvenirPlace, {
   foreignKey: "id_souvenir_place",
+  as: "souvenirPlace",
 });
 CraftVariantGallery.belongsTo(DetailMarketplaceCraft, {
   foreignKey: "craft_variant_id",
@@ -347,6 +348,7 @@ DetailMarketplaceCraft.hasMany(ItemCheckout, {
 });
 DetailMarketplaceCraft.hasMany(ItemCheckout, {
   foreignKey: "id_souvenir_place",
+   as: "itemsBySouvenirPlace", 
 });
 
 ItemCheckout.belongsTo(DetailMarketplaceCraft, {
@@ -355,6 +357,7 @@ ItemCheckout.belongsTo(DetailMarketplaceCraft, {
 });
 ItemCheckout.belongsTo(DetailMarketplaceCraft, {
   foreignKey: "id_souvenir_place",
+   as: "detailCraftBySouvenirPlace", 
 });
 
 Checkout.hasMany(ItemCheckout, {
@@ -373,9 +376,11 @@ ItemCheckout.hasMany(ItemCheckoutReviewGallery, {
 });
 ItemCheckout.hasMany(ItemCheckoutReviewGallery, {
   foreignKey: "craft_variant_id",
+  as: "checkoutGalleries"
 });
 ItemCheckout.hasMany(ItemCheckoutReviewGallery, {
   foreignKey: "id_souvenir_place",
+  as: "souvenirPlaceGalleries"
 });
 
 ItemCheckoutReviewGallery.belongsTo(ItemCheckout, {
@@ -423,8 +428,7 @@ module.exports = {
   AuthGroup,
   AuthGroupUsers,
   User,
-  Announcement,
-  CraftCart,
+  Announcement, 
   TourismVillage,
   GalleryTourism,
   Package,

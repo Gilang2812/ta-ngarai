@@ -32,8 +32,9 @@ const router = require("express").Router();
 router.post("/", async (req, res, next) => {
   try {
     const items = req.body.items;
-
-    const newItems = await checkoutOrder(items);
+    console.log("items", items);
+    const customer_id = 1; // Assuming customer_id is 1 for testing purposes
+    const newItems = await checkoutOrder(items, customer_id);
 
     res.status(201).json(newItems);
   } catch (error) {
@@ -44,8 +45,8 @@ router.post("/", async (req, res, next) => {
 router.post("/cart", async (req, res, next) => {
   try {
     const items = req.body.items;
-
-    const newItems = await checkoutOrder(items);
+    const customer_id = 1; // Assuming customer_id is 1 for testing purposes
+    const newItems = await checkoutOrder(items, customer_id);
     if (newItems.length === 0) {
       return res.status(404).json({ message: "No items found" });
     }
@@ -65,7 +66,7 @@ router.post("/cart", async (req, res, next) => {
 });
 router.get("/", async (req, res, next) => {
   try {
-    const checkout = await getUserCheckouts({ status: 0, customer_id: 1 }); // Assuming customer_id is 1 for testing purposes
+    const checkout = await getUserCheckouts({ customer_id: 1 }); // Assuming customer_id is 1 for testing purposes
 
     res.status(200).json(checkout);
   } catch (error) {
@@ -76,16 +77,16 @@ router.get("/", async (req, res, next) => {
 router.patch("/:id", async (req, res, next) => {
   try {
     const { id } = req.params;
+    console.log("id checkout", id);
     const { items, item_details, shippings, sub_total, total_shipping_cost } =
       req.body;
-    console.log(req.body);
+    console.log("body checkout", shippings[0].order_details);
     const transaction = await createPayment({
       order_id: id,
       gross_amount: sub_total + total_shipping_cost,
       item_details: item_details,
     });
     const shippingsResult = [];
-    console.log("shippings", shippings);
     for (const [index, item] of shippings.entries()) {
       const { data } = await storeShipment(item);
       const prevIndex = item.order_details.slice(0, index).length ?? 0;
@@ -103,7 +104,8 @@ router.patch("/:id", async (req, res, next) => {
         await updateItemsCheckout(
           {
             checkout_id: id,
-            craft_variant_id: detail.product_id,
+            craft_variant_id: detail.product_id.split("-")[1],
+            id_souvenir_place: detail.id_souvenir_place,
           },
           {
             shipping_id: newShipping.shipping_id,
@@ -112,8 +114,8 @@ router.patch("/:id", async (req, res, next) => {
         );
       }
     }
+    console.log("shippingsResult", shippingsResult);
     const response = { token: transaction.token, shippings: shippingsResult };
-    console.log("response", response);
     res.status(200).json(response);
   } catch (error) {
     next(error);

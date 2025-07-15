@@ -1,5 +1,6 @@
 import * as yup from "yup";
 import { ItemCheckoutType } from "./CheckoutSchema";
+import { DetailCraftSchema } from "./DetailCraftSchema";
 
 export const craftSchema = yup.object({
   name: yup.string().required("Nama kerajinan wajib diisi"),
@@ -26,21 +27,18 @@ export type FetchCraftVariant = CraftVariant & {
 };
 export type CraftVariantGallery = {
   id: string;
-  id_craft_variant: string;
+  craft_variant_id: string;
   id_souvenir_place: string;
   url: string;
 };
 
 export type CraftWithVariants = Craft & {
-  souvenirPlace: {
-    name: string;
-    address: string;
-  };
+  variants: CraftVariant[];
 };
 
 export type CraftVariantWithGalleriesSchema = CraftVariant & {
   craft: Craft;
-  craftGalleries: CraftVariantGallery[];
+  crafts: DetailCraftSchema[];
 };
 
 export type CraftProduct = CraftVariantWithGalleriesSchema & {

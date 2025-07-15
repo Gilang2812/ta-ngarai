@@ -1,5 +1,7 @@
 import * as yup from "yup";
 import { CraftVariantGallery, FetchCraftVariant } from "./CraftSchema";
+import { CheckoutItem } from "./CheckoutSchema";
+import { SouvenirPlace } from "./CraftTransactionSchema";
 export type DetailCraftInclude = (
   | "craft"
   | "craftGalleries"
@@ -36,9 +38,22 @@ export const detailCraftSchema = yup.object({
   images: yup.array().max(5, "Maksimal 5 gambar").nullable(),
 });
 
-export type DetailCraftSchema = yup.InferType<typeof detailCraftSchema>  
+export type DetailCraftSchema = yup.InferType<typeof detailCraftSchema>;
 
 export type DetailCraftManagementResponse = DetailCraftSchema & {
+  id_souvenir_place: string;
   variant: FetchCraftVariant;
   craftGalleries: CraftVariantGallery[];
+};
+
+export type DetailCraftUserResponse = DetailCraftManagementResponse & {
+  items: CheckoutItem[];
+};
+
+export type DetailCraftOrderResponse = DetailCraftUserResponse & {
+  souvenirPlace: SouvenirPlace;
+};
+
+export type DetailCraftResponseSouvenirPlace = DetailCraftManagementResponse & {
+  souvenirPlace: SouvenirPlace & { address: string; contact_person: string };
 };

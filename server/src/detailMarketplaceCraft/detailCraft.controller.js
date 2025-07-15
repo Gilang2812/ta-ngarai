@@ -1,7 +1,10 @@
 const router = require("express").Router();
 const imageUpload = require("../../middlewares/imageUploads");
 const { formatImageUrl } = require("../../utils/formatImageUrl");
-const { insertGallery } = require("../craftGalleries/craftGalleries.service");
+const {
+  insertGallery,
+  deleteGalleryByAtribut,
+} = require("../craftGalleries/craftGalleries.service");
 const { validateData } = require("../middlewares/validation");
 const {
   getDetailCrafts,
@@ -10,26 +13,53 @@ const {
   createDetailCraft,
   updateDetailCraft,
   deleteDetailCraft,
+  getOrderDetailCraft,
 } = require("./detailCraft.service");
 const { detailCraftSchema } = require("./detailCraft.validation");
+const fs = require("fs");
 
 router.get("/", async (req, res, next) => {
   try {
     const includeKeys = req.query.include?.split(",") || [];
-    const detailCrafts = await selectDetailCrafts(includeKeys);
+    const condition = { id_souvenir_place: "SP006" }; // Default value, can be modified as needed
+    const detailCrafts = await getDetailCrafts(condition, includeKeys);
+    res.status(200).json(detailCrafts);
+  } catch (error) {
+    next(error);
+  }
+});
+router.get("/users", async (req, res, next) => {
+  try {
+    const includeKeys = req.query.include?.split(",") || [];
+    const detailCrafts = await getDetailCrafts({}, includeKeys);
     res.status(200).json(detailCrafts);
   } catch (error) {
     next(error);
   }
 });
 
-router.get("/:craft_variant_id/:id_souvenir_place", async (req, res, next) => {
+router.get("/detail/:craft_variant_id", async (req, res, next) => {
   try {
-    const { craft_variant_id, id_souvenir_place } = req.params;
-    const detailCraft = await getDetailCraft({
-      craft_variant_id,
-      id_souvenir_place,
-    });
+    const { craft_variant_id } = req.params;
+    const includeKeys = req.query.include?.split(",") || [];
+    const id_souvenir_place = "SP006"; //req.user.id_souvenir_place Default value, can be modified as needed
+    const detailCraft = await getDetailCraft(
+      {
+        craft_variant_id,
+        id_souvenir_place,
+      },
+      includeKeys
+    );
+    res.status(200).json(detailCraft);
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.get("/order/:id_craft/:id_souvenir_place", async (req, res, next) => {
+  try {
+    const { id_craft, id_souvenir_place } = req.params;
+    const detailCraft = await getOrderDetailCraft({ id_craft, id_souvenir_place });
     res.status(200).json(detailCraft);
   } catch (error) {
     next(error);
@@ -45,7 +75,7 @@ router.post(
       const { craft_variant_id, price, weight, modal, stock, description } =
         req.body;
       console.log(req.body);
-      const id_souvenir_place = "SP006";
+      const id_souvenir_place = "SP005";
       const newDetailCraft = await createDetailCraft({
         craft_variant_id,
         id_souvenir_place,
@@ -58,7 +88,7 @@ router.post(
 
       const images =
         req.files?.map((file) => ({
-          id_craft_variant: craft_variant_id,
+          craft_variant_id,
           id_souvenir_place,
           url: formatImageUrl(file.path),
         })) ?? [];
@@ -78,14 +108,48 @@ router.post(
 
 router.patch(
   "/:craft_variant_id/:id_souvenir_place",
+  imageUpload.array("images"),
+  validateData(detailCraftSchema),
   async (req, res, next) => {
     try {
       const { craft_variant_id, id_souvenir_place } = req.params;
-      const updatedDetailCraft = await updateDetailCraft({
-        craft_variant_id,
-        id_souvenir_place,
-        ...req.body,
-      });
+      const { price, weight, modal, stock, description, isNewImage } = req.body;
+      const updatedDetailCraft = await updateDetailCraft(
+        {
+          craft_variant_id,
+          id_souvenir_place,
+        },
+        {
+          price,
+          weight,
+          modal,
+          stock,
+          description,
+        }
+      );
+      const existingGalleries = updatedDetailCraft.craftGalleries || [];
+      console.log("existingGalleries", existingGalleries);
+      if (!isNewImage) {
+        console.log("new galerry", isNewImage);
+        for (const image of req.files) {
+          fs.unlinkSync(image.path);
+        }
+      } else {
+        const images = req.files
+          ? req.files.map((file) => ({
+              craft_variant_id,
+              id_souvenir_place,
+              url: formatImageUrl(file.path),
+            }))
+          : [];
+        for (const image of existingGalleries) {
+          fs.unlinkSync(`public\\${image.url}`);
+        }
+        await deleteGalleryByAtribut({ craft_variant_id, id_souvenir_place });
+        for (const image of images) {
+          await insertGallery(image);
+        }
+      }
       res.status(200).json(updatedDetailCraft);
     } catch (error) {
       next(error);

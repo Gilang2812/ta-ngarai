@@ -5,7 +5,7 @@ const { generateCustomId } = require("../utils/generateId");
 const ShippingAddress = sequelize.define(
   "ShippingAddress",
   {
-    id: {
+    address_id: {
       type: DataTypes.STRING(5),
       primaryKey: true,
       allowNull: true,
@@ -75,8 +75,8 @@ const ShippingAddress = sequelize.define(
   }
 );
 
-ShippingAddress.beforeCreate(async(instance) => {
-  instance.id = await generateCustomId("SA", ShippingAddress, 5);
+ShippingAddress.beforeCreate(async (instance) => {
+  instance.address_id = await generateCustomId("SA", ShippingAddress, 5);
 });
 
 module.exports = ShippingAddress;

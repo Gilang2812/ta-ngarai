@@ -12,7 +12,9 @@ export default function useCheckoutCart() {
   const { mutateAsync: createCheckout, isPending } = useCreateCheckout({
     onSuccess: () => {
       cornerAlert("akan segera dialihkan ke halaman pembayaran!");
-      router.push("./checkout");
+      setTimeout(() => {
+        router.push("/web/checkout");  
+      }, 1000);
     },
   });
 
@@ -21,7 +23,9 @@ export default function useCheckoutCart() {
       showLoadingAlert();
     }
     return () => {
-      hideLoadingAlert();
+      setTimeout(() => {
+        hideLoadingAlert();
+      }, 3000);
     };
   }, [isPending]);
   return {

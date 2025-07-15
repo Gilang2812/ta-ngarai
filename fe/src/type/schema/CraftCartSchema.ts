@@ -1,5 +1,6 @@
 import * as yup from "yup";
-import { Craft, CraftVariantGallery } from "./CraftSchema";
+import { DetailCraftManagementResponse } from "./DetailCraftSchema";
+import { CraftCartCheckout } from "./CheckoutSchema";
 
 export const craftCart = yup.object({
   jumlah: yup
@@ -10,17 +11,17 @@ export const craftCart = yup.object({
 });
 export type CraftCartForm = yup.InferType<typeof craftCart> & {
   craft_variant_id: string;
+  id_souvenir_place: string;
+  checkout_id?: string;
+};
+
+export type UpdateCraftCartForm = CraftCartForm & {
+  checkout_id: string;
 };
 export type CraftCartSchema = CraftCartForm & { price: number };
-type cartCraft = {
-  id: string;
-  id_craft: string;
-  name: string;
-  price: number;
-};
+
 export type CartItemProps = CraftCartForm & {
-  cartCraft: cartCraft & {
-    craft: Craft;
-    craftGalleries: CraftVariantGallery[];
-  };
+  checkout_id: string;
+  checkout: CraftCartCheckout;
+  detailCraft: DetailCraftManagementResponse;
 };

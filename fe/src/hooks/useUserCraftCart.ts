@@ -35,9 +35,24 @@ export const useUserCraftCart = () => {
     },
   });
 
-  const handleDeleteCraftCart = async (idVariant: string, name: string) => {
+  const handleDeleteCraftCart = async (
+    {
+      craft_variant_id,
+      id_souvenir_place,
+      checkout_id,
+    }: {
+      craft_variant_id: string;
+      id_souvenir_place: string;
+      checkout_id: string;
+    },
+    name: string
+  ) => {
     confirmDeleteAlert("craft item", name, async () => {
-      await deleteCraftCart(idVariant);
+      await deleteCraftCart({
+        craft_variant_id,
+        id_souvenir_place,
+        checkout_id,
+      });
     });
   };
 
@@ -57,8 +72,9 @@ export const useUserCraftCart = () => {
         );
         return filteredCarts.map((item) => ({
           craft_variant_id: item.craft_variant_id,
+          id_souvenir_place: item.id_souvenir_place,
           jumlah: item.jumlah,
-          price: item.cartCraft.price,
+          price: item.detailCraft.price,
         }));
       });
     }
@@ -67,11 +83,18 @@ export const useUserCraftCart = () => {
   const handleCheckedCraft = (craft: CraftCartSchema) => {
     setSelectedCraft((prev) => {
       const index = prev.findIndex(
-        (item) => item.craft_variant_id === craft.craft_variant_id
+        (item) =>
+          item.craft_variant_id === craft.craft_variant_id &&
+          item.id_souvenir_place === craft.id_souvenir_place &&
+          item.checkout_id === craft.checkout_id
       );
+      console.log(index);
       if (index > -1) {
         return prev.filter(
-          (item) => item.craft_variant_id !== craft.craft_variant_id
+          (item) =>!(
+            item.craft_variant_id === craft.craft_variant_id &&
+            item.id_souvenir_place === craft.id_souvenir_place &&
+            item.checkout_id === craft.checkout_id)
         );
       } else {
         return [...prev, craft];
@@ -84,7 +107,9 @@ export const useUserCraftCart = () => {
       showLoadingAlert();
     }
     return () => {
-      hideLoadingAlert();
+      setTimeout(() => {
+        hideLoadingAlert();
+      }, 3000);
     };
   }, [isUpdating]);
 

@@ -22,9 +22,9 @@ const updateGallery = async (id, body) => {
   });
   return updatedCraftGallery;
 };
-const deleteGallery = async (id) => {
+const deleteGallery = async (condition) => {
   const deletedCraftGallery = await CraftVariantGallery.destroy({
-    where: id,
+    where: condition,
   });
   return deletedCraftGallery;
 };

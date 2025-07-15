@@ -1,8 +1,10 @@
+const { and, where, col, Op } = require("sequelize");
 const {
   SouvenirPlace,
   CraftVariantGallery,
   Craft,
   CraftVariant,
+  DetailMarketplaceCraft,
 } = require("../../models/relation");
 
 const findSouvenirPlace = async (include = false) => {
@@ -10,19 +12,38 @@ const findSouvenirPlace = async (include = false) => {
     include: include
       ? [
           {
-            model: Craft,
+            model: DetailMarketplaceCraft,
             as: "crafts",
             include: [
               {
                 model: CraftVariant,
-                as: "variants",
+                as: "variant",
                 include: [
                   {
-                    model: CraftVariantGallery,
-                    as: "craftGalleries",
-                    limit: 1
+                    model: Craft,
+                    as: "craft",
                   },
                 ],
+              },
+              {
+                model: CraftVariantGallery,
+                as: "craftGalleries",
+                where: {
+                  [Op.and]: [
+                    where(
+                      col("crafts.craft_variant_id"),
+                      "=",
+                      col("crafts->craftGalleries.craft_variant_id")
+                    ),
+                    where(
+                      col("crafts.id_souvenir_place"),
+                      "=",
+                      col("crafts->craftGalleries.id_souvenir_place")
+                    ),
+                  ],
+                },
+
+                required: false,
               },
             ],
           },

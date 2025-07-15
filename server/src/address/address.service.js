@@ -17,7 +17,14 @@ const getAddress = async (condition) => {
 
 const getOneAddress = async (condition) => {
   const address = await findOneAddress(condition);
+  return address;
+};
 
+const getUserAddress = async ({ customer_id }) => {
+  let address = await getOneAddress({ customer_id, is_primary: 1 });
+  if (!address) {
+    address = await getOneAddress({ customer_id, is_primary: 0 });
+  }
   return address;
 };
 
@@ -70,4 +77,5 @@ module.exports = {
   deleteAddress,
   getOneAddress,
   countUserAddress,
+  getUserAddress,
 };

@@ -1,4 +1,4 @@
-const { Op } = require("sequelize");
+const { Op, and, col, where, literal } = require("sequelize");
 const sequelize = require("../../config/database");
 const {
   Checkout,
@@ -10,10 +10,12 @@ const {
   CraftVariantGallery,
   SouvenirPlace,
   Shipping,
+  DetailMarketplaceCraft,
 } = require("../../models/relation");
+
 const {
-  include,
-} = require("../detailReservation/detailReservation.repository");
+  buildIncludeModels,
+} = require("../detailMarketplaceCraft/detailCraft.utils");
 
 const insertCheckout = async (body) => {
   return Checkout.create(body);
@@ -58,13 +60,18 @@ const findCheckout = async (key) => {
 };
 
 const findUserCheckouts = async (condition) => {
+  const include = buildIncludeModels(["craft"]);
   const checkout = await Checkout.findOne({
-    where: { checkout_date: null },
+    where: {
+      checkout_date: { [Op.ne]: null },
+      transaction_token: null,
+
+      customer_id: condition.customer_id,
+    },
     include: [
       {
         model: ShippingAddress,
         as: "shippingAddress",
-        where: { customer_id: condition.customer_id },
         include: {
           model: User,
           as: "addressCustomer",
@@ -80,28 +87,46 @@ const findUserCheckouts = async (condition) => {
       {
         model: ItemCheckout,
         as: "items",
+
         include: [
           {
-            model: CraftVariant,
-            as: "craftVariant",
-            attributes: ["id", "name", "price", "weight"],
+            model: DetailMarketplaceCraft,
+            as: "detailCraft",
+            on: literal(
+              "`items`.`craft_variant_id` = `items->detailCraft`.`craft_variant_id` AND " +
+                "`items`.`id_souvenir_place` = `items->detailCraft`.`id_souvenir_place`"
+            ),
             include: [
-              {
-                model: Craft,
-                as: "craft",
-                attributes: ["id", "name", "id_souvenir_place"],
-                include: [
-                  {
-                    model: SouvenirPlace,
-                    as: "souvenirPlace",
-                    attributes: ["id", "name", "address", "contact_person"],
-                  },
-                ],
-              },
+              ...include,
               {
                 model: CraftVariantGallery,
                 as: "craftGalleries",
-                limit: 1,
+                attributes: [
+                  "id",
+                  "craft_variant_id",
+                  "id_souvenir_place",
+                  "url",
+                ],
+                where: and(
+                  where(
+                    col(
+                      "`items->detailCraft->craftGalleries`.craft_variant_id"
+                    ),
+                    col("`items->detailCraft`.craft_variant_id")
+                  ),
+                  where(
+                    col(
+                      "`items->detailCraft->craftGalleries`.id_souvenir_place"
+                    ),
+                    col("`items->detailCraft`.id_souvenir_place")
+                  )
+                ),
+                required: false,
+              },
+              {
+                model: SouvenirPlace,
+                as: "souvenirPlace",
+                attributes: ["id", "name", "address", "contact_person"],
               },
             ],
           },
@@ -132,11 +157,10 @@ const destroyItemsCheckout = async (condition) => {
 };
 
 const editItemsCheckout = async (key, body) => {
-  console.log("key", key);
-  console.log("body", body);
-  return ItemCheckout.update(body, {
+  const affectedRows = await ItemCheckout.update(body, {
     where: key,
   });
+  return affectedRows;
 };
 
 const userHistory = async (condition) => {
@@ -166,7 +190,7 @@ const userHistory = async (condition) => {
           {
             model: CraftVariant,
             as: "craftVariant",
-            attributes: ["id", "name", "price", "weight"],
+            attributes: ["id", "name",  "id_craft"],
             include: [
               {
                 model: Craft,
@@ -197,8 +221,6 @@ const userHistory = async (condition) => {
   });
   return checkout;
 };
-
-
 
 module.exports = {
   insertCheckout,

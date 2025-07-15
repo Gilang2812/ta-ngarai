@@ -105,14 +105,14 @@ router.delete("/:id", async (req, res, next) => {
 //       } else {
 //         const images = req.files
 //           ? req.files.map((file) => ({
-//               id_craft_variant: id,
+//               craft_variant_id: id,
 //               url: formatImageUrl(file.path),
 //             }))
 //           : [];
 //         for (const image of existingGalleries) {
 //           fs.unlinkSync(`public\\${image.url}`);
 //         }
-//         await deleteGalleryByAtribut({ id_craft_variant: id });
+//         await deleteGalleryByAtribut({ craft_variant_id: id });
 //         for (const image of images) {
 //           await insertGallery(image);
 //         }

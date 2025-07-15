@@ -9,32 +9,29 @@ import { BsBagCheck, BsCart } from "react-icons/bs";
 import ButtonTooltip from "../common/ButtonTooltip";
 import { FaFacebook, FaPinterest, FaStore, FaTiktok } from "react-icons/fa6";
 import { MdFavorite } from "react-icons/md";
-import {
-  VariantBelongCraftSchema,
-  type CraftDetailSchema,
-} from "@/type/schema/CraftSchema";
 import { Form, Formik } from "formik";
 import { CraftCartForm } from "@/type/schema/CraftCartSchema";
 import { motion } from "framer-motion";
+import { DetailCraftOrderResponse } from "@/type/schema/DetailCraftSchema";
 
 interface ProductInfoProps {
-  craft: CraftDetailSchema;
-  selectedVariant: VariantBelongCraftSchema;
-  setSelectedVariant: (variant: VariantBelongCraftSchema) => void;
+  crafts: DetailCraftOrderResponse[];
+  selectedDetailCraft: DetailCraftOrderResponse;
+  setSelectedDetailCraft: (variant: DetailCraftOrderResponse) => void;
   initialValues: CraftCartForm;
-  handleSubmit: (values: CraftCartForm) => void; 
-  handleCart : () => void;
-  handleBuy : () => void;
+  handleSubmit: (values: CraftCartForm) => void;
+  handleCart: () => void;
+  handleBuy: () => void;
 }
 
 export const ProductInfo: React.FC<ProductInfoProps> = ({
-  craft,
-  selectedVariant,
-  setSelectedVariant,
+  selectedDetailCraft,
+  setSelectedDetailCraft,
   initialValues,
-  handleSubmit, 
+  handleSubmit,
   handleCart,
-  handleBuy
+  handleBuy,
+  crafts,
 }) => {
   const [isFavorite, setIsFavorite] = useState(false);
 
@@ -45,45 +42,52 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({
   return (
     <div className="space-y-4 font-normal">
       <div className="flex items-center">
-        <Rating rating={selectedVariant.itemCheckouts.length} showText={true} />
+        <Rating rating={selectedDetailCraft.items.length} showText={true} />
       </div>
 
       <h1 className="text-2xl font-bold capitalize text-gray-900">
-        {craft.name} {selectedVariant.name}
+        {selectedDetailCraft.variant.craft.name}{" "}
+        {selectedDetailCraft.variant.name}
       </h1>
 
       <div className="grid grid-cols-2 text-sm text-gray-600">
-        <div>Stok: {selectedVariant.stock}</div>
-        <div>Terjual: {selectedVariant.itemCheckouts.length}</div>
+        <div>Stok: {selectedDetailCraft.stock}</div>
+        <div>
+          Terjual:{" "}
+          {selectedDetailCraft.items.reduce(
+            (acc, item) => acc + Number(item.review_rating),
+            0
+          )}
+        </div>
       </div>
 
       <div className="flex items-center gap-2">
         <span className="text-2xl font-bold text-red-600">
-          {formatPrice(selectedVariant.price)}
+          {formatPrice(selectedDetailCraft.price)}
         </span>
-        {selectedVariant.price && (
+        {selectedDetailCraft.price && (
           <span className="text-base text-gray-400 line-through">
-            {formatPrice(selectedVariant.price)}
+            {formatPrice(selectedDetailCraft.price)}
           </span>
         )}
       </div>
 
       <div className="bg-primary/10 text-secondary flex items-center gap-4 font-body p-3 rounded-md text-lg capitalize">
-        <FaStore /> {craft.souvenirPlace.name}
+        <FaStore /> {selectedDetailCraft.souvenirPlace.name}
       </div>
 
       <div className="grid lg:grid-cols-2">
         <section className=" py-2 w- grow  ">
           <h3 className="text-sm  font-bold text-gray-900 mb-2">Variasi</h3>
           <VariantSelector
-            variants={craft.variants}
-            selectedVariantId={selectedVariant.id}
-            onSelect={setSelectedVariant}
+            crafts={crafts}
+            selectedDetailCraftId={selectedDetailCraft.craft_variant_id}
+            onSelect={setSelectedDetailCraft}
           />
         </section>
         <motion.section layout className="py-4 grow">
           <h3 className="text-lg font-medium text-gray-900 mb-2">Deskripsi</h3>
-          <p className="text-gray-700">{selectedVariant.description}</p>
+          <p className="text-gray-700">{selectedDetailCraft.description}</p>
         </motion.section>
       </div>
       <Formik onSubmit={handleSubmit} initialValues={initialValues}>

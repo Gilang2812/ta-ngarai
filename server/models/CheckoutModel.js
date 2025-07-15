@@ -47,7 +47,7 @@ const Checkout = sequelize.define(
 );
 
 Checkout.beforeCreate(async (instance) => {
-  instance.id = await generateCustomId("tes", Checkout, 10);
+  instance.id = await generateCustomId("tev2", Checkout, 10);
 });
 
 module.exports = { Checkout };

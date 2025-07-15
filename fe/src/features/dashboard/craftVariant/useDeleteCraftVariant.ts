@@ -1,7 +1,7 @@
 import { axiosInstance } from "@/lib/axios";
 import { ActionProps } from "@/type/props/ActionProps";
 import { onError } from "@/utils/ErrorHandler";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query"; 
 
 export const useDeleteCraftVariant = ({ onSuccess }: ActionProps) => {
   return useMutation({

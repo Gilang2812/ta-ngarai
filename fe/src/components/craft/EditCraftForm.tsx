@@ -6,9 +6,9 @@ import Button from "../common/Button";
 import { useManageUpdateCraft } from "@/hooks/useManageUpdateCraft";
 import ManagementSkeletonLoader from "../loading/ManagementSkeletonLoader";
 import FilePondComponent from "../common/Filepond";
-import { craftVariantSchema } from "@/type/schema/CraftSchema";
 import Link from "next/link";
 import { Spinner } from "flowbite-react";
+import { detailCraftSchema } from "@/type/schema/DetailCraftSchema";
 
 type Props = {
   id: string;
@@ -16,36 +16,39 @@ type Props = {
 
 export const EditCraftForm = ({ id }: Props) => {
   const {
-    crafts,
     isLoading,
-    variant,
+    detailCraft,
     initialValues,
-    handleUpdateVariant,
+    handleUpdateDetailCraft,
     isPending,
   } = useManageUpdateCraft(id);
   if (isLoading) return <ManagementSkeletonLoader />;
   return (
     <>
       <section className="mb-10">
-        <h2>{`Edit ${variant?.craft.name} ${variant?.name}`}</h2>
+        <h2>
+          Edit &nbsp;
+          <span className="text-white bg-primary capitalize py-1 rounded-full px-2 font-normal">
+            {detailCraft?.variant?.craft?.name} {detailCraft?.variant?.name}
+          </span>
+        </h2>
       </section>
       <section className="min-w-[300px]">
         <Formik
           initialValues={initialValues}
-          validationSchema={craftVariantSchema}
-          onSubmit={handleUpdateVariant}
+          onSubmit={handleUpdateDetailCraft}
+          validationSchema={detailCraftSchema}
+          enableReinitialize={true}
         >
           <Form className=" gap-4 grid  lg:grid-cols-5 ">
             <section className="order-2 lg:order-1 lg:col-span-3 space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div>
-                  <FormInput label="Craft" as="select" name="id_craft">
-                    {crafts?.map((craft) => (
-                      <option key={craft.id} value={craft.id}>
-                        {craft.name}
-                      </option>
-                    ))}
-                  </FormInput>
+                  <FormInput
+                    label="Craft ID"
+                    type="text"
+                    name="craft_variant_id"
+                  />
                 </div>
                 <div>
                   <FormInput label="Name" type="text" name="name" />
@@ -55,9 +58,14 @@ export const EditCraftForm = ({ id }: Props) => {
                 </div>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  <div>
-                    <FormInput label="Weight (gram)" type="float" name="weight" min="0" />
-                  </div>
+                <div>
+                  <FormInput
+                    label="Weight (gram)"
+                    type="number"
+                    name="weight"
+                    min="0"
+                  />
+                </div>
 
                 <div>
                   <FormInput label="Modal" type="number" name="modal" min="0" />
@@ -83,9 +91,9 @@ export const EditCraftForm = ({ id }: Props) => {
                 >
                   back
                 </Link>
-                <Button type="submit">{`${
-                  isPending ? <Spinner /> : "Save Changes"
-                }`}</Button>
+                <Button type="submit">
+                  {isPending ? <Spinner /> : "Save Changes"}
+                </Button>
               </div>
             </section>
             <section className=" order-1 lg:order-2  w-full lg:col-span-2 space-y-6">

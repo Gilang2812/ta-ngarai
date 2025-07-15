@@ -4,6 +4,7 @@ const {
   insertDetailCraft,
   editDetailCraft,
   destroyDetailCraft,
+  findOrderDetailCraft,
 } = require("./detailCraft.repository");
 
 const { CustomError } = require("../../utils/CustomError");
@@ -18,8 +19,8 @@ const selectDetailCrafts = async (includeKeys) => {
   const detailCrafts = await findDetailCrafts(condition, includeKeys);
   return detailCrafts;
 };
-const getDetailCraft = async (key) => {
-  const detailCraft = await findDetailCraft(key);
+const getDetailCraft = async (key, include) => {
+  const detailCraft = await findDetailCraft(key, include);
   if (!detailCraft) {
     throw new CustomError("Detail craft not found", 404);
   }
@@ -39,7 +40,7 @@ const createDetailCraft = async (body) => {
   return newDetailCraft;
 };
 const updateDetailCraft = async (key, body) => {
-  const updatedDetailCraft = await getDetailCraft(key);
+  const updatedDetailCraft = await getDetailCraft(key, ["craftGalleries"]);
   await editDetailCraft(key, body);
   return updatedDetailCraft;
 };
@@ -48,6 +49,13 @@ const deleteDetailCraft = async (key) => {
   await destroyDetailCraft(key);
   return deletedDetailCraft;
 };
+
+const getOrderDetailCraft = async (key) => {
+  const orderDetailCraft = await findOrderDetailCraft(key);
+
+  return orderDetailCraft;
+};
+
 module.exports = {
   getDetailCrafts,
   getDetailCraft,
@@ -55,4 +63,5 @@ module.exports = {
   updateDetailCraft,
   deleteDetailCraft,
   selectDetailCrafts,
+  getOrderDetailCraft
 };

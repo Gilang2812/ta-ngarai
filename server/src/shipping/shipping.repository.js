@@ -10,6 +10,7 @@ const {
   User,
   CraftVariantGallery,
   ItemCheckoutReviewGallery,
+  DetailMarketplaceCraft,
 } = require("../../models/relation");
 
 const findShippingById = async (shippingId) => {
@@ -123,7 +124,6 @@ const insertShipping = async (body) => {
 const userHistory = async (condition) => {
   const shipping = await Shipping.findAll({
     order: [["shippingItems", "checkout", "checkout_date", "DESC"]],
-
     include: [
       {
         model: ItemCheckout,
@@ -141,18 +141,17 @@ const userHistory = async (condition) => {
         ],
         include: [
           {
-            model: CraftVariant,
-            as: "craftVariant",
-            attributes: ["id", "id_craft", "name", "price"],
+            model: DetailMarketplaceCraft,
+            as: "detailCraft",
             include: [
               {
-                model: Craft,
-                as: "craft",
-                attributes: ["id", "name"],
+                model: CraftVariant,
+                as: "variant",
+                attributes: ["id", "id_craft", "name", ],
                 include: [
                   {
-                    model: SouvenirPlace,
-                    as: "souvenirPlace",
+                    model: Craft,
+                    as: "craft",
                     attributes: ["id", "name"],
                   },
                 ],
@@ -182,7 +181,7 @@ const userHistory = async (condition) => {
                 model: ShippingAddress,
                 where: { customer_id: condition.customer_id },
                 attributes: [
-                  "id",
+                  "address_id",
                   "customer_id",
                   "label",
                   "recipient_name",

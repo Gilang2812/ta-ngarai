@@ -1,11 +1,11 @@
-import React, {   useMemo, useState } from "react";
-import { CraftProduct } from "@/type/schema/CraftSchema";
+import React, { useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import { DetailCraftUserResponse } from "@/type/schema/DetailCraftSchema";
 
 interface SearchBarProps {
   onSearch?: (query: string) => void;
-  crafts: CraftProduct[];
+  crafts: DetailCraftUserResponse[];
 }
 
 export const SearchBar: React.FC<SearchBarProps> = ({ onSearch, crafts }) => {
@@ -14,8 +14,8 @@ export const SearchBar: React.FC<SearchBarProps> = ({ onSearch, crafts }) => {
     () =>
       crafts?.filter(
         (craft) =>
-          craft.name.toLowerCase().includes(query.toLowerCase()) ||
-          craft.craft.name.toLowerCase().includes(query.toLowerCase())
+          craft.variant.name.toLowerCase().includes(query.toLowerCase()) ||
+          craft.variant.craft.name.toLowerCase().includes(query.toLowerCase())
       ),
     [crafts, query]
   );
@@ -74,15 +74,15 @@ export const SearchBar: React.FC<SearchBarProps> = ({ onSearch, crafts }) => {
               {result && result.length === 0 ? (
                 <p>nothings found</p>
               ) : (
-                result?.map((rs) => (
+                result?.map((rs, index) => (
                   <Link
-                    aria-label={`Lihat detail produk ${rs.name}`}
-                    href={`./craft/${rs.id_craft}?idvr=${rs.id}`}
-                    key={rs.id}
+                    aria-label={`Lihat detail produk ${rs.variant.name}`}
+                    href={`/web/craft/${rs.variant.id_craft}/${rs.id_souvenir_place}?idvr=${rs.craft_variant_id}`}
+                    key={index}
                     onMouseDown={(e) => e.stopPropagation()}
                     className="block px-4 py-2 hover:bg-gray-100 text-sm text-black"
                   >
-                    {rs.craft.name} {rs.name}
+                    {rs.variant.craft.name} {rs.variant.name}
                   </Link>
                 ))
               )}
