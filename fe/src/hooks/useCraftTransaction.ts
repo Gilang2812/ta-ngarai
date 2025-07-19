@@ -2,7 +2,7 @@ import { useFetchUserHistory } from "@/features/web/checkout/useFetchUserHistory
 import { useUpdateStatus } from "@/features/web/checkout/useUpdateStatus";
 import { useBulkCreateCraftCart } from "@/features/web/craftCart/useBulkCreateCraftCart";
 import { CraftCartForm } from "@/type/schema/CraftCartSchema";
-import { ShippingData } from "@/type/schema/CraftTransactionSchema";
+import {   ShippingDataWithReviewGallery } from "@/type/schema/CraftTransactionSchema";
 import {
   confirmAlert,
   cornerAlert,
@@ -16,7 +16,7 @@ export const useCraftTransaction = () => {
   const { isOpen, toggleModal } = useModal();
   const router = useRouter();
   const { data: userHistory, isLoading, refetch } = useFetchUserHistory();
-  const [selectedHistory, setSelectedHistory] = useState<ShippingData | null>(
+  const [selectedHistory, setSelectedHistory] = useState<ShippingDataWithReviewGallery | null>(
     null
   );
 
@@ -36,7 +36,7 @@ export const useCraftTransaction = () => {
     },
   });
 
-  const handleHistoryClick = (history: ShippingData) => {
+  const handleHistoryClick = (history: ShippingDataWithReviewGallery) => {
     setModalContent("items");
     setSelectedHistory(history);
     toggleModal();
@@ -62,21 +62,21 @@ export const useCraftTransaction = () => {
     createCraftCart({ items });
   };
 
-  const handleCompleteOrder = (orderId: string) => {
+  const handleCompleteOrder = (orderId: string, shipping_id: number) => {
     confirmAlert(
       "Finish Order",
-      "Are you sure you want to finish this order?",
+      "Are you sure you have received your order?",
       () => {
-        updateStatus({ id: orderId, status: 4 });
+        updateStatus({ id: orderId, status: 4, shippings: [shipping_id] });
       }
     );
   };
 
-  const handleRateClick =(history: ShippingData) => {
+  const handleRateClick = (history: ShippingDataWithReviewGallery) => {
     setModalContent("rate");
     setSelectedHistory(history);
     toggleModal();
-  }
+  };
   return {
     userHistory,
     isLoading,

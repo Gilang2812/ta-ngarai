@@ -8,7 +8,7 @@ import React, { useEffect, useState } from "react";
 const ImgCraft = ({
   width = 64,
   height = 64,
-  src,
+  src="/images/Image_not_available.png",
   ...props
 }: { src: string } & React.ComponentProps<typeof Image>) => {
   const notFound = "/images/Image_not_available.png";

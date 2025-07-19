@@ -4,6 +4,7 @@ const {
   userHistory,
   findShippingById,
   editShipping,
+  findSouvenirTransaction,
 } = require("./shipping.repository");
 
 const getDestination = async (params) => {
@@ -31,6 +32,11 @@ const getUserHistory = async (condition) => {
   return shipping;
 };
 
+const getSouvenirTransaction = async (condition) => {
+  const shipping = await findSouvenirTransaction(condition);
+  return shipping;
+}
+
 const getUserHistoryById = async (id) => {
   const shipping = await findShippingById(id);
   return shipping;
@@ -48,4 +54,5 @@ module.exports = {
   getUserHistory,
   getUserHistoryById,
   updateShipping,
+  getSouvenirTransaction
 };

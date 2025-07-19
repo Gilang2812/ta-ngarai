@@ -25,6 +25,10 @@ const ReviewItemCard = ({ id }: Props) => {
     handleCloseModal,
     handleSubmitRating,
     formikRef,
+    responseInitialValues,
+    actionRef,
+    handleResponse,
+    initialValues,
   } = useRatingItems(id);
 
   if (isLoading) return <ReviewTransactionSkeleton />;
@@ -35,13 +39,13 @@ const ReviewItemCard = ({ id }: Props) => {
         data.shippingItems.map((item, index) => (
           <section
             key={index}
-            className="space-y-4 p-4 rounded-xl border items-center"
+            className="relative space-y-4 p-4 rounded-xl border border-gray-200"
           >
             <article className="flex justify-between gap-8 ">
               <ReviewItem
-                imageUrl={item.craftVariant?.craftGalleries?.[0]?.url}
-                craftFullName={`${item?.craftVariant?.craft?.name} ${item?.craftVariant?.name}`}
-                price={item?.craftVariant?.price}
+                imageUrl={item.detailCraft?.craftGalleries?.[0]?.url}
+                craftFullName={`${item?.detailCraft?.variant?.craft?.name} ${item?.detailCraft?.variant?.name}`}
+                price={item?.detailCraft?.price}
                 quantity={item?.jumlah}
               />
               <section>
@@ -50,6 +54,7 @@ const ReviewItemCard = ({ id }: Props) => {
                     handleOpenModal(
                       item.craft_variant_id,
                       item.checkout_id,
+                      item.id_souvenir_place,
                       item
                     )
                   }
@@ -59,14 +64,23 @@ const ReviewItemCard = ({ id }: Props) => {
                 </Button>
               </section>
             </article>
-            <ReviewContent
-              customerName={
-                item.checkout.shippingAddress.addressCustomer.fullname
-              }
-              reviewRating={item.review_rating}
-              reviewText={item.review_text}
-              reviewDate={item.review_date}
-            />
+            {item.review_rating && (
+              <ReviewContent
+                customerName={
+                  item.checkout.shippingAddress.addressCustomer.fullname
+                }
+                reviewRating={item.review_rating}
+                reviewText={item.review_text}
+                reviewDate={item.review_date}
+                imgUrls={item.reviewGalleries.map((img) => img.url)}
+                handleResponse={handleResponse}
+                craftVariantId={item.craft_variant_id}
+                checkoutId={item.checkout_id}
+                idSouvenirPlace={item.id_souvenir_place}
+                sellerResponse={item.seller_response}
+                response_date={item.response_date}
+              />
+            )}
           </section>
         ))}
       <Modal
@@ -76,17 +90,41 @@ const ReviewItemCard = ({ id }: Props) => {
       >
         <Formik
           innerRef={formikRef}
-          initialValues={{ review_rating: 0, review_text: "", images: [] }}
+          initialValues={
+            actionRef.current === "response"
+              ? responseInitialValues
+              : initialValues
+          }
           onSubmit={handleSubmitRating}
-          validationSchema={reviewFormSchema}
+          validationSchema={
+            actionRef.current === "response" ? null : reviewFormSchema
+          }
         >
           <Form className="space-y-4">
-            <div>
-              <label> Rating</label>
-              <ReviewRatingInput />
-            </div>
-            <FormInput as="textarea" rows={4} name="review_text" type="text" />
-            <FilePondComponent />
+            {actionRef.current === "response" ? (
+              <FormInput
+                as="textarea"
+                rows={4}
+                name="seller_response"
+                type="text"
+                placeholder="Your response here..."
+              />
+            ) : (
+              <>
+                <div>
+                  <label> Rating</label>
+                  <ReviewRatingInput />
+                </div>
+                <FormInput
+                  as="textarea"
+                  rows={4}
+                  name="review_text"
+                  type="text"
+                />
+                <FilePondComponent />
+              </>
+            )}
+
             <Button type="submit">submit</Button>
           </Form>
         </Formik>

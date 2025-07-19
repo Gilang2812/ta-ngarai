@@ -1,105 +1,118 @@
-  const { DataTypes } = require('sequelize');
-  const sequelize = require('../config/database'); 
-
-  const User = sequelize.define('User', {
+const { DataTypes } = require("sequelize");
+const sequelize = require("../config/database");
+const bcrypt = require("bcrypt");
+const { Role } = require("./RoleModel");
+const User = sequelize.define(
+  "User",
+  {
     id: {
       type: DataTypes.INTEGER.UNSIGNED,
       autoIncrement: true,
-      primaryKey: true
+      primaryKey: true,
     },
+    id_souvenir_place: {
+      type: DataTypes.STRING(5),
+      allowNull: true,
+    },
+    id_role: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+    },
+
     email: {
       type: DataTypes.STRING(255),
       allowNull: false,
-      unique: true
+      unique: true,
     },
     username: {
       type: DataTypes.STRING(50),
       allowNull: true,
-      unique: true
-
+      unique: true,
     },
     fullname: {
       type: DataTypes.STRING(50),
-      allowNull: true
+      allowNull: true,
     },
     user_image: {
       type: DataTypes.STRING(255),
-      defaultValue: 'default.jpg'
+      defaultValue: "default.jpg",
     },
     address: {
       type: DataTypes.TEXT,
-      allowNull: true
+      allowNull: true,
     },
     phone: {
       type: DataTypes.STRING(13),
-      allowNull: true
+      allowNull: true,
     },
     password_hash: {
       type: DataTypes.STRING(255),
-      allowNull: true
+      allowNull: true,
     },
     reset_hash: {
       type: DataTypes.STRING(255),
-      allowNull: true
+      allowNull: true,
     },
     reset_at: {
       type: DataTypes.DATE,
-      allowNull: true
+      allowNull: true,
     },
     reset_expires: {
       type: DataTypes.DATE,
-      allowNull: true
+      allowNull: true,
     },
     activate_hash: {
       type: DataTypes.STRING(255),
-      allowNull: true
+      allowNull: true,
     },
     status: {
       type: DataTypes.STRING(255),
-      allowNull: true
+      allowNull: true,
     },
     status_message: {
       type: DataTypes.STRING(255),
-      allowNull: true
+      allowNull: true,
     },
     active: {
       type: DataTypes.TINYINT(1),
       allowNull: false,
-      defaultValue: 1
+      defaultValue: 1,
     },
     force_pass_reset: {
       type: DataTypes.TINYINT(1),
       allowNull: false,
-      defaultValue: 0
+      defaultValue: 0,
     },
     created_at: {
       type: DataTypes.DATE,
-      allowNull: true
+      allowNull: true,
     },
     updated_at: {
       type: DataTypes.DATE,
-      allowNull: true
+      allowNull: true,
     },
     deleted_at: {
       type: DataTypes.DATE,
-      allowNull: true
-    }
-  }, {
-    tableName: 'users', 
+      allowNull: true,
+    },
+  },
+  {
+    tableName: "users",
     timestamps: true,
-    createdAt: 'created_at',
-    updatedAt: 'updated_at',
-    deletedAt: 'deleted_at',
-    paranoid: true 
-  },{
-    hooks: {
-      beforeCreate: async (user) => {
-        if (user.password_hash) {
-         
-          user.password_hash = await bcrypt.hash(user.password_hash, 10);
-        }
-      },
-    }
-  },);
-
-  module.exports = {User};
+    createdAt: "created_at",
+    updatedAt: "updated_at",
+    deletedAt: "deleted_at",
+    paranoid: true,
+  }
+);
+User.beforeCreate(async (user) => {
+  const [role, created] = await Role.findOrCreate({
+    where: { role: "customer" },
+    defaults: {},
+  });
+  if (user.password_hash) {
+    user.password_hash = await bcrypt.hash(user.password_hash, 10);
+    user.id_role = role.id;
+  }
+});
+module.exports = { User };

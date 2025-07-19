@@ -6,7 +6,7 @@ import { StepFooter } from "./StepFooter";
 import { UnitHomestayReservation } from "@/features/reservation/useFetchUnitHomestayReservation";
 import { CheckBoxInput } from "../common/CheckBoxInput";
 import { useFormikContext } from "formik";
-import { FormReservationSchema } from "@/app/(user)/web/reservation/custombooking/[id]/page";
+import { FormReservationSchema } from "@/app/(user)/web/(auth)/reservation/custombooking/[id]/page";
 import Img from "../common/Img";
 import { FaUser } from "react-icons/fa";
 

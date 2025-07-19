@@ -9,19 +9,20 @@ type Props = {
 export const ProductCard = ({ product }: Props) => (
   <div className="flex gap-4 p-4 bg-gray-50 rounded-lg">
     <ImgCraft
-      alt={product.craftVariant.name}
+      alt={product.detailCraft.variant.name}
       width={50}
       height={50}
-      src={product.craftVariant.craftGalleries[0].url}
+      src={product?.detailCraft?.craftGalleries[0]?.url}
     />
     <div className="flex-1">
       <h4 className="font-medium text-gray-700">
-        {product.craftVariant.craft.name} {product.craftVariant.name}
-      </h4>  
+        {product?.detailCraft?.variant?.craft?.name}{" "}
+        {product?.detailCraft?.variant?.name}
+      </h4>
     </div>
     <div className="text-right">
       <div className="font-medium text-gray-700">
-        {formatPrice(product.craftVariant.price)}
+        {formatPrice(product?.detailCraft?.price)}
       </div>
       <div className="text-sm text-gray-500">Qty: {product.jumlah}</div>
     </div>

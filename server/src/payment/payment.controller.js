@@ -103,7 +103,7 @@ router.get("/status/:orderId", async (req, res) => {
 router.get("/:id", async (req, res, next) => {
   try {
     const { id } = req.params;
-    const transactionStatus = await getPaymentStatus(id);
+    // const transactionStatus = await getPaymentStatus(id);
     const checkout = await takeCheckout({ id });
     const shippings = checkout.items.reduce((acc, item) => {
       if (!acc.includes(item.shipping.shipping_id)) {
@@ -111,37 +111,33 @@ router.get("/:id", async (req, res, next) => {
       }
       return acc;
     }, []);
-    let paymentStatus = "";
-    if (transactionStatus.transaction_status === "capture") {
-      if (transactionStatus.fraud_status === "challenge") {
-        paymentStatus = "challenge";
-      } else if (transactionStatus.fraud_status === "accept") {
-        paymentStatus = "success";
-      }
-    } else if (transactionStatus.transaction_status === "settlement") {
-      paymentStatus = "success";
-    } else if (transactionStatus.transaction_status === "deny") {
-      paymentStatus = "deny";
-    } else if (
-      transactionStatus.transaction_status === "cancel" ||
-      transactionStatus.transaction_status === "expire"
-    ) {
-      paymentStatus = "failure";
-    } else if (transactionStatus.transaction_status === "pending") {
-      paymentStatus = "pending";
-    }
+    // let paymentStatus = "";
+    // if (transactionStatus.transaction_status === "capture") {
+    //   if (transactionStatus.fraud_status === "challenge") {
+    //     paymentStatus = "challenge";
+    //   } else if (transactionStatus.fraud_status === "accept") {
+    //     paymentStatus = "success";
+    //   }
+    // } else if (transactionStatus.transaction_status === "settlement") {
+    //   paymentStatus = "success";
+    // } else if (transactionStatus.transaction_status === "deny") {
+    //   paymentStatus = "deny";
+    // } else if (
+    //   transactionStatus.transaction_status === "cancel" ||
+    //   transactionStatus.transaction_status === "expire"
+    // ) {
+    //   paymentStatus = "failure";
+    // } else if (transactionStatus.transaction_status === "pending") {
+    //   paymentStatus = "pending";
+    // }
     res.json({
-      order_id: transactionStatus.order_id,
-      total_pembayaran: transactionStatus.gross_amount,
-      waktu_transaksi: transactionStatus.transaction_time,
-      expire: transactionStatus.expiry_time,
-      status: paymentStatus,
-      payment_type: transactionStatus.payment_type,
-      virtual_account: transactionStatus.va_numbers,
+      order_id: id,
+      total_pembayaran: checkout.total_price,
+      waktu_transaksi: checkout.checkout_date,
+      // status: paymentStatus,
       token: checkout.transaction_token,
       shippings: shippings,
-      transactionStatus,
-      checkout,
+      // checkout,
     });
   } catch (error) {
     next(error);

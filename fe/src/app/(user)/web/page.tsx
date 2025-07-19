@@ -1,5 +1,5 @@
 "use client";
- 
+
 import { ContentDiffSplitted } from "@/components/common/ContentDiffSplitted";
 import Announcement from "@/components/web/Announcement";
 import { Around } from "@/components/web/explore/Around";
@@ -7,7 +7,8 @@ import MapSection from "@/components/web/MapSection";
 import TourismInfo from "@/components/web/TourismInfo";
 import TourismPackage from "@/components/web/TourismPackage";
 import { useWebRightSection } from "@/hooks/useWebRightSection";
-export default function Home() {
+import withAuth from "@/utils/common/withAuth";
+function Home() {
   const { packageOpen, aroundOpen, toggleAround } = useWebRightSection();
 
   return (
@@ -20,7 +21,10 @@ export default function Home() {
             {packageOpen ? (
               <TourismPackage />
             ) : aroundOpen ? (
-              <Around handleCloseAround={toggleAround} isAroundOpen={aroundOpen} />
+              <Around
+                handleCloseAround={toggleAround}
+                isAroundOpen={aroundOpen}
+              />
             ) : (
               <TourismInfo />
             )}
@@ -30,3 +34,5 @@ export default function Home() {
     </section>
   );
 }
+
+export default withAuth(Home, { role: "guest" });

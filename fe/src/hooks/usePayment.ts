@@ -8,13 +8,11 @@ const usePayment = (id: string) => {
   const { data: payment, isLoading } = useGetPaymentById(id);
   const router = useRouter();
   const { mutateAsync: updateStatus } = useUpdateStatus({
-    onSuccess: () => {
-     
-    },
+    onSuccess: () => {},
   });
   useEffect(() => {
     if (payment?.token) {
-      window.snap.pay(payment.token, {
+      window?.snap?.pay(payment.token, {
         onSuccess: async (result) => {
           cornerAlert("Payment success:" + result.order_id);
           await updateStatus({
@@ -51,18 +49,14 @@ const usePayment = (id: string) => {
             id: payment.order_id,
             status: 6,
             shippings: payment.shippings,
+            isClose: 1,
           });
           router.push("/web/reservation?tab=craft");
         },
       });
     }
-  }, [
-    payment?.token,
-    router,
-    payment?.shippings,
-    updateStatus,
-    payment?.order_id,
-  ]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [payment?.token]);
   return { payment, isLoading };
 };
 

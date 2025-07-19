@@ -5,7 +5,9 @@ import { FaCalendar, FaHouse, FaSquarePollHorizontal } from "react-icons/fa6";
 import { DropDownItem } from "@/components/nav/DropDownItem";
 import { DropDownChildrenItem } from "./DropDownChildren";
 import { TbNeedleThread } from "react-icons/tb";
+import { useAuthStore } from "@/stores/AuthStore";
 export const UserNav = () => {
+  const { user } = useAuthStore();
   return (
     <nav className="mt-12 font-bold">
       <ul className="space-y-1">
@@ -37,7 +39,7 @@ export const UserNav = () => {
           <SideNavItem
             icon={BsFillGridFill}
             label="Dashboard"
-            link="/dashboard/managereservation"
+            link={`/dashboard/${user?.role !== 2 ? "craft" : "managereservation"}`}
           />
         </li>
         <li>

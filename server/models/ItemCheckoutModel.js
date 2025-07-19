@@ -24,6 +24,10 @@ const ItemCheckout = sequelize.define(
       type: DataTypes.STRING(5),
       allowNull: true,
     },
+    owner_responder_id: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+    },
     jumlah: {
       type: DataTypes.INTEGER,
       allowNull: false,
@@ -48,13 +52,15 @@ const ItemCheckout = sequelize.define(
       type: DataTypes.STRING(255),
       allowNull: true,
     },
+    response_date: {
+      type: DataTypes.DATE,
+      allowNull: true,
+    },
   },
   {
     tableName: "item_checkout",
     timestamps: false,
   }
 );
-
-
 
 module.exports = { ItemCheckout };

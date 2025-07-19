@@ -33,9 +33,10 @@ const { Checkout } = require("./CheckoutModel.js");
 const { ItemCheckout } = require("./ItemCheckoutModel.js");
 const CraftVariantGallery = require("./CraftVariantGalleryModel.js");
 const ItemCheckoutReviewGallery = require("./ItemCheckoutReviewGalleryModel.js");
-const { SouvenirPlace } = require("./SouvenirPlace.js"); 
+const { SouvenirPlace } = require("./SouvenirPlace.js");
 const Shipping = require("./ShippingModel.js");
 const DetailMarketplaceCraft = require("./DetailMarketplaceCraft.js");
+const { Role } = require("./RoleModel.js");
 
 User.hasMany(AuthGroupUsers, { foreignKey: "user_id", as: "user" });
 AuthGroup.hasMany(AuthGroupUsers, { foreignKey: "group_id", as: "group" });
@@ -348,7 +349,7 @@ DetailMarketplaceCraft.hasMany(ItemCheckout, {
 });
 DetailMarketplaceCraft.hasMany(ItemCheckout, {
   foreignKey: "id_souvenir_place",
-   as: "itemsBySouvenirPlace", 
+  as: "itemsBySouvenirPlace",
 });
 
 ItemCheckout.belongsTo(DetailMarketplaceCraft, {
@@ -357,7 +358,7 @@ ItemCheckout.belongsTo(DetailMarketplaceCraft, {
 });
 ItemCheckout.belongsTo(DetailMarketplaceCraft, {
   foreignKey: "id_souvenir_place",
-   as: "detailCraftBySouvenirPlace", 
+  as: "detailCraftBySouvenirPlace",
 });
 
 Checkout.hasMany(ItemCheckout, {
@@ -376,11 +377,11 @@ ItemCheckout.hasMany(ItemCheckoutReviewGallery, {
 });
 ItemCheckout.hasMany(ItemCheckoutReviewGallery, {
   foreignKey: "craft_variant_id",
-  as: "checkoutGalleries"
+  as: "checkoutGalleries",
 });
 ItemCheckout.hasMany(ItemCheckoutReviewGallery, {
   foreignKey: "id_souvenir_place",
-  as: "souvenirPlaceGalleries"
+  as: "souvenirPlaceGalleries",
 });
 
 ItemCheckoutReviewGallery.belongsTo(ItemCheckout, {
@@ -423,12 +424,31 @@ Shipping.hasMany(ItemCheckout, {
 });
 
 ItemCheckout.belongsTo(Shipping, { foreignKey: "shipping_id", as: "shipping" });
+ItemCheckout.belongsTo(User, {
+  foreignKey: "owner_responder_id",
+  as: "owner",
+});
+
+User.hasMany(ItemCheckout, {
+  foreignKey: "owner_responder_id",
+  as: "responses",
+});
+
+User.belongsTo(Role, {
+  foreignKey: "id_role",
+  as: "role",
+});
+
+Role.hasMany(User, {
+  foreignKey: "id_role",
+  as: "users",
+});
 
 module.exports = {
   AuthGroup,
   AuthGroupUsers,
   User,
-  Announcement, 
+  Announcement,
   TourismVillage,
   GalleryTourism,
   Package,

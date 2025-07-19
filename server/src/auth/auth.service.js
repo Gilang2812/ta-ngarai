@@ -2,7 +2,10 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const { User } = require("../../models/UsersModels");
 const { Op } = require("sequelize");
-const { findUniqueUsernameOrEmail,  findUser } = require("../user/user.repository.js");
+const {
+  findUniqueUsernameOrEmail,
+  findUser,
+} = require("../user/user.repository.js");
 const { CustomError } = require("../../utils/CustomError");
 
 const generateToken = (user) => {
@@ -10,51 +13,81 @@ const generateToken = (user) => {
   return token;
 };
 
+const getLoginResponse = (user) => {
+  return {
+    id: user.id,
+    email: user.email,
+    role: user.role,
+    name: user.fullname,
+    username: user.username,
+    role: user.id_role,
+    id_souvenirPlace: user.id_souvenir_place,
+  };
+};
 const userLogin = async (email, password) => {
-  const user = await findUniqueUsernameOrEmail(email,email)
+  const user = await findUniqueUsernameOrEmail(email, email);
 
   if (!user) {
-    throw new CustomError("Couldn't find user",404)
+    throw new CustomError(
+      "User not found. Please check your email and try again.",
+      404
+    );
   }
 
   const match = await bcrypt.compare(password, user.password_hash);
   if (!match) {
-    throw new CustomError("invalid password",401)
+    throw new CustomError("invalid password", 401);
   }
 
-  const token = generateToken(user);
+  const response = getLoginResponse(user);
+  const token = generateToken(response);
 
-  return token;
+  return { token, user: response };
 };
 
+const googleLogin = async (credential) => {
+  const decoded = jwt.decode(credential);
+  const { email, name } = decoded;
+  if (!email) {
+    throw new CustomError("Invalid Google credential", 400);
+  }
+
+  let user = await findUser({ email });
+  if (!user) {
+    user = await User.create({
+      email,
+      fullname: name,
+      password_hash: "",
+      role: "user",
+    });
+  }
+
+  const response = getLoginResponse(user);
+  const token = generateToken(response);
+  return { token, user: response };
+};
 const userRegister = async (body) => {
-
   const { email, username, password } = body;
-  const existingUserByUsername = await findUser({username});
-  const existingUserByEmail = await findUser({email});
+  const existingUserByUsername = await findUser({ username });
+  const existingUserByEmail = await findUser({ email });
   const errors = [];
+  if (existingUserByEmail) {
+    errors.push("Email already exists");
+  }
+  if (existingUserByUsername) {
+    errors.push("Username already exists");
+  }
 
-    if (existingUserByUsername) {
-        errors.push('Username already exists');
-    }
-
-    if (existingUserByEmail) {
-        errors.push('Email already exists');
-    }
-
-    if (errors.length > 0) {
-        throw new CustomError(errors.join('. '),400);
-    }
-
+  if (errors.length > 0) {
+    throw new CustomError(errors.join(". "), 400);
+  }
 
   const user = User.create({
     email,
     username,
-    password_hash:password
+    password_hash: password,
   });
   return user;
 };
 
-
-
-module.exports = { userLogin, userRegister };
+module.exports = { userLogin, userRegister, googleLogin };

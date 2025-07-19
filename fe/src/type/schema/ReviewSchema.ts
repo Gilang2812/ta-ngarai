@@ -6,14 +6,16 @@ export const reviewFormSchema = yup.object().shape({
 });
 
 export type ReviewFormSchema = yup.InferType<typeof reviewFormSchema> & {
-  craft_variant_id?: string;
-  checkout_id?: string;
+  craft_variant_id: string;
+  id_souvenir_place: string;
+  checkout_id: string;
   images: { source: string; option: { type: string } }[] | string[];
 };
 
 export type ReviewGallerySchema = {
-  craft_id: string;
   id: string;
   checkout_id: string;
+  craft_variant_id: string;
+  id_souvenir_place: string;
   url: string;
 };

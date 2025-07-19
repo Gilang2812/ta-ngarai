@@ -1,6 +1,6 @@
 import { onError } from './../../utils/ErrorHandler';
  
-import { FormReservationSchema } from "@/app/(user)/web/reservation/custombooking/[id]/page"
+import { FormReservationSchema } from "@/app/(user)/web/(auth)/reservation/custombooking/[id]/page"
 import { axiosInstance } from "@/lib/axios"
 import { ActionProps } from '@/type/props/ActionProps';
 import { useMutation } from "@tanstack/react-query"

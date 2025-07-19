@@ -7,7 +7,9 @@ export const useUpdateItemReview = ({ onSuccess }: ActionProps) => {
   return useMutation({
     mutationFn: async (body: FormData) => {
       const { data } = await axiosInstance.patch(
-        `/checkouts/${body.get("checkout_id")}/${body.get("craft_variant_id")}`,
+        `/checkouts/${body.get("checkout_id")}/${body.get(
+          "craft_variant_id"
+        )}/${body.get("id_souvenir_place")}`,
         body,
         {
           headers: {

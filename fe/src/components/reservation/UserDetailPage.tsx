@@ -67,25 +67,25 @@ export const UserDetailPage: FC<Props> = ({ history }) => {
         </h3>
         <div className="bg-gradient-to-r from-gray-50 to-gray-100 p-4 rounded-lg border-l-4 border-secondary">
           <div className="font-semibold text-gray-900 mb-2">
-            {`📦 Paket dari ${history.shippingItems[0].craftVariant.craft.souvenirPlace.name}`}
+            {`📦 Paket dari ${history?.shippingItems?.[0]?.detailCraft?.souvenirPlace?.name}`}
           </div>
           <div className="text-sm text-gray-600 space-y-1">
             <div>
               <strong>Kurir:&nbsp;</strong>
-              {`${history.shipping_name} (${history.shipping_type})`}
+              {`${history?.shipping_name} (${history?.shipping_type})`}
             </div>
             <div>
               <strong>Ongkos Kirim:&nbsp;</strong>
-              {formatPrice(history.total_shipping_cost || 0)}
+              {formatPrice(history?.total_shipping_cost || 0)}
             </div>
             <div>
               <strong>Alamat Tujuan:&nbsp;</strong>
-              {Object.values(history.shippingItems[0].checkout.shippingAddress)
+              {Object.values(history?.shippingItems[0]?.checkout?.shippingAddress)
                 .slice(2, -1)
                 .join(", ")}
             </div>
             <div>
-              <strong>No. Resi:</strong> {history.shipping_no}
+              <strong>No. Resi:</strong> {history?.shipping_no}
             </div>
           </div>
         </div>
@@ -100,8 +100,8 @@ export const UserDetailPage: FC<Props> = ({ history }) => {
             <span>Subtotal Produk:</span>
             <span>
               {formatPrice(
-                history.shippingItems.reduce(
-                  (acc, item) => acc + item.craftVariant.price * item.jumlah,
+                history?.shippingItems?.reduce(
+                  (acc, item) => acc + item?.detailCraft?.price * item?.jumlah,
                   0
                 )
               )}

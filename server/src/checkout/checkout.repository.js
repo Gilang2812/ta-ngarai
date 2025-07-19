@@ -157,7 +157,7 @@ const destroyItemsCheckout = async (condition) => {
 };
 
 const editItemsCheckout = async (key, body) => {
-  const affectedRows = await ItemCheckout.update(body, {
+  const [affectedRows] = await ItemCheckout.update(body, {
     where: key,
   });
   return affectedRows;

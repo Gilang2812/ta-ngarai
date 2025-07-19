@@ -1,3 +1,4 @@
+import { DetailCraftResponseSouvenirPlace } from "./DetailCraftSchema";
 import { ReviewGallerySchema } from "./ReviewSchema";
 
 export type ShippingData = {
@@ -8,7 +9,7 @@ export type ShippingData = {
   shipping_type: string;
   shipping_name: string;
   status: number;
-  shippingItems: ShippingItem[]; 
+  shippingItems: ShippingItem[];
 };
 
 export type ShippingDataWithReviewGallery = {
@@ -17,7 +18,9 @@ export type ShippingDataWithReviewGallery = {
   grand_total: number;
   total_shipping_cost: number;
   shipping_type: string;
+  owner_responder_id: number;
   shipping_name: string;
+  status: number;
   shippingItems: (ShippingItem & {
     reviewGalleries: ReviewGallerySchema[];
   })[];
@@ -26,14 +29,16 @@ export type ShippingDataWithReviewGallery = {
 export type ShippingItem = {
   checkout_id: string;
   craft_variant_id: string;
+  id_souvenir_place: string;
   shipping_id: string;
   jumlah: number;
-  craftVariant: CraftVariant;
   review_text: string;
   review_rating: number;
   review_date: string;
   seller_response: string;
+  response_date: string;
   checkout: Checkout;
+  detailCraft: DetailCraftResponseSouvenirPlace;
 };
 
 export type CraftVariant = {
@@ -48,7 +53,6 @@ export type CraftVariant = {
 export type Craft = {
   id: string;
   name: string;
-  souvenirPlace: SouvenirPlace;
 };
 
 export type SouvenirPlace = {
@@ -58,16 +62,20 @@ export type SouvenirPlace = {
 
 export type CraftGallery = {
   id: string;
+  craft_variant_id: string;
+  id_souvenir_place: string;
   url: string;
 };
 
 export type Checkout = {
   id: string;
+  customer_id: number;
   address_id: string;
-  total_price: number | null; 
+  total_price: number | null;
   payment: string;
   shippingAddress: ShippingAddress;
   checkout_date: string;
+  transaction_token: string;
 };
 
 export type ShippingAddress = {

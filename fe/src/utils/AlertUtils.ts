@@ -112,14 +112,14 @@ export const confirmAlert = async (
   return Swal.fire({
     title: title,
     text: message,
-    icon: "warning",
+    icon: "question",
     showCancelButton: true,
-    confirmButtonColor: "rgb(220, 53, 69)",
+    confirmButtonColor: "rgb(67, 94, 190)",
     cancelButtonColor: "rgb(52, 58, 64)",
     confirmButtonText: "Ok",
   }).then(async (result) => {
     if (result.isConfirmed) {
-      confirm()
+      confirm();
       return true;
     } else {
       return false;
@@ -163,11 +163,21 @@ export const cornerError = (message: string | undefined) => {
   });
 };
 
+let swalOpen = false;
+
 export const showLoadingAlert = (message?: string) => {
+  if (swalOpen) return;
+  swalOpen = true;
+
   Swal.fire({
     title: message || "Loading...",
     allowOutsideClick: false,
-    didOpen: () => Swal.showLoading(),
+    didOpen: () => {
+      Swal.showLoading();
+    },
+    willClose: () => {
+      swalOpen = false;
+    },
   });
 };
 export const hideLoadingAlert = () => {

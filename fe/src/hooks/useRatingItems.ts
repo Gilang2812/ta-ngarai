@@ -15,19 +15,27 @@ import { useRef, useState } from "react";
 export const useRatingItems = (id: string) => {
   const { data, refetch, isLoading } = useFetchRatingItems(id);
   const { isOpen, toggleModal } = useModal();
-  const formikRef = useRef<FormikProps<ReviewFormSchema>>(null);
+  const formikRef =
+    useRef<FormikProps<ReviewFormSchema | { seller_response: string }>>(null);
+  const actionRef = useRef<"review" | "response">("review");
 
   const [selectedItemId, setSelectedItemId] = useState<{
     craft_variant_id: string;
     checkout_id: string;
+    id_souvenir_place: string;
   }>();
 
   const initialValues = {
     review_rating: 0,
-    craft_variant_id: "",
-    checkout_id: "",
     review_text: "",
     images: [],
+    craft_variant_id: "",
+    checkout_id: "",
+    id_souvenir_place: "",
+  };
+
+  const responseInitialValues = {
+    seller_response: "",
   };
 
   const { mutate: updateItemReview, isPending } = useUpdateItemReview({
@@ -41,16 +49,21 @@ export const useRatingItems = (id: string) => {
   const handleOpenModal = (
     craft_variant_id: string,
     checkout_id: string,
+    id_souvenir_place: string,
     item: ShippingItem & { reviewGalleries: ReviewGallerySchema[] }
   ) => {
     console.log("Opening modal for item:", item);
-
+    actionRef.current = "review";
     const url = item?.reviewGalleries?.map((gallery) => gallery?.url || "");
     const images = formatImageUrls(url);
     setTimeout(() => {
       if (formikRef.current) {
         formikRef?.current?.setFieldValue("craft_variant_id", craft_variant_id);
         formikRef?.current?.setFieldValue("checkout_id", checkout_id);
+        formikRef?.current?.setFieldValue(
+          "id_souvenir_place",
+          id_souvenir_place
+        );
         formikRef?.current?.setFieldValue("review_rating", item.review_rating);
         formikRef?.current?.setFieldValue(
           "review_text",
@@ -59,7 +72,7 @@ export const useRatingItems = (id: string) => {
         formikRef?.current?.setFieldValue("images", images);
       }
     }, 0);
-    setSelectedItemId({ craft_variant_id, checkout_id });
+    setSelectedItemId({ craft_variant_id, checkout_id, id_souvenir_place });
 
     toggleModal();
   };
@@ -69,19 +82,39 @@ export const useRatingItems = (id: string) => {
     toggleModal();
   };
 
-  const handleSubmitRating = async (values: ReviewFormSchema) => {
+  const handleSubmitRating = async (
+    values: ReviewFormSchema | { seller_response: string }
+  ) => {
     if (isPending) return;
-    if (!selectedItemId) {
+    if (!selectedItemId && actionRef.current !== "response") {
       cornerAlert("Please select an item to rate.");
       return;
     }
     const formData = createFormData({
       ...values,
-      craft_variant_id: selectedItemId.craft_variant_id,
-      checkout_id: selectedItemId.checkout_id,
+      shipping_id: id,
     });
     updateItemReview(formData);
   };
+
+  const handleResponse = async (
+    craft_variant_id: string,
+    checkout_id: string,
+    id_souvenir_place: string,
+    seller_response: string | null
+  ) => {
+    actionRef.current = "response";
+    setTimeout(() => {
+      if (formikRef.current) {
+        formikRef.current.setFieldValue("craft_variant_id", craft_variant_id);
+        formikRef.current.setFieldValue("checkout_id", checkout_id);
+        formikRef.current.setFieldValue("id_souvenir_place", id_souvenir_place);
+        formikRef.current.setFieldValue("seller_response", seller_response);
+      }
+    }, 0);
+    toggleModal();
+  };
+
   return {
     data,
     isLoading,
@@ -89,7 +122,10 @@ export const useRatingItems = (id: string) => {
     handleOpenModal,
     handleCloseModal,
     initialValues,
+    responseInitialValues,
     formikRef,
     handleSubmitRating,
+    handleResponse,
+    actionRef,
   };
 };

@@ -15,7 +15,7 @@ const createPayment = async (body) => {
   };
 
   const transaction = await snap.createTransaction(parameter);
-
+  console.log("transaction midtrans" , transaction);
   await updateCheckout(
     { id: body.order_id },
     {

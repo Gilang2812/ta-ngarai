@@ -16,6 +16,7 @@ const {
   createShipping,
   getUserHistory,
   updateShipping,
+  getSouvenirTransaction,
 } = require("../shipping/shipping.service");
 const {
   getUserCheckouts,
@@ -80,12 +81,12 @@ router.patch("/:id", async (req, res, next) => {
     console.log("id checkout", id);
     const { items, item_details, shippings, sub_total, total_shipping_cost } =
       req.body;
-    console.log("body checkout", shippings[0].order_details);
     const transaction = await createPayment({
       order_id: id,
       gross_amount: sub_total + total_shipping_cost,
       item_details: item_details,
     });
+    console.log("body checkout", transaction);
     const shippingsResult = [];
     for (const [index, item] of shippings.entries()) {
       const { data } = await storeShipment(item);
@@ -128,10 +129,12 @@ router.patch(
   async (req, res, next) => {
     try {
       const { id } = req.params;
-      const { status } = req.body;
+      const { status, isClose } = req.body;
       const shippings = req.body.shippings || [];
-      console.log("data checkout update", req.body);
-      const paymentStatus = await getPaymentStatus(id);
+      let paymentStatus = null;
+      if (!Number(isClose)) {
+        paymentStatus = await getPaymentStatus(id);
+      }
       if (!status || status === 6) {
         if (shippings.length > 0) {
           shippings.forEach(async (shipping_id) => {
@@ -182,30 +185,56 @@ router.get("/history", async (req, res, next) => {
   }
 });
 
+router.get("/transactions", async (req, res, next) => {
+  try {
+    const { transaction } = req.params;
+    const checkout = await getSouvenirTransaction({
+      transaction_token: transaction,
+    });
+    if (!checkout) {
+      return res.status(404).json({ message: "Checkout not found" });
+    }
+    res.status(200).json(checkout);
+  } catch (error) {
+    next(error);
+  }
+});
+
 router.patch(
-  "/:shipping_id/:craft_variant_id",
+  "/:checkout_id/:craft_variant_id/:id_souvenir_place",
   imageUpload.array("images"),
   async (req, res, next) => {
     try {
-      const { shipping_id, craft_variant_id } = req.params;
-      const { review_text, review_rating } = req.body;
+      const { checkout_id, craft_variant_id, id_souvenir_place } = req.params;
+      const { review_text, review_rating, shipping_id, seller_response } =
+        req.body;
+      let updatedItem = null;
       console.log("ini lagi di test");
       console.log(req.files);
-      const updatedItem = await updateItemsCheckout(
-        { checkout_id, craft_variant_id },
-        { review_text, review_rating, review_date: new Date() }
-      );
+      if (!seller_response) {
+        updatedItem = await updateItemsCheckout(
+          { checkout_id, craft_variant_id, id_souvenir_place },
+          { review_text, review_rating, review_date: new Date() }
+        );
+      } else {
+        updatedItem = await updateItemsCheckout(
+          { checkout_id, craft_variant_id, id_souvenir_place },
+          { seller_response, response_date: new Date() }
+        );
+      }
 
       const images = req.files
         ? req.files.map((file) => ({
             url: formatImageUrl(file.path),
             checkout_id,
-            craft_id: craft_variant_id,
+            craft_variant_id,
+            id_souvenir_place,
           }))
         : [];
       await getReviewGalleries({
         checkout_id,
-        craft_id: craft_variant_id,
+        craft_variant_id,
+        id_souvenir_place,
       }).then((galleries) => {
         galleries.forEach(async (gallery) => {
           console.log("gallery", gallery);
@@ -221,6 +250,7 @@ router.patch(
         }
       }
       if (updatedItem) {
+        console.log("updatedItem", updatedItem);
         await updateShipping({ shipping_id }, { status: 5 });
       }
       res.status(200).json(updatedItem);

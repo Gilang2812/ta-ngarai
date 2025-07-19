@@ -3,7 +3,7 @@ import React, { FC, useState } from "react";
 import { FormStep } from "./FormStep";
 import { SecondStep } from "./SecondStep";
 import { cornerError } from "@/utils/AlertUtils";
-import { FormReservationSchema } from "@/app/(user)/web/reservation/custombooking/[id]/page";
+import { FormReservationSchema } from "@/app/(user)/web/(auth)/reservation/custombooking/[id]/page";
 import { useFetchUnitHomestayReservation } from "@/features/reservation/useFetchUnitHomestayReservation";
 import Loading from "@/app/loading";
 import { PackageService } from "@/features/web/package/useFetchPackage";

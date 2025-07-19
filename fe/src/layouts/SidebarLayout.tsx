@@ -6,6 +6,8 @@ import { Suspense } from "react";
 import ManagementSkeletonLoader from "../components/loading/ManagementSkeletonLoader";
 import { FaCartShopping } from "react-icons/fa6";
 import Link from "next/link";
+import Button from "@/components/common/Button";
+import { useAuthStore } from "@/stores/AuthStore";
 
 export default function SidebarLayout({
   children,
@@ -14,6 +16,7 @@ export default function SidebarLayout({
   children: React.ReactNode;
   NavComponent: () => JSX.Element;
 }) {
+  const { user } = useAuthStore();
   return (
     <main className=" flex h-lvh relative min-w-fit max-w-screen  max-h-screen overflow-clip   bg-basic">
       <Sidebar>
@@ -27,20 +30,32 @@ export default function SidebarLayout({
             <h2>Tourism Village</h2>
           </section>
           <div>
-            <section className="grid grid-cols-2 gap-2">
-              <Link className="flex items-center justify-center p-4 bg-white rounded-lg cursor-pointer" href="/web/cart">
-                <FaCartShopping />
-              </Link>
-              <Link href={'/web/profile'} className="flex items-center justify-center p-4 bg-white rounded-lg cursor-pointer">
-                <Image
-                  src="/images/profile.png"
-                  width={1000}
-                  alt="profile"
-                  height={1000}
-                  className="size-12"
-                />
-              </Link>
-            </section>
+            {user ? (
+              <section className="grid grid-cols-2 gap-2">
+                <Link
+                  className="flex items-center justify-center p-4 bg-white rounded-lg cursor-pointer"
+                  href="/web/cart"
+                >
+                  <FaCartShopping />
+                </Link>
+                <Link
+                  href={"/web/profile"}
+                  className="flex items-center justify-center p-4 bg-white rounded-lg cursor-pointer"
+                >
+                  <Image
+                    src="/images/profile.png"
+                    width={1000}
+                    alt="profile"
+                    height={1000}
+                    className="size-12"
+                  />
+                </Link>
+              </section>
+            ) : (
+              <Button className="h-fit w-fit" asChild>
+                <Link href={"/login"}>Login</Link>
+              </Button>
+            )}
           </div>
         </header>
         <Suspense fallback={<ManagementSkeletonLoader />}>{children}</Suspense>

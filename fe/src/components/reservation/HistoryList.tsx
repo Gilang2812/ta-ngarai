@@ -1,5 +1,5 @@
 import { formatPrice } from "@/lib/priceFormatter";
-import { ShippingData } from "@/type/schema/CraftTransactionSchema";
+import { ShippingDataWithReviewGallery } from "@/type/schema/CraftTransactionSchema";
 import {
   getCraftTransactionStatus,
   getCraftTransactionStatusColor,
@@ -13,10 +13,10 @@ import ItemReservationButton from "./ItemReservationButton";
 import { CraftCartForm } from "@/type/schema/CraftCartSchema";
 
 type Props = {
-  history: ShippingData;
+  history: ShippingDataWithReviewGallery;
   onClick?: () => void;
   handleReOrder: (items: CraftCartForm[]) => void;
-  handleCompleteOrder: (order_id: string) => void;
+  handleCompleteOrder: (order_id: string, shipping_id: number) => void;
   handleRateClick: () => void;
 };
 
@@ -25,7 +25,7 @@ const HistoryList: FC<Props> = ({
   onClick,
   handleReOrder,
   handleCompleteOrder,
-  handleRateClick
+  handleRateClick,
 }) => {
   return (
     <div
@@ -34,14 +34,18 @@ const HistoryList: FC<Props> = ({
     >
       <div className="flex justify-between items-center mb-4">
         <h4 className="font-semibold ">
-          {history?.shippingItems?.[0]?.craftVariant?.craft?.souvenirPlace?.name}
+          {history?.shippingItems?.[0]?.detailCraft?.souvenirPlace?.name}
         </h4>
         <span
           className={`${getCraftTransactionStatusColor(
-            history.status
+            history.status,
+            history.shippingItems[0].checkout.transaction_token
           )} text-white px-3 py-1 rounded-full text-xs font-semibold uppercase`}
         >
-          {getCraftTransactionStatus(history.status)}
+          {getCraftTransactionStatus(
+            history.status,
+            history.shippingItems[0].checkout.transaction_token
+          )}
         </span>
       </div>
       <div className="flex gap-4 mb-4">
@@ -51,7 +55,9 @@ const HistoryList: FC<Props> = ({
             width={50}
             className="aspect-square overflow-hidden rounded-lg"
             height={50}
-            src={history?.shippingItems?.[0]?.craftVariant?.craftGalleries?.[0]?.url}
+            src={
+              history?.shippingItems?.[0]?.detailCraft?.craftGalleries?.[0]?.url
+            }
           />
         </div>
         <div className="flex-1">
@@ -59,9 +65,9 @@ const HistoryList: FC<Props> = ({
             <div>
               <p className="">Tanggal</p>
               <p className="font-medium ">
-                {dayjs(history?.shippingItems?.[0]?.checkout?.checkout_date).format(
-                  "DD MMMM YYYY"
-                )}
+                {dayjs(
+                  history?.shippingItems?.[0]?.checkout?.checkout_date
+                ).format("DD MMMM YYYY")}
               </p>
             </div>
             <div>
@@ -78,7 +84,7 @@ const HistoryList: FC<Props> = ({
                 {history.shippingItems
                   .map(
                     (item) =>
-                      `${item?.craftVariant?.craft?.name} ${item?.craftVariant?.name}`
+                      `${item?.detailCraft?.variant?.craft?.name} ${item?.detailCraft?.variant?.name}`
                   )
                   .join("+")}
               </p>
@@ -94,11 +100,12 @@ const HistoryList: FC<Props> = ({
       </div>
       <div className="flex justify-end gap-2 items-center">
         <ItemReservationButton
-          order_id={history.shippingItems[0].checkout_id}
-          status={history.status}
+          order_id={history?.shippingItems?.[0]?.checkout_id}
+          status={history?.status}
           handleCompleteOrder={handleCompleteOrder}
           shipping_id={history.shipping_id}
           handleRateClick={handleRateClick}
+          token={history?.shippingItems?.[0]?.checkout?.transaction_token}
         />
         <Button
           type="button"
@@ -107,6 +114,7 @@ const HistoryList: FC<Props> = ({
             handleReOrder(
               history.shippingItems.map((item) => ({
                 craft_variant_id: item.craft_variant_id,
+                id_souvenir_place: item.id_souvenir_place,
                 jumlah: item.jumlah,
               }))
             );

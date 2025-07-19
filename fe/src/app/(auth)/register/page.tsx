@@ -3,22 +3,16 @@ import { Form, Formik } from "formik";
 import Heading from "@/components/auth/Heading";
 import { FormInput } from "@/components/inputs/FormInput";
 import { FormSubmit } from "@/components/inputs/FormSubmit";
-import { useState } from "react";
 import { registerSchema } from "@/validation/authSchema";
 import { useRegister } from "@/features/auth/useRegister";
-import { showErrorAlert } from "@/utils/AlertUtils";
+import { cornerAlert } from "@/utils/AlertUtils";
 
 // Define schema with Yup for validation
 
 export default function Register() {
-  const [emailTaken, setEmailTaken] = useState(false);
-
   const { mutate, isPending } = useRegister({
     onSuccess: () => {
-      console.log("register successful:");
-    },
-    onError: (error) => {
-      showErrorAlert("register");
+      cornerAlert("Registration successful!");
     },
   });
 
@@ -41,32 +35,34 @@ export default function Register() {
           mutate(values);
         }}
       >
-        {({ errors, touched }) => (
-          <Form>
-            <fieldset className="mb-8 space-y-4">
-              <legend className="sr-only">Register Form</legend>
+        <Form>
+          <fieldset className="mb-8 space-y-4">
+            <legend className="sr-only">Register Form</legend>
 
-              <FormInput type="email" name="email" placeholder="Email" />
-              <small className="text-gray-500">
-                We&apos;ll never share your email with anyone else
-              </small>
+            <FormInput type="email" name="email" placeholder="Email" />
+            <small className="text-gray-500">
+              We&apos;ll never share your email with anyone else
+            </small>
 
-              <FormInput type="text" name="username" placeholder="Username" />
+            <FormInput type="text" name="username" placeholder="Username" />
 
-              <FormInput type="password" name="password" placeholder="Password" />
-              <FormInput type="password" name="confirmPassword" placeholder="Confirm Password" />
-            </fieldset>
+            <FormInput type="password" name="password" placeholder="Password" />
+            <FormInput
+              type="password"
+              name="confirmPassword"
+              placeholder="Confirm Password"
+            />
+          </fieldset>
 
-            <FormSubmit value="Register" isLoading={isPending} />
+          <FormSubmit value="Register" isLoading={isPending} />
 
-            <a
-              href="/login"
-              className="block mt-4 text-center text-primary hover:text-secondary transition-ease-in-out"
-            >
-              <strong>Already have an account? Login</strong>
-            </a>
-          </Form>
-        )}
+          <a
+            href="/login"
+            className="block mt-4 text-center text-primary hover:text-secondary transition-ease-in-out"
+          >
+            <strong>Already have an account? Login</strong>
+          </a>
+        </Form>
       </Formik>
     </section>
   );

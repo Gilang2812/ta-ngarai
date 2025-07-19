@@ -10,7 +10,7 @@ type Props = {
 };
 
 const TableManagementHeader = ({
-  itemsPerPage,
+  itemsPerPage = 5,
   handleItemsPerPage,
   searchTerm,
   handleSearch,

@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
-import { ReactQueryProvider } from "@/context/ReactQueryClientProvider";
+import { ReactQueryProvider } from "@/layout/ReactQueryClientProvider";
 import "./globals.css";
 import "swiper/css/bundle";
 import "swiper/css";
 import Script from "next/script";
 import { ResultProps } from "@/type/props/ResultProps";
+import ReactGoogleOAuthProvider from "@/layout/ReactGoogleOAuthProvider";
 
 export const metadata: Metadata = {
   title: "Desa Wisata Koto Gadang",
@@ -33,17 +34,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ReactQueryProvider>
-      <html lang="en">
-        <body className={` font-nunito antialiased`}>
-          {children}{" "}
-          <Script
-            src="https://app.sandbox.midtrans.com/snap/snap.js"
-            data-client-key={process.env.NEXT_PUBLIC_MIDTRANS_CLIENT_KEY}
-            strategy="beforeInteractive"
-          />
-        </body>
-      </html>
-    </ReactQueryProvider>
+    <ReactGoogleOAuthProvider>
+      <ReactQueryProvider>
+        <html lang="en">
+          <body className={` font-nunito antialiased`}>
+            {children}{" "}
+            <Script
+              src="https://app.sandbox.midtrans.com/snap/snap.js"
+              data-client-key={process.env.NEXT_PUBLIC_MIDTRANS_CLIENT_KEY}
+              strategy="beforeInteractive"
+            />
+          </body>
+        </html>
+      </ReactQueryProvider>
+    </ReactGoogleOAuthProvider>
   );
 }

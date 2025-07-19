@@ -5,6 +5,7 @@ const {
   ItemCheckout,
   ItemCheckoutReviewGallery,
   CraftVariant,
+  SouvenirPlace,
 } = require("../../models/relation");
 
 const includeMap = {
@@ -30,6 +31,12 @@ const includeMap = {
     ),
     required: false,
   },
+  souvenirPlace: {
+    model: SouvenirPlace,
+    as: "souvenirPlace",
+    attributes: ["id", "name", "address", "contact_person"],
+  },
+
   checkout: {
     model: ItemCheckout,
     as: "items",
@@ -37,7 +44,13 @@ const includeMap = {
   reviewGalleries: {
     model: ItemCheckout,
     as: "items",
-    attributes: ["checkout_id", "craft_variant_id", "id_souvenir_place","shipping_id","jumlah"],
+    attributes: [
+      "checkout_id",
+      "craft_variant_id",
+      "id_souvenir_place",
+      "shipping_id",
+      "jumlah",
+    ],
     include: [
       {
         model: ItemCheckoutReviewGallery,
