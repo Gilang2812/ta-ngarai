@@ -1,10 +1,17 @@
-import { useFetchSouvenirPlace } from "@/features/dashboard/marketplace/useFetchSouvenirPlace"; 
+import { useFetchSouvenirPlace } from "@/features/dashboard/marketplace/useFetchSouvenirPlace";
 import { hideLoadingAlert, showLoadingAlert } from "@/utils/AlertUtils";
-import { useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useOrderCraft } from "./useOrderCraft";
 import { DetailCraftManagementResponse } from "@/type/schema/DetailCraftSchema";
+import { useTools } from "./useTools";
+import { SouvenirPlaceSchema } from "@/type/schema/PackageSchema";
 
 export const useMapCraft = () => {
+  const { toggleMarketplace, marketplaceOpen } = useTools();
+  const [selectedStore, setSelectedStore] = useState<
+    (SouvenirPlaceSchema & { crafts: DetailCraftManagementResponse[] }) | null
+  >(null);
+
   const { data, isLoading } = useFetchSouvenirPlace<{
     crafts: DetailCraftManagementResponse[];
   }>(true);
@@ -36,6 +43,16 @@ export const useMapCraft = () => {
     };
   }, [isChecking]);
 
+  const handleSelectStore = useCallback(
+    (
+      store: SouvenirPlaceSchema & { crafts: DetailCraftManagementResponse[] }
+    ) => {
+      setSelectedStore(store);
+      if (!marketplaceOpen) toggleMarketplace();
+    },
+    [marketplaceOpen, toggleMarketplace]
+  );
+
   return {
     data,
     handleSubmit,
@@ -45,5 +62,7 @@ export const useMapCraft = () => {
     isLoading,
     handleBuy,
     handleCart,
+    handleSelectStore,
+    selectedStore,
   };
 };

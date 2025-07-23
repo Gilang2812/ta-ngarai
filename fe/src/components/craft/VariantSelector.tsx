@@ -1,17 +1,24 @@
-import { DetailCraftOrderResponse } from "@/type/schema/DetailCraftSchema";
+import {
+  DetailCraftManagementResponse,
+  DetailCraftOrderResponse,
+} from "@/type/schema/DetailCraftSchema";
 import { motion } from "framer-motion";
 import React from "react";
 
 interface ColorVariantSelectorProps {
-  crafts: DetailCraftOrderResponse[];
+  crafts: (DetailCraftOrderResponse | DetailCraftManagementResponse)[];
   selectedDetailCraftId: string;
-  onSelect: (variant: DetailCraftOrderResponse) => void;
+  onSelect: (
+    variant: DetailCraftOrderResponse | DetailCraftManagementResponse
+  ) => void;
+  isFullName?: boolean;
 }
 
 export const VariantSelector: React.FC<ColorVariantSelectorProps> = ({
   crafts,
   selectedDetailCraftId,
   onSelect,
+  isFullName = false,
 }) => {
   return (
     <motion.div layout className="flex gap-2 flex-wrap">
@@ -23,7 +30,9 @@ export const VariantSelector: React.FC<ColorVariantSelectorProps> = ({
             title={detail.variant.name}
             className="capitalize text-nowrap bg-primary/10 border border-slate-300 rounded p-2 text-slate-500 text-sil"
           >
-            {detail.variant.name}
+            {`${isFullName ? detail.variant.craft.name : ""} ${
+              detail.variant.name
+            }`}
           </motion.button>
           {selectedDetailCraftId === detail.craft_variant_id && (
             <motion.div

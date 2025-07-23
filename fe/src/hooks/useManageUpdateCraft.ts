@@ -12,13 +12,13 @@ import {
   DetailCraftSchema,
 } from "@/type/schema/DetailCraftSchema";
 
-export const useManageUpdateCraft = (id: string) => {
+export const useManageUpdateCraft = (id: string[]) => {
   const {
     data: detailCraft,
     isLoading: detailCraftLoading,
     refetch: refetchVariant,
   } = useGetDetailCraft<DetailCraftManagementResponse>({
-    craft_variant_id: id,
+    id,
     include: ["craft", "craftGalleries"],
   });
   const { data: crafts, isLoading: craftLoading } = useFetchCraft();

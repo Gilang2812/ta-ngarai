@@ -21,10 +21,10 @@ const getLoginResponse = (user) => {
     name: user.fullname,
     username: user.username,
     role: user.id_role,
-    id_souvenirPlace: user.id_souvenir_place,
+    id_souvenir_place: user.id_souvenir_place,
   };
 };
-const userLogin = async (email, password) => {
+const userLogin = async (email="", password) => {
   const user = await findUniqueUsernameOrEmail(email, email);
 
   if (!user) {
@@ -36,7 +36,7 @@ const userLogin = async (email, password) => {
 
   const match = await bcrypt.compare(password, user.password_hash);
   if (!match) {
-    throw new CustomError("invalid password", 401);
+    throw new CustomError("invalid password", 400);
   }
 
   const response = getLoginResponse(user);

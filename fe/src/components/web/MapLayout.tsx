@@ -24,7 +24,7 @@ type Props = React.ComponentProps<typeof GoogleMap> & {
   hideAllLayer: () => void;
 };
 
-function MapLayout({ children, origin, hideAllLayer, zoom, ...props }: Props) {
+function MapLayout({ children, hideAllLayer, zoom, ...props }: Props) {
   const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
   const { isLoaded } = useMapLoad();
   const [isOpen, setIsOpen] = useState(false);
@@ -70,7 +70,7 @@ function MapLayout({ children, origin, hideAllLayer, zoom, ...props }: Props) {
                 <p>Tourism Village</p>
               </section>
               <section className="flex items-center justify-center">
-                <DirectionToKotoGadangButton origin={origin} />
+                <DirectionToKotoGadangButton destination={LANDMARK_POSITION} />
               </section>
             </article>
           </InfoWindow>

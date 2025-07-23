@@ -2,7 +2,7 @@ import { useFetchUserHistory } from "@/features/web/checkout/useFetchUserHistory
 import { useUpdateStatus } from "@/features/web/checkout/useUpdateStatus";
 import { useBulkCreateCraftCart } from "@/features/web/craftCart/useBulkCreateCraftCart";
 import { CraftCartForm } from "@/type/schema/CraftCartSchema";
-import {   ShippingDataWithReviewGallery } from "@/type/schema/CraftTransactionSchema";
+import { ShippingDataWithReviewGallery } from "@/type/schema/CraftTransactionSchema";
 import {
   confirmAlert,
   cornerAlert,
@@ -16,9 +16,8 @@ export const useCraftTransaction = () => {
   const { isOpen, toggleModal } = useModal();
   const router = useRouter();
   const { data: userHistory, isLoading, refetch } = useFetchUserHistory();
-  const [selectedHistory, setSelectedHistory] = useState<ShippingDataWithReviewGallery | null>(
-    null
-  );
+  const [selectedHistory, setSelectedHistory] =
+    useState<ShippingDataWithReviewGallery | null>(null);
 
   const [modalContent, setModalContent] = useState<"items" | "rate">("items");
 
@@ -36,8 +35,8 @@ export const useCraftTransaction = () => {
     },
   });
 
-  const handleHistoryClick = (history: ShippingDataWithReviewGallery) => {
-    setModalContent("items");
+  const handleHistoryClick = (history: ShippingDataWithReviewGallery, content: "items" | "rate") => {
+    setModalContent(content);
     setSelectedHistory(history);
     toggleModal();
   };
@@ -54,7 +53,9 @@ export const useCraftTransaction = () => {
       showLoadingAlert();
     }
     return () => {
-      hideLoadingAlert();
+      setTimeout(() => {
+        hideLoadingAlert();
+      }, 3000);
     };
   }, [isPending, isUpdating]);
 
@@ -62,7 +63,7 @@ export const useCraftTransaction = () => {
     createCraftCart({ items });
   };
 
-  const handleCompleteOrder = (orderId: string, shipping_id: number) => {
+  const handleCompleteOrder = (orderId: string, shipping_id: string) => {
     confirmAlert(
       "Finish Order",
       "Are you sure you have received your order?",
@@ -72,11 +73,7 @@ export const useCraftTransaction = () => {
     );
   };
 
-  const handleRateClick = (history: ShippingDataWithReviewGallery) => {
-    setModalContent("rate");
-    setSelectedHistory(history);
-    toggleModal();
-  };
+ 
   return {
     userHistory,
     isLoading,
@@ -87,7 +84,6 @@ export const useCraftTransaction = () => {
     handleHistoryClose,
     handleReOrder,
     handleCompleteOrder,
-    modalContent,
-    handleRateClick,
+    modalContent, 
   };
 };

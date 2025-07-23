@@ -1,4 +1,4 @@
-import Button from "@/components/common/Button";
+ 
 import ButtonTooltip from "@/components/common/ButtonTooltip"; 
 import { HiOutlineCube } from "react-icons/hi2";
 //1
@@ -25,17 +25,13 @@ import { HiOutlineCube } from "react-icons/hi2";
 type Props = {
   handleShipProducts: () => void;
   status: number;
+  token?: string;
+  rated: boolean;
 };
 const TransactionButtons = ({ handleShipProducts, status }: Props) => {
   switch (status) {
     case 1:
-      return (
-        <>
-          <Button variant="secondary" disabled>
-            awaiting Payment
-          </Button>
-        </>
-      );
+      return;
     case 2:
       return (
         <>
@@ -55,11 +51,7 @@ const TransactionButtons = ({ handleShipProducts, status }: Props) => {
     case 5:
       return <></>;
     case 6:
-      return (
-        <>
-          {/* (Opsional) */} 
-        </>
-      );
+      return <>{/* (Opsional) */}</>;
     default:
       return null;
   }

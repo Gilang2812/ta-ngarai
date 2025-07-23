@@ -16,10 +16,14 @@ import { DetailCraftManagementResponse } from "@/type/schema/DetailCraftSchema";
 
 type Props = {
   data: (SouvenirPlaceSchema & { crafts: DetailCraftManagementResponse[] })[];
+  handleSelectStore: (
+    store: SouvenirPlaceSchema & { crafts: DetailCraftManagementResponse[] }
+  ) => void;
 };
 
-const SouvenirGeoJSON = ({ data }: Props) => {
+const SouvenirGeoJSON = ({ data, handleSelectStore }: Props) => {
   const { open, toggleInfoWindow } = useInfoWindow();
+
   const souvenirFeatureCollection: FeatureCollection = useMemo(() => {
     return {
       type: "FeatureCollection",
@@ -59,7 +63,10 @@ const SouvenirGeoJSON = ({ data }: Props) => {
           }}
           key={sp.id}
           position={getCentroid(sp.geom)}
-          onClick={() => toggleInfoWindow(index)}
+          onClick={() => {
+            toggleInfoWindow(index);
+            handleSelectStore(sp);
+          }}
         >
           {open === index && (
             <InfoWindow
@@ -92,7 +99,7 @@ const SouvenirGeoJSON = ({ data }: Props) => {
                       <p className="text-sm text-orange-500">
                         {formatPrice(cr.price)}
                       </p>
-                      <Button>
+                      <Button type="button" className="h-fit" asChild>
                         <Link
                           href={`/web/craft/${cr?.variant?.id_craft}/${cr?.id_souvenir_place}?idvr=${cr?.craft_variant_id}`}
                         >

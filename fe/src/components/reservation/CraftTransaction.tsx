@@ -19,8 +19,7 @@ const CraftTransaction = () => {
     selectedHistory,
     handleReOrder,
     handleCompleteOrder,
-    modalContent,
-    handleRateClick,
+    modalContent, 
   } = useCraftTransaction();
   if (isLoading) return <ManagementSkeletonLoader />;
   if (!userHistory || userHistory.length === 0) {
@@ -47,12 +46,12 @@ const CraftTransaction = () => {
         <div className="max-w-7xl mx-auto p-5">
           {userHistory.map((item) => (
             <HistoryList
-              onClick={() => handleHistoryClick(item)}
+              onClick={() => handleHistoryClick(item, "items")}
               history={item}
               key={item.shipping_id}
               handleReOrder={handleReOrder}
               handleCompleteOrder={handleCompleteOrder}
-              handleRateClick={() => handleRateClick(item)}
+              handleRateClick={() => handleHistoryClick(item, "rate")}
             />
           ))}
         </div>

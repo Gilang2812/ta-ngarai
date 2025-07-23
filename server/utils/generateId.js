@@ -1,26 +1,25 @@
-const { Op } = require('sequelize');
+const { Op } = require("sequelize");
 
-async function generateCustomId(prefix, model,length) {
-  const prefixLength = prefix.length; 
-  const remainingLength = length - prefixLength; 
+async function generateCustomId(prefix = "", model, length = 5, key = "id") {
+  const prefixLength = prefix.length;
+  const remainingLength = length - prefixLength;
 
   const lastRecord = await model.findOne({
     where: {
-      id: {
-        [Op.like]: `${prefix}%` 
-      }
+      [key]: {
+        [Op.like]: `${prefix}%`,
+      },
     },
-    order: [['id', 'DESC']], 
+    order: [[key, "DESC"]],
   });
 
   const newNumber = lastRecord
-    ? parseInt(lastRecord.id.replace(prefix, ''), 10) + 1
-    : 1; 
+    ? parseInt(lastRecord[key].replace(prefix, ""), 10) + 1
+    : 1;
 
-  const formattedNumber = String(newNumber).padStart(remainingLength, '0');
+  const formattedNumber = String(newNumber).padStart(remainingLength, "0");
 
   return `${prefix}${formattedNumber}`;
 }
-
 
 module.exports = { generateCustomId };

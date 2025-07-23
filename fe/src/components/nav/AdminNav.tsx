@@ -13,40 +13,50 @@ import {
 } from "react-icons/fa6";
 import { DropDownItem } from "@/components/nav/DropDownItem";
 import { DropDownChildrenItem } from "./DropDownChildren";
-import { useAuthStore } from "@/stores/AuthStore";
+import { ROUTES } from "@/data/routes";
+import useUserRole from "@/hooks/useUserRole";
 
 export const AdminNav = () => {
-  const { user } = useAuthStore();
+  const { isAdmin, isSeller } = useUserRole();
   return (
     <nav className="mt-12 font-bold">
       <ul className="space-y-1">
         <li>
           <SideNavItem icon={FaHouse} label="Home" link="/web" />
         </li>
-        {user?.role === 2 && (
+        {isSeller && (
+          <li>
+            <SideNavItem
+              icon={FaBullhorn}
+              label="manage craft transaction"
+              link={ROUTES.MANAGE_CRAFT_TRANSACTION}
+            />
+          </li>
+        )}
+        {isAdmin && (
           <>
+            <li>
+              <SideNavItem
+                icon={FaBullhorn}
+                label="manage reservation"
+                link={ROUTES.MANAGERESERVATION}
+              />
+            </li>
             <li>
               <DropDownItem icon={FaPagelines} label="Manage Village">
                 <DropDownChildrenItem
                   icon={FaPagelines}
                   label="data village"
-                  link="/dashboard/koto"
+                  link={ROUTES.MANAGE_VILLAGE}
                 />
                 <DropDownChildrenItem
                   icon={FaScroll}
                   label="Announcement"
-                  link="/dashboard/announcement"
+                  link={ROUTES.ANNOUNCEMENT}
                 />
               </DropDownItem>
             </li>
 
-            <li>
-              <SideNavItem
-                icon={FaBullhorn}
-                label="manage reservation"
-                link="/dashboard/managereservation"
-              />
-            </li>
             <li>
               <DropDownItem
                 icon={FaSquarePollHorizontal}
@@ -55,17 +65,17 @@ export const AdminNav = () => {
                 <DropDownChildrenItem
                   icon={FaSquarePollHorizontal}
                   label="Data Package"
-                  link="/dashboard/package"
+                  link={ROUTES.PACKAGE}
                 />
                 <DropDownChildrenItem
                   icon={FaPuzzlePiece}
                   label="Package Type"
-                  link="/dashboard/packagetype"
+                  link={ROUTES.PACKAGE_TYPE}
                 />
                 <DropDownChildrenItem
                   icon={FaPuzzlePiece}
                   label="Service Package"
-                  link="/dashboard/servicepackage"
+                  link={ROUTES.SERVICE_PACKAGE}
                 />
               </DropDownItem>
             </li>
@@ -73,21 +83,21 @@ export const AdminNav = () => {
               <SideNavItem
                 icon={FaBed}
                 label="Manage Homestay"
-                link="/dashboard/homestay"
+                link={ROUTES.HOMESTAY}
               />
             </li>
             <li>
               <SideNavItem
                 icon={FaUsers}
                 label="Manage Users"
-                link="/dashboard/users"
+                link={ROUTES.MANAGE_USERS}
               />
             </li>
             <li>
               <SideNavItem
                 icon={FaStore}
                 label="Manage Marketplace"
-                link="/dashboard/umkm"
+                link={ROUTES.MANAGE_UMKM}
               />
             </li>
           </>
@@ -96,7 +106,7 @@ export const AdminNav = () => {
           <SideNavItem
             icon={FaPenToSquare}
             label="Manage Craft"
-            link="/dashboard/craft"
+            link={ROUTES.MANAGE_CRAFT}
           />
         </li>
       </ul>

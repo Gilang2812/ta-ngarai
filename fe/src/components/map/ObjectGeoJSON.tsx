@@ -6,19 +6,18 @@ import { useUserPositionStore } from "@/stores/UserPositionStore";
 import { useInfoWindow } from "@/hooks/useInfoWindow";
 import { MarkerObject } from "./MarkerObject";
 import { useGoogleMap } from "@react-google-maps/api";
-import { SimplifiedObject } from "@/type/schema/PackageSchema"; 
+import { SimplifiedObject } from "@/type/schema/PackageSchema";
 import { getIconUrl } from "@/utils/map/getIconUrl";
 
 type Props = GeoJsonLayerProps;
 
 const ObjectGeoJSON = ({ data }: Props) => {
-  const map = useGoogleMap();
+  const map = useGoogleMap(); 
   const hasFitBounds = useRef(false);
   const { radius, userPosition } = useUserPositionStore();
   const { open, toggleInfoWindow } = useInfoWindow();
   useEffect(() => {
-    if (!map || !data) return;
-    console.log(data);
+    if (!map || !data) return; 
     const dataObject = new google.maps.Data();
     dataObject.addGeoJson(data);
     dataObject.setMap(map);
@@ -33,12 +32,14 @@ const ObjectGeoJSON = ({ data }: Props) => {
     const bounds = new google.maps.LatLngBounds();
     if (!userPosition && !hasFitBounds.current) {
       data.features.forEach((feature) => {
-        const { lat, lng } = getCentroid(feature.geometry as Geometry);
-        const marker = new google.maps.Marker({
-          title: "itu lah",
-          position: { lat, lng },
-        });
-        if (marker) bounds.extend({ lat, lng });
+        if (feature.geometry) {
+          const { lat, lng } = getCentroid(feature.geometry as Geometry);
+          const marker = new google.maps.Marker({
+            title: "itu lah",
+            position: { lat, lng },
+          });
+          if (marker) bounds.extend({ lat, lng });
+        }
       });
 
       if (!radius) {
@@ -53,20 +54,22 @@ const ObjectGeoJSON = ({ data }: Props) => {
   return (
     data &&
     data.features.map((feature, index) => {
-      const { lat, lng } = getCentroid(feature.geometry as Geometry);
-      const properties = feature?.properties as SimplifiedObject;
+      if (feature.geometry) {
+        const { lat, lng } = getCentroid(feature.geometry as Geometry);
+        const properties = feature?.properties as SimplifiedObject;
 
-      return (
-        <MarkerObject
-          open={open}
-          iconUrl={getIconUrl(properties?.id)}
-          toggleInfoWindow={toggleInfoWindow}
-          index={index}
-          position={{ lat, lng }}
-          key={index}
-          properties={properties}
-        />
-      );
+        return (
+          <MarkerObject
+            open={open}
+            iconUrl={getIconUrl(properties?.id)}
+            toggleInfoWindow={toggleInfoWindow}
+            index={index}
+            position={{ lat, lng }}
+            key={index}
+            properties={properties}
+          />
+        );
+      }
     })
   );
 };

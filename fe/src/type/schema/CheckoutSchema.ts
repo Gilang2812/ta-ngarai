@@ -59,7 +59,7 @@ export const addressFormSchema = yup.object({
 });
 export type AddressForm = yup.InferType<typeof addressFormSchema>;
 export type Address = AddressForm & {
-  id: string;
+  address_id: string;
   customer_id: string | number;
 };
 

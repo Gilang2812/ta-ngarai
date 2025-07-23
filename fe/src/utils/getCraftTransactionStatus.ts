@@ -13,7 +13,7 @@ export const getCraftTransactionStatus = (status: number, token?: string) => {
     case 5:
       return "Rated";
     case 6:
-      return !token ? "failed" : "Awaiting payment";
+      return !token ? "cancel" : "Awaiting payment";
     default:
       return "Unknown";
   }

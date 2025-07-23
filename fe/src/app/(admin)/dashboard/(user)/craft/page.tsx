@@ -34,11 +34,15 @@ import { detailCraftSchema } from "@/type/schema/DetailCraftSchema";
 import CraftManagementForm from "@/components/craft/CraftManagementForm";
 import CraftManagementList from "@/components/craft/CraftManagementList";
 import { ViewToggleButtons } from "@/components/craft/ViewToggleButtons";
-import VariantManagementList from "@/components/craft/VariantManagementList";
+import VariantManagementList from "@/components/craft/VariantManagementList"; 
+import NoStoreSection from "@/components/dashboard/craft/NoStoreSection";
+import { ROUTES } from "@/data/routes";
+import useUserRole from "@/hooks/useUserRole";
 
 registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview);
 
 const Craft = () => {
+  const { isSeller } = useUserRole();
   const {
     isOpenForm,
     formType,
@@ -70,6 +74,8 @@ const Craft = () => {
     updateVariantPending,
   } = useCraftManagement();
 
+  if (!isSeller) return <NoStoreSection />;
+
   const tableHeaders = ["name", "price", "weight", "stock", "modal", "images"];
 
   const RenderCraft = () => {
@@ -98,7 +104,10 @@ const Craft = () => {
                   <Link
                     title="edit"
                     className="p-3 bg-white border   rounded border-cyan-400 text-cyan-400 transition-ease-in-out hover:bg-cyan-300 hover:text-white"
-                    href={`./craft/${detail.craft_variant_id}`}
+                    href={ROUTES.EDIT_CRAFT(
+                      detail.craft_variant_id,
+                      detail.id_souvenir_place
+                    )}
                   >
                     <FaPencil />
                   </Link>

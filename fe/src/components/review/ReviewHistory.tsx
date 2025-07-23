@@ -35,19 +35,13 @@ const ReviewHistory = ({ shippingItems }: Props) => {
         reviewRating={item.review_rating}
         reviewText={item.review_text}
         reviewDate={item.review_date}
-        imgUrls={item?.reviewGalleries?.map((img) => img.url)} 
+        imgUrls={item?.reviewGalleries?.map((img) => img.url)}
         craftVariantId={item.craft_variant_id}
         checkoutId={item.checkout_id}
         idSouvenirPlace={item.id_souvenir_place}
         sellerResponse={item.seller_response}
         response_date={item.response_date}
       />
-      {item.seller_response && (
-        <div className="bg-gray-100 p-4 rounded-lg">
-          <p className="text-sm text-gray-600">Seller Response:</p>
-          <p className="text-sm text-gray-800">{item.seller_response}</p>
-        </div>
-      )}
     </section>
   ));
 };

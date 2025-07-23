@@ -11,6 +11,7 @@ import ReviewTransactionSkeleton from "../loading/ReviewTransactionSkeleton";
 import { reviewFormSchema } from "@/type/schema/ReviewSchema";
 import ReviewItem from "./ReviewItem";
 import ReviewContent from "./ReviewContent";
+import { useAuthStore } from "@/stores/AuthStore";
 
 type Props = {
   id: string;
@@ -30,8 +31,9 @@ const ReviewItemCard = ({ id }: Props) => {
     handleResponse,
     initialValues,
   } = useRatingItems(id);
+  const { user } = useAuthStore();
 
-  if (isLoading) return <ReviewTransactionSkeleton />;
+  if (isLoading && !data) return <ReviewTransactionSkeleton />;
 
   return (
     <>
@@ -49,19 +51,21 @@ const ReviewItemCard = ({ id }: Props) => {
                 quantity={item?.jumlah}
               />
               <section>
-                <Button
-                  onClick={() =>
-                    handleOpenModal(
-                      item.craft_variant_id,
-                      item.checkout_id,
-                      item.id_souvenir_place,
-                      item
-                    )
-                  }
-                  className="h-fit"
-                >
-                  {item.review_rating ? "Edit Rate" : "Rate Now"}
-                </Button>
+                {item.checkout.customer_id === user?.id && (
+                  <Button
+                    onClick={() =>
+                      handleOpenModal(
+                        item.craft_variant_id,
+                        item.checkout_id,
+                        item.id_souvenir_place,
+                        item
+                      )
+                    }
+                    className="h-fit"
+                  >
+                    {item.review_rating ? "Edit Rate" : "Rate Now"}
+                  </Button>
+                )}
               </section>
             </article>
             {item.review_rating && (
@@ -99,6 +103,7 @@ const ReviewItemCard = ({ id }: Props) => {
           validationSchema={
             actionRef.current === "response" ? null : reviewFormSchema
           }
+          enableReinitialize
         >
           <Form className="space-y-4">
             {actionRef.current === "response" ? (

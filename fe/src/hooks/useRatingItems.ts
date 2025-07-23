@@ -1,6 +1,6 @@
 import { useFetchRatingItems } from "@/features/web/checkout/useFetchRatingItems";
 import { useUpdateItemReview } from "@/features/web/checkout/useUpdateItemReview";
-import { formatImageUrls } from "@/lib/imgUrlFormatter";
+import { formatImageUrls } from "@/lib/imgUrlFormatter"; 
 import { ShippingItem } from "@/type/schema/CraftTransactionSchema";
 import {
   ReviewFormSchema,
@@ -10,14 +10,18 @@ import { cornerAlert } from "@/utils/AlertUtils";
 import { createFormData } from "@/utils/common/createFormData";
 import { useModal } from "@/utils/ModalUtils";
 import { FormikProps } from "formik";
-import { useRef, useState } from "react";
+import {  useRef, useState } from "react";
 
 export const useRatingItems = (id: string) => {
   const { data, refetch, isLoading } = useFetchRatingItems(id);
+ 
   const { isOpen, toggleModal } = useModal();
+ 
+
   const formikRef =
     useRef<FormikProps<ReviewFormSchema | { seller_response: string }>>(null);
   const actionRef = useRef<"review" | "response">("review");
+
 
   const [selectedItemId, setSelectedItemId] = useState<{
     craft_variant_id: string;
@@ -85,6 +89,7 @@ export const useRatingItems = (id: string) => {
   const handleSubmitRating = async (
     values: ReviewFormSchema | { seller_response: string }
   ) => {
+    console.log("values", values);
     if (isPending) return;
     if (!selectedItemId && actionRef.current !== "response") {
       cornerAlert("Please select an item to rate.");

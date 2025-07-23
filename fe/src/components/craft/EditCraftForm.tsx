@@ -9,9 +9,10 @@ import FilePondComponent from "../common/Filepond";
 import Link from "next/link";
 import { Spinner } from "flowbite-react";
 import { detailCraftSchema } from "@/type/schema/DetailCraftSchema";
+import { ROUTES } from "@/data/routes";
 
 type Props = {
-  id: string;
+  id: string[];
 };
 
 export const EditCraftForm = ({ id }: Props) => {
@@ -64,6 +65,7 @@ export const EditCraftForm = ({ id }: Props) => {
                     type="number"
                     name="weight"
                     min="0"
+                    step="any"
                   />
                 </div>
 
@@ -86,7 +88,7 @@ export const EditCraftForm = ({ id }: Props) => {
               </div>
               <div className="flex gap-2 justify-end items-center">
                 <Link
-                  href={`./`}
+                  href={ROUTES.MANAGE_CRAFT}
                   className=" p-2 rounded bg-gray-500 text-white hover:bg-gray-600 transition-colors  duration-200"
                 >
                   back

@@ -6,7 +6,7 @@ type Props = {
   status: number | string;
   order_id: string | number;
   shipping_id: string;
-  handleCompleteOrder: (order_id: string, shipping_id: number) => void;
+  handleCompleteOrder: (order_id: string, shipping_id: string) => void;
   handleRateClick: () => void;
   token?: string;
 };
@@ -49,7 +49,7 @@ const ItemReservationButton = ({
         <Button
           onClick={(e) => {
             e.stopPropagation();
-            handleCompleteOrder(order_id as string, parseInt(shipping_id));
+            handleCompleteOrder(order_id as string, shipping_id as string);
           }}
           type="button"
         >

@@ -7,7 +7,11 @@ import ManagementSkeletonLoader from "../components/loading/ManagementSkeletonLo
 import { FaCartShopping } from "react-icons/fa6";
 import Link from "next/link";
 import Button from "@/components/common/Button";
-import { useAuthStore } from "@/stores/AuthStore";
+import { motion } from "framer-motion";
+import useToggleOpen from "@/hooks/useToggleOpen";
+import useAuth from "@/hooks/useAuth()";
+import { ROUTES } from "@/data/routes";
+import useClickOutside from "@/hooks/useOutsideClick";
 
 export default function SidebarLayout({
   children,
@@ -16,7 +20,11 @@ export default function SidebarLayout({
   children: React.ReactNode;
   NavComponent: () => JSX.Element;
 }) {
-  const { user } = useAuthStore();
+  const { isOpen, toggle, setIsOpen } = useToggleOpen();
+  const { user, handleLogout } = useAuth();
+  const ref = useClickOutside<HTMLUListElement>(() => {
+    setIsOpen(false);
+  });
   return (
     <main className=" flex h-lvh relative min-w-fit max-w-screen  max-h-screen overflow-clip   bg-basic">
       <Sidebar>
@@ -34,26 +42,45 @@ export default function SidebarLayout({
               <section className="grid grid-cols-2 gap-2">
                 <Link
                   className="flex items-center justify-center p-4 bg-white rounded-lg cursor-pointer"
-                  href="/web/cart"
+                  href={ROUTES.CART}
                 >
                   <FaCartShopping />
                 </Link>
-                <Link
-                  href={"/web/profile"}
-                  className="flex items-center justify-center p-4 bg-white rounded-lg cursor-pointer"
-                >
-                  <Image
-                    src="/images/profile.png"
-                    width={1000}
-                    alt="profile"
-                    height={1000}
-                    className="size-12"
-                  />
-                </Link>
+                <div className="relative">
+                  <button
+                    type="button"
+                    className="flex items-center justify-center p-4 bg-white rounded-lg cursor-pointer"
+                    onClick={toggle}
+                  >
+                    <Image
+                      src="/images/profile.png"
+                      width={1000}
+                      alt="profile"
+                      height={1000}
+                      className="size-12"
+                    />
+                  </button>
+                  <motion.ul
+                    layout
+                    ref={ref}
+                    className={`absolute right-0 top-full mt-2 w-48 bg-white shadow-lg rounded-lg p-2 ${
+                      isOpen ? "block" : "hidden"
+                    }`}
+                  >
+                    <li>
+                      <a href="/web/profile">Profile</a>
+                    </li>
+                    <li>
+                      <button onClick={handleLogout} type="button">
+                        Logout
+                      </button>
+                    </li>
+                  </motion.ul>
+                </div>
               </section>
             ) : (
               <Button className="h-fit w-fit" asChild>
-                <Link href={"/login"}>Login</Link>
+                <Link href={ROUTES.LOGIN}>Login</Link>
               </Button>
             )}
           </div>

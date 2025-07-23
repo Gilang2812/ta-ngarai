@@ -35,7 +35,7 @@ export const PackageList = () => {
         >
           <figure className="w-44 basis-full grow md:grow-0 md:basis-[200px] min-w-[200px]  shrink rounded overflow-hidden aspect-[4/5]">
             <Img
-              src={"package/" + item?.packageGalleries[0]?.url}
+              src={"package/" + item?.packageGalleries?.[0]?.url}
               alt="P "
               width={500}
               height={500}

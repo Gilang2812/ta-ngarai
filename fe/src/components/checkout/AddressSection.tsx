@@ -78,7 +78,7 @@ export const AddressSection = ({
             addresses={addresses}
             onAddNewAddress={onAddNewAddress}
             onEditAddress={onEditAddress}
-            selectedAddressId={selectedAddress.id}
+            selectedAddressId={selectedAddress.address_id}
             onSelectAddress={onSelectAddress}
           />
         )}

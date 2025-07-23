@@ -12,26 +12,43 @@ import { MdFavorite } from "react-icons/md";
 import { Form, Formik } from "formik";
 import { CraftCartForm } from "@/type/schema/CraftCartSchema";
 import { motion } from "framer-motion";
-import { DetailCraftOrderResponse } from "@/type/schema/DetailCraftSchema";
+import {
+  DetailCraftManagementResponse,
+  DetailCraftOrderResponse,
+} from "@/type/schema/DetailCraftSchema";
+
+type DataProdukInfo = {
+  rating: number;
+  craftName: string;
+  price: number;
+  description: string;
+  stock: number;
+  sold: number;
+  storeName: string;
+  craftId: string;
+  craftVariantId: string;
+};
 
 interface ProductInfoProps {
   crafts: DetailCraftOrderResponse[];
-  selectedDetailCraft: DetailCraftOrderResponse;
-  setSelectedDetailCraft: (variant: DetailCraftOrderResponse) => void;
+  setSelectedDetailCraft: (
+    variant: DetailCraftOrderResponse | DetailCraftManagementResponse
+  ) => void;
   initialValues: CraftCartForm;
   handleSubmit: (values: CraftCartForm) => void;
   handleCart: () => void;
   handleBuy: () => void;
+  data: DataProdukInfo;
 }
 
 export const ProductInfo: React.FC<ProductInfoProps> = ({
-  selectedDetailCraft,
   setSelectedDetailCraft,
   initialValues,
   handleSubmit,
   handleCart,
   handleBuy,
   crafts,
+  data,
 }) => {
   const [isFavorite, setIsFavorite] = useState(false);
 
@@ -42,52 +59,45 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({
   return (
     <div className="space-y-4 font-normal">
       <div className="flex items-center">
-        <Rating rating={selectedDetailCraft.items.length} showText={true} />
+        <Rating rating={data.rating} showText={true} />
       </div>
 
       <h1 className="text-2xl font-bold capitalize text-gray-900">
-        {selectedDetailCraft.variant.craft.name}{" "}
-        {selectedDetailCraft.variant.name}
+        {data.craftName}
       </h1>
 
       <div className="grid grid-cols-2 text-sm text-gray-600">
-        <div>Stok: {selectedDetailCraft.stock}</div>
-        <div>
-          Terjual:{" "}
-          {selectedDetailCraft.items.reduce(
-            (acc, item) => acc + Number(item.review_rating),
-            0
-          )}
-        </div>
+        <div>Stok: {data.stock}</div>
+        <div>Terjual: {data.sold}</div>
       </div>
 
       <div className="flex items-center gap-2">
         <span className="text-2xl font-bold text-red-600">
-          {formatPrice(selectedDetailCraft.price)}
+          {formatPrice(data.price)}
         </span>
-        {selectedDetailCraft.price && (
+        {data.price && (
           <span className="text-base text-gray-400 line-through">
-            {formatPrice(selectedDetailCraft.price)}
+            {formatPrice(data.price)}
           </span>
         )}
       </div>
 
       <div className="bg-primary/10 text-secondary flex items-center gap-4 font-body p-3 rounded-md text-lg capitalize">
-        <FaStore /> {selectedDetailCraft.souvenirPlace.name}
+        <FaStore /> {data.storeName}
       </div>
 
-      <div className="grid lg:grid-cols-2">
+      <div className="grid gap-3 lg:grid-cols-2">
         <section className=" py-2 w- grow  ">
           <h3 className="text-sm  font-bold text-gray-900 mb-2">Variasi</h3>
           <VariantSelector
             crafts={crafts}
-            selectedDetailCraftId={selectedDetailCraft.craft_variant_id}
+            selectedDetailCraftId={data.craftVariantId}
             onSelect={setSelectedDetailCraft}
           />
         </section>
         <motion.section layout className="py-4 grow">
           <h3 className="text-lg font-medium text-gray-900 mb-2">Deskripsi</h3>
-          <p className="text-gray-700">{selectedDetailCraft.description}</p>
+          <p className="text-gray-700">{data.description}</p>
         </motion.section>
       </div>
       <Formik onSubmit={handleSubmit} initialValues={initialValues}>

@@ -6,13 +6,16 @@ import { FormSubmit } from "@/components/inputs/FormSubmit";
 import { registerSchema } from "@/validation/authSchema";
 import { useRegister } from "@/features/auth/useRegister";
 import { cornerAlert } from "@/utils/AlertUtils";
+import { useRouter } from "next/navigation";
 
 // Define schema with Yup for validation
 
 export default function Register() {
+  const router = useRouter();
   const { mutate, isPending } = useRegister({
     onSuccess: () => {
       cornerAlert("Registration successful!");
+      router.push("/login");
     },
   });
 

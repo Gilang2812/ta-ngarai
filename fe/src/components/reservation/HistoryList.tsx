@@ -16,7 +16,7 @@ type Props = {
   history: ShippingDataWithReviewGallery;
   onClick?: () => void;
   handleReOrder: (items: CraftCartForm[]) => void;
-  handleCompleteOrder: (order_id: string, shipping_id: number) => void;
+  handleCompleteOrder: (order_id: string, shipping_id: string) => void;
   handleRateClick: () => void;
 };
 

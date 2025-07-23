@@ -25,10 +25,10 @@ export const useObjectArround = () => {
     ...(layer.souvenir ? souvenir ?? [] : []),
     ...(layer.traditional ? traditional ?? [] : []),
     ...(layer.worship ? worship ?? [] : []),
-  ];
-
+  ]; 
   const objectGeom: FeatureCollection | null =
     useReformatObject(allObjectLayer);
+
   const isloading =
     isAttractionLoading ||
     isCulinaryLoading ||

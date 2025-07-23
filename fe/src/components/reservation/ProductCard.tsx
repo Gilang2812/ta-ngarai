@@ -12,7 +12,7 @@ export const ProductCard = ({ product }: Props) => (
       alt={product.detailCraft.variant.name}
       width={50}
       height={50}
-      src={product?.detailCraft?.craftGalleries[0]?.url}
+      src={product?.detailCraft?.craftGalleries?.[0]?.url}
     />
     <div className="flex-1">
       <h4 className="font-medium text-gray-700">

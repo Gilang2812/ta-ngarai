@@ -76,7 +76,12 @@ const ShippingAddress = sequelize.define(
 );
 
 ShippingAddress.beforeCreate(async (instance) => {
-  instance.address_id = await generateCustomId("SA", ShippingAddress, 5);
+  instance.address_id = await generateCustomId(
+    "SA",
+    ShippingAddress,
+    5,
+    "address_id"
+  );
 });
 
 module.exports = ShippingAddress;

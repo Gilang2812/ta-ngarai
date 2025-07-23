@@ -19,8 +19,6 @@ const findUser = async (criteria) => {
   return await User.findOne({ where: criteria });
 };
 
-
-
 const insertUser = async (data) => {
   data.password_hash = await bcrypt.hash("admin", 10);
   const user = await User.create(data);
@@ -44,28 +42,33 @@ const findDetailUsers = async (users) => {
 const findOrCreateAuthGroup = async (id, name) => {
   const [authGroup, created] = await AuthGroup.findOrCreate({
     where: { id },
-    defaults: { name }, 
+    defaults: { name },
   });
 
-  return authGroup; 
+  return authGroup;
 };
-const deleteUser  = async (id) => {
- await User.destroy({ where:  id  });
-  return true;
- 
-}
-const findAuthGroupUser = async (user) => {
 
+const updateUser = async (key, body) => {
+  const user = await User.update(body, {
+    where: key,
+  });
+  return user;
+};
+const deleteUser = async (id) => {
+  await User.destroy({ where: id });
+  return true;
+};
+const findAuthGroupUser = async (user) => {
   const authGroupUser = await AuthGroupUsers.findOne({ where: user });
   return authGroupUser;
-}
+};
 const deleteAdmin = async (data) => {
-  const id= data.user_id;
+  const id = data.user_id;
   await AuthGroupUsers.destroy({ where: data });
-  await deleteUser({id})
+  await deleteUser({ id });
 
   return true;
-}
+};
 
 module.exports = {
   findUsers,
@@ -76,5 +79,6 @@ module.exports = {
   deleteAdmin,
   findUser,
   findAuthGroupUser,
-  deleteUser
+  deleteUser,
+  updateUser,
 };

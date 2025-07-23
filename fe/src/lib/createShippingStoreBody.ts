@@ -19,7 +19,7 @@ export const createShippingStoreBody = (
     shipper_address: checkout?.items?.[0]?.detailCraft?.souvenirPlace.address,
     shipper_email: "not registered",
     receiver_name: checkout?.shippingAddress.addressCustomer.fullname,
-    receiver_phone: checkout?.shippingAddress.addressCustomer.phone,
+    receiver_phone: checkout?.shippingAddress.addressCustomer.phone ||"085274953252",
     receiver_destination_id: parseInt(
       checkout?.shippingAddress.destination_id as string
     ),

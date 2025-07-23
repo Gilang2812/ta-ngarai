@@ -9,7 +9,7 @@ import { FormInput } from "@/components/inputs/FormInput";
 import { TableRawSkeleton } from "@/components/loading/TableRawSkeleton";
 import GoogleMapDrawing from "@/components/map/GoogleMapDrawing";
 import { Modal } from "@/components/modal/Modal";
-import { useManageMarketplace } from "@/hooks/useManageMarketplaec";
+import { useManageMarketplace } from "@/hooks/useManageMarketplace";
 import { timeFormatter } from "@/lib/timeFormatter";
 import {
   FormMarketplace,

@@ -9,13 +9,16 @@ import {
   getCraftTransactionStatusColor,
 } from "@/utils/getCraftTransactionStatus";
 import { formatPrice } from "@/lib/priceFormatter";
-import { FaInfoCircle, FaReply } from "react-icons/fa";
+import { FaCheckCircle, FaInfoCircle, FaReply } from "react-icons/fa";
 import TableHeaderManagement from "../admin/TableHeaderManagement";
 import TransactionButtons from "./craftTransaction/TransactionButtons";
 import { ProductContent } from "./craftTransaction/ProductContent";
 import ManagementFooter from "../admin/ManagementFooter";
 import ButtonTooltip from "../common/ButtonTooltip";
 import Link from "next/link";
+import { ModalDetail } from "../modal/ModalDetail";
+import { UserDetailPage } from "../reservation/UserDetailPage";
+import ReviewHistory from "../review/ReviewHistory";
 
 const CraftTransaction = () => {
   const {
@@ -33,6 +36,11 @@ const CraftTransaction = () => {
     searchTerm,
     clearSearchTerm,
     handleSearch,
+    isOpen,
+    selectedTransaction,
+    modalContent,
+    handleTransactionClick,
+    handleTransactionClose,
   } = useManageCraftTransaction();
   if (transactionLoading) return <ManagementSkeletonLoader />;
 
@@ -93,10 +101,14 @@ const CraftTransaction = () => {
         <td className="text-center">
           <span
             className={`px-3 py-1 ${getCraftTransactionStatusColor(
-              item?.status
-            )} text-white text-center rounded-full text-sm font-medium`}
+              item?.status,
+              item.shippingItems[0].checkout.transaction_token
+            )} text-white text-center text-nowrap rounded-full text-sm font-medium`}
           >
-            {getCraftTransactionStatus(item.status)}
+            {getCraftTransactionStatus(
+              item.status,
+              item.shippingItems[0].checkout.transaction_token
+            )}
           </span>
         </td>
         <td>
@@ -110,17 +122,23 @@ const CraftTransaction = () => {
                     />
                   ),
                   checkout_id: item.shippingItems[0].checkout.id,
-                  shipping_id: parseInt(item.shipping_id),
+                  shipping_id: item.shipping_id,
                 })
               }
               status={item.status}
+              rated={item.shippingItems[0].review_text ? true : false}
             />
-            <ButtonTooltip label="Detail Pesanan" variant="primary">
+
+            <ButtonTooltip
+              onClick={() => handleTransactionClick(item, "items")}
+              label="Detail Pesanan"
+              variant="primary"
+            >
               <FaInfoCircle />
             </ButtonTooltip>
             {item.shippingItems.some(
               (craft) => craft.review_text && !craft.seller_response
-            ) && (
+            ) ? (
               <ButtonTooltip label="Reply" variant="edit" asChild>
                 <Link
                   href={`/web/reservation/${item.shipping_id}/rating-items`}
@@ -128,6 +146,19 @@ const CraftTransaction = () => {
                   <FaReply />
                 </Link>
               </ButtonTooltip>
+            ) : (
+              item.shippingItems.every(
+                (craft) => craft.review_text && craft.seller_response
+              ) && (
+                <ButtonTooltip
+                  label="Responded"
+                  variant="edit"
+                  className="p-2"
+                  onClick={() => handleTransactionClick(item, "rate")}
+                >
+                  <FaCheckCircle />
+                </ButtonTooltip>
+              )
             )}
           </div>
         </td>
@@ -163,6 +194,22 @@ const CraftTransaction = () => {
           indexOfLastItem={indexOfLastItem}
           totalItems={currentItems.length}
         />
+        <ModalDetail
+          isOpen={isOpen}
+          onClose={handleTransactionClose}
+          title="Detail Transaksi"
+        >
+          {selectedTransaction &&
+            (modalContent === "items" ? (
+              <UserDetailPage history={selectedTransaction} />
+            ) : (
+              modalContent === "rate" && (
+                <ReviewHistory
+                  shippingItems={selectedTransaction.shippingItems}
+                />
+              )
+            ))}
+        </ModalDetail>
       </section>
     )
   );

@@ -28,16 +28,21 @@ import { memo, useEffect, useRef } from "react";
 import { layerType } from "@/data/layers";
 import { useObjectArround } from "@/hooks/useMergeObjectLayer";
 import ObjectGeoJSON from "../map/ObjectGeoJSON";
-import { useMergeALlObject } from "@/hooks/useMergeAllObject"; 
+import { useMergeALlObject } from "@/hooks/useMergeAllObject";
 import { GoogleMap } from "@react-google-maps/api";
+import { useTools } from "@/hooks/useTools";
+import CustomRoute from "../map/CustomRoute";
+import useTravelRoute from "@/hooks/useTravelRoute";
 
-function MapWeb({zoom,children,souvenir=false}:{souvenir?:boolean}& React.ComponentProps<typeof GoogleMap>) {
+function MapWeb({
+  zoom,
+  children,
+  souvenir = false,
+}: { souvenir?: boolean } & React.ComponentProps<typeof GoogleMap>) {
   const mapRef = useRef<google.maps.Map | null>(null);
-
-
-
+  const { open } = useTools();
   const { isTerrain, setIsTerrain, setShowLabel, showLabel } = useMapTools();
-
+  const { routes } = useTravelRoute();
   const {
     clickedPosition,
     handleManualLocation,
@@ -66,14 +71,20 @@ function MapWeb({zoom,children,souvenir=false}:{souvenir?:boolean}& React.Compon
     state: objects,
     setState: setObjects,
     toggleAllOptions: handleShowAllObject,
+    unCheckAllOptions: hideAllObjects,
   } = useToggleMapOptions(objectsData);
 
   const { objectGeom } = useObjectArround();
   const { allObjectGeom } = useMergeALlObject(objects);
   const { toggleCheckBox } = useCheckBox();
 
+  useEffect(() => {
+    if (open === "around") {
+      hideAllObjects();
+    }
+  }, [open, hideAllObjects]);
   const { isLoading, mergedRegions } = useMapLayer(layers as layerType);
- 
+
   useEffect(() => {
     if (souvenir) {
       setObjects((prev) => ({
@@ -81,7 +92,8 @@ function MapWeb({zoom,children,souvenir=false}:{souvenir?:boolean}& React.Compon
         souvenir,
       }));
     }
-  }, [souvenir, setObjects]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [souvenir]);
 
   if (isLoading) return <MapSkeletonLoader />;
 
@@ -133,18 +145,24 @@ function MapWeb({zoom,children,souvenir=false}:{souvenir?:boolean}& React.Compon
           zoom={zoom || 17}
           options={{
             mapTypeId: `${isTerrain ? "terrain" : "satellite"}`,
-       
           }}
           hideAllLayer={hideAllLayers}
         >
           {mergedRegions && <GeoJsonLayer data={mergedRegions} />}
-          {userLocation && <MapMarker position={userLocation} />}
+
+          {routes.length < 2 && userLocation && (
+            <MapMarker position={userLocation} />
+          )}
           <RegionLabel regions={labeledRegionLocations} showLabel={showLabel} />
           <AirplaneOverlays airplanes={airplanes} showAirPlane={showAirPlane} />
-          <MarkerManualLocation position={clickedPosition} />
+          {routes.length < 2 && (
+            <MarkerManualLocation position={clickedPosition} />
+          )}
           {objectGeom && <ObjectGeoJSON data={objectGeom} />}
           {allObjectGeom && <ObjectGeoJSON data={allObjectGeom} />}
           {children}
+
+          <CustomRoute hideAllLayers={hideAllLayers} />
         </MapLayout>
       </div>
       {locationError && <p className="text-red-500 text-sm">{locationError}</p>}

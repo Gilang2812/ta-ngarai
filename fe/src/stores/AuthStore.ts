@@ -5,6 +5,7 @@ import { persist } from "zustand/middleware";
 type AuthStoreType = {
   user: UserLogin | null;
   setUser: (user: UserLogin) => void;
+  clearUser: () => void;
 };
 
 export const useAuthStore = create<AuthStoreType>()(

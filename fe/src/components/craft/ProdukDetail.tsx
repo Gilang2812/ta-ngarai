@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import { ProductImageGallery } from "./ProductImageGallery";
 import { ProductInfo } from "./ProductInfo";
 import { useDetailProductCraft } from "@/hooks/useDetailProductCraft";
@@ -23,6 +24,10 @@ function ProductDetail({ id }: { id: string[] }) {
     handleSubmit,
     crafts,
   } = useDetailProductCraft(id, idVariant);
+
+  useEffect(() => {
+    console.log("Active Index:", activeIndex);
+  }, [activeIndex]);
 
   if (isLoading) {
     return (
@@ -72,12 +77,32 @@ function ProductDetail({ id }: { id: string[] }) {
 
           <ProductInfo
             setSelectedDetailCraft={setSelectedDetailCraft}
-            selectedDetailCraft={selectedDetailCraft}
             initialValues={initialValues}
             handleSubmit={handleSubmit}
             handleCart={handleCart}
             handleBuy={handleBuy}
             crafts={crafts}
+            data={{
+              craftId: selectedDetailCraft.variant.id_craft,
+              craftName: `${selectedDetailCraft.variant.craft.name} ${selectedDetailCraft.variant.name}`,
+              price: selectedDetailCraft.price,
+              description: selectedDetailCraft.description,
+              stock: selectedDetailCraft.stock,
+              craftVariantId: selectedDetailCraft.craft_variant_id,
+              rating:
+                selectedDetailCraft.items.reduce(
+                  (acc, curr) => acc + (curr.review_rating || 0),
+                  0
+                ) /
+                  selectedDetailCraft.items.filter((item) => item.review_rating)
+                    .length || 0,
+              sold:
+                selectedDetailCraft.items.reduce(
+                  (acc, curr) => acc + curr.jumlah,
+                  0
+                ) || 0,
+              storeName: selectedDetailCraft.souvenirPlace.name,
+            }}
           />
         </div>
       </div>

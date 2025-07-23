@@ -23,7 +23,9 @@ export const buttonVariants = cva(
           "bg-white border border-green-600 disabled:hover:bg-white text-green-600 w-fit  hover:text-white hover:bg-green-900",
         secondary:
           " px-3 py-2 font-normal text-black disabled:text-white disabled:hover:bg-gray-300 bg-gray-300  w-fit hover:text-white hover:bg-gray-400",
-        edit: "p-3   bg-white disabled:hover:bg-white border   border-cyan-400 text-cyan-400 hover:bg-cyan-400 hover:text-white",
+        regEdit:
+          " bg-white disabled:hover:bg-white border   border-cyan-400 text-cyan-400 hover:bg-cyan-400 hover:text-white",
+        edit: " bg-cyan-400 disabled:hover:bg-cyan-200 border   border-cyan-400 text-white hover:bg-cyan-500 disabled:bg-cyan-200",
       },
       isActive: {
         default: "",

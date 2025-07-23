@@ -3,17 +3,17 @@ import { CraftVariantInclude } from "@/type/schema/CraftSchema";
 import { useQuery } from "@tanstack/react-query";
 
 export const useGetDetailCraft = <T>({
-  craft_variant_id,
+  id,
   include = [],
 }: {
-  craft_variant_id: string;
+  id: string[];
   include?: CraftVariantInclude;
 }) => {
   return useQuery<T>({
-    queryKey: ["detailCraft", craft_variant_id, include.toString()],
+    queryKey: ["detailCraft", id.toString(), include.toString()],
     queryFn: async () => {
       const { data } = await axiosInstance.get(
-        `/detail-crafts/detail/${craft_variant_id}`,
+        `/detail-crafts/detail/${id.join("/")}`,
         {
           params: {
             include: include.toString(),

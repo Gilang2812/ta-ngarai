@@ -6,7 +6,8 @@ type Props = {
   destination: google.maps.LatLngLiteral;
   travelMode?: google.maps.TravelMode;
   options?: google.maps.DirectionsRendererOptions;
-  hideAllLayer: () => void;
+  hideAllLayer?: () => void;
+  suppressMarkers?: boolean;
 };
 
 const DirectionsPair: React.FC<Props> = ({
@@ -15,6 +16,7 @@ const DirectionsPair: React.FC<Props> = ({
   travelMode = google.maps.TravelMode.DRIVING,
   options,
   hideAllLayer,
+  suppressMarkers = true,
 }) => {
   const [response, setResponse] = useState<google.maps.DirectionsResult | null>(
     null
@@ -33,7 +35,7 @@ const DirectionsPair: React.FC<Props> = ({
           }}
           callback={(res, status) => {
             if (status === "OK" && res) {
-              hideAllLayer();
+              hideAllLayer?.();
               setResponse(res);
             } else {
               console.error("Directions request failed:", status);
@@ -46,8 +48,7 @@ const DirectionsPair: React.FC<Props> = ({
         <DirectionsRenderer
           directions={response}
           options={{
-            suppressMarkers: true,
-
+            suppressMarkers: suppressMarkers,
             polylineOptions: {
               strokeColor: "#435ebe",
               strokeWeight: 5,

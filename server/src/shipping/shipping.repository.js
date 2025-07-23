@@ -129,7 +129,7 @@ const userHistory = async ({ shipping_id = null, customer_id = null }) => {
         model: ItemCheckout,
         where: shipping_id
           ? {
-              shipping_id: shipping_id,
+              shipping_id,
             }
           : {},
         required: true,
@@ -188,7 +188,6 @@ const userHistory = async ({ shipping_id = null, customer_id = null }) => {
           {
             model: Checkout,
             as: "checkout",
-            where: customer_id ? { customer_id: customer_id } : {},
             attributes: [
               "id",
               "customer_id",
@@ -198,7 +197,10 @@ const userHistory = async ({ shipping_id = null, customer_id = null }) => {
               "checkout_date",
               "transaction_token",
             ],
-            where: { checkout_date: { [Op.ne]: null } },
+            where: {
+              ...(customer_id ? { customer_id: customer_id } : {}),
+              checkout_date: { [Op.ne]: null },
+            },
             required: true,
             include: [
               {
@@ -325,6 +327,7 @@ const findSouvenirTransaction = async ({ id_souvenir_place = null } = {}) => {
               "total_price",
               "payment",
               "checkout_date",
+              "transaction_token",
             ],
             where: { checkout_date: { [Op.ne]: null } },
             required: true,
@@ -358,6 +361,10 @@ const findSouvenirTransaction = async ({ id_souvenir_place = null } = {}) => {
               },
             ],
           },
+          {
+            model: ItemCheckoutReviewGallery,
+            as: "reviewGalleries",
+          },
         ],
       },
     ],
@@ -381,7 +388,6 @@ const findSouvenirTransaction = async ({ id_souvenir_place = null } = {}) => {
 };
 
 const editShipping = async (key, body) => {
-  console.log("body edit", key);
   return Shipping.update(body, {
     where: key,
   });

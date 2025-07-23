@@ -34,7 +34,7 @@ router.post("/", async (req, res, next) => {
   try {
     const items = req.body.items;
     console.log("items", items);
-    const customer_id = 1; // Assuming customer_id is 1 for testing purposes
+    const customer_id = req.user.id;
     const newItems = await checkoutOrder(items, customer_id);
 
     res.status(201).json(newItems);
@@ -46,7 +46,7 @@ router.post("/", async (req, res, next) => {
 router.post("/cart", async (req, res, next) => {
   try {
     const items = req.body.items;
-    const customer_id = 1; // Assuming customer_id is 1 for testing purposes
+    const customer_id = req.user.id;
     const newItems = await checkoutOrder(items, customer_id);
     if (newItems.length === 0) {
       return res.status(404).json({ message: "No items found" });
@@ -67,7 +67,7 @@ router.post("/cart", async (req, res, next) => {
 });
 router.get("/", async (req, res, next) => {
   try {
-    const checkout = await getUserCheckouts({ customer_id: 1 }); // Assuming customer_id is 1 for testing purposes
+    const checkout = await getUserCheckouts({ customer_id: req.user.id });
 
     res.status(200).json(checkout);
   } catch (error) {
@@ -89,11 +89,11 @@ router.patch("/:id", async (req, res, next) => {
     console.log("body checkout", transaction);
     const shippingsResult = [];
     for (const [index, item] of shippings.entries()) {
-      const { data } = await storeShipment(item);
+      // const { data } = await storeShipment(item); // karena ada masalah di storeShipment API komship
       const prevIndex = item.order_details.slice(0, index).length ?? 0;
       const newShipping = await createShipping({
-        shipping_id: data.data.order_id,
-        shipping_no: data.data.order_no,
+        // shipping_id: data.order_id,  // belum bisa di gunakan
+        // shipping_no: data.order_no,
         shipping_name: item.shipping,
         shipping_type: item.shipping_type,
         total_shipping_cost: item.shipping_cost,
@@ -101,7 +101,7 @@ router.patch("/:id", async (req, res, next) => {
       });
       shippingsResult.push(newShipping.shipping_id);
       for (const [detailIndex, detail] of item.order_details.entries()) {
-        detail.shipping_id = data.data.order_id;
+        detail.shipping_id = newShipping.shipping_id;
         await updateItemsCheckout(
           {
             checkout_id: id,
@@ -131,6 +131,7 @@ router.patch(
       const { id } = req.params;
       const { status, isClose } = req.body;
       const shippings = req.body.shippings || [];
+      console.log("req.body", req.body);
       let paymentStatus = null;
       if (!Number(isClose)) {
         paymentStatus = await getPaymentStatus(id);
@@ -177,8 +178,8 @@ router.get("/history", async (req, res, next) => {
   try {
     const checkout = await getUserHistory({
       status: 0,
-      customer_id: 1,
-    }); // Assuming customer_id is 1 for testing purposes
+      customer_id: req.user.id,
+    });
     res.status(200).json(checkout);
   } catch (error) {
     next(error);
@@ -187,9 +188,8 @@ router.get("/history", async (req, res, next) => {
 
 router.get("/transactions", async (req, res, next) => {
   try {
-    const { transaction } = req.params;
     const checkout = await getSouvenirTransaction({
-      transaction_token: transaction,
+      id_souvenir_place: req.user.id_souvenir_place,
     });
     if (!checkout) {
       return res.status(404).json({ message: "Checkout not found" });
@@ -211,46 +211,45 @@ router.patch(
       let updatedItem = null;
       console.log("ini lagi di test");
       console.log(req.files);
-      if (!seller_response) {
-        updatedItem = await updateItemsCheckout(
-          { checkout_id, craft_variant_id, id_souvenir_place },
-          { review_text, review_rating, review_date: new Date() }
-        );
-      } else {
+      if (seller_response || seller_response == "") {
         updatedItem = await updateItemsCheckout(
           { checkout_id, craft_variant_id, id_souvenir_place },
           { seller_response, response_date: new Date() }
         );
-      }
+      } else {
+        updatedItem = await updateItemsCheckout(
+          { checkout_id, craft_variant_id, id_souvenir_place },
+          { review_text, review_rating, review_date: new Date() }
+        );
 
-      const images = req.files
-        ? req.files.map((file) => ({
-            url: formatImageUrl(file.path),
-            checkout_id,
-            craft_variant_id,
-            id_souvenir_place,
-          }))
-        : [];
-      await getReviewGalleries({
-        checkout_id,
-        craft_variant_id,
-        id_souvenir_place,
-      }).then((galleries) => {
-        galleries.forEach(async (gallery) => {
-          console.log("gallery", gallery);
-          await deleteReviewGalleryById({
-            id: gallery.id,
+        const images = req.files
+          ? req.files.map((file) => ({
+              url: formatImageUrl(file.path),
+              checkout_id,
+              craft_variant_id,
+              id_souvenir_place,
+            }))
+          : [];
+        await getReviewGalleries({
+          checkout_id,
+          craft_variant_id,
+          id_souvenir_place,
+        }).then((galleries) => {
+          galleries.forEach(async (gallery) => {
+            console.log("gallery", gallery);
+            await deleteReviewGalleryById({
+              id: gallery.id,
+            });
+            fs.unlinkSync(`public\\${gallery.url}`);
           });
-          fs.unlinkSync(`public\\${gallery.url}`);
         });
-      });
-      if (images.length > 0) {
-        for (const image of images) {
-          await createReviewGallery(image);
+        if (images.length > 0) {
+          for (const image of images) {
+            await createReviewGallery(image);
+          }
         }
-      }
+      } 
       if (updatedItem) {
-        console.log("updatedItem", updatedItem);
         await updateShipping({ shipping_id }, { status: 5 });
       }
       res.status(200).json(updatedItem);

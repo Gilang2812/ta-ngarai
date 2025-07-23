@@ -1,15 +1,21 @@
 import { useFetchSouvenirTransaction } from "@/features/web/checkout/useFetchSouvenirTransaction";
 import { getCraftTransactionStatus } from "@/utils/getCraftTransactionStatus";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import useSearchTable from "./useSearchTable";
 import useTableManagement from "./useTableManagement";
-import { ShippingData } from "@/type/schema/CraftTransactionSchema";
+import { ShippingDataWithReviewGallery } from "@/type/schema/CraftTransactionSchema";
 import { useUpdateStatus } from "@/features/web/checkout/useUpdateStatus";
 import { cornerAlert, showLoadingAlert } from "@/utils/AlertUtils";
+import { useModal } from "@/utils/ModalUtils";
 
 const useManageCraftTransaction = () => {
+  const [modalContent, setModalContent] = useState<"items" | "rate">("items");
+  const { isOpen, toggleModal } = useModal();
+  const [selectedTransaction, setSelectedTransaction] =
+    useState<ShippingDataWithReviewGallery | null>(null);
+
   const {
     data: transaction,
     isLoading: transactionLoading,
@@ -40,8 +46,9 @@ const useManageCraftTransaction = () => {
   }: {
     content: JSX.Element;
     checkout_id: string;
-    shipping_id: number;
+    shipping_id: string;
   }) => {
+    console.log(shipping_id);
     MySwal.fire({
       title: "Ship Products?",
       text: "Are you sure you want to ship these products?",
@@ -78,6 +85,17 @@ const useManageCraftTransaction = () => {
     );
   }, [searchTerm, transaction]);
 
+  const handleTransactionClick = (item: ShippingDataWithReviewGallery, content: "items" | "rate") => {
+    setModalContent(content);
+    setSelectedTransaction(item);
+    toggleModal();
+  };
+
+  const handleTransactionClose = () => {
+    setSelectedTransaction(null);
+    toggleModal();
+  };
+
   const {
     currentItems,
     currentPage,
@@ -88,10 +106,14 @@ const useManageCraftTransaction = () => {
     totalPages,
     indexOfFirstItem,
     indexOfLastItem,
-  } = useTableManagement<ShippingData>(filteredData);
+  } = useTableManagement<ShippingDataWithReviewGallery>(filteredData);
 
   return {
     transaction,
+    isOpen,
+    selectedTransaction,
+    handleTransactionClick,
+    handleTransactionClose,
     transactionLoading,
     handleShipProducts,
     currentItems,
@@ -106,6 +128,7 @@ const useManageCraftTransaction = () => {
     searchTerm,
     clearSearchTerm,
     handleSearch,
+    modalContent,
   };
 };
 

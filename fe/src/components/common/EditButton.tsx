@@ -3,7 +3,7 @@ import ButtonTooltip from "./ButtonTooltip";
 
 export const EditButton = ({ ...props }: React.ComponentProps<"button">) => {
   return (
-    <ButtonTooltip label="edit" variant={"edit"} {...props}>
+    <ButtonTooltip label="edit" variant={"regEdit"} {...props}>
       <FaPencil />
     </ButtonTooltip>
   );

@@ -5,4 +5,4 @@ function AuthLayout({ children }: { children: React.ReactNode }) {
   return <>{children}</>;
 }
 
-export default withAuth(AuthLayout, { role: "auth" });
+export default withAuth(AuthLayout, { role: "guest" });

@@ -3,12 +3,13 @@ import React from "react";
 import ImgCraft from "../common/ImgCraft";
 import Button from "../common/Button";
 import { MdArrowForwardIos, MdOutlineArrowBackIosNew } from "react-icons/md";
-import { motion } from "framer-motion";
-import { DetailCraftUserResponse } from "@/type/schema/DetailCraftSchema";
+import { AnimatePresence, motion } from "framer-motion";
+import { DetailCraftManagementResponse } from "@/type/schema/DetailCraftSchema";
+import { baseUrl } from "@/lib/baseUrl";
 
 interface ProductImageGalleryProps {
-  selectedImage: string;
-  selectedDetailCraft: DetailCraftUserResponse;
+  selectedImage: string | null;
+  selectedDetailCraft: DetailCraftManagementResponse;
   activeIndex: number;
   handleThumbnailClick: (url: string, index: number) => void;
   handlePrevImageButton: () => void;
@@ -25,14 +26,26 @@ export const ProductImageGallery: React.FC<ProductImageGalleryProps> = ({
   return (
     <div className="w-full">
       <div className="relative h-96 w-full mb-4 rounded-lg overflow-hidden">
-        <ImgCraft
-          src={selectedImage}
+        {/* <ImgCraft
+          src={selectedImage ? selectedImage : ""}
           alt={selectedDetailCraft.variant.name}
           fill
           className="object-contain"
           sizes="(max-width: 768px) 100vw, 500px"
           priority
-        />
+        /> */}
+        <AnimatePresence mode="wait">
+          <motion.img
+            layoutId="selectedImage"
+            alt="main image"
+            src={`${baseUrl}/${selectedImage ? selectedImage : ""}`}
+            className="w-full aspect-square shadow"
+            initial={{ opacity: 0, x: -10 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: 10 }}
+            transition={{ duration: 0.8 }}
+          />
+        </AnimatePresence>
       </div>
       <div className="relative border p-4 rounded-xl">
         <Button
@@ -57,7 +70,9 @@ export const ProductImageGallery: React.FC<ProductImageGalleryProps> = ({
             >
               <ImgCraft
                 src={thumb.url}
-                alt={`${selectedDetailCraft.variant.name} thumbnail ${index + 1}`}
+                alt={`${selectedDetailCraft.variant.name} thumbnail ${
+                  index + 1
+                }`}
                 fill
                 className="object-cover"
                 sizes="80px"

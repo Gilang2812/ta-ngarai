@@ -7,12 +7,15 @@ import {
   FaMapPin,
   FaMoneyBill,
   FaPersonPraying,
+  FaPlus,
   FaSpa,
 } from "react-icons/fa6";
 import { DirectionToKotoGadangButton } from "./DirectionToKotoGadangButton";
 import { SimplifiedObject } from "@/type/schema/PackageSchema";
 import Button from "../common/Button";
 import Link from "next/link";
+import useTravelRoute from "@/hooks/useTravelRoute";
+import ButtonTooltip from "../common/ButtonTooltip";
 
 type MarkerProps = {
   position: LatLngLiteral;
@@ -52,7 +55,8 @@ export const MarkerObject = ({
   };
 
   const { icon, text } = getIconAndTextSecondLine();
-  const { icon: thirdIcon, text:thirdText } = getIconAndTextThirdLine();
+  const { icon: thirdIcon, text: thirdText } = getIconAndTextThirdLine();
+  const { routes, handleAddUniqueRoute } = useTravelRoute();
   return (
     <MapMarker
       icon={{
@@ -84,6 +88,22 @@ export const MarkerObject = ({
                   <FaInfo />
                 </Link>
               </Button>
+              {routes.length > 0 && (
+                <ButtonTooltip
+                  onClick={() =>
+                    handleAddUniqueRoute({
+                      id: properties.id,
+                      name: properties.name,
+                      lat: position.lat,
+                      lng: position.lng,
+                    })
+                  }
+                  variant={"regSuccess"}
+                  label="Add to Route"
+                >
+                  <FaPlus /> Add
+                </ButtonTooltip>
+              )}
             </section>
           </article>
         </InfoWindowF>

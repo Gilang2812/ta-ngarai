@@ -70,9 +70,7 @@ export const DayButton = ({
       clearObject();
       setButtonActive(null);
     } else {
-    console.log(direction||objects.length>0)
-    console.log(objects.length)
-    console.log(direction)
+
       setTimeout(() => { 
         setObject(object as SimplifiedObject[]);
         setButtonActive(key);

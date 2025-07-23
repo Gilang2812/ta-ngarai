@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-type ToggleType = "default" | "around" | "package";
+type ToggleType = "default" | "around" | "package" | "marketplace";
 
 type ToggleStore = {
   open: ToggleType;

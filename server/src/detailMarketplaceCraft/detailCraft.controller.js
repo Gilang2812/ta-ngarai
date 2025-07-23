@@ -21,8 +21,12 @@ const fs = require("fs");
 router.get("/", async (req, res, next) => {
   try {
     const includeKeys = req.query.include?.split(",") || [];
-    const condition = { id_souvenir_place: "SP006" }; // Default value, can be modified as needed
-    const detailCrafts = await getDetailCrafts(condition, includeKeys);
+
+    const condition = { id_souvenir_place: req.user.id_souvenir_place }; // Default value, can be modified as needed
+    let detailCrafts = [];
+    if (req.user.id_souvenir_place) {
+      detailCrafts = await getDetailCrafts(condition, includeKeys);
+    }
     res.status(200).json(detailCrafts);
   } catch (error) {
     next(error);
@@ -38,28 +42,33 @@ router.get("/users", async (req, res, next) => {
   }
 });
 
-router.get("/detail/:craft_variant_id", async (req, res, next) => {
-  try {
-    const { craft_variant_id } = req.params;
-    const includeKeys = req.query.include?.split(",") || [];
-    const id_souvenir_place = "SP006"; //req.user.id_souvenir_place Default value, can be modified as needed
-    const detailCraft = await getDetailCraft(
-      {
-        craft_variant_id,
-        id_souvenir_place,
-      },
-      includeKeys
-    );
-    res.status(200).json(detailCraft);
-  } catch (error) {
-    next(error);
+router.get(
+  "/detail/:craft_variant_id/:id_souvenir_place",
+  async (req, res, next) => {
+    try {
+      const { craft_variant_id, id_souvenir_place } = req.params;
+      const includeKeys = req.query.include?.split(",") || [];
+      const detailCraft = await getDetailCraft(
+        {
+          craft_variant_id,
+          id_souvenir_place,
+        },
+        includeKeys
+      );
+      res.status(200).json(detailCraft);
+    } catch (error) {
+      next(error);
+    }
   }
-});
+);
 
 router.get("/order/:id_craft/:id_souvenir_place", async (req, res, next) => {
   try {
     const { id_craft, id_souvenir_place } = req.params;
-    const detailCraft = await getOrderDetailCraft({ id_craft, id_souvenir_place });
+    const detailCraft = await getOrderDetailCraft({
+      id_craft,
+      id_souvenir_place,
+    });
     res.status(200).json(detailCraft);
   } catch (error) {
     next(error);
@@ -75,7 +84,7 @@ router.post(
       const { craft_variant_id, price, weight, modal, stock, description } =
         req.body;
       console.log(req.body);
-      const id_souvenir_place = "SP005";
+      const id_souvenir_place = req.user.id_souvenir_place;
       const newDetailCraft = await createDetailCraft({
         craft_variant_id,
         id_souvenir_place,

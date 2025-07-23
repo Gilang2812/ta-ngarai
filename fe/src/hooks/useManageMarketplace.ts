@@ -1,45 +1,25 @@
-import { useCreateMarketplace } from "@/features/dashboard/marketplace/useCreateMarketplace";
 import { useDeleteMarketplace } from "@/features/dashboard/marketplace/useDeleteMarketplace";
 import { useFetchSouvenirPlace } from "@/features/dashboard/marketplace/useFetchSouvenirPlace";
-import { useUpdateMarketplace } from "@/features/dashboard/marketplace/useUpdateMarketplace";
-import { FormMarketplace } from "@/type/schema/MarketplaceSchema";
 import { SouvenirPlaceSchema } from "@/type/schema/PackageSchema";
 import { confirmDeleteAlert, cornerAlert } from "@/utils/AlertUtils";
 import { useModal } from "@/utils/ModalUtils";
 import { useState } from "react";
+import useFormMarketplace from "./useFormMarketplace";
 
 export const useManageMarketplace = () => {
   const { data, isLoading, refetch } = useFetchSouvenirPlace();
   const { isOpen, toggleModal } = useModal();
   const [formType, setFormType] = useState<"create" | "edit">("create");
 
-  const [initialValues, setInitialValues] = useState<FormMarketplace>({
-    id: "",
-    name: "",
-    address: "",
-    contact_person: "",
-    close: "",
-    open: "",
-    description: "",
-    geom: "",
-  });
+  const onSuccessForm = () => {
+    refetch();
+    toggleModal();
+  };
+  const { initialValues, setInitialValues, isPending, handleSubmit } =
+    useFormMarketplace({
+      onSuccessForm,
+    });
 
-  const { mutate: createMarketplace, isPending: isPendingCreate } =
-    useCreateMarketplace({
-      onSuccess: () => {
-        cornerAlert("success create umkm");
-        toggleModal();
-        refetch();
-      },
-    });
-  const { mutate: updateMarketplace, isPending: isPendingUpdate } =
-    useUpdateMarketplace({
-      onSuccess: () => {
-        cornerAlert("success update umkm");
-        toggleModal();
-        refetch();
-      },
-    });
   const { mutateAsync: deleteMarketplace } = useDeleteMarketplace({
     onSuccess: () => {
       cornerAlert("success delete umkm");
@@ -47,13 +27,6 @@ export const useManageMarketplace = () => {
     },
   });
 
-  const handleSubmit = (values: FormMarketplace) => {
-    if (initialValues.id) {
-      updateMarketplace(values);
-    } else {
-      createMarketplace(values);
-    }
-  };
   const handleDelete = (name: string, id: string) => {
     confirmDeleteAlert("marketplace", name, async () => {
       await deleteMarketplace(id);
@@ -92,7 +65,7 @@ export const useManageMarketplace = () => {
   return {
     handleSubmit,
     handleOpenEditModal,
-    isPending: isPendingCreate || isPendingUpdate,
+    isPending,
     isOpen,
     initialValues,
     handleDelete,

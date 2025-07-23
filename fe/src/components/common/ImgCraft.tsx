@@ -8,12 +8,12 @@ import React, { useEffect, useState } from "react";
 const ImgCraft = ({
   width = 64,
   height = 64,
-  src="/images/Image_not_available.png",
+  src = "/images/Image_not_available.png",
   ...props
 }: { src: string } & React.ComponentProps<typeof Image>) => {
   const notFound = "/images/Image_not_available.png";
   const foundedSrc = `${baseUrl}/${src}`;
-  const [imgSrc, setImgSrc] = useState(foundedSrc);
+  const [imgSrc, setImgSrc] = useState(src ? foundedSrc : notFound);
   useEffect(() => {
     setImgSrc(foundedSrc);
     return () => {
@@ -21,7 +21,14 @@ const ImgCraft = ({
     };
   }, [foundedSrc]);
 
-  return <Image src={imgSrc} {...(!props.fill ? { width, height } : {})} {...props} onError={() => setImgSrc(notFound)} />;
+  return (
+    <Image
+      src={imgSrc}
+      {...(!props.fill ? { width, height } : {})}
+      {...props}
+      onError={() => setImgSrc(notFound)}
+    />
+  );
 };
 
 export default ImgCraft;

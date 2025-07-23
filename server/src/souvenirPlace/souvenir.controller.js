@@ -1,6 +1,7 @@
 const mapUpload = require("../../middlewares/mapUploads");
 const { handleInput } = require("../../utils/handleInput");
 const { validateData } = require("../middlewares/validation");
+const { editUser } = require("../user/user.service");
 const { findSouvenirPlace } = require("./souvenir.repository");
 const {
   createSouvenirPlace,
@@ -36,6 +37,9 @@ router.post("/", validateData(souvenirPlaceSchema), async (req, res, next) => {
       geom,
     });
 
+    if (souvenir) {
+      await editUser({ id: req.user.id }, { id_souvenir_place: souvenir.id });
+    }
     res.status(201).json(souvenir);
   } catch (error) {
     next(error);

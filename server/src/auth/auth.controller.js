@@ -7,6 +7,7 @@ const { validateData } = require("../middlewares/validation.js");
 router.post("/login",   async (req, res, next) => {
   try {
     let { email, password, credential } = req.body;
+    console.log("Login request:", req.body);
     let result = null;
     if (!credential) {
       result = await userLogin(email, password);

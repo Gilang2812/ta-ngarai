@@ -5,5 +5,5 @@ export default function useToggleOpen() {
     
       const toggle = useCallback(() => setIsOpen((prev) => !prev), []);
     
-  return {isOpen,toggle} 
+  return {isOpen,toggle,setIsOpen} 
 }

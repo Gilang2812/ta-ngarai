@@ -40,8 +40,7 @@ const editCheckout = async (key, body) => {
   });
 };
 
-const findCheckout = async (key) => {
-  console.log("key", key);
+const findCheckout = async (key) => { 
   return Checkout.findOne({
     where: key,
     include: [

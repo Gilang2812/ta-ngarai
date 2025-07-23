@@ -11,7 +11,7 @@ const router = require("express").Router();
 router.get("/", async (req, res, next) => {
   try {
     const craftCarts = await getCraftCarts({
-      customer_id: 1,
+      customer_id: req.user.id,
     });
     res.status(200).json(craftCarts);
   } catch (error) {
@@ -21,7 +21,7 @@ router.get("/", async (req, res, next) => {
 router.get("/:craft_variant_id", async (req, res, next) => {
   try {
     const craftCart = await getCraftCart({
-      customer_id: 1, // Assuming user_id is 1 for testing purposes
+      customer_id: req.user.id, 
       craft_variant_id: req.params.craft_variant_id,
     });
     res.status(200).json(craftCart);
@@ -35,7 +35,7 @@ router.post("/", async (req, res, next) => {
     console.log("Request body:", req.body);
     const { craft_variant_id, id_souvenir_place, jumlah } = req.body;
     const craftCart = await createCraftCart({
-      customer_id: 1,
+      customer_id: req.user.id,
       craft_variant_id,
       id_souvenir_place,
       jumlah,
@@ -48,13 +48,12 @@ router.post("/", async (req, res, next) => {
 
 router.post("/bulk", async (req, res, next) => {
   try {
-    const { items } = req.body;
-    const customer_id = 1;
+    const { items } = req.body; 
 
     const craftCarts = await Promise.all(
       items.map((item) =>
         createCraftCart({
-          checkout_id: 1,
+          customer_id: req.user.id,
           id_souvenir_place: item.id_souvenir_place,
           craft_variant_id: item.craft_variant_id,
           jumlah: item.jumlah,

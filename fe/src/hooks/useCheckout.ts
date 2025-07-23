@@ -60,7 +60,7 @@ export const useCheckout = () => {
   });
 
   const addressInitialValues = {
-    id: editingAddress?.id || "",
+    address_id: editingAddress?.address_id || "",
     customer_id: editingAddress?.customer_id || "",
     destination_id: editingAddress?.destination_id || "",
     label: editingAddress?.label || "",
@@ -81,6 +81,7 @@ export const useCheckout = () => {
       "",
     is_primary: editingAddress?.is_primary || 0,
   };
+  
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("cod");
   const [orderNotes, setOrderNotes] = useState("");
 

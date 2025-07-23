@@ -68,7 +68,7 @@ export default function CheckoutPage() {
             });
             router.push("./cart?tab=craft&status=success");
           },
-          onPending: async (result) => { 
+          onPending: async (result) => {
             cornerAlert("Payment pending:" + result.order_id);
             await updateStatus({
               id: result.order_id,
@@ -78,7 +78,7 @@ export default function CheckoutPage() {
             router.push("./reservation?tab=craft&status=pending");
           },
           onError: async (result) => {
-            cornerError("Payment error:" + result.order_id); 
+            cornerError("Payment error:" + result.order_id);
             await updateStatus({
               id: result.order_id,
               status: 6,
@@ -88,7 +88,7 @@ export default function CheckoutPage() {
 
             cornerError("Payment failed, please try again");
           },
-        onClose: async () => { 
+          onClose: async () => {
             cornerAlert("Payment closed");
             if (checkout)
               await updateStatus({

@@ -22,14 +22,14 @@ const withAuth = <P extends object>(
       typeof window !== "undefined" ? localStorage.getItem("token") : null;
     useEffect(() => {
       if (role !== "guest") {
-        if (!token) {
+        if (!token || !user) {
           router.replace("/login");
         }
         if (!isAdmin && role === "admin") {
           router.replace("/web");
         }
       } else {
-        if (token) {
+        if (token && user) {
           router.replace("/web");
         }
       }

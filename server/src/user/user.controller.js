@@ -1,10 +1,10 @@
 const router = require("express").Router();
-const { CustomError } = require("../../utils/CustomError");
 const { handleInput } = require("../../utils/handleInput");
 const {
   getAllUsers,
   createNewUser,
   deleteDetailUser,
+  getUser,
 } = require("./user.service");
 const { adminSchema } = require("./user.validation");
 
@@ -17,6 +17,16 @@ router.get("/", async (req, res, next) => {
     res
       .status(error.statusCode || 500)
       .json(error.message || "Internal server error, ");
+  }
+});
+
+router.get("/me", async (req, res, next) => {
+  try {
+    const id = req.user.id;
+    const user = await getUser({ id });
+    res.status(200).json(user);
+  } catch (error) {
+    next(error);
   }
 });
 
