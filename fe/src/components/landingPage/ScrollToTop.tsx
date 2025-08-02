@@ -22,7 +22,7 @@ const ScrollToTop: React.FC = () => {
     <div className="fixed bottom-12 right-12  transition-opacity duration-300">
       <button
         onClick={scrollToTop}
-        className={`p-4 bg-primary transition-ease-in-out text-white  hover:bg-success transition opacity-0 ${
+        className={`p-4 bg-primary active:bg-success transition-ease-in-out text-white  hover:bg-success transition opacity-0 ${
           isVisible ? "opacity-100" : ""
         }`}
         aria-label="Scroll to top"

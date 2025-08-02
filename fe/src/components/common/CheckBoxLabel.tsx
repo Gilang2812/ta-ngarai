@@ -3,7 +3,7 @@ import { CheckBoxInput } from "./CheckBoxInput";
 
 type Props = {
   id: string;
-  label: string;
+  label:  React.ReactNode;
 } & React.ComponentProps<"input">;
 
 const CheckBoxLabelComponent = ({ id, label, ...props }: Props) => {

@@ -1,7 +1,7 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../config/database");
 
-const DetailReservation = sequelize.define(
+const   DetailReservation = sequelize.define(
   "DetailReservation",
   {
     date: {

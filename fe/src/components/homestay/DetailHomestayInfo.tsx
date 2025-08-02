@@ -1,5 +1,6 @@
 "use client";
-import { HomestaySchema } from "@/type/schema/DetailReservationSchema";
+
+import { HomestaySchema } from "@/type/schema/HomestaySchema";
 import { BodyRawSkeleton } from "../loading/BodyRawSkeleton";
 
 export const DetailHomestayInfo = ({ data }: { data: HomestaySchema }) => {

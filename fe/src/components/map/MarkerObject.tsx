@@ -16,6 +16,7 @@ import Button from "../common/Button";
 import Link from "next/link";
 import useTravelRoute from "@/hooks/useTravelRoute";
 import ButtonTooltip from "../common/ButtonTooltip";
+import { ROUTES } from "@/data/routes";
 
 type MarkerProps = {
   position: LatLngLiteral;
@@ -73,6 +74,7 @@ export const MarkerObject = ({
         >
           <article className="space-y-2 p-2   rounded text-center [&_h3]:font-bold">
             <h3>{properties.name}</h3>
+            {properties.id}
             <section className="text-sm flex gap-2 items-center justify-center">
               {icon}
               <p>{text}</p>
@@ -105,6 +107,15 @@ export const MarkerObject = ({
                 </ButtonTooltip>
               )}
             </section>
+            {properties.id.startsWith('HO') && (
+              <section className="w-full flex items-center justify-center">
+                <Button variant={"success"} asChild>
+                  <Link href={ROUTES.HOMESTAY_RESERVATION(properties.id)}>
+                    Book Now
+                  </Link>
+                </Button>
+              </section>
+            )}
           </article>
         </InfoWindowF>
       )}

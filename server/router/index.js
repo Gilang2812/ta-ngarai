@@ -12,7 +12,7 @@ const homestayFacilityRouter = require("../src/homestayFacility/homestayFacility
 const homestayRouter = require("../src/homestay/homestay.controller");
 const objectRouter = require("../src/object/object.controller");
 const packageRouter = require("../src/package/package.controller");
-const reserveationRouter = require("../src/reservation/reservation.controller");
+const reservationRouter = require("../src/reservation/reservation.controller");
 const tourismRouter = require("../src/tourismVillage/tourism.controller");
 const userRouter = require("../src/user/user.controller");
 const souvenirRouter = require("../src/souvenirPlace/souvenir.controller");
@@ -25,6 +25,7 @@ const addressRouter = require("../src/address/address.controller");
 const shippingRouter = require("../src/shipping/shipping.controller");
 const detailCraftRouter = require("../src/detailMarketplaceCraft/detailCraft.controller");
 const { verifyToken } = require("../src/middlewares/authentication");
+const invoiceRouter = require("../src/invoice/invoice.controller");
 
 router.use("/", authRouter);
 router.use("/addresses", verifyToken, addressRouter);
@@ -43,13 +44,14 @@ router.use("/homestay-facility", homestayFacilityRouter);
 router.use("/object", objectRouter);
 router.use("/packages", packageRouter);
 router.use("/payment", paymentRouter);
-router.use("/reservations", reserveationRouter);
+router.use("/reservations", verifyToken, reservationRouter);
 router.use("/services", detailServiceRouter);
-router.use("/shipping",verifyToken, shippingRouter);
+router.use("/shipping", verifyToken, shippingRouter);
 router.use("/souvenirs", verifyToken, souvenirRouter);
 router.use("/tourism", tourismRouter);
 router.use("/users", verifyToken, userRouter);
 router.use("/variants", craftVariantRouter);
+router.use("/invoice",invoiceRouter)
 
 router.use("*", (req, res, next) => {
   res.status(404).json({ message: "Not Found" });

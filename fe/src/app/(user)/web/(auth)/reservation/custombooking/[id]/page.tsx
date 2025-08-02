@@ -7,11 +7,10 @@ import { Steps } from "@/components/customBooking/Steps";
 import { useCreateReservation } from "@/features/reservation/useCreateReservation";
 // import { useFetchUnitHomestayReservation } from "@/features/reservation/useFetchUnitHomestayReservation";
 import { useGetPackage } from "@/features/web/package/useGetPackage";
-import { scrollToTop } from "@/utils/ScrollUtil";
+import useFormStep from "@/hooks/useFormStep";
 import { Formik } from "formik";
 
 import { useParams } from "next/navigation";
-import { useState } from "react";
 
 export type FormReservationSchema = {
   package?: string | null;
@@ -33,23 +32,9 @@ export type FormReservationSchema = {
 const CustomBooking = () => {
   const { id }: { id: string } = useParams();
   const { data: packageItem, isLoading } = useGetPackage(id);
-  const [currentStep, setCurrentStep] = useState(1);
   const isWithHomestay = packageItem && packageItem?.packageDays?.length > 1;
   const stepsLength = isWithHomestay ? 4 : 3;
-  const steps: number[] = [...new Array(stepsLength)].map(() => 0);
-  const nextStep = () => {
-    if (currentStep < steps.length) {
-      setCurrentStep((prev) => prev + 1);
-      scrollToTop();
-    }
-  };
-
-  const prevStep = () => {
-    if (currentStep > 1) {
-      setCurrentStep((prev) => prev - 1);
-      scrollToTop();
-    }
-  };
+  const { currentStep, steps, nextStep, prevStep } = useFormStep(stepsLength);
   const { mutate } = useCreateReservation({
     onSuccess: () => {
       console.log();

@@ -181,5 +181,7 @@ export const showLoadingAlert = (message?: string) => {
   });
 };
 export const hideLoadingAlert = () => {
-  Swal.close();
+  if (Swal.isVisible()) {
+    Swal.close();
+  }
 };

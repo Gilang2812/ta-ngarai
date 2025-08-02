@@ -54,7 +54,7 @@ const findUnitHomestays = async (newCheckIn) => {
       {
         model: Homestay,
         as: "homestay",
-        attributes: ["name"],
+        attributes: ["name", "address"],
         include: [detailFacilityHomestayInclude, galleryHomestayInclude],
       },
       {
@@ -62,8 +62,14 @@ const findUnitHomestays = async (newCheckIn) => {
         as: "facilityDetails",
         attributes: ["description"],
         where: Sequelize.and(
-          Sequelize.where(Sequelize.col(`UnitHomestay.unit_type`), Sequelize.col("facilityDetails.unit_type")),
-          Sequelize.where(Sequelize.col(`UnitHomestay.unit_number`), Sequelize.col("facilityDetails.unit_number"))
+          Sequelize.where(
+            Sequelize.col(`UnitHomestay.unit_type`),
+            Sequelize.col("facilityDetails.unit_type")
+          ),
+          Sequelize.where(
+            Sequelize.col(`UnitHomestay.unit_number`),
+            Sequelize.col("facilityDetails.unit_number")
+          )
         ),
         include: [
           {
@@ -82,8 +88,14 @@ const findUnitHomestays = async (newCheckIn) => {
         model: GalleryUnit,
         as: "unitGalleries",
         where: Sequelize.and(
-          Sequelize.where(Sequelize.col(`UnitHomestay.unit_type`), Sequelize.col("unitGalleries.unit_type")),
-          Sequelize.where(Sequelize.col(`UnitHomestay.unit_number`), Sequelize.col("unitGalleries.unit_number"))
+          Sequelize.where(
+            Sequelize.col(`UnitHomestay.unit_type`),
+            Sequelize.col("unitGalleries.unit_type")
+          ),
+          Sequelize.where(
+            Sequelize.col(`UnitHomestay.unit_number`),
+            Sequelize.col("unitGalleries.unit_number")
+          )
         ),
       },
       {
@@ -93,7 +105,7 @@ const findUnitHomestays = async (newCheckIn) => {
           {
             model: Reservation,
             as: "reservation",
-            attributes: ["check_in", "package_id"],
+            attributes: ["id", "check_in", "package_id"],
             include: [
               {
                 model: Package,
@@ -119,6 +131,102 @@ const findUnitHomestays = async (newCheckIn) => {
           AND DATE_ADD(r.check_in, INTERVAL (SELECT COUNT(*) FROM package_day WHERE package_id = p.id) DAY)
       )
     `),
+  });
+
+  return units;
+};
+
+const findAllUnitHomestays = async ({ homestay_id }) => {
+  const units = await UnitHomestay.findAll({
+    where: { homestay_id },
+    include: [
+      {
+        model: Homestay,
+        as: "homestay",
+        attributes: ["name","address"],
+        include: [detailFacilityHomestayInclude, galleryHomestayInclude],
+      },
+      {
+        model: FacilityUnitDetail,
+        as: "facilityDetails",
+        attributes: ["description"],
+        where: Sequelize.and(
+          Sequelize.where(
+            Sequelize.col(`UnitHomestay.unit_type`),
+            Sequelize.col("facilityDetails.unit_type")
+          ),
+          Sequelize.where(
+            Sequelize.col(`UnitHomestay.unit_number`),
+            Sequelize.col("facilityDetails.unit_number")
+          )
+        ),
+        include: [
+          {
+            model: FacilityUnit,
+            as: "unitFacility",
+            attributes: ["name"],
+          },
+        ],
+      },
+      {
+        model: HomestayUnitType,
+        as: "unitType",
+        attributes: ["name_type"],
+      },
+      {
+        model: GalleryUnit,
+        as: "unitGalleries",
+        where: Sequelize.and(
+          Sequelize.where(
+            Sequelize.col(`UnitHomestay.unit_type`),
+            Sequelize.col("unitGalleries.unit_type")
+          ),
+          Sequelize.where(
+            Sequelize.col(`UnitHomestay.unit_number`),
+            Sequelize.col("unitGalleries.unit_number")
+          )
+        ),
+      },
+      {
+        model: DetailReservation,
+        as: "detailReservations",
+        where: and(
+          where(
+            col("detailReservations.homestay_id"),
+            col("UnitHomestay.homestay_id")
+          ),
+          where(
+            col("detailReservations.unit_type"),
+            col("UnitHomestay.unit_type")
+          ),
+          where(
+            col("detailReservations.unit_number"),
+            col("UnitHomestay.unit_number")
+          )
+        ),
+        include: [
+          {
+            model: Reservation,
+            as: "reservation",
+            attributes: ["package_id", "check_in"],
+            include: [
+              {
+                model: Package,
+                as: "package",
+                attributes: ["id"],
+                include: [
+                  {
+                    model: PackageDay,
+                    as: "packageDays",
+                    attributes: ["day", "package_id"],
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+    ],
   });
 
   return units;
@@ -152,6 +260,7 @@ module.exports = {
   destroyHomestay,
   updateHomestay,
   findUnitHomestays,
+  findAllUnitHomestays,
 };
 
 //check in besar dari check_out< tanggal check_in

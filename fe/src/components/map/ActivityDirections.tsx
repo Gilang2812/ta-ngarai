@@ -6,7 +6,7 @@ import { getCentroid } from "@/utils/common/getCentroid";
 export const ActivityDirections = ({
   hideAllLayer,
 }: {
-  hideAllLayer: () => void;
+  hideAllLayer?: () => void;
 }) => {
   const { objects, direction, origin, destination, setDirection, clearOption } =
     useDirectionStore();
@@ -17,7 +17,7 @@ export const ActivityDirections = ({
   ) => {
     if (status === "OK" && result) {
       setDirection(result);
-      hideAllLayer();
+      hideAllLayer?.();
     }
     clearOption();
   };

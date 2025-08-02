@@ -38,7 +38,7 @@ export const AddressForm = ({
     >
       <div className="flex justify-between items-center mb-4">
         <h3 className="text-lg font-semibold">
-          {addressInitialValues.id ? "Edit Address" : "Add New Address"}
+          {addressInitialValues.address_id ? "Edit Address" : "Add New Address"}
         </h3>
         <button
           className="text-gray-400 hover:text-gray-600"
@@ -55,7 +55,7 @@ export const AddressForm = ({
             label="destination id"
             readonly
           />
-          <div className="flex [&_>div]:flex-1 items-center  [&_>div]:mr-2">
+          <div className="flex [&_>div]:flex-1 items-end  [&_>div]:mr-2">
             <FormInput
               type="number"
               name="kode_post"
@@ -83,6 +83,21 @@ export const AddressForm = ({
 
           <>
             <div className="grid grid-cols-1 md:grid-cols-2  gap-4">
+              <FormInput as="select" name="kecamatan" label="District">
+                {!district || district.length === 0 ? (
+                  <option value="" disabled>
+                    No District Available
+                  </option>
+                ) : (
+                  <>
+                    {district?.map((item, index) => (
+                      <option key={index} value={item}>
+                        {item}
+                      </option>
+                    ))}
+                  </>
+                )}
+              </FormInput>
               <FormInput as="select" name="kelurahan" label="Subdistrict">
                 {!groupedDistrict?.[values.kecamatan] ||
                 groupedDistrict[values.kecamatan].length === 0 ? (
@@ -92,21 +107,6 @@ export const AddressForm = ({
                 ) : (
                   <>
                     {groupedDistrict[values.kecamatan]?.map((item, index) => (
-                      <option key={index} value={item}>
-                        {item}
-                      </option>
-                    ))}
-                  </>
-                )}
-              </FormInput>
-              <FormInput as="select" name="kecamatan" label="District">
-                {!district || district.length === 0 ? (
-                  <option value="" disabled>
-                    No District Available
-                  </option>
-                ) : (
-                  <>
-                    {district?.map((item, index) => (
                       <option key={index} value={item}>
                         {item}
                       </option>
@@ -162,7 +162,7 @@ export const AddressForm = ({
             checked={values.is_primary === 1}
             id="is_primary"
             name="is_primary"
-            label={`set as default address ${values.is_primary}`}
+            label={`set as default address  `}
             onChange={handleCheckboxChange}
           />
         </div>

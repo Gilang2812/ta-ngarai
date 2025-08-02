@@ -33,6 +33,7 @@ import { GoogleMap } from "@react-google-maps/api";
 import { useTools } from "@/hooks/useTools";
 import CustomRoute from "../map/CustomRoute";
 import useTravelRoute from "@/hooks/useTravelRoute";
+import MapWeather from "../weather/MapWeather";
 
 function MapWeb({
   zoom,
@@ -133,6 +134,9 @@ function MapWeb({
         setObjects={setObjects}
         handleShowAllObject={handleShowAllObject}
       />
+      <div>
+        <MapWeather />
+      </div>
       <div className="relative min-h-96 min-w-96 ">
         <MapLegend isOpen={isShowLegend} />
         <MapLayout

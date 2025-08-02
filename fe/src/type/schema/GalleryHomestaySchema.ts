@@ -1,6 +1,7 @@
 export type GalleryHomestaySchema = {
     id: string;
     url: string;
+    homestay_id: string;
 }
 
 export type UnitGallerySchema =  {

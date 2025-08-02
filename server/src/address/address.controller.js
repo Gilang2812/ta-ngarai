@@ -9,13 +9,14 @@ const router = require("express").Router();
 
 router.get("/", async (req, res, next) => {
   try {
-    console.log(req.user);
+
     const address = await getAddress({ customer_id: req.user.id }); // Assuming customer_id is 1 for testing purposes
     res.status(200).json(address);
   } catch (error) {
     next(error);
   }
 });
+
 router.post("/", async (req, res, next) => {
   try {
     const {
@@ -36,7 +37,7 @@ router.post("/", async (req, res, next) => {
     const customer_id = req.user.id;
     console.log(req.body);
     if (is_primary)
-      await updateAddress({ is_primary: 1, customer_id }, { is_primary: 0 }); 
+      await updateAddress({ is_primary: 1, customer_id }, { is_primary: 0 });
     const newAddress = await createAddress({
       customer_id,
       destination_id,
@@ -115,4 +116,5 @@ router.delete("/:id", async (req, res, next) => {
     next(error);
   }
 });
+
 module.exports = router;

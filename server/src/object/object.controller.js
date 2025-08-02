@@ -143,4 +143,28 @@ router.get("/worship", async (req, res, next) => {
   }
 });
 
+router.get("/homestay", async (req, res, next) => {
+  try {
+    const tableName = "homestay";
+    const columns = [
+      "id",
+      "name",
+      "address",
+      "contact_person",
+      "open",
+      "close", 
+      "geom",
+      "description",
+      "status",
+      "video_url",
+    ];
+    const { lat, long, radius } = req.query;
+    const object = await getObjectAround(lat, long, radius, tableName, columns);
+
+    res.status(200).json(object);
+  } catch (error) {
+    next(error);
+  }
+});
+
 module.exports = router;

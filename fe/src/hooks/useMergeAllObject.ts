@@ -17,6 +17,8 @@ export const useMergeALlObject = (layer: ObjectDataType) => {
     useFetchObjects("traditional");
   const { data: worship, isLoading: isWorshipLoading } =
     useFetchObjects("worship");
+  const { data: homestay, isLoading: isHomestayLoading } =
+    useFetchObjects("homestay");
 
   const allObjectLayer: SimplifiedObject[] = [
     ...(layer.attraction ? attraction ?? [] : []),
@@ -24,6 +26,7 @@ export const useMergeALlObject = (layer: ObjectDataType) => {
     ...(layer.souvenir ? souvenir ?? [] : []),
     ...(layer.traditional ? traditional ?? [] : []),
     ...(layer.worship ? worship ?? [] : []),
+    ...(layer.homestay ? homestay ?? [] : []),
   ];
 
   const objectGeom: FeatureCollection | null =
@@ -33,7 +36,8 @@ export const useMergeALlObject = (layer: ObjectDataType) => {
     isCulinaryLoading ||
     isSouvenirLoading ||
     isTraditionalLoading ||
-    isWorshipLoading;
+    isWorshipLoading ||
+    isHomestayLoading;
 
   return { allObjectGeom: objectGeom, isloading };
 };

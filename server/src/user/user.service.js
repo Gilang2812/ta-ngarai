@@ -46,8 +46,11 @@ const createNewUser = async (data) => {
 };
 
 const editUser = async (key, body) => {
-  const updatedUser = await updateUser(key, body);
-  return updatedUser;
+  const existingUser = await getUser(key);
+  Object.assign(existingUser, body); 
+  await existingUser.save();  
+
+  return existingUser;
 };
 const deleteDetailUser = async (data) => {
   const existingAuthUser = await findAuthGroupUser(data);
@@ -58,6 +61,11 @@ const deleteDetailUser = async (data) => {
 
   return user;
 };
-// const updateUser = asfun
 
-module.exports = { getAllUsers, createNewUser, deleteDetailUser, editUser,getUser};
+module.exports = {
+  getAllUsers,
+  createNewUser,
+  deleteDetailUser,
+  editUser,
+  getUser,
+};

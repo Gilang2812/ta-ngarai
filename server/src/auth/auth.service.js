@@ -21,10 +21,12 @@ const getLoginResponse = (user) => {
     name: user.fullname,
     username: user.username,
     role: user.id_role,
+    phone: user.phone,
+    address: user.address,
     id_souvenir_place: user.id_souvenir_place,
   };
 };
-const userLogin = async (email="", password) => {
+const userLogin = async (email = "", password) => {
   const user = await findUniqueUsernameOrEmail(email, email);
 
   if (!user) {
@@ -66,6 +68,7 @@ const googleLogin = async (credential) => {
   const token = generateToken(response);
   return { token, user: response };
 };
+
 const userRegister = async (body) => {
   const { email, username, password } = body;
   const existingUserByUsername = await findUser({ username });

@@ -38,7 +38,7 @@ export default function RootLayout({
       <ReactQueryProvider>
         <html lang="en">
           <body className={` font-nunito antialiased`}>
-            {children}{" "}
+            {children}
             <Script
               src="https://app.sandbox.midtrans.com/snap/snap.js"
               data-client-key={process.env.NEXT_PUBLIC_MIDTRANS_CLIENT_KEY}

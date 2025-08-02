@@ -10,11 +10,8 @@ const {
 } = require("../../models/relation");
 const { getPackageIncludes } = require("../../utils/getPackgeInclude.js");
 
- 
- 
-
 const findAllPackage = async ({ package, gallery, service }) => {
-const includes = getPackageIncludes({package,gallery,service})
+  const includes = getPackageIncludes({ package, gallery, service });
   const packages = await Package.findAll({
     where: { status: 1 },
     include: includes,
@@ -23,7 +20,6 @@ const includes = getPackageIncludes({package,gallery,service})
 };
 
 const findPackage = async (id) => {
-  packageInclude;
   galleryInclude;
   serviceInclude;
 
@@ -37,4 +33,13 @@ const findPackage = async (id) => {
   return package;
 };
 
-module.exports = { findAllPackage, findPackage };
+const countPackageDays = async (package_id) => {
+  const packageDays = await PackageDay.count({
+    where: {
+      package_id,
+    },
+  });
+  return packageDays;
+};
+
+module.exports = { findAllPackage, findPackage, countPackageDays };

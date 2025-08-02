@@ -3,8 +3,8 @@ import { useAuthStore } from "@/stores/AuthStore";
 import { confirmAlert } from "@/utils/AlertUtils";
 
 const useAuth = () => {
-  const { user, clearUser } = useAuthStore();
-  
+  const { user, clearUser, updateUser } = useAuthStore();
+
   const logout = () => {
     clearUser();
     localStorage.removeItem("token");
@@ -27,6 +27,7 @@ const useAuth = () => {
   return {
     user,
     handleLogout,
+    updateUser,
   };
 };
 

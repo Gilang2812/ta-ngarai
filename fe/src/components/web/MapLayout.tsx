@@ -13,18 +13,23 @@ import { ObjectArea } from "../map/ObjectArea";
 import { ObjectAround } from "../map/ObjectAround";
 import { useMapLoad } from "@/hooks/useMapLoad";
 
-const containerStyle = {
-  width: "100%",
-  aspectRatio: 4 / 3,
-};
-
 type Props = React.ComponentProps<typeof GoogleMap> & {
   children?: React.ReactNode;
   origin?: LatLngLiteral | null;
-  hideAllLayer: () => void;
+  hideAllLayer?: () => void;
+  containerStyle?: React.CSSProperties;
 };
 
-function MapLayout({ children, hideAllLayer, zoom, ...props }: Props) {
+function MapLayout({
+  children,
+  hideAllLayer,
+  zoom,
+  containerStyle = {
+    width: "100%",
+    aspectRatio: 4 / 3,
+  },
+  ...props
+}: Props) {
   const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
   const { isLoaded } = useMapLoad();
   const [isOpen, setIsOpen] = useState(false);
@@ -37,7 +42,7 @@ function MapLayout({ children, hideAllLayer, zoom, ...props }: Props) {
   return (
     <GoogleMap
       mapContainerStyle={containerStyle}
-      center={LANDMARK_POSITION}
+      center={props.center || LANDMARK_POSITION}
       zoom={zoom || 6}
       mapTypeId="satellite"
       options={{

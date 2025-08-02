@@ -1,43 +1,47 @@
-const { DetailReservation } = require("../../models/DetailReservationModel");
-const { Reservation } = require("../../models/ReservationModel");
-const { handleInput } = require("../../utils/handleInput");
+const { getCountPackageDays } = require("../package/package.service");
 const {
   getReservations,
   getReservationById,
+  insertReservation,
+  bulkInsertDetailReservation,
+  getHomestayReservation,
 } = require("./reservation.service");
-const { reservationSchema } = require("./reservation.validation");
 
 const router = require("express").Router();
 
-router.get("/", async (req, res) => {
+router.get("/", async (req, res, next) => {
   try {
     const conditions = {};
     conditions.user_id = 19;
     const reservation = await getReservations(conditions);
     return res.status(200).json(reservation);
   } catch (error) {
-    console.error(error);
-    return res
-      .status(error.statusCode || 500)
-      .json(error.messages || error.message || "Internal server error, ");
+    next(error);
   }
 });
 
-router.get("/:id", async (req, res) => {
+router.get("/:id", async (req, res, next) => {
   try {
     const { id } = req.params;
     const reservation = await getReservationById(id);
 
     return res.status(200).json(reservation);
   } catch (error) {
-    console.error(error);
-    return res
-      .status(error.statusCode || 500)
-      .json(error.messages || error.message || "Internal server error, ");
+    next(error);
   }
 });
 
-router.post("/create", async (req, res) => {
+router.get("/homestay/:id", async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const reservation = await getHomestayReservation(id);
+    return res.status(200).json(reservation);
+  } catch (error) {
+    next();
+  }
+});
+
+router.post("/create", async (req, res, next) => {
   try {
     const {
       selectedUnits,
@@ -49,37 +53,40 @@ router.post("/create", async (req, res) => {
       total_deposit: deposit,
       total_price_reservation: total_price,
     } = req.body;
+    let days_of_stay = req.body.day_of_stay;
 
-  
-    handleInput(req.body, reservationSchema);
-    const homestayUnitsReservation = await Reservation.create({
-      user_id: 1,
+    if (package_id) {
+      days_of_stay = await getCountPackageDays(package_id);
+    }
+
+    console.log("Request Body Reservation:", req.body);
+
+    const homestayUnitsReservation = await insertReservation({
+      user_id: req.user.id,
       package_id,
       request_date: new Date(),
-      check_in :`${check_in} ${check_in_time}`,
+      check_in: `${check_in} ${check_in_time}`,
       total_people,
+      days_of_stay,
       note,
       deposit,
       total_price,
     });
 
-
-    const newSelectedUnits = selectedUnits.map((unit) => { 
-        const {homestay_id,unit_type,unit_number} = unit
-      return {homestay_id,unit_type,unit_number, date:check_in, reservation_id:homestayUnitsReservation.id};
+    const newDetailReservation = await bulkInsertDetailReservation({
+      selectedUnits,
+      reservation_id: homestayUnitsReservation.id,
+      check_in,
     });
-
-    const newDetailReservation = await DetailReservation.bulkCreate(newSelectedUnits)
-    homestayUnitsReservation.detailUnits = newDetailReservation
-    console.log(req.body);
-    return res.status(200).json(unit= {...homestayUnitsReservation.dataValues,detailUnits:newDetailReservation});
+    homestayUnitsReservation.detailUnits = newDetailReservation;
+    const response = (unit = {
+      ...homestayUnitsReservation.dataValues,
+      detailUnits: newDetailReservation,
+    });
+    console.log(response);
+    return res.status(200).json(response);
   } catch (error) {
-    console.error(error.message);
-    return res
-      .status(error.statusCode || 500)
-      .json(error.messages || error.message || "Internal server error, ");
-  } finally {
-    console.log(req.body);
+    next(error);
   }
 });
 

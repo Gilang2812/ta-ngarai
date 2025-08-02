@@ -30,6 +30,8 @@ export type UserLogin = {
   username: string;
   role: number;
   name: string;
+  phone: string;
+  address: string;
   id_souvenir_place: string;
 };
 
@@ -37,4 +39,11 @@ export type LoginResponse = {
   token: string;
   user: UserLogin;
 };
+
+export type UpdateProfileForm = {
+  fullname: string;
+  phone: string;
+  address: string;
+};
+
 export type RegisterSchema = yup.InferType<typeof registerSchema>;

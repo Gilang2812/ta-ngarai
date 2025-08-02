@@ -8,7 +8,7 @@ export const EmptyState = ({ onAddNew }: { onAddNew: () => void }) => {
         <div className="inline-flex items-center justify-center w-16 h-16 bg-gray-100 rounded-full mb-4">
           <ShoppingBag className="w-8 h-8 text-gray-500" />
         </div>
-        <h3 className="text-xl font-semibold mb-2">No data found</h3>
+        <h3 className="text-xl font-semibold mb-2">Items is empty</h3>
         <p className="text-gray-500">
           You haven&#39;t added any data to your inventory yet. Start by adding
           your first item.

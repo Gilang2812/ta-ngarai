@@ -2,9 +2,10 @@ import React from "react";
 
 type Props = {
   headers: string[];
+  action?: boolean;
 };
 
-const TableHeaderManagement = ({ headers }: Props) => {
+const TableHeaderManagement = ({ headers, action = true }: Props) => {
   return (
     <thead className="border-b-2">
       <tr>
@@ -12,7 +13,7 @@ const TableHeaderManagement = ({ headers }: Props) => {
         {headers.map((h, index) => (
           <th key={index}>{h}</th>
         ))}
-        <th>action</th>
+        {action && <th className="text-center">Action</th>}
       </tr>
     </thead>
   );

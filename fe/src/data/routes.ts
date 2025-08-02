@@ -8,6 +8,8 @@ export const ROUTES = {
     `/dashboard/${role !== 2 ? "craft" : "managereservation"}`,
   RESERVATION: "/web/reservation",
   PROFILE: "/web/profile",
+  UPDATE_PROFILE: "/web/profile/update",
+  CHANGE_PASSWORD: "/web/profile/changePassword",
   CART: "/web/cart",
   INSTAGRAM: "#",
   TIKTOK: "#",
@@ -30,4 +32,8 @@ export const ROUTES = {
   MANAGE_CRAFT: "/dashboard/craft",
   EDIT_CRAFT: (craft_variant_id: string, id_souvenir_place: string) =>
     `/dashboard/craft/${craft_variant_id}/${id_souvenir_place}`,
+  HOMESTAY_RESERVATION: (id: string) => `/web/reservation/${id}/homestay`,
+  DETAIL_HOMESTAY: (id: string) => `/web/homestay/${id}`,
+  HOMESTAY_RESERVATION_DETAIL: (id: string) =>
+    `/web/reservation/${id}/homestay/detail`,
 };

@@ -9,7 +9,7 @@ import Link from "next/link";
 import Button from "@/components/common/Button";
 import { motion } from "framer-motion";
 import useToggleOpen from "@/hooks/useToggleOpen";
-import useAuth from "@/hooks/useAuth()";
+import useAuth from "@/hooks/useAuth";
 import { ROUTES } from "@/data/routes";
 import useClickOutside from "@/hooks/useOutsideClick";
 
@@ -63,14 +63,14 @@ export default function SidebarLayout({
                   <motion.ul
                     layout
                     ref={ref}
-                    className={`absolute right-0 top-full mt-2 w-48 bg-white shadow-lg rounded-lg p-2 ${
+                    className={`absolute   [&_li]:ease-in-out  right-0 top-full mt-2 w-48 bg-white shadow-lg rounded-lg p-2 ${
                       isOpen ? "block" : "hidden"
                     }`}
                   >
-                    <li>
+                    <li className="hover:bg-primary transition-ease-in-out hover:text-white">
                       <a href="/web/profile">Profile</a>
                     </li>
-                    <li>
+                    <li className="hover:bg-primary transition-ease-in-out hover:text-white">
                       <button onClick={handleLogout} type="button">
                         Logout
                       </button>

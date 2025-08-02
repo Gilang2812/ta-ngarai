@@ -6,7 +6,7 @@ import Button from "../common/Button";
 
 type Props = {
   addresses: Address[];
-  selectedAddressId: string;
+  selectedAddressId?: string;
   onSelectAddress: (address: Address) => void;
   onAddNewAddress: () => void;
   onEditAddress: (address: Address) => void;

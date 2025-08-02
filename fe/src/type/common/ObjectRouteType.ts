@@ -3,5 +3,6 @@ export type objectRoutesType =
   | "culinary"
   | "facilities"
   | "souvenirs"
+  | "homestay"
   | "traditional"
   | "worship";

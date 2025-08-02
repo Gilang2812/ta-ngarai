@@ -1,27 +1,26 @@
-import type { Config } from "tailwindcss"; 
+import type { Config } from "tailwindcss";
 import { mtConfig } from "@material-tailwind/react";
 import flowbite from "flowbite-react/tailwind";
 
-const config: Config =   {
-  content: [ 
+const config: Config = {
+  content: [
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
     "./node_modules/@material-tailwind/react/**/*.{js,ts,jsx,tsx}",
     flowbite.content(),
-   ],
+  ],
   theme: {
-    screens:{
+    screens: {
       sm: "640px",
       md: "768px",
       lg: "1024px",
       xl: "1280px",
       "2xl": "1536px",
-      },
+    },
     extend: {
-      maxWidth:{
-
-        custom : 'calc(100vw - 300px)',
+      maxWidth: {
+        custom: "calc(100vw - 300px)",
       },
       colors: {
         background: "var(--background)",
@@ -29,28 +28,28 @@ const config: Config =   {
         primary: "#435ebe",
         secondary: "#2D499D",
         tertiary: "var(--tertiary)",
-        success:'#4DC397',
-        basic: '#f2f7ff'
-        
+        success: "#4DC397",
+        basic: "#f2f7ff",
       },
-    
+
       fontSize: {
-        base: ["min(3vw, 1rem)", { lineHeight: '1.5rem' }],
-        lg: ["min(3vw, 1.125rem)", { lineHeight: '1.75rem' }],
-        xl: ["min(3vw, 1.25rem)", { lineHeight: '1.75rem' }],
-        "2xl": ["min(3vw, 1.5rem)", { lineHeight: '2rem' }],
+        xxs: ["0.625rem", { lineHeight: "1rem" }],
+        base: ["min(3vw, 1rem)", { lineHeight: "1.5rem" }],
+        lg: ["min(3vw, 1.125rem)", { lineHeight: "1.75rem" }],
+        xl: ["min(3vw, 1.25rem)", { lineHeight: "1.75rem" }],
+        "2xl": ["min(3vw, 1.5rem)", { lineHeight: "2rem" }],
         custom: "calc(1.375rem + 1.5vw)",
-        lpCustom : "calc(1.475rem + 2.7vw)"
+        lpCustom: "calc(1.475rem + 2.7vw)",
       },
-      lineHeight:{
+      lineHeight: {
         base: "min(1.5vw,1.5rem)",
         lg: "min(1.5vw,1.75rem)",
         xl: "min(1.5vw,1.75rem)",
         "2xl": "min(1.5vw,2rem)",
       },
       fontFamily: {
-        'quicksand': ["quicksand", "sans-serif"],
-        'opensans': ["Open Sans", "sans-serif"],
+        quicksand: ["quicksand", "sans-serif"],
+        opensans: ["Open Sans", "sans-serif"],
         nunito: ["Nunito", "sans-serif"],
       },
       keyframes: {
@@ -66,7 +65,7 @@ const config: Config =   {
         },
         fadeIn: {
           "0%": { opacity: "0", height: "0" },
-          "100%": { opacity: "1" , height: "100%"}
+          "100%": { opacity: "1", height: "100%" },
         },
       },
       animation: {
@@ -74,6 +73,6 @@ const config: Config =   {
       },
     },
   },
-  plugins: [  flowbite.plugin(),mtConfig,      ],
-} ;
+  plugins: [flowbite.plugin(), mtConfig],
+};
 export default config;

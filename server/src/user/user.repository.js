@@ -16,7 +16,9 @@ const findUniqueUsernameOrEmail = async (username, email) => {
 };
 
 const findUser = async (criteria) => {
-  return await User.findOne({ where: criteria });
+  const user = await User.findOne({ where: criteria });
+
+  return user;
 };
 
 const insertUser = async (data) => {

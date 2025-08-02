@@ -1,4 +1,4 @@
-const { Sequelize } = require("sequelize");
+const { Sequelize, literal } = require("sequelize");
 const {
   Reservation,
   User,
@@ -12,6 +12,7 @@ const {
   DetailPackage,
   DetailServicePackage,
   ServicePackage,
+  GalleryHomestay,
 } = require("../../models/relation");
 const {
   include,
@@ -26,7 +27,7 @@ const findReservations = async (condition) => {
         as: "package",
         include: {
           model: PackageType,
-          as:'type'
+          as: "type",
         },
       },
       {
@@ -49,6 +50,58 @@ const findReservations = async (condition) => {
   });
 
   return reservations;
+};
+
+const findHomestayReservation = async (id) => {
+  const reservation = await Reservation.findOne({
+    where: { id },
+    include: [
+      {
+        model: DetailReservation,
+        as: "detail",
+        include: [
+          {
+            model: UnitHomestay,
+            as: "homestay",
+            on: literal(
+              "`detail`.`homestay_id` = `detail->homestay`.`homestay_id` and `detail`.`unit_number` = `detail->homestay`.`unit_number` and `detail`.`unit_type` = `detail->homestay`.`unit_type`"
+            ),
+            include: [
+              {
+                model: Homestay,
+                as: "homestay",
+                include: [
+                  {
+                    model: GalleryHomestay,
+                    as: "galleries",
+                    limit: 1,
+                    attributes: ["id", "url", "homestay_id"],
+                  },
+                ],
+              },
+              {
+                model: HomestayUnitType,
+                as: "unitType",
+              },
+            ],
+          },
+        ],
+      },
+      {
+        model: User,
+        as: "customer",
+        attributes: [
+          "fullname",
+          "email",
+          "username",
+          "address",
+          "user_image",
+          "phone",
+        ],
+      },
+    ],
+  });
+  return reservation;
 };
 
 const findReservationById = async (id) => {
@@ -77,14 +130,16 @@ const findReservationById = async (id) => {
             },
           },
           {
-            model:DetailServicePackage,
-            as:"detailServices",
-            attributes:['status','status_created'],
-            include:[{
-              model:ServicePackage,
-              attributes:['name','price','category','min_capacity'],
-            }]
-          }
+            model: DetailServicePackage,
+            as: "detailServices",
+            attributes: ["status", "status_created"],
+            include: [
+              {
+                model: ServicePackage,
+                attributes: ["name", "price", "category", "min_capacity"],
+              },
+            ],
+          },
         ],
       },
       {
@@ -129,4 +184,20 @@ const findReservationById = async (id) => {
   return reservation;
 };
 
-module.exports = { findReservations, findReservationById };
+const createReservation = async (data) => {
+  const reservation = await Reservation.create(data);
+  return reservation;
+};
+
+const bulkCreateDetailReservation = async (data) => {
+  const detailReservations = await DetailReservation.bulkCreate(data);
+  return detailReservations;
+};
+
+module.exports = {
+  findReservations,
+  findReservationById,
+  createReservation,
+  bulkCreateDetailReservation,
+  findHomestayReservation,
+};

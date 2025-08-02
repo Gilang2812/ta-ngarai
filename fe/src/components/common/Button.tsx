@@ -6,11 +6,12 @@ import { Slot } from "@radix-ui/react-slot";
 import { Spinner } from "flowbite-react";
 
 export const buttonVariants = cva(
-  "flex items-center transition justify-center px-3 py-2 gap-2 h-full  rounded transition-ease-in-out font-normal",
+  "flex items-center transition active:bg-green-300 justify-center px-3 py-2 gap-2 h-full  rounded transition-ease-in-out font-normal",
   {
     variants: {
       variant: {
-        default: "text-white bg-primary hover:bg-secondary",
+        default:
+          "text-white bg-primary hover:bg-secondary disabled:bg-gray-300 disabled:text-white disabled:hover:bg-gray-300",
         primary:
           "bg-white text-primary disabled:hover:bg-white border border-primary   hover:text-white hover:bg-primary",
         danger:

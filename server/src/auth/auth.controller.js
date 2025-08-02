@@ -1,10 +1,9 @@
 const router = require("express").Router();
-const { userLogin, userRegister, googleLogin } = require("./auth.service");
-const { registerSchema, loginScheme } = require("./auth.validation.js");
-const { CustomError } = require("../../utils/CustomError.js");
-const { validateData } = require("../middlewares/validation.js");
+const { userLogin, userRegister, googleLogin } = require("./auth.service");  
+const { editUser } = require("../user/user.service.js");
+const { verifyToken } = require("../middlewares/authentication.js");
 
-router.post("/login",   async (req, res, next) => {
+router.post("/login", async (req, res, next) => {
   try {
     let { email, password, credential } = req.body;
     console.log("Login request:", req.body);
@@ -28,4 +27,19 @@ router.post("/register", async (req, res, next) => {
     next(error);
   }
 });
+
+router.patch("/user/update", verifyToken, async (req, res, next) => {
+  try {
+    const { fullname, phone, address } = req.body;
+    const updatedUser = await editUser(
+      { id: req.user.id },
+      { fullname, phone, address }
+    );
+
+    res.json(updatedUser);
+  } catch (error) {
+    next(error);
+  }
+});
+
 module.exports = router;

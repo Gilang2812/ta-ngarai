@@ -1,7 +1,7 @@
 import Button from "@/components/common/Button";
 import { FormInput } from "@/components/inputs/FormInput";
 import GoogleMapDrawing from "@/components/map/GoogleMapDrawing";
-import useFormMarketplace from "@/hooks/useFormMarketplace";
+import useFormMarketplace from "@/hooks/useFormMarketplace"; 
 import {
   FormMarketplace,
   marketplaceSchema,
@@ -17,6 +17,7 @@ const MarketplaceForm = ({ toggle }: Props) => {
   const { initialValues, isPending, handleSubmit } = useFormMarketplace({
     onSuccessForm: toggle,
   });
+
   const DrawingMarketplaceMap = () => {
     const { values } = useFormikContext<FormMarketplace>();
     return (
@@ -30,7 +31,9 @@ const MarketplaceForm = ({ toggle }: Props) => {
     <div>
       <Formik
         initialValues={initialValues}
-        onSubmit={handleSubmit}
+        onSubmit={(values) => {
+          handleSubmit(values);
+        }}
         validationSchema={marketplaceSchema}
         enableReinitialize
       >

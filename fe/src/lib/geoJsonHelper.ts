@@ -1,3 +1,5 @@
+import { Feature, MultiPolygon } from "geojson";
+
 export function getFeatureCentroid(
   feature: GeoJSON.Feature
 ): google.maps.LatLngLiteral | null {
@@ -97,3 +99,11 @@ export function addLabelsFromGeoJSON(
     }
   });
 }
+
+export const geometryToFeature = (geom: MultiPolygon): Feature => {
+  return {
+    type: "Feature",
+    geometry: geom,
+    properties: {},
+  };
+};
