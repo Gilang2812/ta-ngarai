@@ -11,8 +11,7 @@ const {
   getReviewGalleries,
   deleteReviewGalleryById,
 } = require("../reviewGallery/reviewGallery.service");
-const {
-  storeShipment,
+const { 
   createShipping,
   getUserHistory,
   updateShipping,
@@ -130,8 +129,7 @@ router.patch(
     try {
       const { id } = req.params;
       const { status, isClose } = req.body;
-      const shippings = req.body.shippings || [];
-      console.log("req.body", req.body);
+      const shippings = req.body.shippings || []; 
       let paymentStatus = null;
       if (!Number(isClose)) {
         paymentStatus = await getPaymentStatus(id);

@@ -49,11 +49,11 @@ Announcement.belongsTo(User, { foreignKey: "admin_id" });
 
 TourismVillage.hasMany(GalleryTourism, {
   foreignKey: "tourism_village_id",
-  as: "gallery",
+  as: "galleries",
 });
 GalleryTourism.belongsTo(TourismVillage, {
   foreignKey: "tourism_village_id",
-  as: "gallery",
+  as: "village",
 });
 
 DetailPackage.belongsTo(PackageDay, {

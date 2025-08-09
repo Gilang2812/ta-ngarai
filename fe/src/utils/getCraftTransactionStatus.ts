@@ -19,7 +19,7 @@ export const getCraftTransactionStatus = (
     case 6:
       return !token || paymentStatus === "failure"
         ? "cancel"
-        : "Awaiting payment" +paymentStatus;
+        : "Awaiting payment";
     default:
       return "Unknown";
   }

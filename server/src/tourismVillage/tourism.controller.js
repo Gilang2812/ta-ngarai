@@ -1,31 +1,12 @@
 const fs = require("fs");
 const path = require("path");
-const { TourismVillage } = require("../../models/TourismVillageModel");
-const { GalleryTourism } = require("../../models/GalleryTourismModel");
+const { TourismVillage } = require("../../models/TourismVillageModel"); 
 const { getTourismById, editTourismById } = require("./tourism.service");
 const router = require("express").Router();
-const multer = require("multer");
+ 
+const imageUpload = require("../../middlewares/imageUploads");
 
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "/public/images/kotoGadang");
-  },
-  filename: (req, file, cb) => {
-    let sanitizedName = file.originalname.replaceAll(" ", "-");
-    const ext = file.originalname.split(".")[1];
-
-    if (!ext) {
-      sanitizedName = `${sanitizedName}.${file.mimetype.split("/")[1]}`;
-    }
-    const uniqueSuffix = Math.floor(Math.random() * 1e6) + Date.now();
-    const newFileName = `${uniqueSuffix}-${sanitizedName}`;
-    cb(null, newFileName);
-  },
-});
-
-const upload = multer({ storage });
-
-router.get("/:id", upload.any(), async (req, res) => {
+router.get("/:id",  async (req, res) => {
   try {
     const tourism = await getTourismById(req.params.id);
     return res.status(200).json(tourism);
@@ -37,7 +18,10 @@ router.get("/:id", upload.any(), async (req, res) => {
   }
 });
 
-router.patch("/:id", upload.any(), async (req, res) => {
+router.patch("/:id", imageUpload.fields([
+  { name: "qr_url", maxCount: 1 },
+  { name: "images", maxCount: 5 }
+]), async (req, res) => {
   try {
     const id = req.params.id;
     const requestData = {
@@ -83,47 +67,6 @@ router.patch("/:id", upload.any(), async (req, res) => {
     const image = req.file;
     // Update data utama
     await TourismVillage.update(requestData, { where: { id } });
-    console.log(req.body);
-    // Tangani galeri jika ada
-    if (req.body.gallery) {
-      const gallery = [];
-      for (const folder of req.body.gallery) {
-        const filepath = path.join(__dirname, "../uploads", folder);
-        const files = fs.readdirSync(filepath);
-        const fileImg = path.join(filepath, files[0]);
-        const destPath = path.join(
-          __dirname,
-          "../media/photos/sumpu",
-          path.basename(fileImg)
-        );
-
-        if (fs.existsSync(destPath)) {
-          fs.unlinkSync(destPath);
-        }
-
-        fs.renameSync(fileImg, destPath);
-        fs.rmSync(filepath, { recursive: true, force: true });
-        gallery.push(path.basename(fileImg));
-      }
-
-      // Update atau tambah data galeri
-      const existingGallery = await GalleryTourism.findOne({
-        where: { tourism_village_id: id },
-      });
-      if (existingGallery) {
-        console.log("yang terjadi update");
-        await GalleryTourism.update(
-          { url: gallery },
-          { where: { tourism_village_id: id } }
-        );
-      } else {
-        console.log("yang terjadi tambah");
-        await GalleryTourism.create({ tourism_village_id: id, url: gallery });
-      }
-    } else {
-      console.log("ini yang terjadi");
-      //   await GalleryTourism.destroy({ where: { tourism_village_id: id } });
-    }
 
     res.status(200).json({ message: req.body });
   } catch (error) {

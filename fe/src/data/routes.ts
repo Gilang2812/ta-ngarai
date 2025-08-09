@@ -18,7 +18,7 @@ export const ROUTES = {
     `/web/reservation/${id}/homestay/detail`,
   DETAIL_PACKAGE: (id: string) => `/web/package/${id}`,
   CUSTOM_PACKAGE: (id: string) => `/web/custompackage/${id}`,
-  EXTEND_PACKAGE: (id: string) => `/web/exntend/${id}`,
+  EXTEND_PACKAGE: (id: string) => `/web/extend/${id}`,
   DETAIL_CRAFT: (
     id_craft: string,
     id_souvenir_place: string,

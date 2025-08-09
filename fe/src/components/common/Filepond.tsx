@@ -5,6 +5,7 @@ import FilePondPluginImageResize from "filepond-plugin-image-resize";
 import FilePondPluginImagePreview from "filepond-plugin-image-preview";
 import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css";
 import { ErrorMessage, useFormikContext } from "formik";
+import { ComponentProps } from "react";
 registerPlugin(
   FilePondPluginImageExifOrientation,
   FilePondPluginImageResize,
@@ -13,23 +14,35 @@ registerPlugin(
 
 interface FormValues {
   images?: File[];
+  [key: string]: File[] | undefined;
 }
 
-const FilePondComponent = () => {
+type Props = {
+  name?: string;
+  label?: string;
+};
+
+const FilePondComponent = ({
+  name = "images",
+  label = "Images",
+  allowMultiple = true,
+  ...props
+}: Props & ComponentProps<typeof FilePond>) => {
+  console.log(name);
   const { setFieldValue, values, setFieldError } =
     useFormikContext<FormValues>();
   return (
     <>
       <div className="form-groupsa  ">
-        <p>Gambar</p>
+        <p>{label}</p>
         <FilePond
-          files={values.images || []}
+          files={values[name] || []}
           acceptedFileTypes={["image/*"]}
           onupdatefiles={(fileItems) => {
             const files = fileItems.map((fileItem) => fileItem.file);
-            setFieldValue("images", files);
+            setFieldValue(name, files);
           }}
-          allowMultiple={true}
+          allowMultiple={allowMultiple}
           maxFiles={5}
           imageResizeTargetWidth={1024}
           instantUpload={false}
@@ -39,13 +52,14 @@ const FilePondComponent = () => {
           imageResizeMode="contain"
           credits={false}
           imagePreviewTransparencyIndicator="grid"
-          name="images"
-          labelIdle='Seret & Lepaskan gambar atau <span class="filepond--label-action">Cari</span>'
-          onerror={(error) => setFieldError("images", error.body)}
+          name={name}
+          labelIdle={`Seret & Lepaskan gambar atau <span class="filepond--label-action">Cari</span>`}
+          onerror={(error) => setFieldError(name, error.body)}
+          {...props}
         />
       </div>
       <ErrorMessage
-        name="images"
+        name={name}
         component="p"
         className="text-red-500 font-bold text-sm"
       />
