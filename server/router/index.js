@@ -54,7 +54,7 @@ router.use("/variants", craftVariantRouter);
 router.use("/invoice",invoiceRouter)
 
 router.use("*", (req, res, next) => {
-  res.status(404).json({ message: "Page Not Found" });
+  res.status(404).json({ message: "URl Server Not Found" });
 });
 
 module.exports = router;

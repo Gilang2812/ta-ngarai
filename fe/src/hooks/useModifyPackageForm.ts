@@ -44,9 +44,9 @@ const useModifyPackageForm = () => {
   useEffect(() => {
     if (errors) {
       console.log(errors);
-      console.log(values)
+      console.log(values);
     }
-  }, [errors,values]);
+  }, [errors, values]);
 
   const data = useMemo(() => {
     switch (values.activity_type) {

@@ -1,5 +1,5 @@
 "use client";
-import useExtendPackage from "@/hooks/useExtendPackage";
+import useExtendPackage from "@/hooks/useModifyPackage";
 
 import Button from "@/components/common/Button";
 import { ContentSplitted } from "@/components/common/ContentSplitted";
@@ -11,7 +11,6 @@ import { Modal } from "@/components/modal/Modal";
 import { Formik } from "formik";
 import ManagementSkeletonLoader from "@/components/loading/ManagementSkeletonLoader";
 import { formatPrice } from "@/lib/priceFormatter";
-import { ChangeEvent } from "react";
 import { Itinerary } from "../package/moreInfoPackage/Itinerary";
 import {
   detailPackageFormSchema,
@@ -25,7 +24,7 @@ type Props = {
   id: string;
   type: "custom" | "extend";
 };
-const ExtendPage = ({ id, type }: Props) => {
+const ModifyPackagePage = ({ id, type }: Props) => {
   const {
     isOpen,
     handleAddDay,
@@ -45,6 +44,7 @@ const ExtendPage = ({ id, type }: Props) => {
     handleDeleteActivity,
     handleDeleteDay,
     handleDeletePackage,
+    capacityFormik,
   } = useExtendPackage(id);
 
   if (isLoading) return <ManagementSkeletonLoader />;
@@ -100,23 +100,26 @@ const ExtendPage = ({ id, type }: Props) => {
                     {type === "extend" ? (
                       `${data?.min_capacity} Orang`
                     ) : (
-                      <div className="flex items-center ">
+                      <form
+                        onSubmit={capacityFormik.handleSubmit}
+                        className="flex items-center "
+                      >
                         <input
                           type="number"
-                          onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                            // Handle change if needed
-                            console.log(e.target.value);
-                          }}
-                          value={data.min_capacity}
+                          id="min_capacity"
+                          name="min_capacity"
+                          onChange={capacityFormik.handleChange}
+                          value={capacityFormik.values.min_capacity}
                           className="w-20 p-2 border   focus:outline-none focus:ring-0 focus:ring-primary focus:border-primary"
                         />
                         <Button
                           variant={"regSecondary"}
+                          type="submit"
                           className="  rounded-none   font-medium  "
                         >
                           Save
                         </Button>
-                      </div>
+                      </form>
                     )}
                   </td>
                 </tr>
@@ -233,7 +236,7 @@ const ExtendPage = ({ id, type }: Props) => {
               </SingleContentWrapper>
               <SingleContentWrapper className="space-y-4">
                 <h2 className="text-lg text-center font-semibold mb-4">
-                  Detail Package
+                  Service Package
                 </h2>
                 <section className="flex items-center">
                   <Button
@@ -331,4 +334,4 @@ const ExtendPage = ({ id, type }: Props) => {
   );
 };
 
-export default ExtendPage;
+export default ModifyPackagePage;

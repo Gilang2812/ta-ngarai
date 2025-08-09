@@ -1,10 +1,10 @@
 import Image from "next/image";
-import React, { ComponentProps } from "react";
+import React from "react";
 
 const ImgNotFound = () => {
   return (
     <div>
-      <Image 
+      <Image
         src={"/images/notFound/imageNotFound.jpg"}
         alt="Not Found"
         width={50}

@@ -1,4 +1,7 @@
 const combinePackageObject = require("../../utils/combinePackageObject");
+const {
+  createDetailService,
+} = require("../detailServicePackage/detailService.service");
 const { verifyToken } = require("../middlewares/authentication");
 const {
   getAllPackage,
@@ -11,8 +14,10 @@ const {
   editDetailPackage,
   deletePackageDay,
   deletePackage,
+  editPackage,
+  createPackage,
 } = require("./package.service");
-
+const dayjs = require("dayjs");
 const router = require("express").Router();
 
 router.get("/", async (req, res, next) => {
@@ -44,24 +49,113 @@ router.get("/:id", async (req, res, next) => {
     };
 
     const packageData = await getPackage(id, include);
-    const enrichedPackages = await combinePackageObject([packageData]);
 
-    res.status(200).json(enrichedPackages?.[0]);
+    const enrichedPackages = await combinePackageObject([packageData]);
+    const response = packageData ? enrichedPackages?.[0] : null;
+    res.status(200).json(response);
   } catch (error) {
     next(error);
   }
 });
 
-router.post("/modify/:id", verifyToken, async (req, res, next) => {
+router.post("/create", verifyToken, async (req, res, next) => {
   try {
-    const { id } = req.params;
+    const newPackage = await createPackage({
+      name: `Custom By ${
+        req.user.username || req.user.fullname
+      } at ${dayjs().format("YYYY-MM-DD HH:mm:ss")} ${Math.floor(
+        Math.random() * 1e6
+      )}`,
+      custom: 1,
+      type_id: "T0000",
+      min_capacity: 5,
+    });
+    res.status(201).json(newPackage);
+  } catch (error) {
+    next(error);
+  }
+});
 
+router.post("/modify/:package_id", verifyToken, async (req, res, next) => {
+  try {
+    const { package_id } = req.params;
+    const isCustom = req.query.isCustom === "true" ? 1 : 0;
     const packageData = {
       package: true,
       service: true,
     };
-    const newPackage = await getPackage(id, packageData);
-    res.status(201).json(newPackage);
+    const existingPackage = await getPackage(package_id, packageData);
+    const {
+      id,
+      name,
+      type_id,
+      custom,
+      packageDays,
+      type,
+      detailServices,
+      ...rest
+    } = existingPackage.toJSON();
+
+    const newPackage = await createPackage({
+      name: `${name} - ${!!isCustom ? "custom" : "extend"} by ${
+        req.user.username || req.user.fullname
+      } at ${dayjs().format("YYYY-MM-DD HH:mm:ss")} ${Math.floor(
+        Math.random() * 1e6
+      )}`,
+      custom: 1,
+      type_id: isCustom ? "T0000" : type_id,
+      ...rest,
+    });
+    let includes = [];
+
+    includes = await Promise.all([
+      ...packageDays.map(
+        async ({ package_id, status, detailPackages, ...day }) => {
+          const newDay = await createPackageDay({
+            package_id: newPackage.id,
+            status: isCustom,
+            ...day,
+          });
+
+          return Promise.all(
+            detailPackages.map(({ status, ...activity }) =>
+              createDetailPackage({
+                ...activity,
+                package_id: newPackage.id,
+                status: isCustom,
+              })
+            )
+          );
+        }
+      ),
+
+      ...detailServices.map(
+        ({ service_package_id, status_created, package_id, ...rest }) =>
+          createDetailService({
+            service_package_id,
+            package_id: newPackage.id,
+            status_created: isCustom,
+            ...rest,
+          })
+      ),
+    ]);
+    res.status(201).json({
+      newPackage,
+      type: isCustom ? "custom" : "extend",
+      includes,
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.patch("/update/:id", async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const body = req.body;
+
+    const updatedPackage = await editPackage({ id }, body);
+    res.status(200).json(updatedPackage);
   } catch (error) {
     next(error);
   }

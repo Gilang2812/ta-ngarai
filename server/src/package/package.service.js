@@ -12,6 +12,9 @@ const {
   destroyDetailPackage,
   findPackageDay,
   findDetailPackage,
+  destroyPackage,
+  updatePackage,
+  insertPackage,
 } = require("./package.repository");
 
 const getAllPackage = async (condition, query) => {
@@ -30,6 +33,11 @@ const getPackage = async (
     reservation,
   });
   return packageData;
+};
+
+const createPackage = async (body) => {
+  const newPackage = await insertPackage(body);
+  return newPackage;
 };
 
 const getPackageDay = async (key) => {
@@ -64,8 +72,13 @@ const getUserPackage = async (userId) => {
   return packages;
 };
 
+const editPackage = async (key, body) => {
+  const updatedPackage = await updatePackage(key, body);
+  return updatedPackage;
+};
+
 const deletePackage = async (condition) => {
-  const deletedPackage = await destroyPackageDay(condition);
+  const deletedPackage = await destroyPackage(condition);
   return deletedPackage;
 };
 
@@ -136,5 +149,7 @@ module.exports = {
   createDetailPackage,
   deleteDetailPackage,
   deletePackageDay,
-  deletePackage
+  deletePackage,
+  editPackage,
+  createPackage
 };

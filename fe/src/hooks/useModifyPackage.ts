@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useGetPackage } from "@/features/web/package/useGetPackage";
 import { useCreatePackageDay } from "@/features/web/extend/useCreatePackageDay";
 import { useDeletePackageDay } from "@/features/web/extend/useDeletePackageDay";
@@ -8,31 +8,37 @@ import { useDeleteDetailPackage } from "@/features/web/extend/useDeleteDetailPac
 import { useCreateDetailService } from "@/features/web/extend/useCreateDetailService";
 import { useDeleteDetailService } from "@/features/web/extend/useDeleteDetailServie";
 import { ServiceFormSchema, ServicePackage } from "@/type/schema/ServiceSchema";
-import { confirmDeleteAlert, cornerAlert } from "@/utils/AlertUtils";
+import {
+  confirmDeleteAlert,
+  cornerAlert,
+  cornerError,
+} from "@/utils/AlertUtils";
 import {
   DetailPackageSchema,
   PackageActivityFormSchema,
   PackageDay,
   PackageDayFormSchema,
   PackageService,
-} from "./../type/schema/PackageSchema";
+} from "../type/schema/PackageSchema";
 import { findMissingDays } from "@/lib/findMissingDays";
 import { useModal } from "@/utils/ModalUtils";
 import { useDeletePackage } from "@/features/web/package/useDeletePackage";
 import { useRouter } from "next/navigation";
 import { ROUTES } from "@/data/routes";
+import { useFormik } from "formik";
+import { useUpdatePackage } from "@/features/web/package/useUpdatePackage";
 
-const useExtendPackage = (id: string) => {
+const useModifyPackage = (id: string) => {
   // State management
   const router = useRouter();
   const { isOpen, toggleModal } = useModal();
   const [formType, setFormType] = useState<
     "day" | "update" | "activity" | "service"
   >("day");
-  const { data, isLoading, refetch } = useGetPackage<PackageService>(id, [
-    "package",
-    "service",
-  ]);
+  const { data, isLoading, refetch, isSuccess } = useGetPackage<PackageService>(
+    id,
+    ["package", "service"]
+  );
 
   const [dayInitialValues, setDayInitialValues] =
     useState<PackageDayFormSchema>({
@@ -43,14 +49,21 @@ const useExtendPackage = (id: string) => {
       status: 1,
     });
 
-  // Data fetching
-
   // Mutations
+  const { mutate: updatePackage } = useUpdatePackage<{
+    id: string;
+    min_capacity: number;
+  }>({
+    onSuccess: () => {
+      cornerAlert("Package updated successfully");
+      refetch();
+    },
+  });
+
   const { mutateAsync: deletePackage } = useDeletePackage({
     onSuccess: () => {
       cornerAlert("Package deleted successfully");
       router.replace(ROUTES.TOURISM_PACKAGE);
-      refetch();
     },
   });
 
@@ -112,7 +125,12 @@ const useExtendPackage = (id: string) => {
     },
   });
 
-  // Effects
+  const capacityFormik = useFormik({
+    initialValues: { id: id, min_capacity: data?.min_capacity || 0 },
+    onSubmit: (values: { id: string; min_capacity: number }) => {
+      updatePackage(values);
+    },
+  });
 
   // Computed values
   const getActivityInitialValues: PackageActivityFormSchema = useMemo(
@@ -143,6 +161,20 @@ const useExtendPackage = (id: string) => {
     isUpdatingPackageDay ||
     isCreatingDetailPackage ||
     isCreatingDetailService;
+
+  useEffect(() => {
+    if (isSuccess && !data) {
+      cornerError("Package not found");
+      router.replace(ROUTES.TOURISM_PACKAGE);
+    }
+  }, [isSuccess, data, router]);
+
+  useEffect(() => {
+    if (data?.min_capacity) {
+      capacityFormik.setFieldValue("min_capacity", data.min_capacity);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data?.min_capacity]);
 
   // Event handlers
   const handleAddDay = () => {
@@ -207,7 +239,7 @@ const useExtendPackage = (id: string) => {
 
   const handleDeletePackage = () => {
     confirmDeleteAlert("Package", data?.name ?? "", async () => {
-      await deletePackage(id );
+      await deletePackage(id);
     });
   };
 
@@ -244,7 +276,8 @@ const useExtendPackage = (id: string) => {
     handleDeleteService,
     getServiceInitialValues,
     handleDeletePackage,
+    capacityFormik,
   };
 };
 
-export default useExtendPackage;
+export default useModifyPackage;

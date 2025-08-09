@@ -1,4 +1,4 @@
-import ExtendPage from "@/components/web/extend/ExtendPage";
+import ModifyPackagePage from "@/components/web/extend/ModifyPackagePage";
 import React from "react";
 
 const ExtendPackage = async ({
@@ -7,7 +7,7 @@ const ExtendPackage = async ({
   params: Promise<{ id: string }>;
 }) => {
   const { id } = await params;
-  return <ExtendPage type="extend" id={id} />;
+  return <ModifyPackagePage type="extend" id={id} />;
 };
 
 export default ExtendPackage;

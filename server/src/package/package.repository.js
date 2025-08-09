@@ -89,6 +89,20 @@ const findUserPackage = async (userId) => {
   return packages;
 };
 
+const insertPackage = async (body) => {
+  const newPackage = await Package.create(body);
+  return newPackage;
+};
+
+const updatePackage = async (key, body) => {
+  const updatedPackage = await Package.findOne({
+    where: key,
+  });
+
+  await updatedPackage.update(body);
+  return updatedPackage;
+};
+
 const destroyPackage = async (condition) => {
   const deletedPackage = await Package.findOne({
     where: condition,
@@ -155,6 +169,7 @@ const destroyDetailPackage = async (condition) => {
 };
 
 module.exports = {
+  updatePackage,
   findPackageDay,
   findDetailPackage,
   findAllPackage,
@@ -167,4 +182,6 @@ module.exports = {
   insertDetailPackage,
   updateDetailPackage,
   destroyDetailPackage,
+  destroyPackage,
+  insertPackage,
 };

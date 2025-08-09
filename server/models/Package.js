@@ -13,6 +13,7 @@ const Package = sequelize.define(
     name: {
       type: DataTypes.STRING(255),
       allowNull: false,
+      unique:true
     },
     type_id: {
       type: DataTypes.STRING(5),
@@ -60,8 +61,8 @@ const Package = sequelize.define(
   }
 );
 
-Package.beforeCreate((package) => {
-  package.id = generateCustomId("P", Package, 5);
+Package.beforeCreate(async(package) => {
+  package.id = await generateCustomId("P", Package, 5);
 });
 
 module.exports = { Package };
