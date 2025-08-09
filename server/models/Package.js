@@ -1,10 +1,13 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../config/database");
+const { generateCustomId } = require("../utils/generateId");
 
-const Package = sequelize.define('Package', {
+const Package = sequelize.define(
+  "Package",
+  {
     id: {
       type: DataTypes.STRING(5),
-      allowNull: false,
+      allowNull: true,
       primaryKey: true,
     },
     name: {
@@ -22,7 +25,7 @@ const Package = sequelize.define('Package', {
     contact_person: {
       type: DataTypes.STRING(13),
       allowNull: true,
-      defaultValue: '081374519694',
+      defaultValue: "081374519694",
     },
     description: {
       type: DataTypes.TEXT,
@@ -50,9 +53,15 @@ const Package = sequelize.define('Package', {
       allowNull: false,
       defaultValue: 1,
     },
-  }, {
-    tableName: 'package',
-    timestamps: false,  
-  });
+  },
+  {
+    tableName: "package",
+    timestamps: false,
+  }
+);
+
+Package.beforeCreate((package) => {
+  package.id = generateCustomId("P", Package, 5);
+});
 
 module.exports = { Package };

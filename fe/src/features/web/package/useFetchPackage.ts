@@ -20,19 +20,8 @@ type Props = PackageSchema & {
   packageGalleries?: GalleryPackageSchema[]|[];
   detailServices?: DetailServiceSchema[]|[];
 };
-export type Packages = PackageSchema & {
-  packageDays: (PackageDay & {
-    detailPackages: DetailPackageSchema[];
-  })[];
-};
 
-export type PackageGallery = Packages & {
-  packageGalleries: GalleryPackageSchema[];
-};
 
-export type PackageService = PackageGallery & {
-  detailServices: DetailServiceSchema[];
-};
 export const useFetchPackages = <T extends Props>(query: FetchProps) => {
   return useQuery<T[]>({
     queryKey: ["package"],

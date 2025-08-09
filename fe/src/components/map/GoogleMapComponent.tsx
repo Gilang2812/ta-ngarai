@@ -1,12 +1,16 @@
-'use client';
+"use client";
 
-import { GoogleMapProps } from '@/utils/map/types';
-import { loadGoogleMapsScript, removeGoogleMapsScript, showError,   } from '@/utils/map/utils';
-import React, { useEffect, useRef, useState } from 'react'; 
- 
+import { GoogleMapProps } from "@/utils/map/types";
+import {
+  loadGoogleMapsScript,
+  removeGoogleMapsScript,
+  showError,
+} from "@/utils/map/utils";
+import React, { useEffect, useRef, useState } from "react";
+
 const containerStyle = {
-  width: '100%',
-  height: '400px',
+  width: "100%",
+  height: "400px",
 };
 
 const GoogleMap: React.FC<GoogleMapProps> = ({
@@ -14,7 +18,7 @@ const GoogleMap: React.FC<GoogleMapProps> = ({
   zoom = 10,
   mapId,
   onMapLoad,
-  onMapError
+  onMapError,
 }) => {
   const mapRef = useRef<HTMLDivElement | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -23,14 +27,15 @@ const GoogleMap: React.FC<GoogleMapProps> = ({
     const initializeMap = async () => {
       try {
         const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
-        const mapIdToUse = mapId || process.env.NEXT_PUBLIC_GOOGLE_MAPS_ID||'map-component';
-    
+        const mapIdToUse =
+          mapId || process.env.NEXT_PUBLIC_GOOGLE_MAPS_ID || "map-component";
+
         if (!apiKey) {
-          throw new Error('Google Maps API key is missing');
+          throw new Error("Google Maps API key is missing");
         }
 
         if (!mapIdToUse) {
-          throw new Error('Google Maps ID is missing');
+          throw new Error("Google Maps ID is missing");
         }
 
         window.initMap = async () => {
@@ -39,8 +44,12 @@ const GoogleMap: React.FC<GoogleMapProps> = ({
               throw new Error("Map container not found");
             }
 
-            const { Map } = await google.maps.importLibrary("maps") as google.maps.MapsLibrary;
-            const { AdvancedMarkerElement } = await google.maps.importLibrary("marker") as google.maps.MarkerLibrary;
+            const { Map } = (await google.maps.importLibrary(
+              "maps"
+            )) as google.maps.MapsLibrary;
+            const { AdvancedMarkerElement } = (await google.maps.importLibrary(
+              "marker"
+            )) as google.maps.MarkerLibrary;
 
             const map = new Map(mapRef.current, {
               center,
@@ -50,23 +59,27 @@ const GoogleMap: React.FC<GoogleMapProps> = ({
               mapTypeId: "roadmap",
             });
 
-            const marker = new AdvancedMarkerElement({
+            new AdvancedMarkerElement({
               map,
               position: center,
-              title: 'Location Marker'
+              title: "Location Marker",
             });
 
-            setIsLoading(false); 
+            setIsLoading(false);
             onMapLoad?.();
           } catch (error) {
-            const err = error instanceof Error ? error : new Error('Failed to initialize map');
+            const err =
+              error instanceof Error
+                ? error
+                : new Error("Failed to initialize map");
             throw err;
           }
         };
 
         await loadGoogleMapsScript(apiKey);
       } catch (err) {
-        const error = err instanceof Error ? err : new Error('Unknown error occurred');
+        const error =
+          err instanceof Error ? err : new Error("Unknown error occurred");
         showError(error.message);
         onMapError?.(error);
         setIsLoading(false);
@@ -88,11 +101,11 @@ const GoogleMap: React.FC<GoogleMapProps> = ({
         </div>
       )}
 
-      <div 
-        ref={mapRef} 
+      <div
+        ref={mapRef}
         style={{
           ...containerStyle,
-          display: isLoading ? 'none' : 'block'
+          display: isLoading ? "none" : "block",
         }}
       />
     </>

@@ -1,4 +1,8 @@
-export const getCraftTransactionStatus = (status: number, token?: string) => {
+export const getCraftTransactionStatus = (
+  status: number,
+  token?: string,
+  paymentStatus?: string
+) => {
   switch (status) {
     case 0:
       return "Not ordered";
@@ -13,7 +17,9 @@ export const getCraftTransactionStatus = (status: number, token?: string) => {
     case 5:
       return "Rated";
     case 6:
-      return !token ? "cancel" : "Awaiting payment";
+      return !token || paymentStatus === "failure"
+        ? "cancel"
+        : "Awaiting payment" +paymentStatus;
     default:
       return "Unknown";
   }
@@ -21,7 +27,8 @@ export const getCraftTransactionStatus = (status: number, token?: string) => {
 
 export const getCraftTransactionStatusColor = (
   status: number,
-  token?: string
+  token?: string,
+  paymentStatus?: string
 ) => {
   switch (status) {
     case 0:
@@ -37,7 +44,9 @@ export const getCraftTransactionStatusColor = (
     case 5:
       return "bg-purple-500";
     case 6:
-      return !token ? "bg-red-600" : "bg-yellow-400";
+      return !token || paymentStatus === "failure"
+        ? "bg-red-600"
+        : "bg-yellow-400";
     default:
       return "bg-gray-500";
   }

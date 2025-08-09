@@ -1,4 +1,4 @@
-const { findDetailReservations, findDetailReservationById } = require("./detailReservation.repository")
+const { findDetailReservations, findDetailReservationById, updateDetailReservation } = require("./detailReservation.repository")
 
 const getDetailReservations= async ()=>{
     
@@ -11,4 +11,9 @@ const getDetailReservationById = async (reservation_id)=>{
     const detailReservation = await findDetailReservationById(reservation_id)
     return detailReservation
 }
-module.exports = { getDetailReservations,getDetailReservationById }
+
+const editDetailReservation = async (key, data) => {
+  const updatedDetail = await updateDetailReservation(key, data);
+  return updatedDetail;
+};
+module.exports = { getDetailReservations, getDetailReservationById, editDetailReservation }

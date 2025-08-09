@@ -16,6 +16,7 @@ import { getCentroid } from "@/utils/common/getCentroid";
 import { Dispatch, SetStateAction } from "react";
 import { Dropdown } from "flowbite-react";
 import { FaCaretDown, FaRoad } from "react-icons/fa";
+import { LANDMARK_POSITION } from "@/lib/objectLandmark";
 
 type Props = {
   packageDays: (PackageDay & {
@@ -29,14 +30,19 @@ export const DayButton = ({
   buttonActive,
   setButtonActive,
 }: Props) => {
-  const { setObject, direction,objects, setOption, clearObject, clearDirection } =
-    useDirectionStore();
+  const {
+    setObject,
+    direction,
+    objects,
+    setOption,
+    clearObject,
+    clearDirection,
+  } = useDirectionStore();
 
   const handleAllDirection = (
     key: string,
     activities: DetailPackageSchema[]
   ) => {
-  
     clearDirection();
     clearObject();
     const object = activities.map((ac) => {
@@ -70,8 +76,7 @@ export const DayButton = ({
       clearObject();
       setButtonActive(null);
     } else {
-
-      setTimeout(() => { 
+      setTimeout(() => {
         setObject(object as SimplifiedObject[]);
         setButtonActive(key);
       }, 5);
@@ -86,7 +91,10 @@ export const DayButton = ({
         onClick={() =>
           handleAllDirection(`${day.day}${day.package_id}`, day.detailPackages)
         }
-        active={!!(objects.length>0) && buttonActive === `${day.day}${day.package_id}`}
+        active={
+          !!(objects.length > 0) &&
+          buttonActive === `${day.day}${day.package_id}`
+        }
       />
       <Dropdown
         className="px-4 py-2"
@@ -99,13 +107,38 @@ export const DayButton = ({
             label="activities"
             Icon={FaCaretDown}
             active={
-              !!(direction||objects.length>0) &&
+              !!(direction || objects.length > 0) &&
               buttonActive?.startsWith(`${day.day}${day.package_id}`)
             }
           />
         )}
       >
-        <Button variant={"primary"}>
+        <Button
+          onClick={() => {
+            const active = `first${day.day}${day.package_id}${day.detailPackages[0].activity}`;
+            const isSame = buttonActive === active;
+            if (isSame) {
+              setButtonActive(null);
+              clearDirection();
+              clearObject();
+            } else {
+              clearObject();
+              setOption(
+                LANDMARK_POSITION,
+                getCentroid(day.detailPackages[0].object.geom)
+              );
+              setButtonActive(
+                `first${day.day}${day.package_id}${day.detailPackages[0].activity}`
+              );
+            }
+          }}
+          variant={"primary"}
+          active={
+            !!direction &&
+            buttonActive ===
+              `first${day.day}${day.package_id}${day.detailPackages[0].activity}`
+          }
+        >
           <FaRoad /> Titik 0 ke 1
         </Button>
 
@@ -116,12 +149,22 @@ export const DayButton = ({
             <Button
               key={index}
               onClick={() => {
+                const active = `${ac.day}${ac.package_id}${ac.activity}`;
+                const isSame = buttonActive === active;
+
                 clearObject();
-                setOption(
-                  getCentroid(ac.object.geom),
-                  getCentroid(next.object.geom)
-                );
-                setButtonActive(`${ac.day}${ac.package_id}${ac.activity}`);
+
+                if (isSame) {
+                  setButtonActive(null);
+                  clearDirection();
+                  clearObject();
+                } else {
+                  setOption(
+                    getCentroid(ac.object.geom),
+                    getCentroid(next.object.geom)
+                  );
+                  setButtonActive(active);
+                }
               }}
               active={
                 !!direction &&

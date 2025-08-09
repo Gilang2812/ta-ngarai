@@ -1,17 +1,140 @@
-const { findAllPackage, findPackage, countPackageDays } = require("./package.repository");
+const { CustomError } = require("../../utils/CustomError");
+const {
+  findAllPackage,
+  findPackage,
+  countPackageDays,
+  findUserPackage,
+  insertPackageDay,
+  updatePackageDay,
+  destroyPackageDay,
+  insertDetailPackage,
+  updateDetailPackage,
+  destroyDetailPackage,
+  findPackageDay,
+  findDetailPackage,
+} = require("./package.repository");
 
-const getAllPackage = async (query) => {
-  const packages = await findAllPackage(query);
+const getAllPackage = async (condition, query) => {
+  const packages = await findAllPackage(condition, query);
   return packages;
 };
 
-const getPackage = async (id) => {
-  const package = await findPackage(id);
-  return package;
+const getPackage = async (
+  id,
+  { package = false, gallery = false, service = false, reservation = false }
+) => {
+  const packageData = await findPackage(id, {
+    package,
+    gallery,
+    service,
+    reservation,
+  });
+  return packageData;
+};
+
+const getPackageDay = async (key) => {
+  const packageDay = await findPackageDay(key);
+  if (packageDay) {
+    throw new CustomError(
+      "Package day already exists please change the day or package ID",
+      409
+    );
+  }
+  return packageDay;
+};
+
+const getDetailPackage = async (key) => {
+  const detailPackage = await findDetailPackage(key);
+  if (detailPackage) {
+    throw new CustomError(
+      "Detail package already exists please change the activity values",
+      409
+    );
+  }
+  return detailPackage;
 };
 
 const getCountPackageDays = async (package_id) => {
   const packageDays = await countPackageDays(package_id);
   return packageDays;
 };
-module.exports = { getAllPackage, getPackage, getCountPackageDays };
+
+const getUserPackage = async (userId) => {
+  const packages = await findUserPackage(userId);
+  return packages;
+};
+
+const deletePackage = async (condition) => {
+  const deletedPackage = await destroyPackageDay(condition);
+  return deletedPackage;
+};
+
+const createPackageDay = async ({ day, package_id, ...rest }) => {
+  await getPackageDay({ day, package_id });
+  const newPackageDay = await insertPackageDay({ day, package_id, ...rest });
+  return newPackageDay;
+};
+
+const editPackageDay = async (
+  condition,
+  { day, package_id, current_day, ...rest }
+) => {
+  if (!(day == current_day)) {
+    await getPackageDay({ day, package_id });
+  }
+  const updatedPackageDay = await updatePackageDay(condition, {
+    day,
+    package_id,
+    ...rest,
+  });
+  return updatedPackageDay;
+};
+
+const deletePackageDay = async (condition) => {
+  const deletedPackageDay = await destroyPackageDay(condition);
+  return deletedPackageDay;
+};
+
+const createDetailPackage = async ({ activity, day, package_id, ...rest }) => {
+  await getDetailPackage({ activity, day, package_id });
+  const newDetailPackage = await insertDetailPackage({
+    activity,
+    day,
+    package_id,
+    ...rest,
+  });
+  return newDetailPackage;
+};
+
+const editDetailPackage = async (
+  condition,
+  { activity, day, package_id, ...rest }
+) => {
+  await getDetailPackage({ activity, day, package_id });
+  const updatedDetailPackage = await updateDetailPackage(condition, {
+    activity,
+    day,
+    package_id,
+    ...rest,
+  });
+  return updatedDetailPackage;
+};
+
+const deleteDetailPackage = async (condition) => {
+  const deletedDetailPackage = await destroyDetailPackage(condition);
+  return deletedDetailPackage;
+};
+
+module.exports = {
+  getAllPackage,
+  getPackage,
+  getCountPackageDays,
+  getUserPackage,
+  createPackageDay,
+  editPackageDay,
+  editDetailPackage,
+  createDetailPackage,
+  deleteDetailPackage,
+  deletePackageDay,
+  deletePackage
+};

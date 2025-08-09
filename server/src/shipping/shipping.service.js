@@ -1,4 +1,6 @@
 const axiosShipping = require("../../config/axiosShipping");
+const getPaymentStatusText = require("../../utils/getPaymentStatusText");
+const { getPaymentStatus } = require("../payment/payment.service");
 const {
   insertShipping,
   userHistory,
@@ -29,13 +31,27 @@ const createShipping = async (body) => {
 
 const getUserHistory = async (condition) => {
   const shipping = await userHistory(condition);
-  return shipping;
+  const checkoutWithPaymentStatus = await Promise.all(
+    shipping.map(async (item) => {
+      console.log("item text", item);
+      const plainItem = item.toJSON();
+      const status = await getPaymentStatus(item.shippingItems[0].checkout.id);
+      let paymentStatus = "";
+      if (!status) {
+        paymentStatus = "pending";
+      } else {
+        paymentStatus = getPaymentStatusText(status);
+      }
+      return { paymentStatus: paymentStatus, ...plainItem };
+    })
+  );
+  return checkoutWithPaymentStatus;
 };
 
 const getSouvenirTransaction = async (condition) => {
   const shipping = await findSouvenirTransaction(condition);
   return shipping;
-}
+};
 
 const getUserHistoryById = async (id) => {
   const shipping = await findShippingById(id);
@@ -54,5 +70,5 @@ module.exports = {
   getUserHistory,
   getUserHistoryById,
   updateShipping,
-  getSouvenirTransaction
+  getSouvenirTransaction,
 };

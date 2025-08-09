@@ -17,6 +17,7 @@ import Img from "@/components/common/Img";
 import Button from "@/components/common/Button";
 import ButtonTooltip from "@/components/common/ButtonTooltip";
 import { FaPlusSquare } from "react-icons/fa";
+import { formatPrice } from "@/lib/priceFormatter";
 export const PackageList = () => {
   const { data, isLoading } = useFetchPackages<PackageGallery>({
     package: true,
@@ -30,7 +31,7 @@ export const PackageList = () => {
       data?.map((item, index) => (
         <article
           key={index}
-          className="flex flex-wrap md:flex-nowrap basis-full md:basis-1/2 p-8 grow shrink items-center gap-4"
+          className="flex flex-wrap md:flex-nowrap lg:max-w-[calc(50%-2rem)] basis-full md:basis-1/2 grow shrink items-center gap-4"
           aria-labelledby="basic-package-title"
         >
           <figure className="w-44 basis-full grow md:grow-0 md:basis-[200px] min-w-[200px]  shrink rounded overflow-hidden aspect-[4/5]">
@@ -64,12 +65,15 @@ export const PackageList = () => {
 
             <section className="leading-relaxed">
               <p className="capitalize">Start from</p>
-              <p className="text-orange-400">
-                Rp {item.price.toLocaleString()}
-              </p>
+              <p className="text-orange-400">{formatPrice(item?.price)}</p>
 
-              <div className="flex items-stretch gap-2 ">
-                <ButtonTooltip variant={"primary"} label="more infos">
+              <div className="flex flex-wrap items-stretch gap-2 ">
+                <ButtonTooltip
+                  
+                  variant={"primary"}
+                  label="more infos"
+                  asChild
+                >
                   <Link
                     href={"/web/package/" + item?.id}
                     className="  text-nowrap  capitalize    "
@@ -79,10 +83,10 @@ export const PackageList = () => {
                   </Link>
                 </ButtonTooltip>
 
-                <Button variant={"primary"} type="button">
+                <Button  variant={"primary"} type="button">
                   <FaPlusSquare /> Extend
                 </Button>
-                <Button variant={"primary"} type="button">
+                <Button  variant={"primary"} type="button">
                   <FaPuzzlePiece /> custom
                 </Button>
               </div>
@@ -94,7 +98,7 @@ export const PackageList = () => {
   };
 
   return (
-    <div className="flex flex-wrap ">
+    <div className="flex flex-wrap gap-8 ">
       {isLoading
         ? [...Array(4)].map((_, index) => (
             <div className="basis-1/3 w-1/2 p-8" key={index}>

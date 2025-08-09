@@ -5,15 +5,15 @@ import { SecondStep } from "./SecondStep";
 import { cornerError } from "@/utils/AlertUtils";
 import { FormReservationSchema } from "@/app/(user)/web/(auth)/reservation/custombooking/[id]/page";
 import { useFetchUnitHomestayReservation } from "@/features/reservation/useFetchUnitHomestayReservation";
-import Loading from "@/app/loading";
-import { PackageService } from "@/features/web/package/useFetchPackage";
+import Loading from "@/app/loading"; 
+import { PackageServiceGallery } from "@/type/schema/PackageSchema";
 
 type Props = {
   currentStep: number;
   steps: number[];
   nextStep: () => void;
   prevStep: () => void;
-  packageItem: PackageService;
+  packageItem: PackageServiceGallery;
   isWithHomestay?: boolean;
 };
 export const ReservationForms: FC<Props> = ({

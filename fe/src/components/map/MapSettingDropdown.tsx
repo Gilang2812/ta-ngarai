@@ -11,6 +11,7 @@ type Props<T> = {
   onDropDownItemClick: Dispatch<SetStateAction<T>>;
   data: Record<string, boolean>;
   label:string;
+  active: boolean;
 };
 
 export const MapSettingDropdown = <T,>({
@@ -18,6 +19,7 @@ export const MapSettingDropdown = <T,>({
   leftButtonOnClick,
   data,
   label,
+  active,
   onDropDownItemClick,
 }: Props<T>) => {
   return (
@@ -28,6 +30,7 @@ export const MapSettingDropdown = <T,>({
         className="rounded-r-none"
         label={`View All ${label}`}
         text={label}
+        active={active}
       />
       <Dropdown
         dismissOnClick={false}

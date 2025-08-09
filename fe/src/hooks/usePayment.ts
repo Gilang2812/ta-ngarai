@@ -8,10 +8,12 @@ const usePayment = (id: string) => {
   const { data: payment, isLoading } = useGetPaymentById(id);
   const router = useRouter();
   const { mutateAsync: updateStatus } = useUpdateStatus({
-    onSuccess: () => {},
+    onSuccess: () => {
+      cornerAlert("Status updated successfully");
+    },
   });
   useEffect(() => {
-    if (payment?.token) {
+    if (payment && payment?.token) {
       window?.snap?.pay(payment.token, {
         onSuccess: async (result) => {
           cornerAlert("Payment success:" + result.order_id);
@@ -19,7 +21,7 @@ const usePayment = (id: string) => {
             id: result.order_id,
             status: 2,
             payment_date: result.transaction_time,
-            shippings: payment.shippings,
+            shippings: payment.shippings ?? [],
           });
           router.push("/web/cart?tab=craft");
         },
@@ -28,16 +30,17 @@ const usePayment = (id: string) => {
           await updateStatus({
             id: result.order_id,
             status: 1,
-            shippings: payment.shippings,
+            shippings: payment.shippings ?? [],
           });
           router.push("/web/reservation?tab=craft");
         },
         onError: async (result) => {
-          cornerError("Payment error:" + result.order_id);
+          console.log("Payment error:", result);
+          cornerError("Payment error:" + result.order_id);  
           await updateStatus({
-            id: result.order_id,
+            id: id,
             status: 6,
-            shippings: payment.shippings,
+            shippings: payment.shippings ?? [],
           });
 
           cornerError("Payment failed, please try again");
@@ -48,7 +51,7 @@ const usePayment = (id: string) => {
           await updateStatus({
             id: payment.order_id,
             status: 6,
-            shippings: payment.shippings,
+            shippings: payment.shippings ?? [],
             isClose: 1,
           });
           router.push("/web/reservation?tab=craft");

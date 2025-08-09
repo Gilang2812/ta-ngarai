@@ -23,7 +23,8 @@ type Props = {
   selectedUnit?: AllUnitHomestayResponseSchema[];
   handleNextStep?: () => void;
   currentStep?: number;
-  weathers?: OpenMeteoDailyResponse;
+  weathers?: OpenMeteoDailyResponse | null;
+  setCheckIn: (date: string) => void;
 };
 
 const HomestayReservationForm: React.FC<Props> = ({
@@ -35,6 +36,7 @@ const HomestayReservationForm: React.FC<Props> = ({
   selectedUnit = [],
   weathers,
   handleNextStep,
+  setCheckIn,
 }) => {
   const {
     filteredUnitHomestay,
@@ -48,6 +50,7 @@ const HomestayReservationForm: React.FC<Props> = ({
     unitHomestay,
     selectedUnit,
     uniqueUnitType,
+    setCheckIn,
   });
 
   return (
@@ -59,8 +62,9 @@ const HomestayReservationForm: React.FC<Props> = ({
           currentStep !== 1 && "hidden"
         )}
       >
+     
         <div className="md:col-span-2">
-          <ReservationWeather weathers={weathers} />
+          <ReservationWeather weathers={weathers} homestayName={unitHomestay?.[0]?.homestay?.name} />
         </div>
         <HomestrayReservationList
           filteredUnitHomestay={filteredUnitHomestay}
@@ -69,18 +73,17 @@ const HomestayReservationForm: React.FC<Props> = ({
         />
         <section className=" p-4 space-y-4">
           <Accordion
-            defaultOpen={reservedInComingDate.length > 0}
+            defaultOpen={reservedInComingDate?.length > 0}
             title="unable reservation dates"
           >
             <header className="text-center font-bold capitalize mb-8">
-              {reservedInComingDate.length > 0
-                ? reservedInComingDate.map((date) => (
-                    <p key={date} className="text-red-500">
+              {reservedInComingDate?.length > 0
+                ? reservedInComingDate?.map((date, index) => (
+                    <p key={`${date}-${index}`} className="text-red-500">
                       {dayjs(date).format("DD MMMM YYYY")}
                     </p>
                   ))
                 : "All dates are available for reservation"}
-              <h4>Homestay Reservation Form</h4>
             </header>
           </Accordion>
           <div className="flex gap-3">

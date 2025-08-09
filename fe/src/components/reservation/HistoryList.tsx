@@ -39,12 +39,14 @@ const HistoryList: FC<Props> = ({
         <span
           className={`${getCraftTransactionStatusColor(
             history.status,
-            history.shippingItems[0].checkout.transaction_token
+            history.shippingItems[0].checkout.transaction_token,
+            history.paymentStatus
           )} text-white px-3 py-1 rounded-full text-xs font-semibold uppercase`}
         >
           {getCraftTransactionStatus(
             history.status,
-            history.shippingItems[0].checkout.transaction_token
+            history.shippingItems[0].checkout.transaction_token,
+            history.paymentStatus
           )}
         </span>
       </div>
@@ -106,6 +108,7 @@ const HistoryList: FC<Props> = ({
           shipping_id={history.shipping_id}
           handleRateClick={handleRateClick}
           token={history?.shippingItems?.[0]?.checkout?.transaction_token}
+          paymentStatus={history?.paymentStatus}
         />
         <Button
           type="button"

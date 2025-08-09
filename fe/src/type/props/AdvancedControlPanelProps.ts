@@ -12,4 +12,7 @@ export type AdvancedControlPanelProps = {
   objects: Record<string, boolean>;
   setObjects: Dispatch<SetStateAction<ObjectDataType>>;
   handleShowAllObject: () => void;
+  isAllCheckedLayers: boolean;
+  isAllCheckedObjects: boolean;
+  withPackage?: boolean;
 };

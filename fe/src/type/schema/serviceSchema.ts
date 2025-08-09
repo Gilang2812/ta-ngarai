@@ -1,3 +1,6 @@
+import { serviceFormSchema } from "./../../validation/service.validation";
+import * as yup from "yup";
+
 export type DetailServiceSchema = {
   package_id: string;
   service_package_id: string;
@@ -15,3 +18,5 @@ export type ServicePackage = {
   category: number;
   min_capacity: number;
 };
+
+export type ServiceFormSchema = yup.InferType<typeof serviceFormSchema>;

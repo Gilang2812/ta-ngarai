@@ -11,11 +11,11 @@ export default function UserLayout({
   children: React.ReactNode;
 }) {
   const pathName = usePathname();
-  console.log("Current Path:", pathName);
-  console.log(
-    "Current Path Starts With Profile:",
-    pathName.startsWith(ROUTES.PROFILE)
-  );
+
   const isProfilePage = pathName.startsWith(ROUTES.PROFILE);
-  return <SidebarLayout NavComponent={isProfilePage ? AuthNav : UserNav}>{children}</SidebarLayout>;
+  return (
+    <SidebarLayout NavComponent={isProfilePage ? AuthNav : UserNav}>
+      {children}
+    </SidebarLayout>
+  );
 }

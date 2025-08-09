@@ -18,6 +18,7 @@ router.get("/:object/:id", async (req, res, next) => {
 router.get("/attractions", async (req, res, next) => {
   try {
     const tableName = "attraction";
+    const geomless = req.query.geomless === "true";
     const columns = [
       "id",
       "name",
@@ -28,6 +29,11 @@ router.get("/attractions", async (req, res, next) => {
       "description",
       "video_url",
     ];
+
+    if (!geomless) {
+      columns.push("geom");
+    }
+
     const { lat, long, radius } = req.query;
     const object = await getObjectAround(lat, long, radius, tableName, columns);
 
@@ -38,6 +44,7 @@ router.get("/attractions", async (req, res, next) => {
 });
 router.get("/culinary", async (req, res, next) => {
   try {
+    const geomless = req.query.geomless === "true";
     const tableName = "culinary_place";
     const columns = [
       "id",
@@ -50,6 +57,9 @@ router.get("/culinary", async (req, res, next) => {
       "description",
       "status",
     ];
+    if (!geomless) {
+      columns.push("geom");
+    }
     const { lat, long, radius } = req.query;
     const object = await getObjectAround(lat, long, radius, tableName, columns);
 
@@ -69,7 +79,11 @@ router.get("/facilities", async (req, res, next) => {
       "price",
       "min_capacity",
     ];
-    const { lat, long, radius } = req.query;
+    const geomless = req.query.geomless === "true";
+    const { lat, long, radius, geo } = req.query;
+    if (!geomless) {
+      columns.push("geom");
+    }
     const object = await getObjectAround(lat, long, radius, tableName, columns);
 
     res.status(200).json(object);
@@ -80,6 +94,7 @@ router.get("/facilities", async (req, res, next) => {
 router.get("/souvenirs", async (req, res, next) => {
   try {
     const tableName = "souvenir_place";
+    const geomless = req.query.geomless === "true";
     const columns = [
       "id",
       "name",
@@ -90,6 +105,9 @@ router.get("/souvenirs", async (req, res, next) => {
       "description",
       "status",
     ];
+    if (!geomless) {
+      columns.push("geom");
+    }
     const { lat, long, radius } = req.query;
     const object = await getObjectAround(lat, long, radius, tableName, columns);
 
@@ -115,6 +133,10 @@ router.get("/traditional", async (req, res, next) => {
       "status",
       "video_url",
     ];
+    const geomless = req.query.geomless === "true";
+    if (!geomless) {
+      columns.push("geom");
+    }
     const { lat, long, radius } = req.query;
     const object = await getObjectAround(lat, long, radius, tableName, columns);
 
@@ -134,6 +156,10 @@ router.get("/worship", async (req, res, next) => {
       "description",
       "status",
     ];
+    const geomless = req.query.geomless === "true";
+    if (!geomless) {
+      columns.push("geom");
+    }
     const { lat, long, radius } = req.query;
     const object = await getObjectAround(lat, long, radius, tableName, columns);
 
@@ -153,11 +179,14 @@ router.get("/homestay", async (req, res, next) => {
       "contact_person",
       "open",
       "close", 
-      "geom",
       "description",
       "status",
       "video_url",
     ];
+    const geomless = req.query.geomless === "true";
+    if (!geomless) {
+      columns.push("geom");
+    }
     const { lat, long, radius } = req.query;
     const object = await getObjectAround(lat, long, radius, tableName, columns);
 

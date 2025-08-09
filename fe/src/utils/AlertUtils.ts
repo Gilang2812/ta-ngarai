@@ -164,10 +164,12 @@ export const cornerError = (message: string | undefined) => {
 };
 
 let swalOpen = false;
+let isLoadingAlert = false;
 
 export const showLoadingAlert = (message?: string) => {
   if (swalOpen) return;
   swalOpen = true;
+  isLoadingAlert = true;
 
   Swal.fire({
     title: message || "Loading...",
@@ -177,11 +179,13 @@ export const showLoadingAlert = (message?: string) => {
     },
     willClose: () => {
       swalOpen = false;
+      isLoadingAlert = false;
     },
   });
 };
+
 export const hideLoadingAlert = () => {
-  if (Swal.isVisible()) {
+  if (Swal.isVisible() && isLoadingAlert) {
     Swal.close();
   }
 };

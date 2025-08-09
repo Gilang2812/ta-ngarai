@@ -29,6 +29,7 @@ const HomestayReservationPage: React.FC<Props> = ({ id }) => {
     steps,
     reservationId,
     handleNextStep,
+    setCheckIn,
   } = useHomestayReservation(id);
   if (isLoadingUnitHomestay) {
     return <HomestayReservationSkeleton />;
@@ -54,6 +55,7 @@ const HomestayReservationPage: React.FC<Props> = ({ id }) => {
               uniqueUnitType={uniqueUnitType}
               selectedUnit={selectedUnit}
               handleNextStep={handleNextStep}
+              setCheckIn={setCheckIn}
             />
           </Formik>
           <HomestayReservationFinish

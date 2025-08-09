@@ -1,6 +1,6 @@
-import { ReservationSchema } from "@/type/schema/ReservationSchema";
+import { DetailReservationSchemaWithPackageDay  } from "@/type/schema/ReservationSchema";
 
-export const ReservationHomestay = ({ data }: { data: ReservationSchema }) => {
+export const ReservationHomestay = ({ data }: { data: DetailReservationSchemaWithPackageDay }) => {
   return (
     <section className=" space-y-4  mt-4">
       <table className=" [&_td]:px-2   w-full">
@@ -25,9 +25,8 @@ export const ReservationHomestay = ({ data }: { data: ReservationSchema }) => {
                 })}
               </td>
               <td>
-                [{d.homestay.Homestay.name}]{" "}
-                {d.homestay.HomestayUnitType.name_type} {d.unit_number}{" "}
-                {d.homestay.unit_name}
+                [{d.homestay.homestay.name}] {d.homestay.unitType.name_type}{" "}
+                {d.unit_number} {d.homestay.unit_name}
               </td>
               <td>{d.unit_guest}</td>
               <td>{d.homestay.price}</td>
@@ -48,7 +47,10 @@ export const ReservationHomestay = ({ data }: { data: ReservationSchema }) => {
           </tr>
           <tr>
             <td>Homestay</td>
-            <td>: {data.detail.map(d=>d.homestay.price).reduce((a,b)=>a+b)}</td>
+            <td>
+              :{" "}
+              {data.detail.map((d) => d.homestay.price).reduce((a, b) => a + b)}
+            </td>
           </tr>
         </tbody>
       </table>

@@ -25,6 +25,9 @@ const AdvancedControlPanelItems = ({
   objects,
   setLayers,
   setObjects,
+  isAllCheckedLayers,
+  isAllCheckedObjects,
+  withPackage = true,
   showAirPlane,
 }: Props) => {
   const { packageOpen, togglePackage } = useWebRightSection();
@@ -55,6 +58,7 @@ const AdvancedControlPanelItems = ({
         Icon={FaLayerGroup}
         label="layer"
         data={layers}
+        active={isAllCheckedLayers}
         leftButtonOnClick={handleShowAllLayers}
         onDropDownItemClick={setLayers}
       />
@@ -62,6 +66,7 @@ const AdvancedControlPanelItems = ({
       <MapSettingDropdown
         label="object"
         data={objects}
+        active={isAllCheckedObjects}
         leftButtonOnClick={() => {
           handleShowAllObject();
           setRadius(null);
@@ -70,12 +75,14 @@ const AdvancedControlPanelItems = ({
         onDropDownItemClick={setObjects}
       />
 
-      <ButtonMapNavigation
-        onClick={togglePackage}
-        Icon={FaSquarePollHorizontal}
-        label={`${packageOpen ? "close" : "open"} package`}
-        active={packageOpen}
-      />
+      {withPackage && (
+        <ButtonMapNavigation
+          onClick={togglePackage}
+          Icon={FaSquarePollHorizontal}
+          label={`${packageOpen ? "close" : "open"} package`}
+          active={packageOpen}
+        />
+      )}
       {!open && (direction || PackageObject.length > 0) && (
         <ButtonMapNavigation
           label="Close Direction"

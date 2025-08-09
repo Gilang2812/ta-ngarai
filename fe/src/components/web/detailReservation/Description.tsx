@@ -1,13 +1,10 @@
 import { ReservationSchema } from "@/type/schema/ReservationSchema";
 import { Accordion } from "./Accordion";
+import { useService } from "@/utils/ServiceCategory";
 
 export const Description = ({ data }: { data: ReservationSchema }) => {
-  const include = data.package.detailServices.filter(
-    (s) => s.ServicePackage.category == 1
-  );
-  const exclude = data.package.detailServices.filter(
-    (s) => s.ServicePackage.category == 2
-  );
+  const include = useService(1, data.package);
+  const exclude = useService(0, data.package);
 
   return (
     <section className="overflow-hidden rounded border border-slate-300">
@@ -18,9 +15,10 @@ export const Description = ({ data }: { data: ReservationSchema }) => {
         <section className="my-4">
           <h3 className="text-lg font-semibold">Service Include</h3>
           <ul className="px-8 list-disc">
-            {include.length > 0 &&
-              include.map((ic, index) => (
-                <li key={index}>{ic.ServicePackage.name}</li>
+            {include &&
+              include?.length > 0 &&
+              include?.map((ic, index) => (
+                <li key={index}>{ic.service.name}</li>
               ))}
           </ul>
         </section>
@@ -28,9 +26,10 @@ export const Description = ({ data }: { data: ReservationSchema }) => {
         <section className="">
           <h3 className="text-lg font-semibold">Service Exclude</h3>
           <ul className="px-8 list-disc">
-            {exclude.length > 0 &&
+            {exclude &&
+              exclude.length > 0 &&
               exclude.map((ec, index) => (
-                <li key={index}>{ec.ServicePackage.name}</li>
+                <li key={index}>{ec.service.name}</li>
               ))}
           </ul>
         </section>

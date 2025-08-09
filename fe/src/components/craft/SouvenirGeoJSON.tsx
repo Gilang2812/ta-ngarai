@@ -13,6 +13,7 @@ import { FeatureCollection } from "geojson";
 import ImgCraft from "../common/ImgCraft";
 import { formatPrice } from "@/lib/priceFormatter";
 import { DetailCraftManagementResponse } from "@/type/schema/DetailCraftSchema";
+import { ROUTES } from "@/data/routes";
 
 type Props = {
   data: (SouvenirPlaceSchema & { crafts: DetailCraftManagementResponse[] })[];
@@ -101,7 +102,11 @@ const SouvenirGeoJSON = ({ data, handleSelectStore }: Props) => {
                       </p>
                       <Button type="button" className="h-fit" asChild>
                         <Link
-                          href={`/web/craft/${cr?.variant?.id_craft}/${cr?.id_souvenir_place}?idvr=${cr?.craft_variant_id}`}
+                          href={ROUTES.DETAIL_CRAFT(
+                            cr.variant.id_craft,
+                            cr.id_souvenir_place,
+                            cr.craft_variant_id
+                          )}
                         >
                           Order Now
                         </Link>

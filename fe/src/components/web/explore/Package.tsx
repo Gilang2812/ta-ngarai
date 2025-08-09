@@ -15,7 +15,7 @@ import Link from "next/link";
 export const Package = ({ title }: { title: string }) => {
   const { data, isLoading } = useFetchPackages<Packages>({ package: true });
   const [buttonActive, setButtonActive] = useState<string | null>(null);
-
+  
   if (isLoading) return <Loading />;
 
   const RenderPackage = () => {

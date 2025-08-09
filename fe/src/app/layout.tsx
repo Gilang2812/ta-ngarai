@@ -4,7 +4,7 @@ import "./globals.css";
 import "swiper/css/bundle";
 import "swiper/css";
 import Script from "next/script";
-import { ResultProps } from "@/type/props/ResultProps";
+import { ResultErrorProps, ResultProps } from "@/type/props/ResultProps";
 import ReactGoogleOAuthProvider from "@/layout/ReactGoogleOAuthProvider";
 
 export const metadata: Metadata = {
@@ -21,7 +21,7 @@ declare global {
         options: {
           onSuccess: (result: ResultProps) => void;
           onPending: (result: ResultProps) => void;
-          onError: (result: ResultProps) => void;
+          onError: (result: ResultErrorProps) => void;
           onClose: () => void;
         }
       ) => void;

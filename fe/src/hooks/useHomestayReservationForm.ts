@@ -1,6 +1,6 @@
 import { useFormikContext } from "formik";
 import { HomestayReservationFormSchemaType } from "@/type/schema/ReservationSchema";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import dayjs from "dayjs";
 import { AllUnitHomestayResponseSchema } from "@/type/schema/HomestaySchema";
 import { cornerError } from "@/utils/AlertUtils";
@@ -9,12 +9,14 @@ type Props = {
   unitHomestay: AllUnitHomestayResponseSchema[];
   selectedUnit: AllUnitHomestayResponseSchema[];
   uniqueUnitType?: string[];
+  setCheckIn: (date: string) => void;
 };
 
 const useHomestayReservationForm = ({
   unitHomestay,
   selectedUnit = [],
   uniqueUnitType,
+  setCheckIn,
 }: Props) => {
   const { values, setFieldValue, handleChange } =
     useFormikContext<HomestayReservationFormSchemaType>();
@@ -81,17 +83,25 @@ const useHomestayReservationForm = ({
     setFieldValue("check_out", toLocalDateTimeInput(checkOutDate), false);
   }, [values, isCompleted, setFieldValue]);
 
+  useEffect(() => {
+    if (values.check_in) {
+      setCheckIn(values.check_in);
+    }
+  }, [values.check_in, setCheckIn]);
+
   const reservedDate = selectedUnit.flatMap((unit) =>
     unit.detailReservations.flatMap((detail) =>
-      detail.reservation.package.packageDays.map((_, idx) =>
+      detail?.reservation?.package?.packageDays?.map((_, idx) =>
         dayjs(detail.date).add(idx, "day").format("YYYY-MM-DD")
       )
     )
   );
 
-  const reservedInComingDate = reservedDate.filter((date) =>
-    dayjs(date).isAfter(dayjs().add(3, "day"))
-  );
+  const reservedInComingDate = useMemo(() => [
+    ...new Set(
+      reservedDate.filter((date) => dayjs(date).isAfter(dayjs().add(3, "day")))
+    ),
+  ], [reservedDate]);
 
   useEffect(() => {
     if (reservedInComingDate.includes(values.check_in)) {

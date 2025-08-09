@@ -1,5 +1,10 @@
 import { homestayReservationFormSchema } from "./../../validation/homestayReservationFormSchema";
-import { PackageSchema } from "./PackageSchema";
+import {
+  DetailPackageSchema,
+  PackageDay,
+  PackageSchema,
+  PackageService,
+} from "./PackageSchema";
 import {
   HomestayDetails,
   HomestaySchema,
@@ -9,6 +14,8 @@ import {
 import { User } from "./UsersSchema";
 import * as yup from "yup";
 import { GalleryHomestaySchema } from "./GalleryHomestaySchema";
+import { UserLogin } from "@/validation/authSchema";
+import { confirmationSchema } from "@/validation/reservation";
 
 export type ReservationDetails = {
   id: string;
@@ -67,49 +74,19 @@ export type DetailReservationSchema = DetailReservationResponse & {
   reservation: ReservationDetails;
 };
 
-export type ReservationSchema = {
-  id: string;
-  user_id: number;
-  package_id: string;
-  request_date: string;
-  check_in: string;
-  total_people: number;
-  note: string;
-  deposit: number;
-  total_price: number;
-  proof_of_deposit: string;
-  admin_deposit_check: string | null;
-  token_of_deposit: string;
-  deposit_check: string;
-  deposit_channel: string;
-  deposit_date: string;
-  proof_of_payment: string;
-  admin_payment_check: string | null;
-  token_of_payment: string;
-  payment_check: string;
-  payment_channel: string;
-  payment_date: string;
-  rating: number;
-  review: string;
-  status: number;
-  confirmation_date: string;
-  admin_confirm: number;
-  feedback: string;
-  response: string;
-  cancel: number;
-  cancel_date: string | null;
-  account_refund: string | null;
-  proof_refund: string | null;
-  refund_amount: number | null;
-  refund_check?: number | null | number;
-  refund_date: string | null;
-  admin_refund: string | null;
-  type_of_payment: number;
-  package: PackageSchema;
+export type ReservationSchema = ReservationDetails & {
+  package: PackageService;
   customer: User;
   detail: DetailReservationSchema[];
 };
 
+export type DetailReservationSchemaWithPackageDay = ReservationDetails & {
+  package: PackageSchema & {
+    packageDays: PackageDay[];
+  };
+  customer: User;
+  detail: DetailReservationSchema[];
+};
 export type HomestayReservationFormSchemaType = yup.InferType<
   typeof homestayReservationFormSchema
 > & {
@@ -130,3 +107,40 @@ export type DetailHomestayReservation = ReservationDetails & {
     };
   })[];
 };
+
+export type DetailReservationReviewSchema = DetailReservationResponse & {
+  homestay: HomestayDetails;
+};
+
+export type DetailReservationReview = ReservationDetails & {
+  package: PackageSchema & {
+    packageDays: (PackageDay & {
+      detailPackages: DetailPackageSchema[];
+    })[];
+  };
+  customer: UserLogin;
+  confirm: {
+    fullname: string;
+  };
+  refund: {
+    fullname: string;
+  };
+  detail: DetailReservationReviewSchema[];
+};
+
+export type HomestayReviewFormSchema = {
+  date: string;
+  unit_type: string;
+  homestay_id: string;
+  unit_number: string;
+  reservation_id: string;
+  review: string;
+  review_rating: number;
+};
+export type PackageReviewFormSchema = {
+  id: string;
+  review: string;
+  review_rating: number;
+};
+
+export type ConfirmationFormSchema = yup.InferType<typeof confirmationSchema>;

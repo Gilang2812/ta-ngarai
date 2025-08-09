@@ -1,8 +1,13 @@
-import { SetStatus } from "@/components/reservation/SetStatus";
 import { ReservationSchema } from "@/type/schema/ReservationSchema";
+import {
+  getReservationStatus,
+  getReservationStatusClass,
+} from "@/utils/common/getReservationStatus";
 import { FaDownload, FaMoneyBill1 } from "react-icons/fa6";
 
-export const PaymentSection = ({data}:{data:ReservationSchema}) => {
+export const PaymentSection = ({ data }: { data: ReservationSchema }) => {
+  const status = getReservationStatus(data);
+  const statusClass = getReservationStatusClass(status);
   return (
     <div className="bg-white p-5 rounded-lg   space-y-4">
       <header className="text-lg text-center    ">
@@ -16,39 +21,40 @@ export const PaymentSection = ({data}:{data:ReservationSchema}) => {
           <FaMoneyBill1 /> Proof of Deposit
         </button>
       </section>
-      <table className="w-full table-fixed [&_td]:py-1 ">  
+      <table className="w-full table-fixed [&_td]:py-1 ">
         <tbody>
-            <tr>
-                <td>Total Reservation</td>
-                <td>:</td>
-            </tr>
-            <tr className="border-b">
-                <td>Deposit Reservation</td>
-                <td>:</td>
-            </tr>
-            <tr>
-                <td>Status</td>
-                <td>{<SetStatus s={data.status} c={data.cancel} r={data.refund_check}/>}</td>
-            </tr>
-            <tr>
-                <td>Confirm Date</td>
-                <td>:</td>
-            </tr>
-            <tr>
-                <td>Feedback admin about reservation</td>
-                <td>:</td>
-            </tr>
-            <tr>
-                <td>deposit payment</td>
-                <td>: {data.deposit}</td>
-            </tr>
-            <tr>
-                <td>Status deposin paymeny</td>
-                <td>:</td>
-            </tr>
+          <tr>
+            <td>Total Reservation</td>
+            <td>:</td>
+          </tr>
+          <tr className="border-b">
+            <td>Deposit Reservation</td>
+            <td>:</td>
+          </tr>
+          <tr>
+            <td>Status</td>
+            <td>
+              <span className={statusClass}>{status}</span>
+            </td>
+          </tr>
+          <tr>
+            <td>Confirm Date</td>
+            <td>:</td>
+          </tr>
+          <tr>
+            <td>Feedback admin about reservation</td>
+            <td>:</td>
+          </tr>
+          <tr>
+            <td>deposit payment</td>
+            <td>: {data.deposit}</td>
+          </tr>
+          <tr>
+            <td>Status deposin paymeny</td>
+            <td>:</td>
+          </tr>
         </tbody>
       </table>
- 
     </div>
   );
 };

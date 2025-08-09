@@ -5,71 +5,110 @@ import dayjs from "dayjs";
  * @param {ReservationDetails} reservation - The reservation details object.
  * @returns {string} - The status of the reservation.
  */
+export type ReservationStatus =
+  | "Accepted"
+  | "Awaiting-Approval"
+  | "Cancelled"
+  | "Cancelled-&-Refund"
+  | "Deposit-Required"
+  | "Done"
+  | "Enjoy-Trip"
+  | "Expired"
+  | "PayDeposit"
+  | "PayFull"
+  | "Payment-Required"
+  | "Refund-Success"
+  | "Rejected"
+  | "Unknown"
+  | "Unreviewed";
 
 export const getReservationStatus = (
   reservation: ReservationDetails
-): string => {
+): ReservationStatus => {
+  if (!reservation) {
+    return "Unknown";
+  }
   const status = reservation.status;
-  const cancel =
-    reservation.cancel && reservation.cancel_date && !reservation.refund_date;
+  const cancel = reservation.cancel && reservation.cancel_date;
   const rejected =
     status === 2 || (dayjs(reservation.check_in).isBefore(dayjs()) && !status); //rejected
   const accepted = status === 1; // awaiting payment
-  const payDeposit = accepted && !reservation.deposit_date; //pay deposit
-  const payFull = !payDeposit && !reservation.payment_date; //pay full
+  const payDeposit =
+    accepted && !reservation.deposit_date && reservation.token_of_deposit; //pay deposit
+
+  const payFull =
+    (!payDeposit || reservation.deposit === reservation.total_price) &&
+    accepted &&
+    !reservation.payment_date &&
+    reservation.token_of_payment; //pay full
   const unReviewed =
-    !payFull &&
+    reservation.payment_date &&
     !reservation.review &&
     dayjs(reservation.check_in)
       .add(reservation.days_of_stay, "day")
       .isBefore(dayjs()); //unreviewed
 
-  const enjoy = !unReviewed && !reservation.cancel_date; //enjoyed trip
   const cancelRefund =
     cancel &&
     (payDeposit || payFull) &&
     dayjs(reservation.cancel_date).isBefore(dayjs(reservation.check_in));
 
+  const enjoy =
+    accepted &&
+    !reservation.cancel_date &&
+    reservation.payment_date &&
+    dayjs(reservation.check_in)
+      .add(reservation.days_of_stay, "day")
+      .isAfter(dayjs()); //enjoyed trip
+
   const waiting = !status && dayjs(reservation.check_in).isAfter(dayjs());
-
+  const done = reservation.rating;
   // Return status in priority order
-  if (cancelRefund) return "Cancelled-&-Refund";
-  if (cancel) return "Cancelled";
   if (rejected) return "Rejected";
-  if (payDeposit) return "Deposit-Required";
-  if (payFull) return "Payment-Required";
+  if (cancelRefund)
+    return !reservation.refund_date ? "Cancelled-&-Refund" : "Refund-Success";
+  if (cancel) return "Cancelled";
+  if (done) return "Done";
   if (unReviewed) return "Unreviewed";
-  if (enjoy) return "Enjoyed-Trip";
-  if (waiting) return "Awaiting-Approval";
-
-  return "Done";
+  if (enjoy) return "Enjoy-Trip";
+  if (payFull) return "Payment-Required";
+  if (payDeposit) return "Deposit-Required";
+  if (waiting) {
+    return "Awaiting-Approval";
+  } else {
+    return "Expired";
+  }
 };
 /**
  * Function to get CSS class based on reservation status.
  * @param {string} status - The reservation status.
  * @returns {string} - The CSS class name.
  */
-export const getReservationStatusClass = (status: string): string => {
+export const getReservationStatusClass = (
+  status: ReservationStatus
+): string => {
   switch (status) {
     case "Cancelled-&-Refund":
-      return "p-1 rounded font-normal bg-orange-100 text-orange-800 border-orange-200";
+      return "italic text-nowrap p-1 px-2 rounded font-semibold bg-red-600 text-white border-red-600";
+    case "Refund-Success":
+      return "italic text-nowrap p-1 px-2 rounded font-semibold bg-red-600 text-white border-red-600";
     case "Cancelled":
-      return "p-1 rounded font-normal bg-red-100 text-red-800 border-red-200";
+      return "italic text-nowrap p-1 px-2 rounded font-semibold bg-red-600 text-white border-red-600";
     case "Rejected":
-      return "p-1 rounded font-normal bg-red-100 text-red-800 border-red-200";
+      return "italic text-nowrap p-1 px-2 rounded font-semibold bg-red-600 text-white border-red-600";
     case "Deposit-Required":
-      return "p-1 rounded font-normal bg-yellow-100 text-yellow-800 border-yellow-200";
+      return "italic text-nowrap p-1 px-2 rounded font-semibold bg-cyan-400 text-black border-cyan-400";
     case "Payment-Required":
-      return "p-1 rounded font-normal bg-amber-100 text-amber-800 border-amber-200";
+      return "italic text-nowrap p-1 px-2 rounded font-semibold bg-cyan-400 text-black border-cyan-400";
     case "Unreviewed":
-      return "p-1 rounded font-normal bg-purple-100 text-purple-800 border-purple-200";
-    case "Enjoyed-Trip":
-      return "p-1 rounded font-normal bg-green-100 text-green-800 border-green-200";
+      return "italic text-nowrap p-1 px-2 rounded font-semibold bg-black text-white border-black";
+    case "Enjoy-Trip":
+      return "italic text-nowrap p-1 px-2 rounded font-semibold bg-green-500 text-white border-green-500";
     case "Awaiting-Approval":
-      return "p-1 rounded font-normal bg-blue-100 text-blue-800 border-blue-200";
+      return "italic text-nowrap p-1 px-2 rounded font-semibold bg-yellow-300 text-black border-yellow-300";
     case "Done":
-      return "p-1 rounded font-normal bg-green-500 text-white border-green-600";
+      return "italic text-nowrap p-1 px-2 rounded font-semibold bg-green-600 text-white border-green-600";
     default:
-      return "p-1 rounded font-normal bg-gray-50 text-gray-600 border-gray-600";
+      return "italic text-nowrap p-1 px-2 rounded font-semibold bg-red-600 text-white border-gray-600";
   }
 };

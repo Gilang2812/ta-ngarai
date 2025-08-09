@@ -15,6 +15,10 @@ import useFormStep from "./useFormStep";
 import dayjs from "dayjs";
 import { AllUnitHomestayResponseSchema } from "@/type/schema/HomestaySchema";
 import { useCreateReservation } from "@/features/reservation/useCreateReservation";
+import {
+  OpenMeteoDaily,
+  OpenMeteoDailyResponse,
+} from "@/type/schema/OpenMeteoSchema";
 
 export type SelectedUnit = {
   homestay_id: string;
@@ -25,7 +29,7 @@ export type SelectedUnit = {
 const useHomestayReservation = (homestay_id: string) => {
   // Stepper logic
   const { currentStep, steps, nextStep } = useFormStep(3);
-
+  const [checkIn, setCheckIn] = useState<string | null>(null);
   // Data fetching
   const { data: weathers, isLoading } = useFetchWeatherPrediction();
   const { data: unitHomestay, isLoading: isLoadingUnitHomestay } =
@@ -37,6 +41,34 @@ const useHomestayReservation = (homestay_id: string) => {
       nextStep();
     },
   });
+  const filteredWeather: OpenMeteoDailyResponse | null | undefined =
+    weathers && checkIn
+      ? (() => {
+          const indices = weathers?.daily.time
+            .map((day, i) =>
+              dayjs(day).isAfter(dayjs(checkIn), "day") ||
+              dayjs(day).isSame(dayjs(checkIn), "day")
+                ? i
+                : -1
+            )
+            .filter((i) => i !== -1);
+
+          if (!indices?.length) return null;
+
+          // Ambil seluruh isi daily berdasarkan indeks
+          const filteredDaily = Object.fromEntries(
+            Object.entries(weathers.daily).map(([key, values]) => [
+              key,
+              indices.map((i) => values[i]),
+            ])
+          ) as OpenMeteoDaily;
+
+          return {
+            ...weathers,
+            daily: filteredDaily,
+          };
+        })()
+      : weathers;
 
   const [selectedUnit, setSelectedUnit] = useState<
     AllUnitHomestayResponseSchema[]
@@ -120,7 +152,7 @@ const useHomestayReservation = (homestay_id: string) => {
       return cornerError("Please select at least one unit");
     }
 
-    createReservation({ ...values, selectedUnits:selectedUnit });
+    createReservation({ ...values, selectedUnits: selectedUnit });
 
     // Handle form submission logic here
     console.log("Form submitted with values:", values);
@@ -129,7 +161,7 @@ const useHomestayReservation = (homestay_id: string) => {
 
   // Return values
   return {
-    weathers,
+    weathers: filteredWeather,
     isLoading,
     unitHomestay,
     isLoadingUnitHomestay,
@@ -144,6 +176,7 @@ const useHomestayReservation = (homestay_id: string) => {
     nextStep,
     reservationId,
     handleNextStep,
+    setCheckIn,
   };
 };
 

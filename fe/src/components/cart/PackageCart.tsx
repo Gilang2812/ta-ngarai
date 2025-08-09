@@ -16,6 +16,7 @@ import useTableManagement from "@/hooks/useTableManagement";
 import useSearchTable from "@/hooks/useSearchTable";
 import TableManagementHeader from "../admin/TableManagementHeader";
 import ManagementFooter from "../admin/ManagementFooter";
+import { ROUTES } from "@/data/routes";
 
 const PackageCart = () => {
   const { data, refetch, isLoading } = useFetchUserCarts();
@@ -27,7 +28,7 @@ const PackageCart = () => {
         const { package: p, ...rest } = item;
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { id, ...restOfItem } = p;
-        const flat = { ...rest, ...(restOfItem || {}) }; 
+        const flat = { ...rest, ...(restOfItem || {}) };
         return Object.keys(flat).some((key) => {
           const value = flat[key as keyof CartSchema];
           return String(value).toLowerCase().includes(searchTerm.toLowerCase());
@@ -109,8 +110,11 @@ const PackageCart = () => {
                     variant={"success"}
                     className="text-nowrap"
                     aria-label={`Book ${item.package_id}`}
+                    asChild
                   >
-                    Book Now
+                    <Link href={ROUTES.PACKAGE_RESERVATION(item.package_id)}>
+                      Book Now
+                    </Link>
                   </Button>
                   <Tooltip content="delete" placement="bottom">
                     <Button

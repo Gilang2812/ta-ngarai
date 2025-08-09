@@ -3,14 +3,18 @@ import { useFormikContext } from "formik";
 import React from "react";
 
 const ReviewRatingInput = () => {
-  const { values, setFieldValue, errors} =
+  const { values, setFieldValue, errors } =
     useFormikContext<ReviewFormSchema>();
   const { review_rating } = errors;
   const rating = values.review_rating;
   const [hovered, setHovered] = React.useState<number | null>(null);
   return (
     <section>
-      {review_rating && <small className="text-red-500">{review_rating} {rating}</small>}
+      {review_rating && (
+        <small className="text-red-500">
+          {review_rating} {rating}
+        </small>
+      )}
       <div className="flex gap-2 items-center">
         {[...Array(5)].map((_, i) => (
           <svg

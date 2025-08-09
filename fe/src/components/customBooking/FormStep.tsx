@@ -5,12 +5,12 @@ import { NextStepButton } from "./NextStepButton";
 import { Guide } from "./Guide";
 import { StepFooter } from "./StepFooter";
 import { PrevStepButton } from "./PrevStepButton";
-import { FormSubmit } from "../inputs/FormSubmit";
-import { PackageService } from "@/features/web/package/useFetchPackage";
+import { FormSubmit } from "../inputs/FormSubmit"; 
 import { useFormikContext } from "formik";
 import { ReservationFormSchema } from "./SecondStep";
 import { useService } from "@/utils/ServiceCategory";
 import { DetailServiceSchema } from "@/type/schema/ServiceSchema";
+import { PackageServiceGallery } from "@/type/schema/PackageSchema";
 type Props = {
   nextStep: () => void;
   prevStep: () => void;
@@ -22,7 +22,7 @@ type Props = {
   total: number | null;
   minReservation: string | number;
   isValid: string | false;
-  packageItem?: PackageService;
+  packageItem?: PackageServiceGallery;
   isWithHomestay?: boolean;
 };
 
@@ -44,7 +44,7 @@ export const FormStep: FC<Props> = ({
   const isLastStep = currentStep === steps.length - 1;
   const isVisibile = isFirstStep || isLastStep;
   const include = useService(1, packageItem);
-  const exclude = useService(2, packageItem);
+  const exclude = useService(0, packageItem);
   const { values } = useFormikContext<ReservationFormSchema>();
 
   const LastStepForm = () => {
@@ -208,32 +208,7 @@ export const FormStep: FC<Props> = ({
             />
             <FormInput name="check_out_time" type="text" readonly />
           </div>
-          <div
-            className={`${
-              (!isFirstStep && isWithHomestay )&& "hidden"
-            } py-8 space-y-4 pr-16  font-bold`}
-          >
-            <p className="text-red-600 capitalize">
-              homestay resevation agreement
-            </p>
-            <p>
-              This package has a duration of more than one day so it requires
-              you to book a homestay. And to support equalization of
-              reservations, homestay units are automatically selected by the
-              system.
-            </p>
-            <label htmlFor="agree" className="flex gap-2 items-center ">
-              <input
-                type="checkbox"
-                onChange={handleCheck}
-                id="agree"
-                name="agree"
-                disabled={isLastStep}
-                className="border-2  outline-none rounded-sm h-4 w-4 focus:outline-transparent focus:border-primary focus:hover:text-secondary focus:text-primary  focus:ring-transparent"
-              />
-              Yes, I Agree
-            </label>
-          </div>
+       
           <div className={`${!isLastStep && "hidden"} space-y-4`}>
             <FormInput
               placeholder="Make request that you want to be on the reservation record. such as the proposed food menu and price range of the package"

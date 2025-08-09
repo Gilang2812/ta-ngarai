@@ -4,7 +4,7 @@ function generateDistanceQuery({ tableName, columns = ["id", "name"] }) {
      selectedCols = columns.map(col => `f.${col}`).join(", ");
 
     return `
-      SELECT ${selectedCols},f.geom,
+      SELECT ${selectedCols},
         ST_Y(ST_CENTROID(f.geom)) AS lat,
         ST_X(ST_CENTROID(f.geom)) AS lng,
         ft.type AS type,
@@ -21,7 +21,7 @@ function generateDistanceQuery({ tableName, columns = ["id", "name"] }) {
     `;
   }
   return `
-      SELECT ${selectedCols},geom,
+      SELECT ${selectedCols},
       ST_Y(ST_CENTROID(geom)) AS lat,
       ST_X(ST_CENTROID(geom)) AS lng,
       (6371 * ACOS(
@@ -40,7 +40,7 @@ function generateDistanceLessQuery({ tableName, columns = ["id", "name"] }) {
   if (tableName === "facility") {
     selectedCols = columns.map(col => `f.${col}`).join(", ");
     return `
-      SELECT ${selectedCols}, f.geom, ft.type AS type
+      SELECT ${selectedCols}, ft.type AS type
       FROM facility f
       LEFT JOIN facility_type ft ON f.type_id = ft.id;
     `;

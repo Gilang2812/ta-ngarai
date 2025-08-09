@@ -1,0 +1,23 @@
+import { axiosInstance } from "@/lib/axios";
+import { ActionProps } from "@/type/props/ActionProps";
+import { useMutation } from "@tanstack/react-query";
+import { onError } from "@/utils/ErrorHandler";
+
+export const useDeletePackageDay = ({ onSuccess }: ActionProps) => {
+  return useMutation({
+    mutationFn: async ({
+      day,
+      package_id,
+    }: {
+      day: number;
+      package_id: string;
+    }) => {
+      const { data } = await axiosInstance.delete(
+        `/packages/day/${day}/${package_id}`
+      );
+      return data;
+    },
+    onSuccess,
+    onError,
+  });
+};

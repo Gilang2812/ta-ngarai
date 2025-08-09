@@ -2,6 +2,7 @@ const { snap, core } = require("../../config/midtrans");
 const crypto = require("crypto");
 const { createPayment, getPaymentStatus } = require("./payment.service");
 const { takeCheckout } = require("../checkout/checkout.service");
+const getPaymentStatusText = require("../../utils/getPaymentStatusText");
 const router = require("express").Router();
 
 router.post("/create", async (req, res) => {
@@ -25,7 +26,7 @@ router.post("/create", async (req, res) => {
       success: false,
       message: "Failed to create transaction",
       error: error.message,
-    });
+  });
   }
 });
 
@@ -52,25 +53,8 @@ router.post("/notification", async (req, res) => {
     // Get transaction status
     const transactionStatus = await core.transaction.status(orderId);
 
-    let paymentStatus = "";
-    if (transactionStatus.transaction_status === "capture") {
-      if (transactionStatus.fraud_status === "challenge") {
-        paymentStatus = "challenge";
-      } else if (transactionStatus.fraud_status === "accept") {
-        paymentStatus = "success";
-      }
-    } else if (transactionStatus.transaction_status === "settlement") {
-      paymentStatus = "success";
-    } else if (transactionStatus.transaction_status === "deny") {
-      paymentStatus = "deny";
-    } else if (
-      transactionStatus.transaction_status === "cancel" ||
-      transactionStatus.transaction_status === "expire"
-    ) {
-      paymentStatus = "failure";
-    } else if (transactionStatus.transaction_status === "pending") {
-      paymentStatus = "pending";
-    }
+    let paymentStatus = getPaymentStatusText(transactionStatus);
+    
 
     // Update your database here based on paymentStatus
     console.log("Payment status:", paymentStatus, "for order:", orderId);

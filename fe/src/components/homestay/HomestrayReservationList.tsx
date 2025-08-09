@@ -42,11 +42,11 @@ const HomestrayReservationList = ({
           animate="show"
           exit="exit"
         >
-          {filteredUnitHomestay?.map((unit) => (
+          {filteredUnitHomestay?.map((unit,index) => (
             <motion.article
               layout="position"
               variants={itemVariants}
-              key={`${unit.homestay_id}-${unit.unit_type}-${unit.unit_number}`}
+              key={`${unit.homestay_id}-${unit.unit_type}-${unit.unit_number}-${index}`}
               className="flex gap-4 items-center hover:bg-primary/10 transition-all ease-in-out duration-300 rounded-lg p-4"
               onClick={() => handleSelectedUnit(unit)}
             >
@@ -76,10 +76,10 @@ const HomestrayReservationList = ({
                       }
                     />
                     <p className="text-sm">
-                      {`${unit.unitType.name_type}, Capacity : ${unit.capacity} people.`}
+                      {`${unit?.unitType?.name_type}, Capacity : ${unit?.capacity} people.`}
                     </p>
                   </div>
-                  <p className="font-bold">{formatPrice(unit.price)} / day</p>
+                  <p className="font-bold">{formatPrice(unit?.price)} / day</p>
                 </article>
               </div>
             </motion.article>

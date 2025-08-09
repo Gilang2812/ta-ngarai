@@ -5,8 +5,11 @@ const verifyToken = (req, res, next) => {
 
   const authHeader = req.headers["authorization"];
   const token = authHeader && authHeader.split(" ")[1];
- 
+
   if (!token) {
+    console.log("No token provided");
+    const url = req.originalUrl;
+    console.log("URL:", url);
     return res.sendStatus(401);
   }
   jwt.verify(token, secret, (err, user) => {
@@ -14,6 +17,7 @@ const verifyToken = (req, res, next) => {
       return res.sendStatus(403);
     } else {
       req.user = user.user;
+      req.token = token; 
       next();
     }
   });

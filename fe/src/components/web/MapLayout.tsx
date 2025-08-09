@@ -17,7 +17,7 @@ type Props = React.ComponentProps<typeof GoogleMap> & {
   children?: React.ReactNode;
   origin?: LatLngLiteral | null;
   hideAllLayer?: () => void;
-  containerStyle?: React.CSSProperties;
+  containerStyle?: React.CSSProperties; 
 };
 
 function MapLayout({

@@ -3,7 +3,7 @@ import {  ShippingDataWithReviewGallery } from "@/type/schema/CraftTransactionSc
 import { useQuery } from "@tanstack/react-query";
 
 export const useFetchUserHistory = () => {
-  return useQuery<ShippingDataWithReviewGallery[]>({
+  return useQuery<(ShippingDataWithReviewGallery)[]>({
     queryKey: ["user-history"],
     queryFn: async () => {
       const { data } = await axiosInstance.get("/checkouts/history");

@@ -12,7 +12,7 @@ export const SingleContentWrapper: FC<Props> = ({ children, className }) => {
   return (
     <section
       className={cn(
-        `p-5 min-w-fit overflow-hidden to-white via-white via-[4%] from-primary/80 from-[3.6%]  bg-gradient-to-br rounded-xl`,
+        `p-5 min-w-fit to-white via-white via-[4%] from-primary/80 from-[3.6%]  bg-gradient-to-br rounded-xl`,
         className
       )}
     >

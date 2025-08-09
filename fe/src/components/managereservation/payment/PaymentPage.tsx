@@ -51,7 +51,9 @@ const PaymentPage = ({ id }: Props) => {
               <label className="text-sm font-medium text-gray-500">
                 Waktu Transaksi
               </label>
-              <p className="text-sm text-gray-900">{dayjs(payment.waktu_transaksi).format("DD MMMM YYYY HH:mm")}</p>
+              <p className="text-sm text-gray-900">
+                {dayjs(payment.waktu_transaksi).format("DD MMMM YYYY HH:mm")}
+              </p>
             </div>
             <div>
               <label className="text-sm font-medium text-gray-500">

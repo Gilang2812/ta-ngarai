@@ -25,7 +25,10 @@ const withAuth = <P extends object>(
       typeof window !== "undefined" ? localStorage.getItem("token") : null;
     useEffect(() => {
       const needsProfileUpdate =
-        user && !user.phone && (pathName !== ROUTES.UPDATE_PROFILE && pathName !== ROUTES.PROFILE);
+        user &&
+        !user.phone &&
+        pathName !== ROUTES.UPDATE_PROFILE &&
+        pathName !== ROUTES.PROFILE;
       const showProfileUpdateAlert = async () => {
         await Swal.fire({
           title: "Update Profile",

@@ -5,7 +5,7 @@ export const useFetchDetailReservationByID = (id?: string) => {
   return useQuery({
     queryKey: ["detailReservation"],
     queryFn: async () => {
-      const { data } = await axiosInstance.get(`/detailReservations/${id}`);
+      const { data } = await axiosInstance.get(`/detail-reservations/${id}`);
       return data;
     },
     enabled:!!id

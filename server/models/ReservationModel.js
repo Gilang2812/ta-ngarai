@@ -25,7 +25,7 @@ const Reservation = sequelize.define(
     check_in: {
       type: DataTypes.DATE,
       allowNull: false,
-    },  
+    },
     total_people: {
       type: DataTypes.INTEGER,
       allowNull: false,
@@ -33,11 +33,7 @@ const Reservation = sequelize.define(
     note: {
       type: DataTypes.TEXT,
       allowNull: true,
-    },
-    days_of_stay: {
-      type: DataTypes.INTEGER,
-      allowNull: true,
-    },
+    }, 
     deposit: {
       type: DataTypes.INTEGER,
       allowNull: false,

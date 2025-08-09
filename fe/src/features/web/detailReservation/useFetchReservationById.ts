@@ -1,9 +1,9 @@
-import { axiosInstance } from "@/lib/axios";
-import { ReservationSchema } from "@/type/schema/ReservationSchema";
+import { DetailReservationSchemaWithPackageDay } from './../../../type/schema/ReservationSchema';
+import { axiosInstance } from "@/lib/axios"; 
 import { useQuery } from "@tanstack/react-query";
 
 export const useFetchReservationByID = (id?: string) => {
-  return useQuery<ReservationSchema>({
+  return useQuery<DetailReservationSchemaWithPackageDay>({
     queryKey: ["Reservation"],
     queryFn: async () => {
       const { data } = await axiosInstance.get(`/reservations/${id}`);

@@ -5,37 +5,33 @@ import { Itinerary } from "@/components/web/package/moreInfoPackage/Itinerary";
 import { Review } from "@/components/web/package/moreInfoPackage/Review";
 
 import { Gallery } from "@/components/web/package/moreInfoPackage/Gallery";
-import { FaCirclePlay } from "react-icons/fa6";
 import { useGetPackage } from "@/features/web/package/useGetPackage";
+import { SingleContentWrapper } from "@/components/common/SingleContentWrapper"; 
+import { PackageReservationSchema, PackageServiceGallery,   } from "@/type/schema/PackageSchema";
 
 export const InfoSection = ({ id }: { id: string }) => {
-  const { data, isLoading } = useGetPackage(id);
-
- 
+  const { data, isLoading } = useGetPackage<
+    PackageServiceGallery & { reservation: PackageReservationSchema[] }
+  >(id, ["package", "service", "gallery", "reservation"]);
 
   return (
-    <>
-      <section className="col-span-7 space-y-8">
-        {data && <OverviewSection data={data} isLoading={isLoading} />}
-        {data && <PackageInformation data={data} />}
-        <Gallery gallery={data?.packageGalleries} isLoading={isLoading} />
-        <Review />
-        <footer className="mt-16">
-          <button
-            type="button"
-            className="flex items-center gap-2 px-3 py-2 bg-white border rounded border-primary text-primary hover:bg-primary hover:text-white"
-          >
-            <FaCirclePlay /> Play Video
-          </button>
-        </footer>
-      </section>
-      <section className="col-span-5 p-5 space-y-8 bg-white rounded-lg">
-        <header className="space-y-2">
-          <h3 className="text-lg font-semibold">Location Map</h3>
-        </header>
-
-        <Itinerary data={data} />
-      </section>
-    </>
+    data && (
+      <>
+        <section className="lg:col-span-7  col-span-12  space-y-8">
+          <OverviewSection data={data} isLoading={isLoading} />
+          <PackageInformation data={data} />
+          <Gallery gallery={data?.packageGalleries} isLoading={isLoading} />
+          <Review reservations={data?.reservation} />
+        </section>
+        <section className="col-span-12   lg:col-span-5 min-w-fit  ">
+          <SingleContentWrapper>
+            <header className="space-y-2">
+              <h3 className="text-lg font-semibold">Google Map</h3>
+            </header>
+            <Itinerary data={data} />
+          </SingleContentWrapper>
+        </section>
+      </>
+    )
   );
 };

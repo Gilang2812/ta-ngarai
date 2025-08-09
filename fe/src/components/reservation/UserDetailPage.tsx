@@ -25,8 +25,12 @@ export const UserDetailPage: FC<Props> = ({ history }) => {
             <p>OrderID. {history.shippingItems[0].checkout.id}</p>
           </div>
           <StatusBadge
-            status={getCraftTransactionStatusColor(history.status)}
-            text={getCraftTransactionStatus(history.status)}
+            status={getCraftTransactionStatusColor(
+              history.status,
+              history.shippingItems[0].checkout.transaction_token,
+              history.paymentStatus
+            )}
+            text={getCraftTransactionStatus(history.status, history.shippingItems[0].checkout.transaction_token, history.paymentStatus)}
           />
         </div>
 
@@ -80,7 +84,9 @@ export const UserDetailPage: FC<Props> = ({ history }) => {
             </div>
             <div>
               <strong>Alamat Tujuan:&nbsp;</strong>
-              {Object.values(history?.shippingItems[0]?.checkout?.shippingAddress)
+              {Object.values(
+                history?.shippingItems[0]?.checkout?.shippingAddress
+              )
                 .slice(2, -1)
                 .join(", ")}
             </div>

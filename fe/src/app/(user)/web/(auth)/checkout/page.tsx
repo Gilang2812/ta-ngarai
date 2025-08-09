@@ -79,8 +79,10 @@ export default function CheckoutPage() {
           },
           onError: async (result) => {
             cornerError("Payment error:" + result.order_id);
+            const url = new URL(result.finish_redirect_url);
+            const order_id = url.searchParams.get("order_id");
             await updateStatus({
-              id: result.order_id,
+              id: order_id || "",
               status: 6,
               shippings: paymentData.shippings,
             });
@@ -160,7 +162,10 @@ export default function CheckoutPage() {
         "sub_total",
         groupedItems
           .flat()
-          .reduce((acc, item) => acc + item.detailCraft.price * item.jumlah, 0)
+          .reduce(
+            (acc, item) => acc + item?.detailCraft?.price * item?.jumlah,
+            0
+          )
       );
 
       formikOrder.setFieldValue(

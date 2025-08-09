@@ -6,7 +6,7 @@ export const FormInput = ({
   label,
   icon: Icon,
   id,
-  name, 
+  name,
   as,
   readonly = false,
   children,
@@ -22,13 +22,15 @@ export const FormInput = ({
         </label>
       )}
       <div
-        className={cn(`flex items-center border ${
-          meta.touched && meta.error
-            ? "border-red-500 text-red-500"
-            : "border-black"
-        } transition ease-in-out ${
-          readonly ? "bg-slate-200" : "focus-within:ring-4"
-        } focus-within:text-primary ring-primary/30 rounded  px-4 py-1`,)}
+        className={cn(
+          `flex items-center border ${
+            meta.touched && meta.error
+              ? "border-red-500 text-red-500"
+              : "border-black"
+          } transition ease-in-out ${
+            readonly ? "bg-slate-200" : "focus-within:ring-4"
+          } focus-within:text-primary ring-primary/30 rounded  px-4 py-1`
+        )}
       >
         {as === "select" ? (
           <Field

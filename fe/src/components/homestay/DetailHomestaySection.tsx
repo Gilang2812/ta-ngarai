@@ -4,17 +4,15 @@ import { DetailHomestayInfo } from "./DetailHomestayInfo";
 import { useGetHomestay } from "@/features/dashboard/homestay/useGetHomestay";
 import { RawSkeleton } from "../loading/RawSkeleton";
 import { DetailHomestayHeader } from "./DetailHomestayHeader";
-import dynamic from "next/dynamic"; 
- 
-const GalleryHomestay = dynamic (
-  () => import("./GalleryHomestay"),
-  { ssr: false }
-);
+import dynamic from "next/dynamic";
 
+const GalleryHomestay = dynamic(() => import("./GalleryHomestay"), {
+  ssr: false,
+});
 
 export const DetailHomestaySection = ({ id }: { id: string }) => {
   const { data } = useGetHomestay(id);
- 
+
   return (
     <>
       <section className="col-span-7 ">
@@ -32,9 +30,9 @@ export const DetailHomestaySection = ({ id }: { id: string }) => {
           <section className="space-y-4">
             <h4>Facility</h4>
             <ul className="list-disc px-4" role="list">
-              {data?.details?.map((h,index) => (
-                 <li key={index}>{h.facility.name}</li>
-              ))} 
+              {data?.details?.map((h, index) => (
+                <li key={index}>{h?.facility?.name}</li>
+              ))}
             </ul>
           </section>
         </div>
@@ -45,7 +43,7 @@ export const DetailHomestaySection = ({ id }: { id: string }) => {
         </div>
         <div className="bg-white rounded-xl p-5">
           <h4>Our Gallery</h4>
-          <GalleryHomestay data= {data?.galleries} />
+          <GalleryHomestay data={data?.galleries} />
         </div>
       </section>
     </>

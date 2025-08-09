@@ -11,7 +11,7 @@ export const Rating: React.FC<RatingProps> = ({ rating=0, reviewCount, showText 
         {[...Array(5)].map((_, i) => (
           <svg
             key={i}
-            className={`w-4 h-4 ${i < Math.floor(rating) ? 'text-yellow-400' : 'text-gray-300'}`}
+            className={`size-4 ${i < Math.floor(rating) ? 'text-yellow-400' : 'text-gray-300'}`}
             aria-hidden="true"
             xmlns="http://www.w3.org/2000/svg"
             fill="currentColor"

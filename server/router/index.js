@@ -35,8 +35,8 @@ router.use("/checkouts", verifyToken, checkout);
 router.use("/craft-carts", verifyToken, cartCraftRouter);
 router.use("/crafts", verifyToken, craftRouter);
 router.use("/detail-crafts", verifyToken, detailCraftRouter);
-router.use("/detailReservations", detailReservationRouter);
-router.use("/detailPackage", detailPackageRouter);
+router.use("/detail-reservations", detailReservationRouter);
+router.use("/detail-package", detailPackageRouter);
 router.use("/geo", geoRouter);
 router.use("/gallery", galleryRouter);
 router.use("/homestays", homestayRouter);
@@ -54,7 +54,7 @@ router.use("/variants", craftVariantRouter);
 router.use("/invoice",invoiceRouter)
 
 router.use("*", (req, res, next) => {
-  res.status(404).json({ message: "Not Found" });
+  res.status(404).json({ message: "Page Not Found" });
 });
 
 module.exports = router;

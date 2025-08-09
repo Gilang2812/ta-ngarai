@@ -5,7 +5,7 @@ export default function WithOurPackage() {
   return (
     <main className="font-bold space-y-8">
       <ContentDiffSplitted
-        left={<MapSection />}
+        left={<MapSection withPackage={false} />}
         right={<PackageSection title="explore village with our package" />}
       />
     </main>

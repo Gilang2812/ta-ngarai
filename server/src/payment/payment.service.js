@@ -1,6 +1,7 @@
 const { snap, core } = require("../../config/midtrans");
 const { updateCheckout } = require("../checkout/checkout.service");
-const createPayment = async (body) => {
+
+const createTokenTransaction = async (body) => {
   const parameter = {
     transaction_details: {
       order_id: body.order_id,
@@ -8,14 +9,20 @@ const createPayment = async (body) => {
     },
     item_details: body.item_details,
     callbacks: {
-      finish: `${process.env.FRONTEND_URL}/payment/success`,
-      error: `${process.env.FRONTEND_URL}/payment/error`,
-      pending: `${process.env.FRONTEND_URL}/payment/pending`,
+      finish: `${process.env.FRONTEND_URL}/web/reservation?tab=craft`,
+      error: `${process.env.FRONTEND_URL}/web/reservation?tab=craft`,
+      pending: `${process.env.FRONTEND_URL}/web/reservation?tab=craft`,
     },
   };
 
   const transaction = await snap.createTransaction(parameter);
-  console.log("transaction midtrans" , transaction);
+  return transaction;
+};
+
+const createPayment = async (body) => {
+  const transaction = await createTokenTransaction(body);
+
+  console.log("transaction midtrans", transaction);
   await updateCheckout(
     { id: body.order_id },
     {
@@ -25,6 +32,8 @@ const createPayment = async (body) => {
     }
   );
 
+  console.log("Transaction created:", transaction);
+
   return {
     success: true,
     token: transaction.token,
@@ -33,8 +42,22 @@ const createPayment = async (body) => {
 };
 
 const getPaymentStatus = async (orderId) => {
-  const status = await core.transaction.status(orderId);
-  return status;
+  try {
+    const status = await core.transaction.status(orderId);
+    return status;
+  } catch (error) {
+    const msg = error.message || "";
+
+    // Cek pesan error Midtrans
+    if (
+      msg.includes("HTTP status code: 404") ||
+      msg.includes("Transaction doesn't exist")
+    ) {
+      return null;
+    }
+
+    throw error;
+  }
 };
 
-module.exports = { createPayment, getPaymentStatus };
+module.exports = { createPayment, getPaymentStatus ,createTokenTransaction};

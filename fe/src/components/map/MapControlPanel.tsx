@@ -15,12 +15,15 @@ export default function MapControlPanel({
   launchAllAirplanes,
   showAirPlane,
   handleGoToVillage,
+  isAllCheckedLayers,
+  isAllCheckedObjects,
   layers,
   setLayers,
   handleShowAllLayers,
   objects,
   setObjects,
   handleShowAllObject, 
+  withPackage =true
 }: Props) {
   return (
     <MapControlPanelLayout>
@@ -39,9 +42,12 @@ export default function MapControlPanel({
         launchAllAirplanes={launchAllAirplanes}
         layers={layers}
         objects={objects}
+        isAllCheckedLayers={isAllCheckedLayers}
+        isAllCheckedObjects={isAllCheckedObjects}
         setLayers={setLayers}
         setObjects={setObjects}
-        showAirPlane={showAirPlane} 
+        showAirPlane={showAirPlane}
+        withPackage={withPackage}
       />
     </MapControlPanelLayout>
   );

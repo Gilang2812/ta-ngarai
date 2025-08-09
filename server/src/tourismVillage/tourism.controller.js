@@ -7,13 +7,21 @@ const router = require("express").Router();
 const multer = require("multer");
 
 const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-      cb(null, './public/images/kotoGadang');
-    },
-    filename: (req, file, cb) => {
-      cb(null, `${Date.now()}-${file.originalname}`);
-    },
-  });
+  destination: (req, file, cb) => {
+    cb(null, "/public/images/kotoGadang");
+  },
+  filename: (req, file, cb) => {
+    let sanitizedName = file.originalname.replaceAll(" ", "-");
+    const ext = file.originalname.split(".")[1];
+
+    if (!ext) {
+      sanitizedName = `${sanitizedName}.${file.mimetype.split("/")[1]}`;
+    }
+    const uniqueSuffix = Math.floor(Math.random() * 1e6) + Date.now();
+    const newFileName = `${uniqueSuffix}-${sanitizedName}`;
+    cb(null, newFileName);
+  },
+});
 
 const upload = multer({ storage });
 
@@ -23,11 +31,13 @@ router.get("/:id", upload.any(), async (req, res) => {
     return res.status(200).json(tourism);
   } catch (error) {
     console.error(error);
-    res.status(error.statusCode || 500).json(error.message || "Internal server error");
+    res
+      .status(error.statusCode || 500)
+      .json(error.message || "Internal server error");
   }
 });
 
-router.patch("/:id",upload.any(), async (req, res) => {
+router.patch("/:id", upload.any(), async (req, res) => {
   try {
     const id = req.params.id;
     const requestData = {
@@ -48,7 +58,7 @@ router.patch("/:id",upload.any(), async (req, res) => {
       bank_code: req.body?.bank_code,
       bank_account_holder: req.body?.bank_account_holder,
       bank_account_number: req.body?.bank_account_number,
-      qr_url: req.body?.qr_url
+      qr_url: req.body?.qr_url,
     };
 
     // Hapus field yang kosong
@@ -70,10 +80,10 @@ router.patch("/:id",upload.any(), async (req, res) => {
       fs.rmSync(filepath, { recursive: true, force: true });
       requestData.qr_url = path.basename(qrFile);
     }
-    const image = req.file
+    const image = req.file;
     // Update data utama
     await TourismVillage.update(requestData, { where: { id } });
-    console.log(req.body)
+    console.log(req.body);
     // Tangani galeri jika ada
     if (req.body.gallery) {
       const gallery = [];
@@ -97,23 +107,30 @@ router.patch("/:id",upload.any(), async (req, res) => {
       }
 
       // Update atau tambah data galeri
-      const existingGallery = await GalleryTourism.findOne({ where: { tourism_village_id: id } });
+      const existingGallery = await GalleryTourism.findOne({
+        where: { tourism_village_id: id },
+      });
       if (existingGallery) {
-        console.log('yang terjadi update')
-        await GalleryTourism.update({ url: gallery }, { where: { tourism_village_id: id } });
+        console.log("yang terjadi update");
+        await GalleryTourism.update(
+          { url: gallery },
+          { where: { tourism_village_id: id } }
+        );
       } else {
-        console.log('yang terjadi tambah')
+        console.log("yang terjadi tambah");
         await GalleryTourism.create({ tourism_village_id: id, url: gallery });
       }
     } else {
-        console.log('ini yang terjadi')
-    //   await GalleryTourism.destroy({ where: { tourism_village_id: id } });
+      console.log("ini yang terjadi");
+      //   await GalleryTourism.destroy({ where: { tourism_village_id: id } });
     }
 
     res.status(200).json({ message: req.body });
   } catch (error) {
     console.error(error);
-    res.status(error.statusCode || 500).json(error.message || "Internal server error");
+    res
+      .status(error.statusCode || 500)
+      .json(error.message || "Internal server error");
   }
 });
 

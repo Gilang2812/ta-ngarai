@@ -1,5 +1,12 @@
 import { MultiPolygon } from "geojson";
 import { Time } from "../common/TimeType";
+import { GalleryPackageSchema } from "./GallerySchema";
+import { DetailServiceSchema } from "./ServiceSchema";
+import {
+  detailPackageFormSchema,
+  packageDayFormSchema,
+} from "@/validation/package.validation";
+import * as yup from "yup"; 
 
 export type PackageTypeSchema = {
   type_name: string;
@@ -21,7 +28,7 @@ export type PackageSchema = {
 
 export type PackageDay = {
   package_id: string;
-  day: string;
+  day: number;
   description: string;
   status: number;
   created_at: string;
@@ -36,7 +43,7 @@ export type DetailPackageSchema = {
   object_id: string;
   description: string;
   status: number;
-  object: ObjectSchema;
+  object: SimplifiedObject;
 };
 
 export type ObjectBase = {
@@ -113,4 +120,44 @@ export type SimplifiedObject = ObjectBase & {
   contact_person?: string;
   address?: string;
   capacity?: number;
+};
+
+export type PackageReservationSchema = {
+  id: string;
+  rating: number;
+  review: string;
+  customer: {
+    id: string;
+    fullname: string;
+  };
+};
+
+export type PackageDayFormSchema = yup.InferType<
+  typeof packageDayFormSchema
+> & {
+  status: number;
+};
+
+export type PackageActivityFormSchema = yup.InferType<
+  typeof detailPackageFormSchema
+> & {
+  activity_type: "A" | "CP" | "FC" | "SP" | "TH" | "WO";
+};
+
+export type Packages = PackageSchema & {
+  packageDays: (PackageDay & {
+    detailPackages: DetailPackageSchema[];
+  })[];
+};
+
+export type PackageGallery = Packages & {
+  packageGalleries: GalleryPackageSchema[];
+};
+
+export type PackageServiceGallery = PackageGallery & {
+  detailServices: DetailServiceSchema[];
+};
+
+export type PackageService = Packages & {
+  detailServices: DetailServiceSchema[];
 };

@@ -1,5 +1,5 @@
 import Image from "next/image";
-import React from "react";
+import React, { useState } from "react";
 import { DayButton } from "@/components/web/explore/DayButton";
 import {
   Packages,
@@ -10,7 +10,7 @@ import { Spinner } from "flowbite-react";
 // Main component
 export const Package = () => {
   const { data, isLoading } = useFetchPackages<Packages>({ package: true });
-
+  const [buttonActive, setButtonActive] = useState<string | null>(null);
   const RenderPackage = () => {
     return (
       !isLoading &&
@@ -31,13 +31,11 @@ export const Package = () => {
           </tr>
           <tr className="border-b ">
             <td className="flex relative flex-wrap gap-y-2 py-2">
-              {item.packageDays.map((day, dayIndex) => (
-                <DayButton
-                  key={dayIndex}
-                  day={` ${day.day} `}
-                  activity={day.detailPackages}
-                />
-              ))}
+              <DayButton
+                buttonActive={buttonActive}
+                setButtonActive={setButtonActive}
+                packageDays={item.packageDays}
+              />
             </td>
           </tr>
         </React.Fragment>

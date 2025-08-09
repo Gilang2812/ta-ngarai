@@ -9,6 +9,7 @@ type Props = {
   handleCompleteOrder: (order_id: string, shipping_id: string) => void;
   handleRateClick: () => void;
   token?: string;
+  paymentStatus?: string;
 };
 
 const ItemReservationButton = ({
@@ -17,6 +18,7 @@ const ItemReservationButton = ({
   handleCompleteOrder,
   shipping_id,
   handleRateClick,
+  paymentStatus,
   token,
 }: Props) => {
   switch (status) {
@@ -27,6 +29,7 @@ const ItemReservationButton = ({
             e.stopPropagation();
           }}
           type="button"
+          asChild
         >
           <Link href={`/web/reservation/${order_id}/payment`}>Pay Now</Link>
         </Button>
@@ -63,6 +66,7 @@ const ItemReservationButton = ({
             e.stopPropagation();
           }}
           type="button"
+          asChild
         >
           <Link href={`/web/reservation/${shipping_id}/rating-items`}>
             Rate
@@ -91,9 +95,10 @@ const ItemReservationButton = ({
             }
           }}
           type="button"
-          disabled={!token}
+          disabled={!token || paymentStatus === "failure"}
+          asChild={!!token && paymentStatus !== "failure"}
         >
-          {token ? (
+          {token && paymentStatus !== "failure" ? (
             <Link href={`/web/reservation/${order_id}/payment`}>Pay Now</Link>
           ) : (
             "Payment Failed"

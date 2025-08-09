@@ -37,6 +37,12 @@ input[type="time"]::-webkit-calendar-picker-indicator {
   -webkit-appearance: auto;
 }
 
+ 
+input[type="radio"] {
+  @apply focus:bg-primary  focus:!outline-none focus:ring-2   focus:ring-transparent checked:bg-primary;
+}
+
+
 body {
   color: var(--foreground);
   background: var(--background);
@@ -269,7 +275,3 @@ input[type="range"]:disabled::-moz-range-thumb {
 .filepond--item {
   padding: 0.5rem;
 }
- 
- 
-
- 

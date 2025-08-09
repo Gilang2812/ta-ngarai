@@ -4,10 +4,11 @@ import Loading from "@/app/loading";
 import { FinishStep } from "@/components/customBooking/FinishStep";
 import { ReservationForms } from "@/components/customBooking/ReservationForms";
 import { Steps } from "@/components/customBooking/Steps";
-import { useCreateReservation } from "@/features/reservation/useCreateReservation";
+import { useCreateReservation } from "@/features/reservation/useCreateReservation"; 
 // import { useFetchUnitHomestayReservation } from "@/features/reservation/useFetchUnitHomestayReservation";
 import { useGetPackage } from "@/features/web/package/useGetPackage";
 import useFormStep from "@/hooks/useFormStep";
+import { PackageServiceGallery } from "@/type/schema/PackageSchema";
 import { Formik } from "formik";
 
 import { useParams } from "next/navigation";
@@ -31,7 +32,11 @@ export type FormReservationSchema = {
 
 const CustomBooking = () => {
   const { id }: { id: string } = useParams();
-  const { data: packageItem, isLoading } = useGetPackage(id);
+  const { data: packageItem, isLoading } = useGetPackage<PackageServiceGallery>(id, [
+    "package",
+    "service",
+    "gallery",
+  ]);
   const isWithHomestay = packageItem && packageItem?.packageDays?.length > 1;
   const stepsLength = isWithHomestay ? 4 : 3;
   const { currentStep, steps, nextStep, prevStep } = useFormStep(stepsLength);

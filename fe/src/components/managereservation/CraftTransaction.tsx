@@ -102,12 +102,14 @@ const CraftTransaction = () => {
           <span
             className={`px-3 py-1 ${getCraftTransactionStatusColor(
               item?.status,
-              item.shippingItems[0].checkout.transaction_token
+              item.shippingItems[0].checkout.transaction_token,
+              item.paymentStatus
             )} text-white text-center text-nowrap rounded-full text-sm font-medium`}
           >
             {getCraftTransactionStatus(
               item.status,
-              item.shippingItems[0].checkout.transaction_token
+              item.shippingItems[0].checkout.transaction_token,
+              item.paymentStatus
             )}
           </span>
         </td>

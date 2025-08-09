@@ -1,47 +1,61 @@
-import React, { useState } from "react";
+import React from "react";
 import { DeleteButton } from "@/components/common/DeleteButton";
 import { InfoModal } from "@/components/modal/InfoModal";
-import { SetStatus } from "@/components/reservation/SetStatus";
-import { useFetchReservations } from "@/features/web/myreservation/useFetchReservations";
-import { ReservationSchema } from "@/type/schema/ReservationSchema";
-import { localeDate, localeDayDate } from "@/utils/localeDate";
-import { useModal } from "@/utils/ModalUtils";
+import { ReservationDetails } from "@/type/schema/ReservationSchema";
+import { localeDate } from "@/utils/localeDate";
 import Link from "next/link";
 import { FaHistory } from "react-icons/fa";
 
 import { FaCircleInfo, FaComments } from "react-icons/fa6";
 import { motion } from "framer-motion";
+import {
+  getReservationStatus,
+  getReservationStatusClass,
+} from "@/utils/common/getReservationStatus";
+import ManagementSkeletonLoader from "../loading/ManagementSkeletonLoader";
+import { ROUTES } from "@/data/routes";
+import usePackageReservation from "@/hooks/usePackageReservation";
+import ReservationStep from "./ReservationStep";
 
- 
 const PackageReservation = () => {
-  const [reservation, setReservation] = useState<ReservationSchema | null>(
-    null
-  );
-  const { data } = useFetchReservations();
-  const { isOpen, toggleModal } = useModal();
-
-  const handleHistoryClick = (r: ReservationSchema) => {
-    toggleModal();
-    setReservation(r);
-  };
+  const {
+    data,
+    isLoading,
+    handleHistoryClick,
+    isOpen,
+    reservation,
+    setReservation,
+    toggleModal,
+    handleDeleteReservation,
+  } = usePackageReservation();
 
   const RenderReservation = () => {
     return data?.map((r, index) => (
       <tr
-        key={r.id}
+        key={r.id + index}
         className="py-2 border-b [&_td]:px-2 hover:bg-stone-200/50 transition-ease-out"
       >
         <td className="py-2">{index + 1}</td>
         <td className="py-2">{r.id}</td>
-        <td className="py-2">{r.package.name}</td>
+        <td className="py-2">{r?.package?.name ?? "Homestay Reservation"}</td>
         <td>{localeDate(r.request_date)}</td>
         <td className="py-2">{localeDate(r.check_in)}</td>
         <td className="py-2 text-nowrap [&_p]:mx-auto text-center ">
-          {SetStatus({ s: r.status, c: r.cancel, r: r.refund_check })}
+          <span
+            className={getReservationStatusClass(
+              getReservationStatus(r as ReservationDetails)
+            )}
+          >
+            {getReservationStatus(r as ReservationDetails).replaceAll("-", " ")}
+          </span>
         </td>
         <td className="py-2 gap-x-2 flex flex-wrap justify-center xl:flex-nowrap">
           <Link
-            href={`./detailReservation/${r.id}`}
+            href={
+              r.package
+                ? ROUTES.DETAIL_RESERVATION(r.id)
+                : ROUTES.DETAIL_RESERVATION_HOMESTAY(r.id)
+            }
             className="p-3 transition-ease-in-out bg-white border rounded border-primary text-primary hover:bg-primary hover:text-white"
             aria-label="View Details"
           >
@@ -55,21 +69,32 @@ const PackageReservation = () => {
             <FaHistory />
           </button>
           <Link
-            href={`./`}
+            href={ROUTES.DETAIL_RESERVATION_REVIEW(r.id)}
             className="transition ease-in-out duration-300 bg-white border border-cyan-400 text-cyan-400 hover:bg-cyan-400 p-3 hover:text-white rounded"
             aria-label="Chat about reservation R0055"
           >
             <FaComments />
           </Link>
-          <DeleteButton />
+          <DeleteButton
+            onClick={() => handleDeleteReservation(r.id)}
+            disabled={
+              !(
+                getReservationStatus(r as ReservationDetails) ===
+                "Awaiting-Approval"
+              )
+            }
+          />
         </td>
       </tr>
     ));
   };
 
+  if (isLoading) {
+    return <ManagementSkeletonLoader />;
+  }
   return (
     <>
-      <motion.section layoutId="reservation-list" >
+      <motion.section layoutId="reservation-list">
         <table className="w-full ">
           <thead>
             <tr className="border-b-2 ">
@@ -79,6 +104,7 @@ const PackageReservation = () => {
               <th scope="col" className="p-2">
                 ID
               </th>
+
               <th scope="col" className="p-2">
                 Package Name
               </th>
@@ -109,26 +135,7 @@ const PackageReservation = () => {
         }}
         title="history reservation"
       >
-        {reservation && (
-          <table className="font-bold mt-4 [&_td]:pr-8">
-            <tbody>
-              <tr>
-                <td>Status</td>
-                <td className="flex items-center gap-1">
-                  : {SetStatus({ s: reservation!.status })}
-                </td>
-              </tr>
-              <tr>
-                <td>Confirm Date</td>
-                <td>: {localeDayDate(reservation.confirmation_date)}</td>
-              </tr>
-              <tr>
-                <td>Feedback Admin</td>
-                <td>: {`${reservation.feedback} ()`}</td>
-              </tr>
-            </tbody>
-          </table>
-        )}
+        <ReservationStep reservation={reservation} />
       </InfoModal>
     </>
   );

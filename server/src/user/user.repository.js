@@ -37,7 +37,6 @@ const findDetailUsers = async (users) => {
   const detailusers = await AuthGroupUsers.findAll({
     include: { model: User, as: "user", where: { deleted_at: null } },
   });
-
   return detailusers;
 };
 
@@ -46,7 +45,6 @@ const findOrCreateAuthGroup = async (id, name) => {
     where: { id },
     defaults: { name },
   });
-
   return authGroup;
 };
 
@@ -56,19 +54,21 @@ const updateUser = async (key, body) => {
   });
   return user;
 };
+
 const deleteUser = async (id) => {
   await User.destroy({ where: id });
   return true;
 };
+
 const findAuthGroupUser = async (user) => {
   const authGroupUser = await AuthGroupUsers.findOne({ where: user });
   return authGroupUser;
 };
+
 const deleteAdmin = async (data) => {
   const id = data.user_id;
   await AuthGroupUsers.destroy({ where: data });
   await deleteUser({ id });
-
   return true;
 };
 

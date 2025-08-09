@@ -1,5 +1,5 @@
 import { useGetWeatherMap } from "@/features/weater/useGetWeatherMap";
-import React, { useEffect } from "react";
+import React  from "react";
 import WeatherSkeletonLoader from "../loading/WeatherSkeletonLoader";
 import ImgWeather from "../common/ImgWeather";
 
@@ -12,9 +12,6 @@ const MapWeather = () => {
   const windSpeed = data?.wind.speed;
   const weatherDescription = data?.weather[0].description;
 
-  useEffect(() => {
-    console.log("MapWeather data:", data);
-  }, [data]);
   if (isLoading || !data) return <WeatherSkeletonLoader />;
   return (
     <div className="flex items-center space-x-4 bg-white px-4 py-2 rounded-lg shadow-sm">

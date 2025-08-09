@@ -7,7 +7,7 @@ const UnitHomestay = sequelize.define(
     homestay_id: {
       type: DataTypes.STRING(5),
       primaryKey: true,
-      field: 'homestay_id' // explicitly define field name
+      field: 'homestay_id'  
     },
     unit_type: {
       type: DataTypes.STRING(2),

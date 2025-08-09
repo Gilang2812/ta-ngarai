@@ -1,7 +1,11 @@
-import { ReservationSchema } from "@/type/schema/ReservationSchema";
+import { DetailReservationSchemaWithPackageDay } from "@/type/schema/ReservationSchema";
 import { addDays, localeDayDateTime } from "@/utils/localeDate";
 
-export const ReservationPackage = ({ data }: { data: ReservationSchema }) => {
+export const ReservationPackage = ({
+  data,
+}: {
+  data: DetailReservationSchemaWithPackageDay;
+}) => {
   const RenderData = () => {
     return (
       data && (
@@ -12,7 +16,7 @@ export const ReservationPackage = ({ data }: { data: ReservationSchema }) => {
           </tr>
           <tr>
             <td>Type</td>
-            <td>{data?.package?.PackageType?.type_name}</td>
+            <td>{data?.package?.type?.type_name}</td>
           </tr>
           <tr>
             <td>Request Date</td>

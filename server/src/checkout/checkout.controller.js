@@ -26,7 +26,7 @@ const {
   // getUserHistory
 } = require("./checkout.service");
 const fs = require("fs");
-const { updateStatusSchema } = require("./checout.validation");
+const { updateStatusSchema } = require("./checout.validation"); 
 
 const router = require("express").Router();
 
@@ -180,6 +180,7 @@ router.get("/history", async (req, res, next) => {
       status: 0,
       customer_id: req.user.id,
     });
+
     res.status(200).json(checkout);
   } catch (error) {
     next(error);
@@ -248,7 +249,7 @@ router.patch(
             await createReviewGallery(image);
           }
         }
-      } 
+      }
       if (updatedItem) {
         await updateShipping({ shipping_id }, { status: 5 });
       }

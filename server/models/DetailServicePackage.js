@@ -1,7 +1,7 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../config/database");
 
-const   DetailServicePackage = sequelize.define(
+const DetailServicePackage = sequelize.define(
   "DetailServicePackage",
   {
     package_id: {
@@ -12,11 +12,9 @@ const   DetailServicePackage = sequelize.define(
     service_package_id: {
       type: DataTypes.STRING(3),
       primaryKey: true,
-      allowNull:false
+      allowNull: false,
     },
-    status: {type: DataTypes.TINYINT(1),
-        allowNull:false,
-    },
+    status: { type: DataTypes.TINYINT(1), allowNull: false },
     status_created: {
       type: DataTypes.TINYINT(4),
       allowNull: true,

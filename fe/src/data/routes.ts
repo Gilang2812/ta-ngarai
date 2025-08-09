@@ -11,6 +11,20 @@ export const ROUTES = {
   UPDATE_PROFILE: "/web/profile/update",
   CHANGE_PASSWORD: "/web/profile/changePassword",
   CART: "/web/cart",
+  DETAIL_RESERVATION: (id: string) => `/web/detail-reservation/${id}`,
+  DETAIL_RESERVATION_REVIEW: (id: string) =>
+    `/web/detail-reservation/review/${id}`,
+  DETAIL_RESERVATION_HOMESTAY: (id: string) =>
+    `/web/reservation/${id}/homestay/detail`,
+  DETAIL_PACKAGE: (id: string) => `/web/package/${id}`,
+  CUSTOM_PACKAGE: (id: string) => `/web/custompackage/${id}`,
+  EXTEND_PACKAGE: (id: string) => `/web/exntend/${id}`,
+  DETAIL_CRAFT: (
+    id_craft: string,
+    id_souvenir_place: string,
+    id_craft_variant: string
+  ) => `/web/craft/${id_craft}/${id_souvenir_place}?idvr=${id_craft_variant}`,
+  PACKAGE_RESERVATION: (id: string) => `/web/reservation/custombooking/${id}`,
   INSTAGRAM: "#",
   TIKTOK: "#",
   LOGIN: "/login",

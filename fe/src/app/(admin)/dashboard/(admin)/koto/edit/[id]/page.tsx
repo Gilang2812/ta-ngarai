@@ -38,67 +38,66 @@ const EditDataVillage = () => {
 
   const { data: dataImage, isLoading: imageLoading } =
     useFetchGalleries("tourism");
-  useEffect(() => {
-    if (dataImage) {
-      setUploadedImages(
-        dataImage.map((item: any) => ({ source: imageUrl+ item.url }))
-      );
-    }
-  }, [dataImage]);
+z
 
   const { mutate, isPending } = useEditTourism({
     onSuccess: () => {
       router.push("/dashboard/koto");
     },
     onError: (error: AxiosError) => {
-      showErrorAlert("Editing Data");
+      showErrorAlert(error);
     },
   });
+
+  if (isLoading || imageLoading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <main className="p-5 bg-white rounded-xl">
       <header className="mb-4 text-lg">
         <h1>Edit Village Information</h1>
       </header>
-      <Formik 
-           initialValues={ {
-            id: data?.id ?? "",
-            name: data?.name ?? "",
-            type_of_tourism: data?.type_of_tourism ?? "",
-            address: data?.address ?? "",
-            open: data?.open ?? "",
-            close: data?.close ?? "",
-            ticket_price: data?.ticket_price ?? "",
-            contact_person: data?.contact_person ?? "",
-            bank_code: data?.bank_code ?? "",
-            bank_name: data?.bank_name ?? "",
-            bank_account: data?.bank_account ?? "",
-            bank_account_holder: data?.bank_account_holder ?? "",
-          }}
-          enableReinitialize={true}
-          onSubmit={ (values: any) => {
-            const formData = new FormData();
-      
-            // Append non-file fields to FormData
-            Object.entries(values).forEach(([key, value]) => {
-              if (value !== undefined && value !== null) {
-                formData.append(key, value as string);
-              }
-            });
-      
-            // Append QR image if it exists
-            if (uploadedQr) {
-              formData.append("qr", uploadedQr);
+      <Formik
+        initialValues={{
+          id: data?.id ?? "",
+          name: data?.name ?? "",
+          type_of_tourism: data?.type_of_tourism ?? "",
+          address: data?.address ?? "",
+          open: data?.open ?? "",
+          close: data?.close ?? "",
+          ticket_price: data?.ticket_price ?? "",
+          contact_person: data?.contact_person ?? "",
+          bank_code: data?.bank_code ?? "",
+          bank_name: data?.bank_name ?? "",
+          bank_account: data?.bank_account ?? "",
+          bank_account_holder: data?.bank_account_holder ?? "",
+        }}
+        enableReinitialize={true}
+        onSubmit={(values: any) => {
+          const formData = new FormData();
+
+          // Append non-file fields to FormData
+          Object.entries(values).forEach(([key, value]) => {
+            if (value !== undefined && value !== null) {
+              formData.append(key, value as string);
             }
-      
-            // Append gallery images
-            uploadedImages.forEach((image) => {
-              formData.append("gallery", image);
-            });
-      
-            // Use mutate with FormData
-            mutate(formData);
-          }}>
+          });
+
+          // Append QR image if it exists
+          if (uploadedQr) {
+            formData.append("qr", uploadedQr);
+          }
+
+          // Append gallery images
+          uploadedImages.forEach((image) => {
+            formData.append("gallery", image);
+          });
+
+          // Use mutate with FormData
+          mutate(formData);
+        }}
+      >
         <Form encType="multipart/form-data">
           <section className="grid grid-cols-2 gap-8">
             {/* Left Column: Form Fields */}

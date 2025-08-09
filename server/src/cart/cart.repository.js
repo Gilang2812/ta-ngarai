@@ -5,13 +5,20 @@ const findUserCarts = async (id) => {
     where: {
       user_id: id,
     },
-    include:{
-        model: Package,
-        as: "package",
-        attributes: ["id", "name", "price"],
-    }
+    include: {
+      model: Package,
+      as: "package",
+      attributes: ["id", "name", "price"],
+    },
   });
   return carts;
+};
+
+const findCart = async (condition) => {
+  const cart = await Cart.findOne({
+    where: condition,
+  });
+  return cart;
 };
 
 const insertCart = async (body) => {
@@ -26,5 +33,4 @@ const deleteCart = async (id) => {
   return cart;
 };
 
- 
-module.exports = { findUserCarts, deleteCart, insertCart };
+module.exports = { findUserCarts, deleteCart, insertCart, findCart };

@@ -9,7 +9,6 @@ const Img = ({
   src,
   ...props
 }: { src: string } & React.ComponentProps<typeof Image>) => {
- 
   const foundedSrc = imageUrl + src;
   const [imgSrc, setImgSrc] = useState(foundedSrc);
 
@@ -21,11 +20,7 @@ const Img = ({
   }, [foundedSrc]);
 
   return (
-    <Image
-      src={imgSrc}
-      {...props}
-      onError={() => setImgSrc(notFoundImage)}
-    />
+    <Image src={imgSrc} {...props} onError={() => setImgSrc(notFoundImage)} />
   );
 };
 

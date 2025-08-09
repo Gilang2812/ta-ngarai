@@ -4,31 +4,29 @@ import { FaRegUser, FaShieldVirus } from "react-icons/fa";
 import Heading from "@/components/auth/Heading";
 import { FormSubmit } from "@/components/inputs/FormSubmit";
 import { FormInput } from "@/components/inputs/FormInput";
-import { LoginResponse, loginSchema } from "@/validation/authSchema";
 import { cornerAlert, showErrorAlert } from "@/utils/AlertUtils";
 import { useLogin } from "@/features/auth/useLogin";
 import { GoogleLogin } from "@react-oauth/google";
-import { useAuthStore } from "@/stores/AuthStore";
 import { useRouter } from "next/navigation";
+import { LoginResponse, loginSchema } from "@/validation/authSchema";
+import { useAuthStore } from "@/stores/AuthStore";
 
 // Define the validation schema using Yup
 
 export default function Login() {
   const { setUser } = useAuthStore();
+
   const route = useRouter();
   const { mutate, isPending } = useLogin({
     onSuccess: (data) => {
-      const response = data as LoginResponse;
-      console.log("Login successful:", data);
-      localStorage.setItem("token", response.token);
-      setUser(response.user);
       cornerAlert("Login successful!");
-      localStorage.setItem("token", response.token);
+      const response = data as LoginResponse;
+
       route.replace("/web");
+      setUser(response.user);
     },
     onError: (e) => {
       showErrorAlert(e);
-      console.error("Error during login:", e);
     },
   });
 

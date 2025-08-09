@@ -1,13 +1,15 @@
-import { PackageService } from "@/features/web/package/useFetchPackage";
+import Button from "@/components/common/Button";
+import { SingleContentWrapper } from "@/components/common/SingleContentWrapper"; 
+import { PackageServiceGallery } from "@/type/schema/PackageSchema";
+import { useService } from "@/utils/ServiceCategory";
+import { FaCirclePlay } from "react-icons/fa6";
 
- 
- 
-export const PackageInformation = ({ data }: {data:PackageService}) => {
-  const include = data?.detailServices?.filter((item) => item.service.category === 1);
-  const exclude = data?.detailServices?.filter((item) => item.service.category === 2);
- 
+export const PackageInformation = ({ data }: { data: PackageServiceGallery }) => {
+  const include = useService(1,data)
+  const exclude = useService(0, data);
+
   return (
-    <section className="p-8 mb-4 bg-white rounded-xl">
+    <SingleContentWrapper>
       <header className="text-xl font-semibold text-center">
         <h2>Package Information</h2>
       </header>
@@ -56,6 +58,11 @@ export const PackageInformation = ({ data }: {data:PackageService}) => {
           </ul>
         </section>
       )}
-    </section>
+      <footer className="mt-16">
+        <Button disabled={!data.video_url} type="button" variant={"primary"}>
+          <FaCirclePlay /> Play Video
+        </Button>
+      </footer>
+    </SingleContentWrapper>
   );
 };

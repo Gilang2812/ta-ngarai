@@ -39,7 +39,10 @@ function MapWeb({
   zoom,
   children,
   souvenir = false,
-}: { souvenir?: boolean } & React.ComponentProps<typeof GoogleMap>) {
+  withPackage = true,
+}: { souvenir?: boolean; withPackage?: boolean } & React.ComponentProps<
+  typeof GoogleMap
+>) {
   const mapRef = useRef<google.maps.Map | null>(null);
   const { open } = useTools();
   const { isTerrain, setIsTerrain, setShowLabel, showLabel } = useMapTools();
@@ -66,6 +69,7 @@ function MapWeb({
     setState: setLayers,
     toggleAllOptions: handleShowAllLayers,
     unCheckAllOptions: hideAllLayers,
+    allChecked: isAllCheckedLayers,
   } = useToggleMapOptions(layersData);
 
   const {
@@ -73,6 +77,7 @@ function MapWeb({
     setState: setObjects,
     toggleAllOptions: handleShowAllObject,
     unCheckAllOptions: hideAllObjects,
+    allChecked: isAllCheckedObjects,
   } = useToggleMapOptions(objectsData);
 
   const { objectGeom } = useObjectArround();
@@ -123,6 +128,8 @@ function MapWeb({
           hideAllLayers();
         }}
         toggleLegend={toggleLegend}
+        isAllCheckedLayers={isAllCheckedLayers}
+        isAllCheckedObjects={isAllCheckedObjects}
         isShowLegend={isShowLegend}
         launchAllAirplanes={launchAllAirplanes}
         showAirPlane={showAirPlane}
@@ -133,6 +140,7 @@ function MapWeb({
         objects={objects}
         setObjects={setObjects}
         handleShowAllObject={handleShowAllObject}
+        withPackage={withPackage}
       />
       <div>
         <MapWeather />

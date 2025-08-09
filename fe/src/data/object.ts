@@ -13,6 +13,7 @@ export const objectRoutes = [
   "attractions",
   "culinary",
   "facilities",
+  "homestays",
   "souvenirs",
   "traditional",
   "worship",

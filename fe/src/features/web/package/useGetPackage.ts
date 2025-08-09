@@ -1,13 +1,19 @@
-import { axiosInstance } from "@/lib/axios"
-import { useQuery } from "@tanstack/react-query"
-import { PackageService } from "./useFetchPackage"
+import { axiosInstance } from "@/lib/axios";
+import { useQuery } from "@tanstack/react-query"; 
 
-export const useGetPackage = (id:string)=>{
-    return useQuery<PackageService>({
-        queryKey:['package'],
-        queryFn: async ()=>{
-            const {data} = await axiosInstance.get(`/packages/${id}`)
-            return data
-        }
-    })
-}
+export const useGetPackage = <T>(
+  id: string,
+  includes: ("package" | "service" | "gallery" | "reservation")[]
+) => {
+  return useQuery<T>({
+    queryKey: ["package"],
+    queryFn: async () => {
+      const { data } = await axiosInstance.get(`/packages/${id}`, {
+        params: {
+          includes: includes.join(","),
+        },
+      });
+      return data;
+    },
+  });
+};

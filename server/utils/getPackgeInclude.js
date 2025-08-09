@@ -16,12 +16,12 @@ function getPackageIncludes({ package, gallery, service }) {
   if (package) {
     includes.push(
       {
-        model: PackageDay,
-        required: true,
+        model: PackageDay, 
         as: "packageDays",
         include: {
           model: DetailPackage,
           as: "detailPackages",
+          required: false,
           where: Sequelize.where(
             Sequelize.col("packageDays.day"),
             Sequelize.col("packageDays->detailPackages.day")

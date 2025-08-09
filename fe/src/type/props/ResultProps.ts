@@ -13,3 +13,11 @@ export type ResultProps = {
     va_number: string;
   }>;
 };
+
+export type ResultErrorProps = {
+  status_code: string | number;
+  transaction_status?: string; 
+  error_messages: string[];
+  finish_redirect_url: string;
+  [key: string]: unknown; // fallback jika ada properti lain yang tidak terdokumentasi
+};

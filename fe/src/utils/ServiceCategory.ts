@@ -1,5 +1,11 @@
-import { PackageService } from "@/features/web/package/useFetchPackage";
+import { 
+  PackageService,
+  PackageServiceGallery,
+} from "@/type/schema/PackageSchema";
 
-export const useService =(category:1|2,data?:PackageService)=>{
-    return data?.detailServices.filter(service =>service.service.category===category);
-}
+export const useService = (
+  category: 0 | 1,
+  data?: PackageServiceGallery | PackageService
+) => {
+  return data?.detailServices?.filter((service) => service.status === category);
+};

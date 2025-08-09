@@ -101,6 +101,11 @@ const findUnitHomestays = async (newCheckIn) => {
       {
         model: DetailReservation,
         as: "detailReservations",
+        where: {
+          date: {
+            [Op.ne]: newCheckIn,
+          },
+        },
         include: [
           {
             model: Reservation,
@@ -117,20 +122,6 @@ const findUnitHomestays = async (newCheckIn) => {
         ],
       },
     ],
-    where: Sequelize.literal(`
-      NOT EXISTS (
-        SELECT 1
-        FROM detail_reservation AS dr
-        INNER JOIN reservation AS r ON dr.reservation_id = r.id
-        INNER JOIN package AS p ON r.package_id = p.id
-        INNER JOIN package_day AS pd ON p.id = pd.package_id
-        WHERE dr.homestay_id = UnitHomestay.homestay_id
-          AND dr.unit_type = UnitHomestay.unit_type
-          AND dr.unit_number = UnitHomestay.unit_number
-          AND '${newCheckIn}' BETWEEN r.check_in 
-          AND DATE_ADD(r.check_in, INTERVAL (SELECT COUNT(*) FROM package_day WHERE package_id = p.id) DAY)
-      )
-    `),
   });
 
   return units;
@@ -143,7 +134,7 @@ const findAllUnitHomestays = async ({ homestay_id }) => {
       {
         model: Homestay,
         as: "homestay",
-        attributes: ["name","address"],
+        attributes: ["name", "address"],
         include: [detailFacilityHomestayInclude, galleryHomestayInclude],
       },
       {

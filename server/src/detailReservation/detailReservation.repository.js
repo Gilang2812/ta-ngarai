@@ -4,16 +4,16 @@ const {
   Reservation,
   UnitHomestay,
   Homestay,
-  HomestayUnitType, 
+  HomestayUnitType,
 } = require("../../models/relation");
 
-const include =  [
+const include = [
   {
     model: UnitHomestay,
-    as: 'homestay',
+    as: "homestay",
     where: Sequelize.literal(
       "`homestay`.`homestay_id` = `DetailReservation`.`homestay_id`   AND `homestay`.`unit_number` = `DetailReservation`.`unit_number` AND `homestay`.`unit_type` = `DetailReservation`.`unit_type`"
-    ), 
+    ),
     include: [
       {
         model: Homestay,
@@ -22,29 +22,42 @@ const include =  [
         model: HomestayUnitType,
       },
     ],
-    
   },
   {
     model: Reservation,
     as: "reservation",
   },
-]
+];
 
 const findDetailReservations = async () => {
   const detailReservations = await DetailReservation.findAll({
-    include ,
-    order:[['date','DESC']]
- 
+    include,
+    order: [["date", "DESC"]],
   });
   return detailReservations;
 };
 
- const findDetailReservationById = async (reservation_id)=>{
+const findDetailReservationById = async (reservation_id) => {
   const reservation = await DetailReservation.findAll({
-    where : {reservation_id},
+    where: { reservation_id },
     include,
-  })
+  });
 
-  return reservation; 
- }
-module.exports = { findDetailReservations ,findDetailReservationById,include};
+  return reservation;
+};
+
+const updateDetailReservation = async (key, data) => {
+  const { date, ...rest } = key;
+  console.log("Update Detail Reservation Data:", rest, data);
+  const updatedDetail = await DetailReservation.update(data, {
+    where: { ...rest, date: new Date(date) },
+  });
+  console.log("Updated Detail Reservation:", updatedDetail);
+  return updatedDetail;
+};
+module.exports = {
+  findDetailReservations,
+  findDetailReservationById,
+  include,
+  updateDetailReservation,
+};

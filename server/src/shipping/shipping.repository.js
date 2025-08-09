@@ -116,8 +116,7 @@ const findShippingById = async (shippingId) => {
   return shipping;
 };
 
-const insertShipping = async (body) => {
-  console.log("body shipping", body);
+const insertShipping = async (body) => { 
   return Shipping.create(body);
 };
 
