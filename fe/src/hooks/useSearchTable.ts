@@ -6,14 +6,9 @@ const useSearchTable = () => {
     setSearchTerm(e.target.value);
   };
 
-  const clearSearchTerm = () => {
-    setSearchTerm("");
-  };
-
   return {
-    searchTerm,
+    searchTerm: searchTerm.trim().toLowerCase(),
     handleSearch,
-    clearSearchTerm,
   };
 };
 

@@ -2,7 +2,7 @@ const getDaysOfStay = require("../../utils/getDaysOfStay");
 const getPaymentStatusText = require("../../utils/getPaymentStatusText");
 const { verifyToken } = require("../middlewares/authentication");
 const { getCountPackageDays } = require("../package/package.service");
-const { 
+const {
   createTokenTransaction,
   getPaymentStatus,
 } = require("../payment/payment.service");
@@ -103,7 +103,7 @@ router.get("/homestay/:id", async (req, res, next) => {
     const reservation = await getHomestayReservation(id);
     return res.status(200).json(reservation);
   } catch (error) {
-    next();
+    next(error);
   }
 });
 

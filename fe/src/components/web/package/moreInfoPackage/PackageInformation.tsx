@@ -1,16 +1,26 @@
 import Button from "@/components/common/Button";
-import { SingleContentWrapper } from "@/components/common/SingleContentWrapper"; 
+import { SingleContentWrapper } from "@/components/common/SingleContentWrapper";
+import { ROUTES } from "@/data/routes";
 import { PackageServiceGallery } from "@/type/schema/PackageSchema";
 import { useService } from "@/utils/ServiceCategory";
-import { FaCirclePlay } from "react-icons/fa6";
+import Link from "next/link";
+import { FaCirclePlay, FaPencil } from "react-icons/fa6";
 
-export const PackageInformation = ({ data }: { data: PackageServiceGallery }) => {
-  const include = useService(1,data)
+export const PackageInformation = ({
+  data,
+}: {
+  data: PackageServiceGallery;
+}) => {
+  const include = useService(1, data);
   const exclude = useService(0, data);
-
   return (
     <SingleContentWrapper>
-      <header className="text-xl font-semibold text-center">
+      <header className="text-xl relative font-semibold text-center">
+        <Button className="absolute  w-fit h-fit top-0 right-0" asChild>
+          <Link href={ROUTES.EDIT_DETAIL_PACKAGE(data.id)}>
+            <FaPencil /> Edit
+          </Link>
+        </Button>
         <h2>Package Information</h2>
       </header>
       <table className="table-fixed w-full mt-12  ">
@@ -34,6 +44,12 @@ export const PackageInformation = ({ data }: { data: PackageServiceGallery }) =>
           <tr>
             <td>Price</td>
             <td>Rp {data?.price?.toLocaleString()} </td>
+          </tr>
+          <tr>
+            <td colSpan={2}>Description</td>
+          </tr>
+          <tr>
+            <td colSpan={2}>{data?.description}</td>
           </tr>
         </tbody>
       </table>

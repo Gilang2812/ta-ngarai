@@ -3,19 +3,15 @@ export const createFormData = <T extends { [key: string]: unknown }>(
 ): FormData => {
   const formData = new FormData();
   Object.keys(data).forEach((key) => {
-    if (key === "images") {
-      if (
-        data["images"] &&
-        data["images"] instanceof Array &&
-        data["images"].length > 0
-      ) {
-        (data["images"] as (File | Blob)[])?.forEach((image) => {
+    if (key === "images" || key === "video_url" || key === "qr_url") {
+      if (data[key] && data[key] instanceof Array && data[key].length > 0) {
+        (data[key] as (File | Blob)[])?.forEach((image) => {
           if (image instanceof File || image instanceof Blob) {
-            formData.append("images", image);
+            formData.append(key, image);
           }
         });
       } else {
-        formData.append("images", data["images"] as File | Blob);
+        formData.append(key, data[key] as File | Blob);
       }
     } else {
       const value = data[key];

@@ -96,7 +96,6 @@ export const confirmDeleteAlert = async (
       });
 
       confirm();
-
       return true;
     } else {
       return false;

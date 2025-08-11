@@ -14,8 +14,14 @@ export const SearchBar: React.FC<SearchBarProps> = ({ onSearch, crafts }) => {
     () =>
       crafts?.filter(
         (craft) =>
-          craft.variant.name.toLowerCase().includes(query.toLowerCase()) ||
-          craft.variant.craft.name.toLowerCase().includes(query.toLowerCase())
+          craft.variant.name
+            .toLowerCase()
+            .trim()
+            .includes(query.toLowerCase()) ||
+          craft.variant.craft.name
+            .toLowerCase()
+            .trim()
+            .includes(query.toLowerCase())
       ),
     [crafts, query]
   );

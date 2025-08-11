@@ -1,3 +1,4 @@
+const imageUpload = require("../../middlewares/imageUploads");
 const combinePackageObject = require("../../utils/combinePackageObject");
 const {
   createDetailService,
@@ -16,18 +17,33 @@ const {
   deletePackage,
   editPackage,
   createPackage,
+  editAllDataPackage,
+  getPackageTypes,
+  getPackageType,
+  updatePackageType,
+  deletePackageType,
+  createPackageType,
 } = require("./package.service");
+const fs = require("fs");
 const dayjs = require("dayjs");
+const { formatImageUrl } = require("../../utils/formatImageUrl");
+const {
+  deleteGalleryPackage,
+  createGalleryPackage,
+} = require("../gallery/gallery.service");
 const router = require("express").Router();
 
 router.get("/", async (req, res, next) => {
   try {
     const query = req.query;
-    query.package = query.package === "true";
-    query.service = query.service === "true";
-    query.gallery = query.gallery === "true";
 
-    const packages = await getAllPackage({ status: 1, custom: 0 }, query);
+    const includes = {
+      package: query.package === "true",
+      service: query.service === "true",
+      gallery: query.gallery === "true",
+    };
+    const custom = query.custom === "true" ? {} : { custom: 0 };
+    const packages = await getAllPackage({ status: 1, ...custom }, includes);
     const enrichedPackages = await combinePackageObject(packages);
 
     res.status(200).json(enrichedPackages);
@@ -58,7 +74,7 @@ router.get("/:id", async (req, res, next) => {
   }
 });
 
-router.post("/create", verifyToken, async (req, res, next) => {
+router.post("/modify", verifyToken, async (req, res, next) => {
   try {
     const newPackage = await createPackage({
       name: `Custom By ${
@@ -75,6 +91,54 @@ router.post("/create", verifyToken, async (req, res, next) => {
     next(error);
   }
 });
+router.post(
+  "/create",
+  verifyToken,
+  imageUpload("public/images/package").fields([
+    { name: "images", maxCount: 5 },
+    { name: "video_url", maxCount: 1 },
+  ]),
+  async (req, res, next) => {
+    try {
+      const {
+        name,
+        type_id,
+        price,
+        min_capacity,
+        contact_person,
+        description,
+      } = req.body;
+      const requestBody = {
+        name,
+        type_id,
+        price,
+        min_capacity,
+        contact_person,
+        description,
+      };
+
+      if (req?.files?.video_url) {
+        requestBody.video_url = formatImageUrl(req.files.video_url[0].path);
+      }
+
+      const newPackage = await createPackage(requestBody);
+
+      const images =
+        req?.files?.images?.map((file) => ({
+          url: formatImageUrl(file.path),
+          package_id: newPackage.id,
+        })) || [];
+      if (images.length > 0) {
+        for (const image of images) {
+          await createGalleryPackage(image);
+        }
+      }
+      res.status(201).json(newPackage);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
 
 router.post("/modify/:package_id", verifyToken, async (req, res, next) => {
   try {
@@ -152,14 +216,108 @@ router.post("/modify/:package_id", verifyToken, async (req, res, next) => {
 router.patch("/update/:id", async (req, res, next) => {
   try {
     const { id } = req.params;
-    const body = req.body;
+    const {
+      name,
+      type_id,
+      price,
+      contact_person,
+      description,
+      video_url,
+      min_capacity,
+      status,
+    } = req.body;
+    const body = {
+      name,
+      type_id,
+      price,
+      contact_person,
+      description,
+      video_url,
+      min_capacity,
+      status,
+    };
 
-    const updatedPackage = await editPackage({ id }, body);
+    const requestBody = Object.keys(body)
+      .filter((key) => body[key] !== undefined)
+      .reduce((acc, key) => {
+        acc[key] = body[key];
+        return acc;
+      }, {});
+
+    const updatedPackage = await editAllDataPackage({ id }, requestBody);
     res.status(200).json(updatedPackage);
   } catch (error) {
     next(error);
   }
 });
+
+router.put(
+  "/update/:id",
+  verifyToken,
+  imageUpload("public/images/package").fields([
+    { name: "images", maxCount: 5 },
+    { name: "video_url", maxCount: 1 },
+  ]),
+  async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      const {
+        name,
+        type_id,
+        price,
+        contact_person,
+        description,
+        min_capacity,
+        status,
+      } = req.body;
+      const video_url = req.files?.video_url
+        ? formatImageUrl(req.files.video_url?.[0].path)
+        : null;
+      const updatedPackage = await editPackage(
+        { id },
+        {
+          video_url: video_url,
+          name,
+          type_id,
+          price,
+          contact_person,
+          description,
+          min_capacity,
+          status,
+        }
+      );
+      const existingGallery = updatedPackage.packageGalleries || [];
+
+      if (existingGallery.length > 0) {
+        for (const gallery of existingGallery) {
+          fs.rmSync(`public/${gallery.url}`, {
+            recursive: true,
+            force: true,
+          });
+        }
+      }
+      if (updatedPackage.video_url) {
+        fs.unlinkSync(`public/${updatedPackage.video_url}`);
+      }
+
+      await deleteGalleryPackage({ package_id: id });
+      const images = req?.files?.images?.map((file) => ({
+        package_id: id,
+        url: formatImageUrl(file.path),
+      }));
+
+      if (images.length > 0) {
+        for (const image of images) {
+          await createGalleryPackage(image);
+        }
+      }
+
+      res.status(200).json(updatedPackage);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
 
 router.delete("/delete/:id", verifyToken, async (req, res, next) => {
   try {
@@ -272,4 +430,55 @@ router.delete(
     }
   }
 );
+
+router.get("/types/index", async (req, res, next) => {
+  try {
+    const packageTypes = await getPackageTypes();
+    res.status(200).json(packageTypes);
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.get("/types/:id", async (req, res, next) => {
+  try {
+    const id = req.params.id;
+    const packageType = await getPackageType({ id });
+    res.status(200).json(packageType);
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.post("/types/create", async (req, res, next) => {
+  try {
+    const { type_name } = req.body;
+    const newPackageType = await createPackageType({ type_name });
+    res.status(201).json(newPackageType);
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.patch("/types/:id", async (req, res, next) => {
+  try {
+    const id = req.params.id;
+    const { type_name } = req.body;
+    const updatedPackageType = await updatePackageType({ id }, { type_name });
+    res.status(200).json(updatedPackageType);
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.delete("/types/:id", async (req, res, next) => {
+  try {
+    const id = req.params.id;
+    const deletedPackageType = await deletePackageType({ id });
+    res.status(200).json(deletedPackageType);
+  } catch (error) {
+    next(error);
+  }
+});
+
 module.exports = router;

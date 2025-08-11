@@ -12,32 +12,46 @@ type Props = {
 };
 
 const EditVillageForm = ({ id }: Props) => {
-  const { isLoading, initialValues } = useEditVillage(id);
+  const { isLoading, initialValues, isPending, handleSubmit } =
+    useEditVillage(id);
   if (isLoading) return <ManagementSkeletonLoader />;
   return (
     <Formik
       initialValues={initialValues}
-      enableReinitialize={true}
-      onSubmit={(values) => {
-        console.log(values);
-        // Append QR image if it exists
-      }}
+      enableReinitialize
+      onSubmit={handleSubmit}
     >
       <Form encType="multipart/form-data">
         <section className="grid grid-cols-2 gap-8">
           {/* Left Column: Form Fields */}
           <section className="col-span-1 space-y-4 leading-loose">
-            <FormInput name="name" type="text" />
-
-            <FormInput name="type_of_tourism" type="text" />
-            <FormInput name="address" type="text" />
-            <FormInput name="open" type="time" />
-            <FormInput name="close" type="time" />
-            <FormInput name="ticket_price" type="number" />
-            <FormInput name="contact_person" type="text" />
-            <FormInput name="bank_name" type="text" />
-            <FormInput name="bank_code" type="text" />
-            <FormInput name="bank_account_holder" type="text" />
+            <FormInput label="Name" name="name" type="text" />
+            <FormInput
+              label="Type of Tourism"
+              name="type_of_tourism"
+              type="text"
+            />
+            <FormInput label="Address" name="address" type="text" />
+            <FormInput label="Open Time" name="open" type="time" />
+            <FormInput label="Close Time" name="close" type="time" />
+            <FormInput label="Ticket Price" name="ticket_price" type="number" />
+            <FormInput
+              label="Contact Person"
+              name="contact_person"
+              type="text"
+            />
+            <FormInput label="Bank Name" name="bank_name" type="text" />
+            <FormInput label="Bank Code" name="bank_code" type="text" />
+            <FormInput
+              label="Bank Account Holder"
+              name="bank_account_holder"
+              type="text"
+            />
+            <FormInput
+              label="Bank Account Number"
+              name="bank_account_number"
+              type="text"
+            />
 
             <div>
               <FilePondComponent
@@ -54,7 +68,9 @@ const EditVillageForm = ({ id }: Props) => {
           </section>
 
           <div>
-            <Button type="submit">Save</Button>
+            <Button isLoading={isPending} disabled={isPending} type="submit">
+              Save
+            </Button>
           </div>
         </section>
       </Form>

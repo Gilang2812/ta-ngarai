@@ -1,6 +1,5 @@
 import { ImgModal } from "@/components/common/ImgModal";
 import { ImageSkeleton } from "@/components/loading/ImageSkeleton";
-import { imageUrl } from "@/lib/baseUrl";
 import { GalleryPackageSchema } from "@/type/schema/GallerySchema";
 
 type GalleryProps = {
@@ -19,7 +18,7 @@ export const Gallery = ({ gallery, isLoading }: GalleryProps) => {
         {gallery?.map((g, index) => (
           <ImgModal
             key={index}
-            src={`${imageUrl}/package/${g?.url}`}
+            src={`${g?.url}`}
             width={500}
             height={500}
             alt="Gallery image"

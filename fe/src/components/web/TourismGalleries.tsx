@@ -1,11 +1,10 @@
 "use client";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Pagination, Autoplay } from "swiper/modules";
-import Image from "next/image";
-import { useFetchGalleries } from "@/features/web/useFetchGalleries";
-import { imageUrl } from "@/lib/baseUrl";
+import { Navigation, Pagination, Autoplay } from "swiper/modules"; 
+import { useFetchGalleries } from "@/features/web/useFetchGalleries"; 
 import { ImageSkeleton } from "@/components/loading/ImageSkeleton";
 import { GallerySchema } from "@/type/schema/GallerySchema";
+import ImgCraft from "../common/ImgCraft";
 
 export const TourismGalleries = ({ id }: { id?: string }) => {
   const { data, isLoading } = useFetchGalleries<GallerySchema>("tourism", id);
@@ -19,7 +18,11 @@ export const TourismGalleries = ({ id }: { id?: string }) => {
           loop={true}
           pagination={{
             type: "custom",
-            renderCustom: (swiper: import("swiper").Swiper, current: number, total: number) => {
+            renderCustom: (
+              swiper: import("swiper").Swiper,
+              current: number,
+              total: number
+            ) => {
               let bullets = "";
               for (let i = 1; i <= total; i++) {
                 if (i === current) {
@@ -39,8 +42,8 @@ export const TourismGalleries = ({ id }: { id?: string }) => {
           {isLoading && <ImageSkeleton />}
           {data?.map((g) => (
             <SwiperSlide key={g.id}>
-              <Image
-                src={imageUrl + g.url}
+              <ImgCraft
+                src={g.url}
                 alt={"gallery" + g.id}
                 width={500}
                 height={500}

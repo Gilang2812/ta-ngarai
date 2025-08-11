@@ -26,21 +26,32 @@ const FilePondComponent = ({
   name = "images",
   label = "Images",
   allowMultiple = true,
+  acceptedFileTypes = ["image/*"],
   ...props
 }: Props & ComponentProps<typeof FilePond>) => {
-  console.log(name);
   const { setFieldValue, values, setFieldError } =
     useFormikContext<FormValues>();
+  console.log(acceptedFileTypes[0].startsWith("video/"));
   return (
     <>
       <div className="form-groupsa  ">
         <p>{label}</p>
         <FilePond
           files={values[name] || []}
-          acceptedFileTypes={["image/*"]}
+          acceptedFileTypes={acceptedFileTypes}
           onupdatefiles={(fileItems) => {
-            const files = fileItems.map((fileItem) => fileItem.file);
+            const files = fileItems?.map((fileItem) => fileItem.file);
             setFieldValue(name, files);
+          }}
+          onaddfile={(error, file) => {
+            if (
+              acceptedFileTypes[0].startsWith("video/") &&
+              !file?.fileType?.startsWith("video/")
+            ) {
+              file?.setMetadata("error", "Hanya file video yang diizinkan");
+              file?.abortProcessing();
+              return false; // batalkan
+            }
           }}
           allowMultiple={allowMultiple}
           maxFiles={5}

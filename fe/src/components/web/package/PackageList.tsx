@@ -7,16 +7,14 @@ import {
   FaUserGroup,
 } from "react-icons/fa6";
 import { ImagePlaceHoldeSkeleton } from "@/components/loading/ImagePlaceHolderSkeleton";
-
 import Link from "next/link";
-
-import Img from "@/components/common/Img";
 import Button from "@/components/common/Button";
 import ButtonTooltip from "@/components/common/ButtonTooltip";
 import { FaPlusSquare } from "react-icons/fa";
 import { formatPrice } from "@/lib/priceFormatter";
 import { usePackageList } from "@/hooks/usePackageList";
 import { ContentHeader } from "@/components/common/ContentHeader";
+import ImgCraft from "@/components/common/ImgCraft";
 export const PackageList = () => {
   const { data, isLoading, handleModifyPackage, createPackage } =
     usePackageList();
@@ -32,8 +30,8 @@ export const PackageList = () => {
           aria-labelledby="basic-package-title"
         >
           <figure className="w-44 basis-full grow md:grow-0 md:basis-[200px] min-w-[200px]  shrink rounded overflow-hidden aspect-[4/5]">
-            <Img
-              src={"package/" + item?.packageGalleries?.[0]?.url}
+            <ImgCraft
+              src={item?.packageGalleries?.[0]?.url}
               alt="P "
               width={500}
               height={500}

@@ -1,9 +1,13 @@
 "use client";
 
 import { useDeleteHomestay } from "@/features/dashboard/homestay/useDeleteHomestay";
-import { useFetchHomestay } from "@/features/dashboard/homestay/useFetchHomestay"; 
+import { useFetchHomestay } from "@/features/dashboard/homestay/useFetchHomestay";
 import { HomestaySchema } from "@/type/schema/HomestaySchema";
-import { confirmDeleteAlert, showDeleteAlert, showErrorAlert } from "@/utils/AlertUtils";
+import {
+  confirmDeleteAlert,
+  showDeleteAlert,
+  showErrorAlert,
+} from "@/utils/AlertUtils";
 import Link from "next/link";
 import { useState, useMemo } from "react";
 import { FaTrash, FaPlus, FaCircleInfo } from "react-icons/fa6";
@@ -14,15 +18,12 @@ const Homestay = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(5);
   const [searchTerm, setSearchTerm] = useState("");
-  const [show,setShow] = useState(0);
+  const [show, setShow] = useState(0);
   const filteredData = useMemo(() => {
     return data?.filter((item) => {
       return Object.keys(item).some((key) => {
         const value = item[key as keyof HomestaySchema];
-        return (
-          
-          String(value).toLowerCase().includes(searchTerm.toLowerCase())
-        );
+        return String(value).toLowerCase().trim().includes(searchTerm.toLowerCase());
       });
     });
   }, [searchTerm, data]);
@@ -45,25 +46,22 @@ const Homestay = () => {
     setCurrentPage((prev) => Math.max(prev - 1, 1));
   };
 
-  const { mutate } = useDeleteHomestay({ 
+  const { mutate } = useDeleteHomestay({
     onSuccess: () => {
-      showDeleteAlert('homestay')
-      refetch()
+      showDeleteAlert("homestay");
+      refetch();
     },
-    onError:(e)=>{
-      showErrorAlert(e)
-    }
-   }
-  );
+    onError: (e) => {
+      showErrorAlert(e);
+    },
+  });
 
-  const handleSelectChange = (e:React.ChangeEvent<HTMLSelectElement>) => {
-    setShow(parseInt(e.target.value))
-  }
-  const HandleDelete = (homestay: HomestaySchema) => {
-    confirmDeleteAlert("homestay", homestay.name, ()=>mutate(homestay.id));
+  const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setShow(parseInt(e.target.value));
   };
-
-
+  const HandleDelete = (homestay: HomestaySchema) => {
+    confirmDeleteAlert("homestay", homestay.name, () => mutate(homestay.id));
+  };
 
   if (isLoading) return <div>Loading...</div>;
   return (
@@ -88,7 +86,6 @@ const Homestay = () => {
               id="entries"
               className="p-1 border rounded border-slate-400"
               onChange={handleSelectChange}
-              
             >
               <option value="5">5</option>
               <option value="10">10</option>
@@ -134,14 +131,14 @@ const Homestay = () => {
                 <td className="py-2 text-center">{item.status}</td>
                 <td className="flex justify-center gap-4 py-2">
                   <Link
-                  href={`./homestay/${item.id}`}
+                    href={`./homestay/${item.id}`}
                     className="p-3 capitalize transition duration-300 ease-linear bg-white border rounded text-primary border-primary hover:bg-primary hover:text-white"
                     aria-label="View Homestay Info"
                   >
                     <FaCircleInfo />
                   </Link>
                   <button
-                  onClick={()=>HandleDelete(item)}
+                    onClick={() => HandleDelete(item)}
                     className="p-3 text-red-500 transition duration-300 ease-linear bg-white border border-red-500 rounded hover:bg-red-500 hover:text-white"
                     aria-label="Delete Homestay"
                   >

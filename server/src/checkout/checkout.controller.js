@@ -201,7 +201,7 @@ router.get("/transactions", async (req, res, next) => {
 
 router.patch(
   "/:checkout_id/:craft_variant_id/:id_souvenir_place",
-  imageUpload.array("images"),
+  imageUpload().array("images"),
   async (req, res, next) => {
     try {
       const { checkout_id, craft_variant_id, id_souvenir_place } = req.params;

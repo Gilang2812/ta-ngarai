@@ -2,14 +2,14 @@
 import Image from "next/image";
 import React, { useState } from "react";
 import { DayButton } from "./DayButton";
-import {
-  Packages,
+import { 
   useFetchPackages,
 } from "@/features/web/package/useFetchPackage";
 import ButtonTooltip from "@/components/common/ButtonTooltip";
 import { FaRegCalendarAlt } from "react-icons/fa";
 import Loading from "@/app/loading";
 import Link from "next/link";
+import { Packages } from "@/type/schema/PackageSchema";
 
 // Main component
 export const Package = ({ title }: { title: string }) => {

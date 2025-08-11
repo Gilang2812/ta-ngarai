@@ -3,6 +3,9 @@ const {
   createDetailService,
   deleteDetailService,
   getServices,
+  createService,
+  editService,
+  deleteService,
 } = require("./detailService.service");
 
 const router = require("express").Router();
@@ -50,6 +53,50 @@ router.delete("/:package_id/:service_package_id", async (req, res, next) => {
       package_id,
       service_package_id,
     });
+    res.status(204).json(result);
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.post("/service/create", async (req, res, next) => {
+  try {
+    const { name, price, min_capacity, category } = req.body;
+    const result = await createService({
+      name,
+      price,
+      min_capacity,
+      category,
+    });
+    res.status(201).json(result);
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.patch("/service/:id", async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { name, price, min_capacity, category } = req.body;
+    const result = await editService(
+      { id },
+      {
+        name,
+        price,
+        min_capacity,
+        category,
+      }
+    );
+    res.status(200).json(result);
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.delete("/service/:id/delete", async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const result = await deleteService({ id });
     res.status(204).json(result);
   } catch (error) {
     next(error);

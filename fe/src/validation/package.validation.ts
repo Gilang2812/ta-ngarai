@@ -12,5 +12,19 @@ export const detailPackageFormSchema = yup.object().shape({
   day: yup.number().min(1).required(),
   description: yup.string().required(),
   activity: yup.number().min(1).required(),
-  object_id: yup.string().required('select the tourism object'),
+  object_id: yup.string().required("select the tourism object"),
+});
+
+export const editPackageFormSchema = yup.object().shape({
+  id: yup.string().required(),
+  name: yup.string().required(),
+  type_id: yup.string().required(),
+  price: yup.number().min(0).required().nullable(),
+  min_capacity: yup.number().min(1).required(),
+  contact_person: yup.string().required(),
+  description: yup.string().required(),
+});
+
+export const packageTypeFormSchema = yup.object().shape({
+  type_name: yup.string().required(),
 });

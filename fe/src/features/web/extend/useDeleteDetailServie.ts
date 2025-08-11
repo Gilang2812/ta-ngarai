@@ -13,7 +13,7 @@ export const useDeleteDetailService = ({ onSuccess }: ActionProps) => {
       service_package_id: string;
     }) => {
       const { data } = await axiosInstance.delete(
-        `/packages/detail/${package_id}/${service_package_id}`
+        `/services/${package_id}/${service_package_id}`
       );
       return data;
     },

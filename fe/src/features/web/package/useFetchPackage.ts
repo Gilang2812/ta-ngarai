@@ -9,18 +9,20 @@ import { DetailServiceSchema } from "@/type/schema/ServiceSchema";
 import { useQuery } from "@tanstack/react-query";
 type FetchProps = {
   package?: boolean | string;
-  serivce?: boolean | string;
+  service?: boolean | string;
   gallery?: boolean | string;
+  custom?: boolean | string;
 };
 
 type Props = PackageSchema & {
-  packageDays?: (PackageDay & {
-  detailPackages: DetailPackageSchema[];
-  })[]|[];
-  packageGalleries?: GalleryPackageSchema[]|[];
-  detailServices?: DetailServiceSchema[]|[];
+  packageDays?:
+    | (PackageDay & {
+        detailPackages: DetailPackageSchema[];
+      })[]
+    | [];
+  packageGalleries?: GalleryPackageSchema[] | [];
+  detailServices?: DetailServiceSchema[] | [];
 };
-
 
 export const useFetchPackages = <T extends Props>(query: FetchProps) => {
   return useQuery<T[]>({

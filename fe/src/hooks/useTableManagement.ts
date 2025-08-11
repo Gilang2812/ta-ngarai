@@ -5,10 +5,10 @@ const useTableManagement = <T>(filteredData: T[]) => {
   const [itemsPerPage, setItemsPerPage] = useState(5);
 
   const indexOfLastItem = currentPage * itemsPerPage;
-  const totalPages =  Math.ceil(filteredData.length / itemsPerPage);
+  const totalPages = Math.ceil(filteredData.length / itemsPerPage);
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = filteredData?.slice(indexOfFirstItem, indexOfLastItem);
-
+  const totalItems = filteredData.length;
   useEffect(() => {
     if (totalPages == 1) setCurrentPage(1);
   }, [totalPages]);
@@ -34,8 +34,8 @@ const useTableManagement = <T>(filteredData: T[]) => {
     totalPages,
     indexOfFirstItem,
     indexOfLastItem,
+    totalItems,
   };
-
 };
 
 export default useTableManagement;

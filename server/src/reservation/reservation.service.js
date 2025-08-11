@@ -1,3 +1,4 @@
+const { CustomError } = require("../../utils/CustomError");
 const {
   findReservations,
   findReservationById,
@@ -20,7 +21,11 @@ const getReservationById = async (condition) => {
 };
 
 const getHomestayReservation = async (id) => {
+  console.log("Fetching homestay reservation for ID:", id);
   const reservation = await findHomestayReservation(id);
+  if (!reservation) {
+    throw new CustomError("Reservation not found", 404);
+  }
   return reservation;
 };
 

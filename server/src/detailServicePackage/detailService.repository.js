@@ -3,7 +3,7 @@ const {
   ServicePackage,
 } = require("../../models/relation");
 
-const findServices = async (conditions) => {
+const findServices = async () => {
   const services = await ServicePackage.findAll();
   return services;
 };
@@ -45,10 +45,40 @@ const destroyDetailService = async (key) => {
   return result;
 };
 
+const findService = async (conditions) => {
+  const services = await ServicePackage.findOne({
+    where: conditions,
+  });
+  return services;
+};
+
+const insertService = async (data) => {
+  const service = await ServicePackage.create(data);
+  return service;
+};
+
+const updateService = async (key, data) => {
+  const service = await ServicePackage.update(data, {
+    where: key,
+  });
+  return service;
+};
+
+const destroyService = async (key) => {
+  const result = await ServicePackage.destroy({
+    where: key,
+  });
+  return result;
+};
+
 module.exports = {
   findAllDetailService,
   findDetailService,
   insertDetailService,
   destroyDetailService,
   findServices,
+  findService,
+  insertService,
+  updateService,
+  destroyService,
 };

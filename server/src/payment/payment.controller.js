@@ -26,7 +26,7 @@ router.post("/create", async (req, res) => {
       success: false,
       message: "Failed to create transaction",
       error: error.message,
-  });
+    });
   }
 });
 
@@ -54,7 +54,6 @@ router.post("/notification", async (req, res) => {
     const transactionStatus = await core.transaction.status(orderId);
 
     let paymentStatus = getPaymentStatusText(transactionStatus);
-    
 
     // Update your database here based on paymentStatus
     console.log("Payment status:", paymentStatus, "for order:", orderId);

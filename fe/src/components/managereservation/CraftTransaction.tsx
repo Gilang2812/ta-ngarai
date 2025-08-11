@@ -34,7 +34,6 @@ const CraftTransaction = () => {
     indexOfFirstItem,
     indexOfLastItem,
     searchTerm,
-    clearSearchTerm,
     handleSearch,
     isOpen,
     selectedTransaction,
@@ -172,7 +171,6 @@ const CraftTransaction = () => {
     currentItems && (
       <section>
         <TableManagementHeader
-          clearSearchTerm={clearSearchTerm}
           handleSearch={handleSearch}
           searchTerm={searchTerm}
           handleItemsPerPage={handleItemsPerPage}

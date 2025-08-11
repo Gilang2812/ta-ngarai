@@ -1,11 +1,11 @@
 import Image from "next/image";
 import React, { useState } from "react";
 import { DayButton } from "@/components/web/explore/DayButton";
-import {
-  Packages,
+import { 
   useFetchPackages,
 } from "@/features/web/package/useFetchPackage";
 import { Spinner } from "flowbite-react";
+import { Packages } from "@/type/schema/PackageSchema";
 
 // Main component
 export const Package = () => {

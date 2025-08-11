@@ -19,9 +19,8 @@ const {
 } = require("../detailReservation/detailReservation.repository");
 const getDaysOfStay = require("../../utils/getDaysOfStay");
 
-
 const findOneReservation = async (condition) => {
-  const reservation = await Reservation.findOne({ 
+  const reservation = await Reservation.findOne({
     where: condition,
   });
 
@@ -56,9 +55,9 @@ const findReservations = async (condition) => {
         attributes: ["fullname"],
       },
       {
-        model:DetailReservation,
+        model: DetailReservation,
         as: "detail",
-      }
+      },
     ],
     order: [["request_date", "DESC"]],
   });
@@ -116,17 +115,18 @@ const findHomestayReservation = async (id) => {
     ],
   });
 
-  const days_of_stay = getDaysOfStay(reservation);
-  const data = reservation.toJSON();
-  data.detail.sort((a, b) => {
+  const getDayOfStay = getDaysOfStay(reservation);
+  const data = reservation && reservation.toJSON();
+  data?.detail?.sort((a, b) => {
     const nameA = a.homestay?.unit_name || "";
     const nameB = b.homestay?.unit_name || "";
     return nameA.localeCompare(nameB);
   });
-  return {
-    days_of_stay,
-    ...data,
-  };
+  const reponse = data;
+  if (getDayOfStay) {
+    reponse.days_of_stay = getDayOfStay;
+  }
+  return reponse;
 };
 
 const findReservationById = async (id) => {
@@ -273,5 +273,5 @@ module.exports = {
   findHomestayReservation,
   updateReservation,
   deleteReservation,
-  findOneReservation
+  findOneReservation,
 };

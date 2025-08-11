@@ -17,10 +17,11 @@ import useSearchTable from "@/hooks/useSearchTable";
 import TableManagementHeader from "../admin/TableManagementHeader";
 import ManagementFooter from "../admin/ManagementFooter";
 import { ROUTES } from "@/data/routes";
+import TableHeaderManagement from "../admin/TableHeaderManagement";
 
 const PackageCart = () => {
   const { data, refetch, isLoading } = useFetchUserCarts();
-  const { searchTerm, handleSearch, clearSearchTerm } = useSearchTable();
+  const { searchTerm, handleSearch } = useSearchTable();
 
   const filteredData = useMemo(() => {
     return (
@@ -31,7 +32,7 @@ const PackageCart = () => {
         const flat = { ...rest, ...(restOfItem || {}) };
         return Object.keys(flat).some((key) => {
           const value = flat[key as keyof CartSchema];
-          return String(value).toLowerCase().includes(searchTerm.toLowerCase());
+          return String(value).toLowerCase().trim().includes(searchTerm.toLowerCase());
         });
       }) || []
     );
@@ -75,21 +76,13 @@ const PackageCart = () => {
           handleItemsPerPage={handleItemsPerPage}
           searchTerm={searchTerm}
           handleSearch={handleSearch}
-          clearSearchTerm={clearSearchTerm}
         />
         <h2 id="data-table-section" className="sr-only">
           Package Data Table
         </h2>
 
         <table className="min-w-full [&_td]:px-8 table-fixed bg-white">
-          <thead>
-            <tr>
-              <th className="py-2">#</th>
-              <th className="py-2">ID</th>
-              <th className="py-2 w-full">Package</th>
-              <th className="py-2 text-center  ">Action</th>
-            </tr>
-          </thead>
+          <TableHeaderManagement headers={["ID", "Package"]} />
           <tbody>
             {currentItems?.map((item, index) => (
               <tr key={item.id} className="border-t">

@@ -1,5 +1,4 @@
-const { GalleryTourism } = require("../../models/GalleryTourismModel");
-const { TourismVillage } = require("../../models/TourismVillageModel");
+const { GalleryTourism, TourismVillage } = require("../../models/relation");
 
 const findTourismById = async (id) => {
   const tourism = await TourismVillage.findOne({
@@ -14,11 +13,36 @@ const findTourismById = async (id) => {
   return tourism;
 };
 
-const editTourism = async (id, body) => {
-  // const data=await findTourismById(id)
-  // const tourism =await data.update(body)
-  console.log(body);
-  return body;
+const updateTourism = async (id, body) => {
+  const [updated] = await TourismVillage.update(body, {
+    where: { id: id },
+  });
+
+  return updated;
+};
+const deleteTourism = async (id) => {
+  const tourism = await findTourismById(id);
+  if (tourism) {
+    await tourism.destroy();
+  }
+  return tourism;
 };
 
-module.exports = { findTourismById, editTourism };
+const insertGallery = async (galleryData) => {
+  console.log("test repository");
+  return await GalleryTourism.create(galleryData);
+};
+
+const deleteGalleryByAtribut = async (attributes) => {
+  return await GalleryTourism.destroy({
+    where: attributes,
+  });
+};
+
+module.exports = {
+  findTourismById,
+  updateTourism,
+  deleteTourism,
+  insertGallery,
+  deleteGalleryByAtribut,
+};

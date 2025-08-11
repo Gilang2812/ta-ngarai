@@ -4,6 +4,7 @@ import AnnouncementHeader from "@/components/announcement/AnnouncementHeader";
 import AnnouncementTable from "@/components/announcement/AnnouncementTable";
 import CreateButton from "@/components/announcement/CreateButton";
 import TableRow from "@/components/announcement/TableRow";
+import Button from "@/components/common/Button";
 import { FormInput } from "@/components/inputs/FormInput";
 import { RawSkeleton } from "@/components/loading/RawSkeleton";
 import { InfoModal } from "@/components/modal/InfoModal";
@@ -12,27 +13,23 @@ import { useCreateAnnouncement } from "@/features/dashboard/announcement/useCrea
 import { useDeleteAnnouncement } from "@/features/dashboard/announcement/useDeleteAnnouncement";
 import { useEditAnnouncement } from "@/features/dashboard/announcement/useEditAnnouncement";
 import { useFetchAnnouncements } from "@/features/web/useFetchAnnouncement";
- 
+
 import { AnnouncementSchema } from "@/type/schema/AnnouncementSchema";
-import {
-  confirmDeleteAlert,
-  cornerAlert 
-} from "@/utils/AlertUtils";
-import { useModal } from "@/utils/ModalUtils";
-import { Spinner } from "@material-tailwind/react";
-import { Formik, Form } from "formik";
+import { confirmDeleteAlert, cornerAlert } from "@/utils/AlertUtils";
+import { useModal } from "@/utils/ModalUtils"; 
+import { Formik, Form, ErrorMessage } from "formik";
 import { useState } from "react";
 import * as yup from "yup";
 
 const validationSchema = yup.object({
   id: yup.string().required("ID is required").max(5),
   announcement: yup.string().required("Announcement is required"),
-  status: yup.number().required("Status is required"),
+  status: yup.number().required("Selected the announcement status"),
 });
 
 export default function Announcement() {
   const [status, setStatus] = useState(1);
- 
+
   const [selectedData, setSelectedData] = useState<AnnouncementSchema | null>(
     null
   );
@@ -47,7 +44,6 @@ export default function Announcement() {
       toggleInputModal();
       refetch();
     },
- 
   });
 
   const { mutate: editMutate, isPending: editPending } = useEditAnnouncement({
@@ -130,13 +126,13 @@ export default function Announcement() {
           setSelectedData(null);
         }}
       >
-      
         <Formik
           initialValues={{
             id: selectedData?.id || "",
             announcement: selectedData?.announcement || "",
             status: selectedData?.status || 1,
           }}
+          enableReinitialize
           validationSchema={validationSchema}
           onSubmit={async (values) => {
             if (selectedData) {
@@ -146,26 +142,28 @@ export default function Announcement() {
             }
           }}
         >
-          {({ values, handleChange, setFieldValue }) => (
-            <Form>
+          {({ setFieldValue }) => (
+            <Form className="leading-loose space-y-2">
               <div>
-                <FormInput name="id" type="text" readonly={!!selectedData} />
-              </div>
-              <div>
-                <label htmlFor="announcement" className="font-semibold">
-                  Announcement
-                </label>
-                <textarea
-                  id="announcement"
-                  name="announcement"
-                  className="w-full p-4 border focus:ring-4 transition-all focus:ring-primary/30 rounded outline-none border-black"
-                  value={values.announcement}
-                  onChange={handleChange}
+                <FormInput
+                  label="ID"
+                  name="id"
+                  type="text"
+                  readonly={!!selectedData}
                 />
               </div>
-              <div className="space-y-2 mt-4">
+              <div>
+                <FormInput
+                  as="textarea"
+                  rows={4}
+                  label="Announcement"
+                  name="announcement"
+                  type="text"
+                />
+              </div>
+              <div className="space-y-2 my-4 leading-loose ">
                 <label className="font-semibold">Status</label>
-                <div className="flex flex-col space-y-2">
+                <div className="flex flex-col gap-2">
                   <label className="flex items-center space-x-2">
                     <input
                       type="radio"
@@ -188,15 +186,20 @@ export default function Announcement() {
                     />
                     <span>Non Active</span>
                   </label>
+                  <ErrorMessage
+                    name="status"
+                    component="p"
+                    className="text-red-500 text-sm mt-1"
+                  />
                 </div>
               </div>
-              <button
+              <Button
                 type="submit"
-                className="mt-4 px-4 py-2 text-white bg-primary rounded"
+                isLoading={isLoading || isPending}
                 disabled={isPending || editPending}
               >
-                {isPending || editPending ? <Spinner /> : "Submit"}
-              </button>
+                Submit
+              </Button>
             </Form>
           )}
         </Formik>
@@ -223,9 +226,9 @@ export default function Announcement() {
               <td>Status</td>
               <td>
                 {selectedData?.status == 1 ? (
-                  <p className="px-2 py-1 btn-success">active</p>
+                  <p className="px-2 py-1 bg-green-500 rounded">active</p>
                 ) : (
-                  <p className="px-2 py-1 btn-danger">non active</p>
+                  <p className="px-2 py-1 bg-red-600 rounded">non active</p>
                 )}
               </td>
             </tr>

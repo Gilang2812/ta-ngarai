@@ -1,7 +1,7 @@
 export const getCraftTransactionStatus = (
   status: number,
-  token?: string,
-  paymentStatus?: string
+  token: string,
+  paymentStatus: string
 ) => {
   switch (status) {
     case 0:

@@ -6,8 +6,11 @@ import { Review } from "@/components/web/package/moreInfoPackage/Review";
 
 import { Gallery } from "@/components/web/package/moreInfoPackage/Gallery";
 import { useGetPackage } from "@/features/web/package/useGetPackage";
-import { SingleContentWrapper } from "@/components/common/SingleContentWrapper"; 
-import { PackageReservationSchema, PackageServiceGallery,   } from "@/type/schema/PackageSchema";
+import { SingleContentWrapper } from "@/components/common/SingleContentWrapper";
+import {
+  PackageReservationSchema,
+  PackageServiceGallery,
+} from "@/type/schema/PackageSchema";
 
 export const InfoSection = ({ id }: { id: string }) => {
   const { data, isLoading } = useGetPackage<

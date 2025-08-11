@@ -77,13 +77,12 @@ router.get("/order/:id_craft/:id_souvenir_place", async (req, res, next) => {
 
 router.post(
   "/",
-  imageUpload.array("images"),
+  imageUpload().array("images"),
   validateData(detailCraftSchema),
   async (req, res, next) => {
     try {
       const { craft_variant_id, price, weight, modal, stock, description } =
         req.body;
-      console.log(req.body);
       const id_souvenir_place = req.user.id_souvenir_place;
       const newDetailCraft = await createDetailCraft({
         craft_variant_id,
@@ -117,7 +116,7 @@ router.post(
 
 router.patch(
   "/:craft_variant_id/:id_souvenir_place",
-  imageUpload.array("images"),
+  imageUpload().array("images"),
   validateData(detailCraftSchema),
   async (req, res, next) => {
     try {
@@ -137,7 +136,6 @@ router.patch(
         }
       );
       const existingGalleries = updatedDetailCraft.craftGalleries || [];
-      console.log("existingGalleries", existingGalleries);
       if (!isNewImage) {
         console.log("new galerry", isNewImage);
         for (const image of req.files) {

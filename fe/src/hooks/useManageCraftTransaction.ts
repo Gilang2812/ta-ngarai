@@ -69,23 +69,45 @@ const useManageCraftTransaction = () => {
     });
   };
 
-  const { searchTerm, clearSearchTerm, handleSearch } = useSearchTable();
+  const { searchTerm, handleSearch } = useSearchTable();
 
   const filteredData = useMemo(() => {
     return (
-      transaction?.filter(
-        (item) =>
-          item?.shippingItems?.[0]?.checkout?.shippingAddress?.addressCustomer?.fullname
-            ?.toLowerCase()
-            .includes(searchTerm.toLowerCase()) ||
-          getCraftTransactionStatus(item.status)
+      transaction?.filter((item) => {
+        const searchable = {
+          id: item?.shippingItems?.[0]?.checkout?.id,
+          fullname:
+            item?.shippingItems?.[0]?.checkout?.shippingAddress?.addressCustomer
+              ?.fullname,
+          date: item?.shippingItems?.[0]?.checkout?.checkout_date,
+          status: getCraftTransactionStatus(
+            item.status,
+            item.shippingItems[0].checkout.transaction_token,
+            item.paymentStatus
+          ),
+          craft_name: item?.shippingItems
+            ?.map(
+              (item) =>
+                `${item.detailCraft.variant.craft.name} ${item.detailCraft.variant.name}`
+            )
+            .join(", "),
+        };
+
+        return Object.keys(searchable).some((key) =>
+          searchable[key as keyof typeof searchable]
+            ?.toString()
+            .trim() // hapus spasi di awal/akhir value
             .toLowerCase()
-            .includes(searchTerm.toLowerCase())
-      ) || []
+            .includes(searchTerm)
+        );
+      }) || []
     );
   }, [searchTerm, transaction]);
 
-  const handleTransactionClick = (item: ShippingDataWithReviewGallery, content: "items" | "rate") => {
+  const handleTransactionClick = (
+    item: ShippingDataWithReviewGallery,
+    content: "items" | "rate"
+  ) => {
     setModalContent(content);
     setSelectedTransaction(item);
     toggleModal();
@@ -126,7 +148,6 @@ const useManageCraftTransaction = () => {
     indexOfFirstItem,
     indexOfLastItem,
     searchTerm,
-    clearSearchTerm,
     handleSearch,
     modalContent,
   };

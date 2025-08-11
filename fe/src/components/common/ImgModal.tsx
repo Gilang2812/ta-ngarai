@@ -1,20 +1,20 @@
 "use client";
 import { useModal } from "@/utils/ModalUtils";
-import { AnimatePresence, motion } from "framer-motion";
-import Image from "next/image";
+import { AnimatePresence, motion } from "framer-motion"; 
 import { ComponentProps } from "react";
 import { FaXmark } from "react-icons/fa6";
+import ImgCraft from "./ImgCraft";
 
 export const ImgModal = ({
   src,
   alt,
   ...props
-}: ComponentProps<typeof Image>) => {
+}: ComponentProps<typeof ImgCraft>) => {
   const { isOpen, toggleModal } = useModal();
 
   return (
     <>
-      <Image src={src} onClick={toggleModal} alt={alt} {...props} />
+      <ImgCraft src={src} onClick={toggleModal} alt={alt} {...props} />
       <AnimatePresence mode="wait">
         {isOpen && (
           <motion.div
@@ -39,7 +39,7 @@ export const ImgModal = ({
               >
                 <FaXmark />
               </button>
-              <Image
+              <ImgCraft
                 src={src}
                 onClick={(e) => e.stopPropagation()}
                 alt={alt}

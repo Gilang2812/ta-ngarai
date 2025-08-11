@@ -13,7 +13,7 @@ const TableHeaderManagement = ({ headers, action = true }: Props) => {
         {headers.map((h, index) => (
           <th key={index}>{h}</th>
         ))}
-        {action && <th className="text-center">Action</th>}
+        {action && <th className="text-center w-fit">Action</th>}
       </tr>
     </thead>
   );

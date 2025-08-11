@@ -1,7 +1,7 @@
 import { ROUTES } from "@/data/routes";
-import { useCreateModifyPackage } from "@/features/web/extend/useCreateModifyPackage";
-import { useCreatePackage } from "@/features/web/package/useCreatePackage";
+import { useCreateModifyPackage } from "@/features/web/extend/useCreateModifyPackage"; 
 import { useFetchPackages } from "@/features/web/package/useFetchPackage";
+import { useModifyPackage } from "@/features/web/package/useModifyPackage";
 import { PackageGallery, PackageSchema } from "@/type/schema/PackageSchema";
 import { hideLoadingAlert, showLoadingAlert } from "@/utils/AlertUtils";
 import { useRouter } from "next/navigation";
@@ -13,7 +13,7 @@ export const usePackageList = () => {
     package: true,
     gallery: true,
   });
-  const { mutate: createPackage, isPending: isCreating } = useCreatePackage({
+  const { mutate: createPackage, isPending: isCreating } = useModifyPackage({
     onSuccess: (data) => {
       const response = data as PackageSchema;
       router.push(ROUTES["CUSTOM_PACKAGE"](response.id));
@@ -63,6 +63,6 @@ export const usePackageList = () => {
     mutate,
     isPending,
     handleModifyPackage,
-    createPackage
+    createPackage,
   };
 };

@@ -1,20 +1,17 @@
-import React from "react";
-import { MdClose } from "react-icons/md";
+import React from "react"; 
 
 type Props = {
   itemsPerPage: number;
   handleItemsPerPage: (e: React.ChangeEvent<HTMLSelectElement>) => void;
   searchTerm: string;
-  handleSearch: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  clearSearchTerm: () => void;
+  handleSearch: (e: React.ChangeEvent<HTMLInputElement>) => void; 
 };
 
 const TableManagementHeader = ({
   itemsPerPage = 5,
   handleItemsPerPage,
   searchTerm,
-  handleSearch,
-  clearSearchTerm,
+  handleSearch, 
 }: Props) => {
   return (
     <header className="flex justify-between w-full mb-4">
@@ -41,16 +38,12 @@ const TableManagementHeader = ({
         className=" [&_svg]:text-transparent [&_svg]:focus-within:text-slate-500 rounded border p-2 flex items-center justify-between  "
       >
         <input
-          type="text"
+          type="search"
           placeholder="Search"
           className=" focus:outline-none border-none !ring-0 border-0  p-0 "
           value={searchTerm}
           onChange={handleSearch}
           aria-label="Search packages"
-        />
-        <MdClose
-          onClick={() => clearSearchTerm()}
-          className="cursor-pointer hover:text-slate-500 transition-ease-in-out"
         />
       </label>
     </header>

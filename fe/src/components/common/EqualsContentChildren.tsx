@@ -1,14 +1,23 @@
-import React, { FC } from "react";
+import { cn } from "@/utils/common/cn";
+import React, { ComponentProps, FC } from "react";
 
-type Props = {
+type Props = ComponentProps<"article"> & {
   children: React.ReactNode;
 };
-export const EqualsContentChildren: FC<Props> = ({ children }) => {
+export const EqualsContentChildren: FC<Props> = ({
+  children,
+  className,
+  ...props
+}) => {
   return (
-    <article className="h-full  col-span-12 lg:col-span-6 space-y-4 rounded-lg">
+    <article
+      className={cn(
+        "h-full  col-span-12 lg:col-span-6 space-y-4 rounded-lg",
+        className
+      )}
+      {...props}
+    >
       {children}
     </article>
   );
 };
-
-

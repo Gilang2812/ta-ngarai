@@ -1,5 +1,7 @@
-const { DataTypes, TINYINT } = require("sequelize");
+const { DataTypes } = require("sequelize");
 const sequelize = require("../config/database");
+const { generateCustomId } = require("../utils/generateId");
+const { CustomError } = require("../utils/CustomError");
 
 const ServicePackage = sequelize.define(
   "ServicePackage",
@@ -22,5 +24,38 @@ const ServicePackage = sequelize.define(
     timestamps: false,
   }
 );
+
+ServicePackage.beforeCreate(async (service) => {
+  service.id = await generateCustomId("S", ServicePackage, 3);
+});
+
+ServicePackage.beforeBulkDestroy(async (services) => {
+  const { DetailServicePackage } = require("./relation");
+  const where = services.where;
+  const count = await DetailServicePackage.count({
+    where: { service_package_id: where.id },
+  });
+
+  if (count > 0) {
+    throw new CustomError(
+      `Tidak dapat menghapus, masih digunakan di ${count} package.`,
+      409
+    );
+  }
+});
+ServicePackage.beforeDestroy(async (service) => {
+  const { DetailServicePackage } = require("./relation");
+
+  const count = await DetailServicePackage.count({
+    where: { service_package_id: service.id },
+  });
+
+  if (count > 0) {
+    throw new CustomError(
+      `Tidak dapat menghapus, masih digunakan di ${count} package.`,
+      409
+    );
+  }
+});
 
 module.exports = { ServicePackage };

@@ -2,7 +2,6 @@ import React from "react";
 import HistoryList from "./HistoryList";
 import { useCraftTransaction } from "@/hooks/useCraftTransaction";
 import ManagementSkeletonLoader from "../loading/ManagementSkeletonLoader";
-import { motion } from "framer-motion";
 import { ModalDetail } from "../modal/ModalDetail";
 import { UserDetailPage } from "./UserDetailPage";
 import Link from "next/link";
@@ -19,7 +18,7 @@ const CraftTransaction = () => {
     selectedHistory,
     handleReOrder,
     handleCompleteOrder,
-    modalContent, 
+    modalContent,
   } = useCraftTransaction();
   if (isLoading) return <ManagementSkeletonLoader />;
   if (!userHistory || userHistory.length === 0) {
@@ -39,10 +38,7 @@ const CraftTransaction = () => {
 
   return (
     userHistory && (
-      <motion.section
-        layoutId="reservation-list"
-        className="min-h-screen bg-gray-50 rounded"
-      >
+      <section className="min-h-screen bg-gray-50 rounded">
         <div className="max-w-7xl mx-auto p-5">
           {userHistory.map((item) => (
             <HistoryList
@@ -70,7 +66,7 @@ const CraftTransaction = () => {
               )
             ))}
         </ModalDetail>
-      </motion.section>
+      </section>
     )
   );
 };

@@ -15,6 +15,11 @@ const {
   destroyPackage,
   updatePackage,
   insertPackage,
+  findPackageTypes,
+  findPackageType,
+  editPackageType,
+  insertPackageType,
+  destroyPackageType,
 } = require("./package.repository");
 
 const getAllPackage = async (condition, query) => {
@@ -32,6 +37,9 @@ const getPackage = async (
     service,
     reservation,
   });
+  if (!packageData) {
+    throw new CustomError("Package not found", 404);
+  }
   return packageData;
 };
 
@@ -73,7 +81,24 @@ const getUserPackage = async (userId) => {
 };
 
 const editPackage = async (key, body) => {
-  const updatedPackage = await updatePackage(key, body);
+  const updatedPackage = await getPackage(key.id, {
+    gallery: false,
+    package: false,
+    reservation: false,
+    service: false,
+  });
+  await updatePackage(key, body);
+  return updatedPackage;
+};
+
+const editAllDataPackage = async (key, body) => {
+  const updatedPackage = await getPackage(key.id, {
+    gallery: true,
+    package: false,
+    reservation: false,
+    service: false,
+  });
+  await updatePackage(key, body);
   return updatedPackage;
 };
 
@@ -138,6 +163,36 @@ const deleteDetailPackage = async (condition) => {
   return deletedDetailPackage;
 };
 
+const getPackageTypes = async () => {
+  const packageTypes = await findPackageTypes();
+  return packageTypes;
+};
+
+const getPackageType = async (key) => {
+  const packageType = await findPackageType(key);
+  if (!packageType) {
+    throw new CustomError("Package type not found", 404);
+  }
+  return packageType;
+};
+
+const createPackageType = async (body) => {
+  const newPackageType = await insertPackageType(body);
+  return newPackageType;
+};
+
+const updatePackageType = async (key, body) => {
+  const updatedPackageType = await getPackageType(key);
+  await editPackageType(key, body);
+  return updatedPackageType;
+};
+
+const deletePackageType = async (key) => {
+  const deletedPackageType = await getPackageType(key);
+  await destroyPackageType(key);
+  return deletedPackageType;
+};
+
 module.exports = {
   getAllPackage,
   getPackage,
@@ -151,5 +206,12 @@ module.exports = {
   deletePackageDay,
   deletePackage,
   editPackage,
-  createPackage
+  createPackage,
+  editAllDataPackage,
+  getPackageTypes,
+  destroyPackageType,
+  getPackageType,
+  createPackageType,
+  updatePackageType,
+  deletePackageType,
 };

@@ -4,11 +4,15 @@ import { GalleryPackageSchema } from "./GallerySchema";
 import { DetailServiceSchema } from "./ServiceSchema";
 import {
   detailPackageFormSchema,
+  editPackageFormSchema,
   packageDayFormSchema,
+  packageTypeFormSchema,
 } from "@/validation/package.validation";
-import * as yup from "yup"; 
+import * as yup from "yup";
+import { FilepondType } from "../common/FilepondType";
 
 export type PackageTypeSchema = {
+  id: string;
   type_name: string;
 };
 export type PackageSchema = {
@@ -160,4 +164,13 @@ export type PackageServiceGallery = PackageGallery & {
 
 export type PackageService = Packages & {
   detailServices: DetailServiceSchema[];
+};
+
+export type EditPackageSchema = yup.InferType<typeof editPackageFormSchema> & {
+  images: FilepondType;
+  video_url: FilepondType;
+};
+
+export type PackageTypeFormSchema = yup.InferType<typeof packageTypeFormSchema> & {
+  id?: string;
 };

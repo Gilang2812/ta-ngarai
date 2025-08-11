@@ -5,6 +5,7 @@ const {
   DetailPackage,
   Reservation,
   User,
+  PackageType,
 } = require("../../models/relation");
 const { getPackageIncludes } = require("../../utils/getPackgeInclude.js");
 
@@ -95,19 +96,14 @@ const insertPackage = async (body) => {
 };
 
 const updatePackage = async (key, body) => {
-  const updatedPackage = await Package.findOne({
+  const updatedPackage = await Package.update(body, {
     where: key,
   });
-
-  await updatedPackage.update(body);
   return updatedPackage;
 };
 
 const destroyPackage = async (condition) => {
-  const deletedPackage = await Package.findOne({
-    where: condition,
-  });
-  await deletedPackage.destroy();
+  const deletedPackage = await Package.destroy({ where: condition });
   return deletedPackage;
 };
 
@@ -168,6 +164,37 @@ const destroyDetailPackage = async (condition) => {
   return deletedDetailPackage;
 };
 
+const findPackageTypes = async () => {
+  const packageTypes = await PackageType.findAll();
+  return packageTypes;
+};
+
+const findPackageType = async (key) => {
+  const packageType = await PackageType.findOne({
+    where: key,
+  });
+  return packageType;
+};
+
+const insertPackageType = async (body) => {
+  const newPackageType = await PackageType.create(body);
+  return newPackageType;
+};
+
+const editPackageType = async (key, body) => {
+  const updatedPackageType = await PackageType.update(body, {
+    where: key,
+  });
+  return updatedPackageType;
+};
+
+const destroyPackageType = async (key) => {
+  const deletedPackageType = await PackageType.destroy({
+    where: key,
+  });
+  return deletedPackageType;
+};
+
 module.exports = {
   updatePackage,
   findPackageDay,
@@ -184,4 +211,9 @@ module.exports = {
   destroyDetailPackage,
   destroyPackage,
   insertPackage,
+  findPackageTypes,
+  findPackageType,
+  insertPackageType,
+  editPackageType,
+  destroyPackageType,
 };

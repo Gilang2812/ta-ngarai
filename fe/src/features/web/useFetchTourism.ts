@@ -15,6 +15,7 @@ export const useFetchTourism = (id: string) => {
     bank_name: string;
     bank_account: string;
     bank_account_holder: string;
+    bank_account_number: string;
     qr_url: string;
     galleries: {
       id: string;

@@ -1,13 +1,14 @@
 import { baseUrl } from "./baseUrl";
 
 export const formatImageUrls = (
-  urls: string[]
+  urls: (string | undefined)[],
+  defaultUrl = baseUrl
 ): { source: string; option: { type: string } }[] => {
   if (!urls || urls.length === 0) {
     return [];
   }
   return urls.map((url) => ({
-    source: `${baseUrl}/${url}?v=${new Date().getTime()}`,
+    source: `${defaultUrl}/${url}?v=${new Date().getTime()}`,
     option: {
       type: "local",
     },

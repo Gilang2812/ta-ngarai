@@ -1,9 +1,33 @@
+import { ROUTES } from "@/data/routes";
+import { useEditTourism } from "@/features/web/useEditTourism";
 import { useFetchTourism } from "@/features/web/useFetchTourism";
 import { formatImageUrls } from "@/lib/imgUrlFormatter";
+import { cornerAlert } from "@/utils/AlertUtils";
+import { createFormData } from "@/utils/common/createFormData";
+import { useRouter } from "next/navigation";
 import { useMemo } from "react";
 
+type EditVillageForm = {
+  id: string;
+  name: string;
+  type_of_tourism: string;
+  address: string;
+  open: string;
+  close: string;
+  ticket_price: number;
+  contact_person: string;
+  bank_code: string;
+  bank_name: string;
+  bank_account: string;
+  bank_account_holder: string;
+  bank_account_number: string;
+  qr_url: { source: string; option: { type: string } }[] | string[];
+  images: { source: string; option: { type: string } }[] | string[];
+};
+
 export const useEditVillage = (id: string) => {
-  const { data, isLoading } = useFetchTourism(id);
+  const router = useRouter();
+  const { data, isLoading, refetch } = useFetchTourism(id);
   const qr = useMemo(() => {
     if (!data?.qr_url) return [];
     return formatImageUrls([data.qr_url]);
@@ -15,28 +39,42 @@ export const useEditVillage = (id: string) => {
     return formatImageUrls(urls);
   }, [data?.galleries]);
 
-  console.log(qr)
-  console.log(images)
-  const initialValues = {
+  const initialValues: EditVillageForm = {
     id: data?.id ?? "",
     name: data?.name ?? "",
     type_of_tourism: data?.type_of_tourism ?? "",
     address: data?.address ?? "",
     open: data?.open ?? "",
     close: data?.close ?? "",
-    ticket_price: data?.ticket_price ?? "",
+    ticket_price: data?.ticket_price ?? ("" as unknown as number),
     contact_person: data?.contact_person ?? "",
     bank_code: data?.bank_code ?? "",
     bank_name: data?.bank_name ?? "",
     bank_account: data?.bank_account ?? "",
     bank_account_holder: data?.bank_account_holder ?? "",
+    bank_account_number: data?.bank_account_number ?? "",
     qr_url: qr,
     images: images,
+  };
+
+  const { mutate, isPending } = useEditTourism({
+    onSuccess: () => {
+      cornerAlert("Village updated successfully");
+      refetch();
+      router.push(ROUTES.MANAGE_VILLAGE);
+    },
+  });
+
+  const handleSubmit = (values: EditVillageForm) => {
+    const formData = createFormData<EditVillageForm>(values);
+    mutate(formData);
   };
 
   return {
     data,
     isLoading,
     initialValues,
+    handleSubmit,
+    isPending,
   };
 };

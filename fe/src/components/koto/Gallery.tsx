@@ -1,8 +1,8 @@
 "use client";
-import { useFetchGalleries } from "@/features/web/useFetchGalleries"; 
-import { GallerySchema } from "@/type/schema/GallerySchema"; 
-import { ImageSkeleton } from "@/components/loading/ImageSkeleton";
-import Img from "../common/Img";
+import { useFetchGalleries } from "@/features/web/useFetchGalleries";
+import { GallerySchema } from "@/type/schema/GallerySchema";
+import { ImageSkeleton } from "@/components/loading/ImageSkeleton"; 
+import ImgCraft from "../common/ImgCraft";
 
 export const Gallery = () => {
   const { data, isLoading } = useFetchGalleries<GallerySchema>("tourism");
@@ -13,7 +13,7 @@ export const Gallery = () => {
         {isLoading &&
           [...Array(4)].map((_, index) => <ImageSkeleton key={index} />)}
         {data?.map((g: GallerySchema) => (
-          <Img
+          <ImgCraft
             key={g.id}
             src={g.url}
             alt={`Village gallery  image ${g.id} `}
@@ -29,7 +29,6 @@ export const Gallery = () => {
     <article className="  relative space-y-4">
       <h2 className="font-semibold max-w-max text-primary">Gallery</h2>
       <RenderImage />
-   
     </article>
   );
 };
