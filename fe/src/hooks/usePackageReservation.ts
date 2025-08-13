@@ -1,5 +1,5 @@
-import { useDeleteReservation } from "@/features/reservation/useDeleteReservation";
-import { useFetchReservations } from "@/features/web/myreservation/useFetchReservations";
+import { useDeleteReservation } from "@/features/reservation/useDeleteReservation"; 
+import { useFetchUserReservations } from "@/features/web/myreservation/useFetchUserReservations";
 import { ReservationSchema } from "@/type/schema/ReservationSchema";
 import { confirmAlert, cornerAlert } from "@/utils/AlertUtils";
 import { useModal } from "@/utils/ModalUtils";
@@ -9,7 +9,7 @@ const usePackageReservation = () => {
   const [reservation, setReservation] = useState<ReservationSchema | null>(
     null
   );
-  const { data, isLoading } = useFetchReservations();
+  const { data, isLoading } = useFetchUserReservations();
   const { isOpen, toggleModal } = useModal();
 
   const handleHistoryClick = (r: ReservationSchema) => {

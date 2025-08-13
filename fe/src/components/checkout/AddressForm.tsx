@@ -62,7 +62,7 @@ export const AddressForm = ({
               label="Postal Code"
               autoFocus
             />
-            <Button className="h-fit p-1 " type="button" onClick={onVerify}>
+            <Button className="p-1 " type="button" onClick={onVerify}>
               <Search />
             </Button>
           </div>

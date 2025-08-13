@@ -21,61 +21,32 @@ const router = require("express").Router();
 router.get("/", verifyToken, async (req, res, next) => {
   try {
     const conditions = {};
-    conditions.user_id = req.user.id;
-    console.log("Conditions for fetching reservations:", conditions);
+
     const reservation = await getReservations(conditions);
 
     const data = await Promise.all(
       reservation.map(async (item) => {
-        const paymentStatus = await getPaymentStatus(item.id + "-FULL");
-        const depositStatus = await getPaymentStatus(item.id + "-DEP");
         const days_of_stay = await getDaysOfStay(item);
         let itemParse = item.toJSON();
-        if (!paymentStatus && !depositStatus) {
-          return { days_of_stay, ...itemParse };
-        }
+        return { days_of_stay, ...itemParse };
+      })
+    );
+    return res.status(200).json(data);
+  } catch (error) {
+    next(error);
+  }
+});
+router.get("/user", verifyToken, async (req, res, next) => {
+  try {
+    const conditions = {};
+    conditions.user_id = req.user.id;
 
-        const statusPayment =
-          paymentStatus && getPaymentStatusText(paymentStatus);
-        const statusDeposit =
-          depositStatus && getPaymentStatusText(depositStatus);
-        if (statusPayment === "success" && !item.payment_date) {
-          itemParse = await editReservation(
-            { id: item.id },
-            { payment_date: new Date() }
-          );
-        }
-        if (statusDeposit === "success" && !item.deposit_date) {
-          itemParse = await editReservation(
-            { id: item.id },
-            { deposit_date: new Date() }
-          );
-        }
+    const reservation = await getReservations(conditions);
 
-        if (
-          !item.deposit_channel &&
-          (statusDeposit === "success" || statusPayment === "success")
-        ) {
-          itemParse = await editReservation(
-            { id: item.id },
-            {
-              deposit_channel:
-                depositStatus?.payment_type || paymentStatus?.payment_type,
-            }
-          );
-        }
-
-        if (item.deposit_date && !item.token_of_payment) {
-          console.log("Creating payment token for reservation:", item.id);
-          const transaction = await createTokenTransaction({
-            order_id: item.id + "-FULL",
-            gross_amount: item.total_price - item.deposit,
-          });
-          itemParse = await editReservation(
-            { id: item.id },
-            { token_of_payment: transaction?.token }
-          );
-        }
+    const data = await Promise.all(
+      reservation.map(async (item) => {
+        const days_of_stay = await getDaysOfStay(item);
+        let itemParse = item.toJSON();
 
         return { days_of_stay, ...itemParse };
       })
@@ -90,6 +61,50 @@ router.get("/:id", async (req, res, next) => {
   try {
     const { id } = req.params;
     const reservation = await getReservationById(id);
+    const paymentStatus = await getPaymentStatus(reservation.id + "-FULL");
+    const depositStatus = await getPaymentStatus(reservation.id + "-DEP");
+    if (paymentStatus || depositStatus) {
+      const statusPayment =
+        paymentStatus && getPaymentStatusText(paymentStatus);
+      const statusDeposit =
+        depositStatus && getPaymentStatusText(depositStatus);
+      if (statusPayment === "success" && !reservation.payment_date) {
+        itemParse = await editReservation(
+          { id: reservation.id },
+          { payment_date: new Date() }
+        );
+      }
+      if (statusDeposit === "success" && !reservation.deposit_date) {
+        itemParse = await editReservation(
+          { id: reservation.id },
+          { deposit_date: new Date() }
+        );
+      }
+
+      if (
+        !reservation.deposit_channel &&
+        (statusDeposit === "success" || statusPayment === "success")
+      ) {
+        itemParse = await editReservation(
+          { id: reservation.id },
+          {
+            deposit_channel:
+              depositStatus?.payment_type || paymentStatus?.payment_type,
+          }
+        );
+      }
+
+      if (reservation.deposit_date && !reservation.token_of_payment) {
+        const transaction = await createTokenTransaction({
+          order_id: reservation.id + "-FULL",
+          gross_amount: reservation.total_price - reservation.deposit,
+        });
+        itemParse = await editReservation(
+          { id: reservation.id },
+          { token_of_payment: transaction?.token }
+        );
+      }
+    }
 
     return res.status(200).json(reservation);
   } catch (error) {
@@ -101,6 +116,51 @@ router.get("/homestay/:id", async (req, res, next) => {
   try {
     const { id } = req.params;
     const reservation = await getHomestayReservation(id);
+    const paymentStatus = await getPaymentStatus(reservation.id + "-FULL");
+    const depositStatus = await getPaymentStatus(reservation.id + "-DEP");
+    if (depositStatus || paymentStatus) {
+      const statusPayment =
+        paymentStatus && getPaymentStatusText(paymentStatus);
+      const statusDeposit =
+        depositStatus && getPaymentStatusText(depositStatus);
+      if (statusPayment === "success" && !reservation.payment_date) {
+        itemParse = await editReservation(
+          { id: reservation.id },
+          { payment_date: new Date() }
+        );
+      }
+      if (statusDeposit === "success" && !reservation.deposit_date) {
+        itemParse = await editReservation(
+          { id: reservation.id },
+          { deposit_date: new Date() }
+        );
+      }
+
+      if (
+        !reservation.deposit_channel &&
+        (statusDeposit === "success" || statusPayment === "success")
+      ) {
+        itemParse = await editReservation(
+          { id: reservation.id },
+          {
+            deposit_channel:
+              depositStatus?.payment_type || paymentStatus?.payment_type,
+          }
+        );
+      }
+
+      if (reservation.deposit_date && !reservation.token_of_payment) {
+        const transaction = await createTokenTransaction({
+          order_id: reservation.id + "-FULL",
+          gross_amount: reservation.total_price - reservation.deposit,
+        });
+        itemParse = await editReservation(
+          { id: reservation.id },
+          { token_of_payment: transaction?.token }
+        );
+      }
+    }
+
     return res.status(200).json(reservation);
   } catch (error) {
     next(error);
@@ -194,11 +254,14 @@ router.patch("/payment/:id", async (req, res, next) => {
     } = req.body;
     let transaction = null;
     const isFull = total_price === deposit;
-    if (status !== 2) {
+    console.log("statust payments", parseInt(status) !== 2);
+    console.log("statust payments benar", parseInt(status) === 2);
+    console.log("statust payments asli", typeof status);
+    if (parseInt(status) !== 2) {
       transaction = await createTokenTransaction({
         order_id: isFull ? id + "-FULL" : id + "-DEP",
         gross_amount: isFull ? total_price : deposit,
-        item_details,
+        // item_details,
       });
     }
 

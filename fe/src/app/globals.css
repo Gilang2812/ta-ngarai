@@ -37,11 +37,9 @@ input[type="time"]::-webkit-calendar-picker-indicator {
   -webkit-appearance: auto;
 }
 
- 
 input[type="radio"] {
   @apply focus:bg-primary  focus:!outline-none focus:ring-2   focus:ring-transparent checked:bg-primary;
 }
-
 
 body {
   color: var(--foreground);
@@ -129,39 +127,32 @@ body {
 }
 
 .custom-scroll-bar {
-  /* Custom scrollbar width and appearance */
   &::-webkit-scrollbar {
     width: 6px;
-    transition: all 0.3s;
   }
-  &::-webkit-scrollbar-track:hover {
-    width: 12px;
-  }
-  &::-webkit-scrollbar-track {
-    background-color: theme("colors.gray.100");
-    border-radius: 9999px;
-  }
+
   &::-webkit-scrollbar-thumb {
-    background-color: theme("colors.gray.300");
+    background-color: theme('colors.white'); /* warna awal */
     border-radius: 9999px;
+    transition: background-color 0.3s ease-in-out;
   }
-  /* Dark mode scrollbar colors */
-  @media (prefers-color-scheme: dark) {
-    &::-webkit-scrollbar-track {
-      background-color: theme("colors.neutral.700");
-    }
-    &::-webkit-scrollbar-thumb {
-      background-color: theme("colors.neutral.500");
-    }
+
+  &::-webkit-scrollbar-track {
+    background-color: theme('colors.white'); /* warna awal */
+    border-radius: 9999px;
+    transition: background-color 0.3s ease-in-out;
+  }
+
+  /* saat hover di container */
+  &:hover::-webkit-scrollbar-thumb {
+    background-color: theme('colors.gray.300'); /* warna akhir */
+  }
+
+  &:hover::-webkit-scrollbar-track {
+    background-color: theme('colors.gray.100'); /* warna akhir */
   }
 }
 
-.custom-scroll-bar:hover {
-  /* Change opacity on hover */
-  &::-webkit-scrollbar {
-    opacity: 1;
-  }
-}
 
 input[type="range"] {
   -webkit-appearance: none;

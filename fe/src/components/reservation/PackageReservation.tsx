@@ -52,7 +52,7 @@ const PackageReservation = () => {
         <td className="py-2 gap-x-2 flex flex-wrap justify-center xl:flex-nowrap">
           <Link
             href={
-              r.package
+              r.package_id
                 ? ROUTES.DETAIL_RESERVATION(r.id)
                 : ROUTES.DETAIL_RESERVATION_HOMESTAY(r.id)
             }

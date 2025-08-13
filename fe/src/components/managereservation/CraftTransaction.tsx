@@ -50,32 +50,30 @@ const CraftTransaction = () => {
         <td>
           <div className="flex items-center gap-3">
             <div>
-              <div className="font-semibold text-gray-900">
+              <div className="font-semibold ">
                 {
                   item?.shippingItems?.[0]?.checkout?.shippingAddress
                     ?.addressCustomer?.fullname
                 }
               </div>
-              <div className="text-sm text-gray-500">
-                ID: # {item.shipping_id}
-              </div>
+              <div className="text-sm ">ID: # {item.shipping_id}</div>
             </div>
           </div>
         </td>
         <td>
-          <div className="text-gray-900">
+          <div>
             {dayjs(item.shippingItems?.[0]?.checkout?.checkout_date).format(
               "DD MMMM YYYY"
             )}
           </div>
-          <div className="text-sm text-gray-500">
+          <div className="text-sm ">
             {dayjs(item.shippingItems?.[0]?.checkout?.checkout_date).format(
               "HH:mm WIB"
             )}
           </div>
         </td>
         <td>
-          <div className="text-gray-900">
+          <div>
             {item?.shippingItems
               .map(
                 (product) =>
@@ -83,9 +81,7 @@ const CraftTransaction = () => {
               )
               .join(" + ")}
           </div>
-          <div className="text-sm text-gray-500">
-            {item?.shippingItems?.length} items
-          </div>
+          <div className="text-sm ">{item?.shippingItems?.length} items</div>
         </td>
         <td>
           <div className="font-semibold text-primary">
@@ -177,7 +173,7 @@ const CraftTransaction = () => {
           itemsPerPage={itemsPerPage}
         />
 
-        <table className="w-full border-collapse [&_td]:border [&_td]:border-gray-300 [&_td]:px-4 [&_td]:py-2">
+        <table className="w-full border-collapse [&_tr]:border-b [&_tr]:border-gray-300 [&_td]:px-4 [&_td]:py-2">
           <TableHeaderManagement
             headers={["Pelanggan", "Tanggal", "Produk", "Total", "Status"]}
           />

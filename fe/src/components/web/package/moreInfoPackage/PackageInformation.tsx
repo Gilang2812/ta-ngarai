@@ -16,7 +16,7 @@ export const PackageInformation = ({
   return (
     <SingleContentWrapper>
       <header className="text-xl relative font-semibold text-center">
-        <Button className="absolute  w-fit h-fit top-0 right-0" asChild>
+        <Button className="absolute  w-fit  top-0 right-0" asChild>
           <Link href={ROUTES.EDIT_DETAIL_PACKAGE(data.id)}>
             <FaPencil /> Edit
           </Link>

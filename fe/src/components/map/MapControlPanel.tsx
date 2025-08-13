@@ -3,8 +3,8 @@
 import MapControlPanelLayout from "@/layouts/MapControlPanelLayout";
 import MainControlPanelItems from "./MainControlPanelItems";
 import AdvancedControlPanelItems from "./AdvancedControlPanelItems";
-import { AdvancedControlPanelProps, MainControlPanelProps } from "@/type/props"; 
-type Props = MainControlPanelProps & AdvancedControlPanelProps  
+import { AdvancedControlPanelProps, MainControlPanelProps } from "@/type/props";
+type Props = MainControlPanelProps & AdvancedControlPanelProps;
 export default function MapControlPanel({
   tracking,
   handleLocateUser,
@@ -22,8 +22,8 @@ export default function MapControlPanel({
   handleShowAllLayers,
   objects,
   setObjects,
-  handleShowAllObject, 
-  withPackage =true
+  handleShowAllObject,
+  withPackage = true,
 }: Props) {
   return (
     <MapControlPanelLayout>

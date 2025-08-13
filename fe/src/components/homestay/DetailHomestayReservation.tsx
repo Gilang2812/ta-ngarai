@@ -9,14 +9,12 @@ import DetailHomestayReservationLoader from "../loading/DetailHomestayReservatio
 import TableHeaderManagement from "../admin/TableHeaderManagement";
 import { formatPrice } from "@/lib/priceFormatter";
 import Button from "../common/Button";
-import { FaEnvelope, FaPrint, FaXmark } from "react-icons/fa6";
+import { FaPrint, FaXmark } from "react-icons/fa6";
 import ReservationStep from "../reservation/ReservationStep";
 import { ReservationDetails } from "@/type/schema/ReservationSchema";
-import { Modal } from "../modal/Modal";
-import { ErrorMessage, Field, Form, Formik } from "formik";
-import { confirmationSchema } from "@/validation/reservation";
-import { FormInput } from "../inputs/FormInput";
+
 import { ReservationStatus } from "@/utils/common/getReservationStatus";
+import ButtonConfirmation from "../reservation/ButtonConfirmation";
 
 const DetailHomestayReservation = ({ id }: { id: string }) => {
   const {
@@ -27,14 +25,10 @@ const DetailHomestayReservation = ({ id }: { id: string }) => {
     detail,
     isFetching,
     refetch,
-    isAdmin,
-    isOpen,
-    toggle,
-    initialValues,
-    handleSubmit,
-    isPending,
+    refetchData,
     status,
     handlePayment,
+    item_details,
   } = useDetailHomestayReservation(id);
   const centroid = getCentroid(geom);
   if (isLoading) return <DetailHomestayReservationLoader />;
@@ -58,7 +52,7 @@ const DetailHomestayReservation = ({ id }: { id: string }) => {
               </h2>
             </header>
             <MapLayout
-              containerStyle={{ width: "100%", height: "90%" }}
+              containerStyle={{ width: "100%", height: "500px" }}
               zoom={18}
               center={centroid}
             >
@@ -123,13 +117,14 @@ const DetailHomestayReservation = ({ id }: { id: string }) => {
             </h2>
           </header>
           <section className="h-fit">
-            {((isAdmin && status === "Rejected") ||
-              status.replaceAll(" ", "-") === "Awaiting-Approval") && (
-              <Button onClick={toggle}>
-                <FaEnvelope />
-                Confirmation
-              </Button>
-            )}
+            <ButtonConfirmation
+              item_details={item_details}
+              reservation_id={id}
+              refetchData={refetchData}
+              status={status.replaceAll(" ", "-") as ReservationStatus}
+              deposit={data.deposit}
+              total_price={data.total_price}
+            />
           </section>
           <div className="[&_dt]:min-w-[12.5rem] border-b-2 p-4 space-y-4 ">
             <dl className="flex  items-center">
@@ -159,48 +154,6 @@ const DetailHomestayReservation = ({ id }: { id: string }) => {
             </Button>
           </section>
         </SingleContentWrapper>
-        <Modal title="Confirmation" isOpen={isOpen} onClose={toggle}>
-          <Formik
-            initialValues={initialValues}
-            onSubmit={handleSubmit}
-            validationSchema={confirmationSchema}
-          >
-            <Form className="space-y-4 p-4">
-              <h2 className="text-lg font-bold">Status Confirmation</h2>
-              <div className="flex gap-4 items-center [&_label]:border-2 [&_label]:p-2 [&_label]:rounded-full [&_label]:gap-2 [&_label]:items-center [&_label]:flex">
-                <label>
-                  <Field type="radio" name="status" value="2" />
-                  Rejected
-                </label>
-                <label>
-                  <Field type="radio" name="status" value="1" />
-                  Accepted
-                </label>
-              </div>
-              <ErrorMessage
-                name="status"
-                component="p"
-                className="text-red-600"
-              />
-              <FormInput
-                as="textarea"
-                name="feedback"
-                label="Feedback"
-                rows={4}
-                placeholder="Leave your feedback here..."
-              />
-
-              <Button
-                disabled={isPending}
-                isLoading={isPending}
-                className="h-fit py-1"
-                type="submit"
-              >
-                Submit
-              </Button>
-            </Form>
-          </Formik>
-        </Modal>
       </section>
     )
   );

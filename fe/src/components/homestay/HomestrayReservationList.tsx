@@ -42,7 +42,7 @@ const HomestrayReservationList = ({
           animate="show"
           exit="exit"
         >
-          {filteredUnitHomestay?.map((unit,index) => (
+          {filteredUnitHomestay?.map((unit, index) => (
             <motion.article
               layout="position"
               variants={itemVariants}

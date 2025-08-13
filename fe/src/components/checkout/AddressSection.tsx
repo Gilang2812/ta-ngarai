@@ -51,12 +51,14 @@ export const AddressSection = ({
       >
         <Button
           variant={"secondary"}
-          className="bg-white text-slate-500 border-slate-500 h-fit right-2 top-2 border p-1 absolute "
+          className="bg-white text-slate-500 border-slate-500  right-2 top-2 border p-1 absolute "
           type="button"
         >
           <FaEdit />
         </Button>
-        <p className="text-sm capitalize text-justify">{userAddress.toLowerCase()} </p>
+        <p className="text-sm capitalize text-justify">
+          {userAddress.toLowerCase()}{" "}
+        </p>
       </div>
       <InfoModal title="address" isOpen={isOpen} onClose={toggleModal}>
         {addresses && showAddressForm ? (

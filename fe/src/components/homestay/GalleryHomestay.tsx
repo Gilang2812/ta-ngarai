@@ -10,7 +10,14 @@ export default function GalleryHomestay({
   return (
     <section className="grid grid-cols-4 gap-4">
       {data?.map((g, index) => (
-        <Image className="bg-slate-200" key={index} src={imageUrl+g.url} alt="image" width={500} height={500} />
+        <Image
+          className="bg-slate-200"
+          key={index}
+          src={imageUrl + g.url}
+          alt="image"
+          width={500}
+          height={500}
+        />
       ))}
     </section>
   );

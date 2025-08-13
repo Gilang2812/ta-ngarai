@@ -1,5 +1,7 @@
 import { cn } from "@/utils/common/cn";
+import { handleAllowedInput } from "@/utils/regex";
 import { ErrorMessage, Field, useField } from "formik";
+import { ChangeEvent } from "react";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
 
 export const FormInput = ({
@@ -12,7 +14,7 @@ export const FormInput = ({
   children,
   ...props
 }: React.ComponentProps<typeof Field>) => {
-  const [field, meta] = useField(name);
+  const [field, meta] = useField(name); 
 
   return (
     <div className="grow">
@@ -39,6 +41,9 @@ export const FormInput = ({
             id={id || name}
             as={as}
             readOnly={readonly}
+            onChange={(e: ChangeEvent<HTMLInputElement>) => {
+               handleAllowedInput(e, field.onChange);
+            }}
             {...props}
           >
             <option value="">select</option>
@@ -54,6 +59,10 @@ export const FormInput = ({
               as={as || "input"}
               readOnly={readonly}
               {...props}
+              onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                // Hanya izinkan huruf, angka, dan spasi 
+                handleAllowedInput(e, field.onChange);
+              }}
             />
             {meta.touched && meta.error && (
               <HiOutlineExclamationCircle className="text-red-600 text-lg" />

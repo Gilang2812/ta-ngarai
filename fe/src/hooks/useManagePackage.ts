@@ -34,7 +34,7 @@ const useManagePackage = () => {
               const values = item[key as keyof PackageSchema];
               return String(values)
                 .toLowerCase()
-                .includes(searchTerm.toLowerCase());
+                .includes(searchTerm.toLowerCase().trim());
             });
           }) || []
         : [],

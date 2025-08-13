@@ -1,4 +1,4 @@
-import { 
+import {
   PackageService,
   PackageServiceGallery,
 } from "@/type/schema/PackageSchema";

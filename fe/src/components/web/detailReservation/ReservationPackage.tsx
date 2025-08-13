@@ -1,12 +1,24 @@
-import { DetailReservationSchemaWithPackageDay } from "@/type/schema/ReservationSchema";
-import { addDays, localeDayDateTime } from "@/utils/localeDate";
+import { formatPrice } from "@/lib/priceFormatter";
+import { DetailReservationPackage } from "@/type/schema/ReservationSchema";
+import { localeDayDateTime } from "@/utils/localeDate";
+import dayjs from "dayjs";
 
 export const ReservationPackage = ({
   data,
 }: {
-  data: DetailReservationSchemaWithPackageDay;
+  data: DetailReservationPackage;
 }) => {
   const RenderData = () => {
+    const totalPeople = data?.total_people || 0;
+    const minCapacity = data?.package?.min_capacity || 1;
+
+    const totalPrice =
+      data?.package?.price *
+      (totalPeople < minCapacity
+        ? 1
+        : Math.floor(totalPeople / minCapacity) +
+          (totalPeople % minCapacity < 0.5 * minCapacity ? 0.5 : 1));
+
     return (
       data && (
         <tbody className="[&_td]:p-2 ">
@@ -34,7 +46,7 @@ export const ReservationPackage = ({
             <td>Check In</td>
             <td>
               <time dateTime={data?.check_in}>
-                {localeDayDateTime(data?.check_in)}
+                {dayjs(data?.check_in).format("dd, DD MMMM YYYY HH:mm:ss")}
               </time>
             </td>
           </tr>
@@ -42,17 +54,13 @@ export const ReservationPackage = ({
             <td>Check Out</td>
             <td>
               <time
-                dateTime={addDays(
-                  data?.check_in,
-                  (data?.package?.packageDays?.length || 0) - 1
-                ).toISOString()}
+                dateTime={dayjs(data?.check_in)
+                  .add(data?.package?.packageDays?.length - 1, "day")
+                  .format("dd, DD MMMM YYYY HH:mm:ss")}
               >
-                {localeDayDateTime(
-                  addDays(
-                    data?.check_in,
-                    (data?.package?.packageDays?.length || 0) - 1
-                  )
-                )}
+                {dayjs(data?.check_in)
+                  .add(data?.package?.packageDays?.length - 1, "day")
+                  .format("dd, DD MMMM YYYY HH:mm:ss")}
               </time>
             </td>
           </tr>
@@ -80,11 +88,11 @@ export const ReservationPackage = ({
           </tr>
           <tr>
             <td>Price</td>
-            <td>Rp 2.975.000</td>
+            <td>{formatPrice(data?.package?.price)}</td>
           </tr>
           <tr>
             <td>Total Price Package</td>
-            <td>Rp 2.975.000</td>
+            <td>{formatPrice(totalPrice)}</td>
           </tr>
         </tbody>
       )

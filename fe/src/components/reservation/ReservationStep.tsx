@@ -111,6 +111,12 @@ const ReservationStep = ({ reservation }: Props) => {
               <td>Thank you.</td>
             </tr>
           )}
+          {getReservationStatus(reservation) === "Unreviewed" && (
+            <tr>
+              <td className="flex items-center gap-2">Reservation</td>
+              <td>: You have finished your tour. Please give your review.</td>
+            </tr>
+          )}
           {getReservationStatus(reservation) === "Done" && (
             <tr>
               <td className="flex items-center gap-2">

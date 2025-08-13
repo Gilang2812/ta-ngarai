@@ -57,6 +57,7 @@ const findReservations = async (condition) => {
       {
         model: DetailReservation,
         as: "detail",
+        order: ["date"],
       },
     ],
     order: [["request_date", "DESC"]],
@@ -189,7 +190,7 @@ const findReservationById = async (id) => {
       {
         model: DetailReservation,
         as: "detail",
-        order: [[{ model: UnitHomestay, as: "homestay" }, "unit_name", "ASC"]],
+        order: [["date", "ASC"]],
         include: [
           {
             model: UnitHomestay,

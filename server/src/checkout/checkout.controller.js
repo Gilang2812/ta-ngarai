@@ -208,8 +208,7 @@ router.patch(
       const { review_text, review_rating, shipping_id, seller_response } =
         req.body;
       let updatedItem = null;
-      console.log("ini lagi di test");
-      console.log(req.files);
+      console.log("ini lagi di test"); 
       if (seller_response || seller_response == "") {
         updatedItem = await updateItemsCheckout(
           { checkout_id, craft_variant_id, id_souvenir_place },

@@ -27,8 +27,8 @@ export const Table = ({ children, className, ...props }: TableProps) => {
   return (
     <motion.div
       animate={{ height }}
+      className="min-h-fit"
       transition={{ duration: 0.3, ease: "easeInOut" }}
-      style={{ overflow: "hidden" }}
     >
       <table
         ref={ref}

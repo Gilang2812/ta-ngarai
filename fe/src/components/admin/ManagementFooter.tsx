@@ -45,7 +45,7 @@ const ManagementFooter = ({
         <Button
           variant={"secondary"}
           onClick={handleNextPage}
-          disabled={currentPage === totalPages}
+          disabled={currentPage === totalPages || totalPages === 0}
           aria-label="Next Page"
         >
           Next

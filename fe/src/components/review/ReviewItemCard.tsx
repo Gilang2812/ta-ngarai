@@ -61,7 +61,6 @@ const ReviewItemCard = ({ id }: Props) => {
                         item
                       )
                     }
-                    className="h-fit"
                   >
                     {item.review_rating ? "Edit Rate" : "Rate Now"}
                   </Button>

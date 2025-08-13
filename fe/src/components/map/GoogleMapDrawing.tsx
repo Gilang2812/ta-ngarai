@@ -9,7 +9,7 @@ import { getCentroid } from "@/utils/common/getCentroid";
 import { useDrawingMap } from "@/hooks/useDrawingMap";
 
 type Props = React.ComponentProps<typeof GoogleMap> & {
-  geom: MultiPolygon;
+  geom: MultiPolygon|null;
   formType: "create" | "edit";
 };
 const containerStyle = {
@@ -17,7 +17,7 @@ const containerStyle = {
   aspectRatio: 4 / 3,
 };
 
-const GoogleMapDrawing = ({ geom, formType, ...props }: Props) => {
+const GoogleMapDrawing = ({ geom, formType = "create", ...props }: Props) => {
   const { isLoaded } = useMapLoad();
   const { onPolygonComplete, polygonRef, updateCoordinates } = useDrawingMap();
 
@@ -60,10 +60,10 @@ const GoogleMapDrawing = ({ geom, formType, ...props }: Props) => {
       }}
       {...props}
     >
-      {formType == "edit" && geom ? (
+      {(formType == "edit" && geom) ? (
         <>
           <Polygon
-            path={coordinates}
+            path={coordinates || []}
             draggable={true}
             editable={true}
             onLoad={onLoad}

@@ -1,6 +1,12 @@
-import { DetailReservationSchemaWithPackageDay  } from "@/type/schema/ReservationSchema";
+import { formatPrice } from "@/lib/priceFormatter";
+import { DetailReservationPackage } from "@/type/schema/ReservationSchema";
+import dayjs from "dayjs";
 
-export const ReservationHomestay = ({ data }: { data: DetailReservationSchemaWithPackageDay }) => {
+export const ReservationHomestay = ({
+  data,
+}: {
+  data: DetailReservationPackage;
+}) => {
   return (
     <section className=" space-y-4  mt-4">
       <table className=" [&_td]:px-2   w-full">
@@ -9,29 +15,30 @@ export const ReservationHomestay = ({ data }: { data: DetailReservationSchemaWit
             <th>no</th>
             <th>date</th>
             <th>homestay name</th>
-            <th>unit guest</th>
+            <th>unit capacity</th>
             <th>unit priec</th>
           </tr>
         </thead>
         <tbody>
-          {data.detail.map((d, index) => (
-            <tr key={index}>
-              <td className="text-center">{index + 1}</td>
-              <td className="text-nowrap">
-                {new Date(d.date).toLocaleString("id", {
-                  day: "numeric",
-                  month: "long",
-                  year: "numeric",
-                })}
-              </td>
-              <td>
-                [{d.homestay.homestay.name}] {d.homestay.unitType.name_type}{" "}
-                {d.unit_number} {d.homestay.unit_name}
-              </td>
-              <td>{d.unit_guest}</td>
-              <td>{d.homestay.price}</td>
-            </tr>
-          ))}
+          {data?.detail
+            ?.sort(
+              (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
+            )
+            .map((d, index) => (
+              <tr key={index} className="text-sm">
+                <td className="text-center">{index + 1}</td>
+                <td className="text-wrap">
+                  {dayjs(d?.date).format("D MMMM YYYY")}
+                </td>
+                <td>
+                  [{d?.homestay?.homestay?.name}]{" "}
+                  {d?.homestay?.unitType?.name_type} {d?.unit_number}{" "}
+                  {d?.homestay?.unit_name}
+                </td>
+                <td className="text-center">{d?.homestay?.capacity}</td>
+                <td>{d?.homestay?.price}</td>
+              </tr>
+            ))}
         </tbody>
       </table>
 
@@ -39,17 +46,18 @@ export const ReservationHomestay = ({ data }: { data: DetailReservationSchemaWit
         <tbody>
           <tr>
             <td>Total day</td>
-            <td>: {data.package.packageDays.length}</td>
+            <td>: {data?.package?.packageDays?.length} days</td>
           </tr>
           <tr>
-            <td>Total Price</td>
-            <td>: {data.package.packageDays.length}</td>
-          </tr>
-          <tr>
-            <td>Homestay</td>
+            <td>Total Price Homestay</td>
             <td>
               :{" "}
-              {data.detail.map((d) => d.homestay.price).reduce((a, b) => a + b)}
+              {formatPrice(
+                data?.detail?.reduce(
+                  (acc, d) => acc + (d?.homestay?.price || 0),
+                  0
+                )
+              )}
             </td>
           </tr>
         </tbody>

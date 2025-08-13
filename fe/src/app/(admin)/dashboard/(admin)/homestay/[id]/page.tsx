@@ -1,4 +1,4 @@
-import { DetailHomestaySection } from "@/components/homestay/DetailHomestaySection"; 
+import { DetailHomestaySection } from "@/components/homestay/DetailHomestaySection";
 
 export default async function DetailHomestay({
   params,
@@ -7,10 +7,9 @@ export default async function DetailHomestay({
 }) {
   const id = (await params).id;
 
-
   return (
     <main className="grid   grid-cols-12 gap-6 text-base">
-     <DetailHomestaySection id={id}/>
+      <DetailHomestaySection id={id} />
     </main>
   );
 }

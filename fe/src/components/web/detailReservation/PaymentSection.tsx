@@ -1,60 +1,71 @@
-import { ReservationSchema } from "@/type/schema/ReservationSchema";
-import {
-  getReservationStatus,
-  getReservationStatusClass,
-} from "@/utils/common/getReservationStatus";
-import { FaDownload, FaMoneyBill1 } from "react-icons/fa6";
+import Button from "@/components/common/Button";
+import { Table } from "@/components/common/Table";
+import { PaymentButton } from "@/components/managereservation/payment/PaymentButton";
+import ButtonConfirmation from "@/components/reservation/ButtonConfirmation";
+import ReservationStep from "@/components/reservation/ReservationStep";
+import useInvoice from "@/hooks/useInvoice";
+import { formatPrice } from "@/lib/priceFormatter";
+import { ItemDetails } from "@/type/common/paymentItemDetails";
+import { DetailReservationPackage } from "@/type/schema/ReservationSchema";
+import { getReservationStatus } from "@/utils/common/getReservationStatus";
+import { FaDownload } from "react-icons/fa6";
 
-export const PaymentSection = ({ data }: { data: ReservationSchema }) => {
+type Props = {
+  data: DetailReservationPackage;
+  handlePayment: () => void;
+  item_details: ItemDetails[];
+  refetch: () => void;
+};
+export const PaymentSection = ({
+  data,
+  handlePayment,
+  item_details,
+  refetch,
+}: Props) => {
+  const { refetch: createInvoice } = useInvoice(data.id);
   const status = getReservationStatus(data);
-  const statusClass = getReservationStatusClass(status);
   return (
     <div className="bg-white p-5 rounded-lg   space-y-4">
       <header className="text-lg text-center    ">
         <h2>Payment</h2>
       </header>
       <section className="capitalize flex items-center  ">
-        <button className="btn btn-regsuccess">
-          <FaDownload /> Download Invoice
-        </button>
-        <button className="btn text-cyan-400 bg-white border-cyan-400 px-3 py-2 hover hover:bg-cyan-400 hover:text-black">
-          <FaMoneyBill1 /> Proof of Deposit
-        </button>
+        {status === "Awaiting-Approval" ? (
+          <>
+            <ButtonConfirmation
+              deposit={data.deposit}
+              item_details={item_details}
+              refetchData={refetch}
+              reservation_id={data.id}
+              status={status}
+              total_price={data.total_price}
+            />
+            <PaymentButton handlePayment={handlePayment} status={status} />
+          </>
+        ) : (
+          <Button
+            onClick={() => createInvoice()}
+            className="btn btn-regsuccess"
+          >
+            <FaDownload /> Download Invoice
+          </Button>
+        )}
       </section>
-      <table className="w-full table-fixed [&_td]:py-1 ">
+      <Table className="w-fit">
         <tbody>
           <tr>
-            <td>Total Reservation</td>
+            <td className="min-w-[250px]">Total Reservation</td>
             <td>:</td>
+            <td>{formatPrice(data.total_price)}</td>
           </tr>
           <tr className="border-b">
             <td>Deposit Reservation</td>
             <td>:</td>
-          </tr>
-          <tr>
-            <td>Status</td>
-            <td>
-              <span className={statusClass}>{status}</span>
-            </td>
-          </tr>
-          <tr>
-            <td>Confirm Date</td>
-            <td>:</td>
-          </tr>
-          <tr>
-            <td>Feedback admin about reservation</td>
-            <td>:</td>
-          </tr>
-          <tr>
-            <td>deposit payment</td>
-            <td>: {data.deposit}</td>
-          </tr>
-          <tr>
-            <td>Status deposin paymeny</td>
-            <td>:</td>
+            <td>{formatPrice(data.deposit)}</td>
           </tr>
         </tbody>
-      </table>
+      </Table>
+      <ReservationStep reservation={data} />
     </div>
   );
 };

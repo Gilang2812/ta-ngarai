@@ -7,8 +7,7 @@ type Props = ButtonTooltipType;
 
 const ButtonTooltip = ({
   Icon,
-  label,
-  className,
+  label, 
   active,
   text,
   asChild,
@@ -20,7 +19,7 @@ const ButtonTooltip = ({
       <Button
         asChild={asChild}
         Icon={Icon}
-        className={className}
+        className={"h-full"}
         active={active}
         text={text}
         variant={variant}

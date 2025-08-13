@@ -13,7 +13,7 @@ export type HomestaySchema = {
   geom?: Geometry;
   open?: string;
   close?: string;
-  homestay_status?: number;
+  homestay_status: number;
   video_url?: string | null;
 };
 

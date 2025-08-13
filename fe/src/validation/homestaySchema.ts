@@ -1,3 +1,5 @@
+import { FilepondType } from "@/type/common/FilepondType";
+
 export type CreateHomestaySchema = {
     id?:string;
     name:string;
@@ -10,7 +12,7 @@ export type CreateHomestaySchema = {
     close:`${number}:${number}`|string;
     homestay_status?:number;
     video_url?:string;
-    gallery?:Array<string>|string|null;
+    images?:FilepondType
     latitude?: string
     longitude?: string
 }

@@ -100,7 +100,7 @@ const SouvenirGeoJSON = ({ data, handleSelectStore }: Props) => {
                       <p className="text-sm text-orange-500">
                         {formatPrice(cr.price)}
                       </p>
-                      <Button type="button" className="h-fit" asChild>
+                      <Button type="button"  asChild>
                         <Link
                           href={ROUTES.DETAIL_CRAFT(
                             cr.variant.id_craft,

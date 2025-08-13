@@ -1,7 +1,7 @@
 import { useState } from "react";
 
-export const useDropdown = ()=>{
-    const [open, setOpen] = useState(false);
+export const useDropdown = (defaultOpen = false) => {
+    const [open, setOpen] = useState(defaultOpen);
 
     const toggleDropdown = () => {
         setOpen((prev) =>!prev);

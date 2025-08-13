@@ -55,7 +55,7 @@ const ReviewContent = ({
               sellerResponse
             )
           }
-          className="absolute top-4 right-4 h-fit"
+          className="absolute top-4 right-4 "
         >
           {sellerResponse ? "Edit Reply" : "Reply"}
         </Button>

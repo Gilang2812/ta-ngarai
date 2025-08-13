@@ -1,134 +1,61 @@
 "use client";
 
-import { useDeleteHomestay } from "@/features/dashboard/homestay/useDeleteHomestay";
-import { useFetchHomestay } from "@/features/dashboard/homestay/useFetchHomestay";
-import { HomestaySchema } from "@/type/schema/HomestaySchema";
-import {
-  confirmDeleteAlert,
-  showDeleteAlert,
-  showErrorAlert,
-} from "@/utils/AlertUtils";
+import ManagementFooter from "@/components/admin/ManagementFooter";
+import ManagementHeader from "@/components/admin/ManagementHeader";
+import TableHeaderManagement from "@/components/admin/TableHeaderManagement";
+import TableManagementHeader from "@/components/admin/TableManagementHeader";
+import { SingleContentWrapper } from "@/components/common/SingleContentWrapper";
+import { Table } from "@/components/common/Table";
+import { ROUTES } from "@/data/routes";
+import useManageHomestayPage from "@/hooks/useManageHomestayPage";
+import { getHHomestayStatus } from "@/utils/getHomestayStatus";
 import Link from "next/link";
-import { useState, useMemo } from "react";
-import { FaTrash, FaPlus, FaCircleInfo } from "react-icons/fa6";
+import { FaTrash, FaCircleInfo } from "react-icons/fa6";
 
 const Homestay = () => {
-  const { data, isLoading, refetch } = useFetchHomestay();
-
-  const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(5);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [show, setShow] = useState(0);
-  const filteredData = useMemo(() => {
-    return data?.filter((item) => {
-      return Object.keys(item).some((key) => {
-        const value = item[key as keyof HomestaySchema];
-        return String(value).toLowerCase().trim().includes(searchTerm.toLowerCase());
-      });
-    });
-  }, [searchTerm, data]);
-
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = filteredData?.slice(indexOfFirstItem, indexOfLastItem);
-  const totalPages =
-    filteredData && Math.ceil(filteredData!.length / itemsPerPage);
-
-  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(e.target.value);
-  };
-
-  const handleNextPage = () => {
-    if (data) setCurrentPage((prev) => Math.min(prev + 1, totalPages!));
-  };
-
-  const handlePrevPage = () => {
-    setCurrentPage((prev) => Math.max(prev - 1, 1));
-  };
-
-  const { mutate } = useDeleteHomestay({
-    onSuccess: () => {
-      showDeleteAlert("homestay");
-      refetch();
-    },
-    onError: (e) => {
-      showErrorAlert(e);
-    },
-  });
-
-  const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setShow(parseInt(e.target.value));
-  };
-  const HandleDelete = (homestay: HomestaySchema) => {
-    confirmDeleteAlert("homestay", homestay.name, () => mutate(homestay.id));
-  };
+  const {
+    HandleDelete,
+    isLoading,
+    searchTerm,
+    handleSearch,
+    currentItems,
+    currentPage,
+    itemsPerPage,
+    totalPages,
+    indexOfFirstItem,
+    indexOfLastItem,
+    totalItems,
+    handleNextPage,
+    handlePrevPage,
+    handleItemsPerPage,
+  } = useManageHomestayPage();
 
   if (isLoading) return <div>Loading...</div>;
   return (
-    <main className="p-5 bg-white rounded-xl">
-      <header className="flex items-center justify-between mb-10">
-        {show}
-        <h1 className="text-lg capitalize">Manage Homestay</h1>
-        <Link
-          className="flex items-center gap-3 px-3 py-2 font-normal text-white rounded bg-primary hover:bg-secondary"
-          href="./homestay/new"
-        >
-          <FaPlus /> New Homestay
-        </Link>
-      </header>
+    <SingleContentWrapper>
+      <ManagementHeader
+        title="Manage Homestays"
+        asChild
+        content="Homestay"
+        href={ROUTES.NEW_HOMESTAY}
+      />
+      <TableManagementHeader
+        handleItemsPerPage={handleItemsPerPage}
+        handleSearch={handleSearch}
+        itemsPerPage={itemsPerPage}
+        searchTerm={searchTerm}
+      />
 
       <section aria-labelledby="data-table-section">
-        <div className="flex justify-between w-full mb-4">
-          <label htmlFor="entries" className="font-semibold">
-            Show &nbsp;
-            <select
-              name="entries"
-              id="entries"
-              className="p-1 border rounded border-slate-400"
-              onChange={handleSelectChange}
-            >
-              <option value="5">5</option>
-              <option value="10">10</option>
-              <option value="20">20</option>
-              <option value="50">50</option>
-              <option value="100">100</option>
-            </select>
-            &nbsp; entries
-          </label>
-
-          <input
-            type="text"
-            placeholder="Search"
-            className="p-2 border border-gray-300 rounded"
-            value={searchTerm}
-            onChange={handleSearch}
-            aria-label="Search homestay"
-          />
-        </div>
-
-        <h2 id="data-table-section" className="sr-only">
-          Homestay Data Table
-        </h2>
-
-        <table className="min-w-full bg-white">
-          <thead>
-            <tr>
-              <th className="py-2">#</th>
-              <th className="py-2">ID</th>
-              <th className="py-2">Name</th>
-              <th className="py-2">Status</th>
-              <th className="py-2 text-center w-[138px]">Action</th>
-            </tr>
-          </thead>
+        <Table>
+          <TableHeaderManagement headers={["ID", "Name", "Status"]} />
           <tbody>
             {currentItems?.map((item, index) => (
-              <tr key={item.id} className="border-t">
-                <td className="py-2 text-center">
-                  {indexOfFirstItem + index + 1}
-                </td>
-                <td className="py-2 text-center">{item.id}</td>
-                <td className="py-2 text-center">{item.name}</td>
-                <td className="py-2 text-center">{item.status}</td>
+              <tr key={item.id} className="border-t text-center">
+                <td>{indexOfFirstItem + index + 1}</td>
+                <td>{item.id}</td>
+                <td>{item.name}</td>
+                <td>{getHHomestayStatus(item.homestay_status as number)}</td>
                 <td className="flex justify-center gap-4 py-2">
                   <Link
                     href={`./homestay/${item.id}`}
@@ -148,43 +75,19 @@ const Homestay = () => {
               </tr>
             ))}
           </tbody>
-        </table>
+        </Table>
       </section>
 
-      <nav
-        aria-label="Pagination"
-        className="flex items-center justify-between mt-4"
-      >
-        {data && (
-          <div>
-            Showing {indexOfFirstItem + 1} to{" "}
-            {Math.min(indexOfLastItem, filteredData!.length)} of{" "}
-            {filteredData?.length} entries
-          </div>
-        )}
-        <div className="flex items-center space-x-2">
-          <button
-            onClick={handlePrevPage}
-            disabled={currentPage === 1}
-            className="px-4 py-2 transition duration-200 ease-linear bg-gray-300 rounded hover:bg-gray-500 disabled:opacity-50"
-            aria-label="Previous Page"
-          >
-            Previous
-          </button>
-          <span className="px-4 py-2 border rounded-sm border-stone-500 bg-gradient-to-b from-white to-gray-300">
-            {currentPage}
-          </span>
-          <button
-            onClick={handleNextPage}
-            disabled={currentPage === totalPages}
-            className="px-4 py-2 transition duration-200 ease-linear bg-gray-300 rounded hover:bg-gray-500 disabled:opacity-50"
-            aria-label="Next Page"
-          >
-            Next
-          </button>
-        </div>
-      </nav>
-    </main>
+      <ManagementFooter
+        currentPage={currentPage}
+        handleNextPage={handleNextPage}
+        handlePrevPage={handlePrevPage}
+        indexOfFirstItem={indexOfFirstItem}
+        indexOfLastItem={indexOfLastItem}
+        totalItems={totalItems}
+        totalPages={totalPages}
+      />
+    </SingleContentWrapper>
   );
 };
 

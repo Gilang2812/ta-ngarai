@@ -49,7 +49,7 @@ export const ProductImageGallery: React.FC<ProductImageGalleryProps> = ({
       </div>
       <div className="relative border p-4 rounded-xl">
         <Button
-          className="absolute left-4 top-1/2 -translate-y-1/2 h-fit rounded-full shadow p-1 z-10"
+          className="absolute left-4 top-1/2 -translate-y-1/2  rounded-full shadow p-1 z-10"
           onClick={handlePrevImageButton}
         >
           <MdOutlineArrowBackIosNew />
@@ -81,7 +81,7 @@ export const ProductImageGallery: React.FC<ProductImageGalleryProps> = ({
           ))}
         </div>
         <Button
-          className="absolute right-4 top-1/2 -translate-y-1/2 w-fit h-fit rounded-full shadow p-1 z-10"
+          className="absolute right-4 top-1/2 -translate-y-1/2 w-fit  rounded-full shadow p-1 z-10"
           onClick={handleNextImageButton}
         >
           <MdArrowForwardIos />

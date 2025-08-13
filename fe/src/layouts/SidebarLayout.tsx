@@ -79,7 +79,7 @@ export default function SidebarLayout({
                 </div>
               </section>
             ) : (
-              <Button className="h-fit w-fit" asChild>
+              <Button className=" w-fit" asChild>
                 <Link href={ROUTES.LOGIN}>Login</Link>
               </Button>
             )}

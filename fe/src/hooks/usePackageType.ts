@@ -32,7 +32,7 @@ export const usePackageType = () => {
         Object.keys(item).some((key) =>
           String(item[key as keyof typeof item])
             .toLowerCase()
-            .includes(searchTerm.toLowerCase())
+            .includes(searchTerm.toLowerCase().trim())
         )
       ) || []
     );

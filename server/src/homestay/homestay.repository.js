@@ -224,8 +224,14 @@ const findAllUnitHomestays = async ({ homestay_id }) => {
 };
 
 const insertHomestay = async (body) => {
-  await Homestay.sync();
-  const newHomestay = await Homestay.create(body);
+  const { geom, ...rest } = body;
+  const geomData = geom
+    ? { geom: geom && typeof geom !== "object" ? JSON.parse(geom) : geom }
+    : {};
+  const newHomestay = await Homestay.create({
+    ...rest,
+    ...geomData,
+  });
   return newHomestay;
 };
 

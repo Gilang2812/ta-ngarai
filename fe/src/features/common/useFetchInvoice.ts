@@ -8,7 +8,7 @@ export const useFetchInvoice = (id: string) => {
     queryKey: ["invoice" + id],
     queryFn: async () => {
       const { data } = await axiosInstance(
-        `/invoice/${id}?user=${JSON.stringify(user)}`,
+        `/invoice/pdfmake/${id}?user=${JSON.stringify(user)}`,
         {
           responseType: "blob", // wajib agar response berupa Blob
         }

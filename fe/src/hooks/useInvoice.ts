@@ -2,7 +2,7 @@ import { useFetchInvoice } from "@/features/common/useFetchInvoice";
 import { hideLoadingAlert, showLoadingAlert } from "@/utils/AlertUtils";
 import { useEffect } from "react";
 
-const useInvoice = (id:string) => {
+const useInvoice = (id: string) => {
   const { data, refetch, isFetching, isSuccess } = useFetchInvoice(id);
 
   useEffect(() => {

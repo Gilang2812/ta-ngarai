@@ -7,7 +7,7 @@ const useSearchTable = () => {
   };
 
   return {
-    searchTerm: searchTerm.trim().toLowerCase(),
+    searchTerm: searchTerm,
     handleSearch,
   };
 };

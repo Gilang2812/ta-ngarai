@@ -1,9 +1,9 @@
-const { DataTypes } = require('sequelize');
-const sequelize = require('../config/database');
-const { generateCustomId } = require('../utils/generateId');
+const { DataTypes } = require("sequelize");
+const sequelize = require("../config/database");
+const { generateCustomId } = require("../utils/generateId");
 
 const Homestay = sequelize.define(
-  'Homestay',
+  "Homestay",
   {
     id: {
       type: DataTypes.STRING(5),
@@ -46,7 +46,7 @@ const Homestay = sequelize.define(
     homestay_status: {
       type: DataTypes.TINYINT(1),
       allowNull: false,
-      defaultValue: 0,
+      defaultValue: 1,
     },
     video_url: {
       type: DataTypes.TEXT,
@@ -54,13 +54,13 @@ const Homestay = sequelize.define(
     },
   },
   {
-    tableName: 'homestay',
+    tableName: "homestay",
     timestamps: false, // Nonaktifkan timestamps jika tidak diperlukan
   }
 );
 
 Homestay.beforeCreate(async (instance) => {
-  instance.id = await generateCustomId('HO',Homestay,5)
+  instance.id = await generateCustomId("HO", Homestay, 5);
 });
 
 module.exports = { Homestay };

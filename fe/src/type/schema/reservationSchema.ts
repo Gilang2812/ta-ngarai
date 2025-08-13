@@ -77,7 +77,7 @@ export type DetailReservationSchema = DetailReservationResponse & {
 export type ReservationSchema = ReservationDetails & {
   package: PackageService;
   customer: User;
-  detail: DetailReservationSchema[];
+  detail: DetailReservation[];
 };
 
 export type DetailReservationSchemaWithPackageDay = ReservationDetails & {
@@ -97,15 +97,17 @@ export type HomestayReservationFormSchemaType = yup.InferType<
   total_price_reservation: number | "";
 };
 
-export type DetailHomestayReservation = ReservationDetails & {
-  detail: (DetailReservationResponse & {
-    homestay: UnitHomestaySchema & {
-      homestay: HomestaySchema & {
-        galleries: GalleryHomestaySchema[];
-      };
-      unitType: HomestayUnitType;
+export type DetailReservation = DetailReservationResponse & {
+  homestay: UnitHomestaySchema & {
+    homestay: HomestaySchema & {
+      galleries: GalleryHomestaySchema[];
     };
-  })[];
+    unitType: HomestayUnitType;
+  };
+};
+
+export type DetailHomestayReservation = ReservationDetails & {
+  detail: DetailReservation[];
 };
 
 export type DetailReservationReviewSchema = DetailReservationResponse & {
@@ -126,6 +128,18 @@ export type DetailReservationReview = ReservationDetails & {
     fullname: string;
   };
   detail: DetailReservationReviewSchema[];
+};
+
+export type DetailReservationPackage = ReservationDetails & {
+  package: PackageService;
+  customer: User;
+  refund: {
+    fullname: string;
+  };
+  confirm: {
+    fullname: string;
+  };
+  detail: DetailReservation[];
 };
 
 export type HomestayReviewFormSchema = {

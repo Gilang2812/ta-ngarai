@@ -19,3 +19,4 @@ const getDaysOfStay = (reservation) => {
 };
 
 module.exports = getDaysOfStay;
+

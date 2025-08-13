@@ -44,6 +44,8 @@ export const ROUTES = {
   PACKAGE_TYPE: "/dashboard/type-package",
   SERVICE_PACKAGE: "/dashboard/service-package",
   HOMESTAY: "/dashboard/homestay",
+  NEW_HOMESTAY: "/dashboard/homestay/new",
+  MANAGE_DETAIL_HOMESTAY: (id: string) => `/dashboard/homestay/${id}`,
   MANAGE_USERS: "/dashboard/users",
   MANAGE_UMKM: "/dashboard/umkm",
   MANAGE_CRAFT: "/dashboard/craft",
@@ -53,4 +55,6 @@ export const ROUTES = {
   DETAIL_HOMESTAY: (id: string) => `/web/homestay/${id}`,
   HOMESTAY_RESERVATION_DETAIL: (id: string) =>
     `/web/reservation/${id}/homestay/detail`,
+  INVOICE: (id: string, package_id?: string) =>
+    package_id ? `/web/invoice/${id}/${package_id}` : `/web/invoice/${id}`,
 };

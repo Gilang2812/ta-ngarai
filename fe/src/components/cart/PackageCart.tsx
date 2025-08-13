@@ -32,7 +32,10 @@ const PackageCart = () => {
         const flat = { ...rest, ...(restOfItem || {}) };
         return Object.keys(flat).some((key) => {
           const value = flat[key as keyof CartSchema];
-          return String(value).toLowerCase().trim().includes(searchTerm.toLowerCase());
+          return String(value)
+            .toLowerCase()
+            .trim()
+            .includes(searchTerm.trim().toLowerCase());
         });
       }) || []
     );

@@ -1,20 +1,25 @@
+"use client";
+import { cn } from "@/utils/common/cn";
 import { useDropdown } from "@/utils/DropDownUtils";
-import { useEffect } from "react";
+import { ComponentProps } from "react";
 import { BsChevronDown } from "react-icons/bs";
 
-type AccordioProps = {
+type AccordionProps = ComponentProps<"div"> & {
   children: React.ReactNode;
   title: string;
   defaultOpen?: boolean;
 };
-export const Accordion = ({ children, title, defaultOpen }: AccordioProps) => {
-  const { open, setOpen, toggleDropdown } = useDropdown();
+export const Accordion = ({
+  children,
+  className,
+  title,
+  defaultOpen,
+  ...props
+}: AccordionProps) => {
+  const { open, toggleDropdown } = useDropdown(defaultOpen);
 
-  useEffect(() => {
-    setOpen(defaultOpen || false);
-  }, []);
   return (
-    <article className="" onClick={toggleDropdown}>
+    <article onClick={toggleDropdown}>
       <button
         type="button"
         className={`  w-full   font-normal transition-ease-in-out  items-center text-primary border  p-3 flex px-4 capitalize ${
@@ -37,7 +42,9 @@ export const Accordion = ({ children, title, defaultOpen }: AccordioProps) => {
           open ? "max-h-96 " : "max-h-0 "
         }`}
       >
-        <div className="p-3 px-4 -z-10">{children}</div>
+        <div {...props} className={cn("p-3 px-4 -z-10", className)}>
+          {children}
+        </div>
       </div>
     </article>
   );

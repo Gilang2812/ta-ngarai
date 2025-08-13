@@ -32,7 +32,7 @@ export const useServicePackage = () => {
           item[key as keyof typeof item]
             .toString()
             .toLowerCase()
-            .includes(searchTerm.toLowerCase())
+            .includes(searchTerm.toLowerCase().trim())
         )
       ) || []
     );

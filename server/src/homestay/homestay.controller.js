@@ -11,6 +11,9 @@ const {
 } = require("./homestay.service");
 const { handleInput } = require("../../utils/handleInput");
 const { homestaySchema } = require("./homestay.validation");
+const imageUpload = require("../../middlewares/imageUploads");
+const { formatImageUrl } = require("../../utils/formatImageUrl");
+const { createGalleryHomestay } = require("../gallery/gallery.service");
 
 router.get("/", async (req, res, next) => {
   try {
@@ -43,49 +46,45 @@ router.get("/units", async (req, res, next) => {
 router.get("/units/:homestay_id", async (req, res, next) => {
   try {
     const { homestay_id } = req.params;
-    const units = await getAllUnitHomestays({homestay_id});
+    const units = await getAllUnitHomestays({ homestay_id });
     res.status(200).json(units);
   } catch (error) {
     next(error);
   }
 });
 
-router.post("/", async (req, res, next) => {
-  try {
-    const { name, address, open, close, geom } = req.body;
-    req.body.geom = req.body.geom || {
-      type: "MultiPolygon",
-      coordinates: [
-        [
-          [
-            [100.354, -0.948],
-            [100.355, -0.949],
-            [100.356, -0.947],
-            [100.354, -0.948],
-          ],
-        ],
-      ],
-    };
+router.post(
+  "/",
+  imageUpload("public/images").array("images"),
+  async (req, res, next) => {
+    try {
+      const { name, address, open, close, contact_person, geom } = req.body;
+      req.body.geom = req.body.geom;
+      console.log(geom);
+      const newHomestay = await createHomestay({
+        name,
+        address,
+        open,
+        close,
+        contact_person,
+        geom,
+      });
 
-    console.log("ini terst");
-    console.log(req.body || "ini harislnya");
-    const { error } = handleInput(
-      { name, address, open, close, geom },
-      homestaySchema
-    );
-
-    if (error)
-      return res
-        .status(400)
-        .json(
-          error.details?.map((h) => h.message) || "Internal server error, "
-        );
-    const newHomestay = await createHomestay(req.body);
-    res.status(201).json(newHomestay);
-  } catch (error) {
-    next(error);
+      if (req.files && req.files.length > 0) {
+        const images = req.files.map((file) => ({
+          url: formatImageUrl(file.path),
+          homestay_id: newHomestay.id,
+        }));
+        for (const image of images) {
+          await createGalleryHomestay(image);
+        }
+      }
+      res.status(201).json(newHomestay);
+    } catch (error) {
+      next(error);
+    }
   }
-});
+);
 router.get("/:id", async (req, res, next) => {
   try {
     const homestay = await getHomestay(req.params.id);
