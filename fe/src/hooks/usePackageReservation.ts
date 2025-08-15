@@ -1,9 +1,13 @@
-import { useDeleteReservation } from "@/features/reservation/useDeleteReservation"; 
+import { useDeleteReservation } from "@/features/reservation/useDeleteReservation";
 import { useFetchUserReservations } from "@/features/web/myreservation/useFetchUserReservations";
 import { ReservationSchema } from "@/type/schema/ReservationSchema";
-import { confirmAlert, cornerAlert } from "@/utils/AlertUtils";
+import {
+  confirmAlert,
+  cornerAlert,
+  showLoadingAlert,
+} from "@/utils/AlertUtils";
 import { useModal } from "@/utils/ModalUtils";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const usePackageReservation = () => {
   const [reservation, setReservation] = useState<ReservationSchema | null>(
@@ -17,7 +21,7 @@ const usePackageReservation = () => {
     setReservation(r);
   };
 
-  const { mutateAsync: deleteReservation } = useDeleteReservation({
+  const { mutateAsync: deleteReservation, isPending } = useDeleteReservation({
     onSuccess: () => {
       cornerAlert("Reservation deleted successfully");
     },
@@ -30,6 +34,11 @@ const usePackageReservation = () => {
       () => deleteReservation(id)
     );
   };
+  useEffect(() => {
+    if (isPending) {
+      showLoadingAlert();
+    }
+  }, [isPending]);
 
   return {
     reservation,

@@ -7,7 +7,7 @@ import { useCreateService } from "@/features/web/package/useCreateService";
 import {
   confirmDeleteAlert,
   cornerAlert,
-  hideLoadingAlert,
+    
   showLoadingAlert,
 } from "@/utils/AlertUtils";
 import { useUpdateService } from "@/features/web/package/useUpdateService";
@@ -107,7 +107,6 @@ export const useServicePackage = () => {
     if (deleting) {
       showLoadingAlert();
     }
-    return () => hideLoadingAlert();
   }, [deleting]);
 
   const handleSubmit = (values: ServiceFormSchema) => {

@@ -1,6 +1,7 @@
 import { useFetchInvoice } from "@/features/common/useFetchInvoice";
-import { hideLoadingAlert, showLoadingAlert } from "@/utils/AlertUtils";
+import { cornerAlert, showLoadingAlert } from "@/utils/AlertUtils";
 import { useEffect } from "react";
+import Swal from "sweetalert2";
 
 const useInvoice = (id: string) => {
   const { data, refetch, isFetching, isSuccess } = useFetchInvoice(id);
@@ -16,16 +17,15 @@ const useInvoice = (id: string) => {
       document.body.appendChild(link);
       link.click();
       link.remove();
+
+      cornerAlert("Invoice berhasil dibuat!");
     }
   }, [isSuccess, data]);
 
   useEffect(() => {
     if (isFetching) {
-      showLoadingAlert();
+      showLoadingAlert("creating pdf");
     }
-    return () => {
-      hideLoadingAlert();
-    };
   }, [isFetching]);
 
   return { refetch, isFetching };

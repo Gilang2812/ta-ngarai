@@ -5,7 +5,7 @@ import { useCreateDetailPackage } from "@/features/web/extend/useCreateDetailPac
 import { useDeleteDetailPackage } from "@/features/web/extend/useDeleteDetailPackage";
 import { useCreateDetailService } from "@/features/web/extend/useCreateDetailService";
 import { useDeleteDetailService } from "@/features/web/extend/useDeleteDetailServie";
-import { confirmDeleteAlert, cornerAlert } from "@/utils/AlertUtils";
+import { confirmDeleteAlert, cornerAlert, showLoadingAlert } from "@/utils/AlertUtils";
 import { useModal } from "@/utils/ModalUtils";
 import {
   DetailPackageSchema,
@@ -13,8 +13,11 @@ import {
   PackageDay,
   PackageDayFormSchema,
 } from "@/type/schema/PackageSchema";
-import { DetailServiceFormSchema, ServicePackage } from "@/type/schema/ServiceSchema";
-import { useMemo, useState } from "react";
+import {
+  DetailServiceFormSchema,
+  ServicePackage,
+} from "@/type/schema/ServiceSchema";
+import { useEffect, useMemo, useState } from "react";
 
 const usePackageHandler = (
   id: string,
@@ -64,12 +67,13 @@ const usePackageHandler = (
       },
     });
 
-  const { mutateAsync: deletePackageDay } = useDeletePackageDay({
-    onSuccess: () => {
-      cornerAlert("Package day deleted successfully");
-      callback();
-    },
-  });
+  const { mutateAsync: deletePackageDay, isPending: isDeletingPackageDay } =
+    useDeletePackageDay({
+      onSuccess: () => {
+        cornerAlert("Package day deleted successfully");
+        callback();
+      },
+    });
 
   const { mutate: updatePackageDay, isPending: isUpdatingPackageDay } =
     useUpdatePackageDay({
@@ -89,7 +93,10 @@ const usePackageHandler = (
       },
     });
 
-  const { mutateAsync: deleteDetailPackage } = useDeleteDetailPackage({
+  const {
+    mutateAsync: deleteDetailPackage,
+    isPending: isDeletingDetailPackage,
+  } = useDeleteDetailPackage({
     onSuccess: () => {
       callback();
       cornerAlert("Activity deleted successfully");
@@ -105,7 +112,10 @@ const usePackageHandler = (
       },
     });
 
-  const { mutateAsync: deleteDetailService } = useDeleteDetailService({
+  const {
+    mutateAsync: deleteDetailService,
+    isPending: isDeletingDetailService,
+  } = useDeleteDetailService({
     onSuccess: () => {
       callback();
       cornerAlert("Service deleted successfully");
@@ -117,6 +127,15 @@ const usePackageHandler = (
     isUpdatingPackageDay ||
     isCreatingDetailPackage ||
     isCreatingDetailService;
+  useEffect(() => {
+    if (
+      isDeletingDetailPackage ||
+      isDeletingDetailService ||
+      isDeletingPackageDay
+    ) {
+      showLoadingAlert();
+    }
+  }, [isDeletingDetailPackage, isDeletingDetailService, isDeletingPackageDay]);
 
   const handleAddDay = () => {
     setFormType("day");
@@ -179,7 +198,10 @@ const usePackageHandler = (
   };
 
   const handleSubmit = (
-    values: PackageDayFormSchema | PackageActivityFormSchema | DetailServiceFormSchema
+    values:
+      | PackageDayFormSchema
+      | PackageActivityFormSchema
+      | DetailServiceFormSchema
   ) => {
     if (formType === "day") {
       createPackageDay(values as PackageDayFormSchema);

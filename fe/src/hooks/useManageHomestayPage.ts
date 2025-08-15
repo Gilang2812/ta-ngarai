@@ -1,9 +1,9 @@
 import { useFetchHomestay } from "@/features/dashboard/homestay/useFetchHomestay";
 import useSearchTable from "./useSearchTable";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import useTableManagement from "./useTableManagement";
 import { useDeleteHomestay } from "@/features/dashboard/homestay/useDeleteHomestay";
-import { confirmDeleteAlert, cornerAlert } from "@/utils/AlertUtils";
+import { confirmDeleteAlert, cornerAlert, showLoadingAlert } from "@/utils/AlertUtils";
 import { HomestaySchema } from "@/type/schema/HomestaySchema";
 
 const useManageHomestayPage = () => {
@@ -21,7 +21,7 @@ const useManageHomestayPage = () => {
         })
       : [];
   }, [searchTerm, data]);
-  const { mutateAsync } = useDeleteHomestay({
+  const { mutateAsync, isPending } = useDeleteHomestay({
     onSuccess: () => {
       cornerAlert("homestay");
       refetch();
@@ -32,6 +32,13 @@ const useManageHomestayPage = () => {
       mutateAsync(homestay.id)
     );
   };
+
+  useEffect(() => {
+    if (isPending) {
+      showLoadingAlert();
+    }
+  }, [isPending]);
+
   const {
     handleNextPage,
     handlePrevPage,

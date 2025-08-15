@@ -6,7 +6,6 @@ import {
   confirmDeleteAlert,
   cornerAlert,
   cornerError,
-  hideLoadingAlert,
   showLoadingAlert,
 } from "@/utils/AlertUtils";
 
@@ -28,12 +27,13 @@ export const useUserCraftCart = () => {
     }
   );
 
-  const { mutateAsync: deleteCraftCart } = useDeleteCraftCart({
-    onSuccess: () => {
-      cornerAlert("Craft cart berhasil dihapus!");
-      refetch();
-    },
-  });
+  const { mutateAsync: deleteCraftCart, isPending: isDeleting } =
+    useDeleteCraftCart({
+      onSuccess: () => {
+        cornerAlert("Craft cart berhasil dihapus!");
+        refetch();
+      },
+    });
 
   const handleDeleteCraftCart = async (
     {
@@ -79,7 +79,11 @@ export const useUserCraftCart = () => {
       });
     }
   }, [carts]);
-
+  useEffect(() => {
+    if (isDeleting) {
+      showLoadingAlert();
+    }
+  }, [isDeleting]);
   const handleCheckedCraft = (craft: CraftCartSchema) => {
     setSelectedCraft((prev) => {
       const index = prev.findIndex(
@@ -91,10 +95,12 @@ export const useUserCraftCart = () => {
       console.log(index);
       if (index > -1) {
         return prev.filter(
-          (item) =>!(
-            item.craft_variant_id === craft.craft_variant_id &&
-            item.id_souvenir_place === craft.id_souvenir_place &&
-            item.checkout_id === craft.checkout_id)
+          (item) =>
+            !(
+              item.craft_variant_id === craft.craft_variant_id &&
+              item.id_souvenir_place === craft.id_souvenir_place &&
+              item.checkout_id === craft.checkout_id
+            )
         );
       } else {
         return [...prev, craft];
@@ -106,11 +112,6 @@ export const useUserCraftCart = () => {
     if (isUpdating) {
       showLoadingAlert();
     }
-    return () => {
-      setTimeout(() => {
-        hideLoadingAlert();
-      }, 3000);
-    };
   }, [isUpdating]);
 
   return {

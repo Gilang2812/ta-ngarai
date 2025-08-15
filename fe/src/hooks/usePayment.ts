@@ -36,7 +36,7 @@ const usePayment = (id: string) => {
         },
         onError: async (result) => {
           console.log("Payment error:", result);
-          cornerError("Payment error:" + result.order_id);  
+          cornerError("Payment error:" + result.order_id);
           await updateStatus({
             id: id,
             status: 6,

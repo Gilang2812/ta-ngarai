@@ -1,9 +1,5 @@
 import { useCreateCheckout } from "@/features/web/checkout/useCreateCheckout";
-import {
-  cornerAlert,
-  hideLoadingAlert,
-  showLoadingAlert,
-} from "@/utils/AlertUtils";
+import { cornerAlert, showLoadingAlert } from "@/utils/AlertUtils";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
@@ -13,7 +9,7 @@ export default function useCheckoutCart() {
     onSuccess: () => {
       cornerAlert("akan segera dialihkan ke halaman pembayaran!");
       setTimeout(() => {
-        router.push("/web/checkout");  
+        router.push("/web/checkout");
       }, 1000);
     },
   });
@@ -22,11 +18,6 @@ export default function useCheckoutCart() {
     if (isPending) {
       showLoadingAlert();
     }
-    return () => {
-      setTimeout(() => {
-        hideLoadingAlert();
-      }, 3000);
-    };
   }, [isPending]);
   return {
     createCheckout,

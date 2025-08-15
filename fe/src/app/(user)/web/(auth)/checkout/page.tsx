@@ -12,7 +12,7 @@ import { useFormik } from "formik";
 import {
   cornerAlert,
   cornerError,
-  hideLoadingAlert,
+    
   showLoadingAlert,
 } from "@/utils/AlertUtils";
 import { useEffect } from "react";
@@ -109,11 +109,6 @@ export default function CheckoutPage() {
     if (checkoutPending || isPending || updatingStatus) {
       showLoadingAlert();
     }
-    return () => {
-      setTimeout(() => {
-        hideLoadingAlert();
-      }, 3000);
-    };
   }, [isPending, checkoutPending, updatingStatus]);
 
   const formikOrder = useFormik({

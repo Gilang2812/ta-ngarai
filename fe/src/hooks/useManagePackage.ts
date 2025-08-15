@@ -6,7 +6,6 @@ import useTableManagement from "./useTableManagement";
 import { useDeletePackage } from "@/features/web/package/useDeletePackage";
 import {
   confirmDeleteAlert,
-  hideLoadingAlert,
   showLoadingAlert,
 } from "@/utils/AlertUtils";
 
@@ -65,8 +64,6 @@ const useManagePackage = () => {
   useEffect(() => {
     if (isPending) {
       showLoadingAlert("deleting package...");
-    } else {
-      hideLoadingAlert();
     }
   }, [isPending]);
   return {

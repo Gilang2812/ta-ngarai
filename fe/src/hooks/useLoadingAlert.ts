@@ -1,45 +1,33 @@
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import Swal from "sweetalert2";
 
-const useLoadingAlert = (id: string) => {
-  const activeAlertId = useRef<string | null>(null);
+const useLoadingAlert = (isLoading?: boolean) => {
   const swalOpen = useRef(false);
-  const isLoadingAlert = useRef(false);
-
+  useEffect(() => {
+    return () => {
+      if (swalOpen.current) {
+        Swal.close();
+      }
+    };
+  }, []);
   const showLoadingAlert = (message?: string) => {
-    if (swalOpen.current && activeAlertId.current === id) return;
-
-    activeAlertId.current = id || "loading";
-    swalOpen.current = true;
-    isLoadingAlert.current = true;
-
     Swal.fire({
       title: message || "Loading...",
       allowOutsideClick: false,
       didOpen: () => {
         Swal.showLoading();
+        if (!isLoading) {
+          Swal.close();
+        }
       },
       willClose: () => {
-        swalOpen.current = false;
-        isLoadingAlert.current = false;
-        activeAlertId.current = null;
+        Swal.hideLoading();
       },
     });
   };
 
-  const hideLoadingAlert = (alertId?: string) => {
-    if (
-      Swal.isVisible() &&
-      isLoadingAlert.current &&
-      activeAlertId.current === (alertId || id)
-    ) {
-      Swal.close();
-    }
-  };
-
   return {
     showLoadingAlert,
-    hideLoadingAlert,
   };
 };
 

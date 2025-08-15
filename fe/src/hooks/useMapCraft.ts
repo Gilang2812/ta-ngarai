@@ -1,5 +1,5 @@
 import { useFetchSouvenirPlace } from "@/features/dashboard/marketplace/useFetchSouvenirPlace";
-import { hideLoadingAlert, showLoadingAlert } from "@/utils/AlertUtils";
+import {    showLoadingAlert } from "@/utils/AlertUtils";
 import { useCallback, useEffect, useState } from "react";
 import { useOrderCraft } from "./useOrderCraft";
 import { DetailCraftManagementResponse } from "@/type/schema/DetailCraftSchema";
@@ -20,9 +20,7 @@ export const useMapCraft = () => {
     if (isLoading) {
       showLoadingAlert("fetching map");
     }
-    return () => {
-      hideLoadingAlert();
-    };
+   
   }, [isLoading]);
 
   const {
@@ -38,9 +36,7 @@ export const useMapCraft = () => {
     if (isChecking) {
       showLoadingAlert("Checking out...");
     }
-    return () => {
-      hideLoadingAlert();
-    };
+   
   }, [isChecking]);
 
   const handleSelectStore = useCallback(

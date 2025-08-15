@@ -6,7 +6,6 @@ import { useCreatePackageType } from "@/features/web/package/useCreatePackageTyp
 import {
   confirmDeleteAlert,
   cornerAlert,
-  hideLoadingAlert,
   showLoadingAlert,
 } from "@/utils/AlertUtils";
 import { useUpdatePackageTypes } from "@/features/web/package/useUpdatePackageType";
@@ -104,7 +103,12 @@ export const usePackageType = () => {
     });
   };
 
- 
+  useEffect(() => {
+    if (deleting) {
+      showLoadingAlert();
+    }
+  }, [deleting]);
+
   return {
     isLoading,
     initialValues,

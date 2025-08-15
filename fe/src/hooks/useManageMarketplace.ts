@@ -1,9 +1,9 @@
 import { useDeleteMarketplace } from "@/features/dashboard/marketplace/useDeleteMarketplace";
 import { useFetchSouvenirPlace } from "@/features/dashboard/marketplace/useFetchSouvenirPlace";
 import { SouvenirPlaceSchema } from "@/type/schema/PackageSchema";
-import { confirmDeleteAlert, cornerAlert } from "@/utils/AlertUtils";
+import { confirmDeleteAlert, cornerAlert, showLoadingAlert } from "@/utils/AlertUtils";
 import { useModal } from "@/utils/ModalUtils";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useFormMarketplace from "./useFormMarketplace";
 
 export const useManageMarketplace = () => {
@@ -20,12 +20,13 @@ export const useManageMarketplace = () => {
       onSuccessForm,
     });
 
-  const { mutateAsync: deleteMarketplace } = useDeleteMarketplace({
-    onSuccess: () => {
-      cornerAlert("success delete umkm");
-      refetch();
-    },
-  });
+  const { mutateAsync: deleteMarketplace, isPending: deletingMarketplace } =
+    useDeleteMarketplace({
+      onSuccess: () => {
+        cornerAlert("success delete umkm");
+        refetch();
+      },
+    });
 
   const handleDelete = (name: string, id: string) => {
     confirmDeleteAlert("marketplace", name, async () => {
@@ -61,6 +62,12 @@ export const useManageMarketplace = () => {
 
     toggleModal();
   };
+
+  useEffect(() => {
+    if (deletingMarketplace) {
+      showLoadingAlert();
+    }
+  }, [deletingMarketplace]);
 
   return {
     handleSubmit,

@@ -5,6 +5,7 @@ import {
   confirmDeleteAlert,
   cornerAlert,
   cornerError,
+  showLoadingAlert,
 } from "@/utils/AlertUtils";
 import { PackageService } from "../type/schema/PackageSchema";
 import { useDeletePackage } from "@/features/web/package/useDeletePackage";
@@ -53,12 +54,13 @@ const useModifyPackage = (id: string) => {
     },
   });
 
-  const { mutateAsync: deletePackage } = useDeletePackage({
-    onSuccess: () => {
-      cornerAlert("Package deleted successfully");
-      router.replace(ROUTES.TOURISM_PACKAGE);
-    },
-  });
+  const { mutateAsync: deletePackage, isPending: deletingPackage } =
+    useDeletePackage({
+      onSuccess: () => {
+        cornerAlert("Package deleted successfully");
+        router.replace(ROUTES.TOURISM_PACKAGE);
+      },
+    });
 
   const capacityFormik = useFormik({
     initialValues: { id: id, min_capacity: data?.min_capacity || 0 },
@@ -68,6 +70,12 @@ const useModifyPackage = (id: string) => {
   });
 
   // Computed values
+
+  useEffect(() => {
+    if (deletingPackage) {
+      showLoadingAlert();
+    }
+  }, [deletingPackage]);
 
   useEffect(() => {
     if (isSuccess && !data) {

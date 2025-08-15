@@ -12,7 +12,11 @@ import {
   DetailCraftManagementResponse,
   DetailCraftSchema,
 } from "@/type/schema/DetailCraftSchema";
-import { confirmDeleteAlert, cornerAlert } from "@/utils/AlertUtils";
+import {
+  confirmDeleteAlert,
+  cornerAlert,
+  showLoadingAlert,
+} from "@/utils/AlertUtils";
 import { createFormData } from "@/utils/common/createFormData";
 import { useModal } from "@/utils/ModalUtils";
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -127,12 +131,14 @@ export const useCraftManagement = () => {
     }
   );
 
-  const { mutateAsync: deleteCraft } = useDeleteCraft({
-    onSuccess: () => {
-      cornerAlert("Craft deleted successfully");
-      refetchCrafts();
-    },
-  });
+  const { mutateAsync: deleteCraft, isPending: deletingCraft } = useDeleteCraft(
+    {
+      onSuccess: () => {
+        cornerAlert("Craft deleted successfully");
+        refetchCrafts();
+      },
+    }
+  );
 
   const { mutate: createDetailCraft, isPending: detailCraftPending } =
     useCreateDetailCraft({
@@ -147,6 +153,11 @@ export const useCraftManagement = () => {
   const isLoading = craftsLoading || detailCraftsLoading;
   const isPending = craftPending || variantPending || detailCraftPending;
 
+  useEffect(() => {
+    if (deletingCraft) {
+      showLoadingAlert();
+    }
+  }, [deletingCraft]);
   const initialValues: Craft | CraftVariant | DetailCraftSchema =
     useMemo(() => {
       switch (formType) {

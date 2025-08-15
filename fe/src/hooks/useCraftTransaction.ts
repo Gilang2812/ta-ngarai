@@ -6,7 +6,7 @@ import { ShippingDataWithReviewGallery } from "@/type/schema/CraftTransactionSch
 import {
   confirmAlert,
   cornerAlert,
-  hideLoadingAlert,
+    
   showLoadingAlert,
 } from "@/utils/AlertUtils";
 import { useModal } from "@/utils/ModalUtils";
@@ -35,7 +35,10 @@ export const useCraftTransaction = () => {
     },
   });
 
-  const handleHistoryClick = (history: ShippingDataWithReviewGallery, content: "items" | "rate") => {
+  const handleHistoryClick = (
+    history: ShippingDataWithReviewGallery,
+    content: "items" | "rate"
+  ) => {
     setModalContent(content);
     setSelectedHistory(history);
     toggleModal();
@@ -52,11 +55,6 @@ export const useCraftTransaction = () => {
     if (isPending || isUpdating) {
       showLoadingAlert();
     }
-    return () => {
-      setTimeout(() => {
-        hideLoadingAlert();
-      }, 3000);
-    };
   }, [isPending, isUpdating]);
 
   const handleReOrder = (items: CraftCartForm[]) => {
@@ -73,7 +71,6 @@ export const useCraftTransaction = () => {
     );
   };
 
- 
   return {
     userHistory,
     isLoading,
@@ -84,6 +81,6 @@ export const useCraftTransaction = () => {
     handleHistoryClose,
     handleReOrder,
     handleCompleteOrder,
-    modalContent, 
+    modalContent,
   };
 };

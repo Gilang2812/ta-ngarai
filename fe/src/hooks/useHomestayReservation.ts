@@ -15,6 +15,7 @@ import {
   OpenMeteoDailyResponse,
 } from "@/type/schema/OpenMeteoSchema";
 import { useGetDepositPercentage } from "@/features/web/tourism/useGetDepositPercentage";
+import useAuth from "./useAuth";
 
 export type SelectedUnit = {
   homestay_id: string;
@@ -26,6 +27,7 @@ const useHomestayReservation = (homestay_id: string) => {
   // Stepper logic
   const { currentStep, steps, nextStep } = useFormStep(3);
   const [checkIn, setCheckIn] = useState<string | null>(null);
+  const { user } = useAuth();
   const { data: deposit_percentage, isLoading: percentageLoading } =
     useGetDepositPercentage("KG01");
   // Data fetching
@@ -88,7 +90,7 @@ const useHomestayReservation = (homestay_id: string) => {
     days_of_stay: "" as unknown as number,
     total_people: "" as unknown as number,
     unit_type: "",
-    whatsapp_number: "",
+    whatsapp_number: user?.phone ?? "",
     agreed_to_terms: false,
     selected_capacity: 0,
     payment: "",
@@ -140,10 +142,6 @@ const useHomestayReservation = (homestay_id: string) => {
     }
 
     createReservation({ ...values, selectedUnits: selectedUnit });
-
-    // Handle form submission logic here
-    console.log("Form submitted with values:", values);
-    // You can also validate the form using homestayReservationFormSchema
   };
 
   // Return values
@@ -151,7 +149,7 @@ const useHomestayReservation = (homestay_id: string) => {
     weathers: filteredWeather,
     isLoading: isLoading || isLoadingUnitHomestay || percentageLoading,
     deposit_percentage: deposit_percentage
-      ? Number(deposit_percentage?.deposit_percentage ?? "50") / 100
+      ? Number(deposit_percentage ?? "50") / 100
       : 50,
     unitHomestay,
     selectedUnit,

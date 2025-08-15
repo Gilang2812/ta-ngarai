@@ -14,6 +14,7 @@ import {
   confirmDeleteAlert,
   cornerAlert,
   cornerError,
+  showLoadingAlert,
 } from "@/utils/AlertUtils";
 import { createFormData } from "@/utils/common/createFormData";
 import { useModal } from "@/utils/ModalUtils";
@@ -121,6 +122,12 @@ export const useManageUnitHomestay = (id: string) => {
     creatingUnit ||
     creatingFacilityUnitDetail ||
     updatingUnit;
+
+  useEffect(() => {
+    if (deletingFacilityUnitDetail || deletingUnit) {
+      showLoadingAlert();
+    }
+  }, [deletingFacilityUnitDetail, deletingUnit]);
 
   const handleAddUnit = () => {
     setUnitInitialValues({

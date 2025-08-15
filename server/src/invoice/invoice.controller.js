@@ -41,8 +41,8 @@ router.get("/pdfmake/:id", verifyToken, async (req, res) => {
     const data = await getReservationById(id);
     if (!data) return res.status(404).send("Invoice not found");
 
-    const exclude = getService(data.package.detailServices, 0);
-    const include = getService(data.package.detailServices, 1);
+    const exclude = getService(data?.package?.detailServices, 0) || [];
+    const include = getService(data?.package?.detailServices, 1) || [];
     console.log("data package id", data);
     const detailTableBody = [
       [
