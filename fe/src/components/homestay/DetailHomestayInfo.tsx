@@ -5,7 +5,7 @@ import { BodyRawSkeleton } from "../loading/BodyRawSkeleton";
 
 export const DetailHomestayInfo = ({ data }: { data: HomestaySchema }) => {
   return (
-    <table className="capitalize   [&_td]:py-2">
+    <table className="capitalize   [&_td]:p-2">
       <tbody>
         <tr>
           <td>Name</td>
@@ -26,6 +26,12 @@ export const DetailHomestayInfo = ({ data }: { data: HomestaySchema }) => {
         <tr>
           <td>close</td>
           <td>{data?.close ?? <BodyRawSkeleton />}</td>
+        </tr>
+        <tr>
+          <td colSpan={2}>description</td>
+        </tr>
+        <tr>
+          <td colSpan={2}>{data?.description ?? <BodyRawSkeleton />}</td>
         </tr>
       </tbody>
     </table>

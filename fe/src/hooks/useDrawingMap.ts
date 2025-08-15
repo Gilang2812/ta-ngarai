@@ -30,8 +30,7 @@ export const useDrawingMap = () => {
         type: "MultiPolygon",
         coordinates: [[coordiantes]],
       };
-      setFieldValue("geom", JSON.stringify(geoJsonFeature));
-      console.log("Updated coordinates:", JSON.stringify(geoJsonFeature));
+      setFieldValue("geom", JSON.stringify(geoJsonFeature)); 
     }
   };
   return { onPolygonComplete, updateCoordinates, polygonRef };

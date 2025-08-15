@@ -1,5 +1,6 @@
 import Button from "@/components/common/Button";
 import ImgNotFound from "@/components/common/ImgNotFound";
+import Rating from "@/components/common/Rating";
 import { SingleContentWrapper } from "@/components/common/SingleContentWrapper";
 import { useCreateCart } from "@/features/web/package/useCreateCart";
 import { imageLoading, imageNotFound, imageUrl } from "@/lib/baseUrl";
@@ -13,7 +14,7 @@ import { Carousel } from "flowbite-react";
 import { useFormik } from "formik";
 import Image from "next/image";
 import Link from "next/link";
-import { FaRegStar, FaCartPlus, FaStar } from "react-icons/fa6";
+import {  FaCartPlus } from "react-icons/fa6";
 
 type Props = {
   data: PackageServiceGallery & { reservation: PackageReservationSchema[] };
@@ -74,15 +75,7 @@ export const OverviewSection = ({ data, isLoading }: Props) => {
       </div>
       <article className="space-y-4 min-w-fit  ">
         <h1 className="text-2xl font-bold">{data.name}</h1>
-        <div className="flex gap-2 text-2xl text-orange-500">
-          {Array.from({ length: 5 }, (_, index) =>
-            index < averageRating ? (
-              <FaStar key={index} />
-            ) : (
-              <FaRegStar key={index} />
-            )
-          )}
-        </div>
+        <Rating rating={averageRating} />
         <section>
           <p>Start from</p>
           <h2 className="text-lg font-semibold">{formatPrice(data?.price)}</h2>

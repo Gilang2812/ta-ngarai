@@ -31,7 +31,6 @@ const FilePondComponent = ({
 }: Props & ComponentProps<typeof FilePond>) => {
   const { setFieldValue, values, setFieldError } =
     useFormikContext<FormValues>();
-  console.log(acceptedFileTypes[0].startsWith("video/"));
   return (
     <>
       <div className="form-groupsa  ">

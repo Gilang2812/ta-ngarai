@@ -2,17 +2,18 @@ const {
   Homestay,
   FacilityHomestayDetail,
   FacilityHomestay,
+  FacilityUnit,
 } = require("../../models/relation");
 
-const findHomestayFacilities = async()=>{
-  const homestays =await FacilityHomestay.findAll();
+const findHomestayFacilities = async () => {
+  const homestays = await FacilityHomestay.findAll();
   return homestays;
-}
+};
 
-const findDetailHomestayFacilities = async()=>{
+const findDetailHomestayFacilities = async () => {
   const details = await FacilityHomestayDetail.findAll();
   return details;
-}
+};
 
 const findHomestayFacilityById = async (id) => {
   const homestay = Homestay.findOne({
@@ -33,23 +34,43 @@ const findHomestayFacilityById = async (id) => {
     ],
   });
 
-  return homestay
+  return homestay;
+};
+const findDetailHomestayFacility = async (condition) => {
+  const detailFacility = await FacilityHomestayDetail.findOne({
+    where: condition,
+  });
 };
 
-const insertHomestayFacility =async (body)=>{
-  const newFacility = await FacilityHomestay.create(body)
-  return newFacility
-}
+const insertHomestayFacility = async (body) => {
+  const newFacility = await FacilityHomestay.create(body);
+  return newFacility;
+};
 
-const insertDetailHomestayFacility = async (body)=>{
-  const newDetailFacility = await FacilityHomestayDetail.create(body)
-  return newDetailFacility
-}
+const insertDetailHomestayFacility = async (body) => {
+  const newDetailFacility = await FacilityHomestayDetail.create(body);
+  return newDetailFacility;
+};
 
-const destroyDetailHomestayFacility = async (params)=>{
-  const deleted =await FacilityHomestayDetail.destroy({
-    where:params
-  })
-  return deleted
-}
-module.exports = {destroyDetailHomestayFacility,insertDetailHomestayFacility,findDetailHomestayFacilities, findHomestayFacilityById,findHomestayFacilities ,insertHomestayFacility};
+const destroyDetailHomestayFacility = async (params) => {
+  const deleted = await FacilityHomestayDetail.destroy({
+    where: params,
+  });
+  return deleted;
+};
+
+const findFacilityUnits = async () => {
+  const facilityUnits = await FacilityUnit.findAll();
+  return facilityUnits;
+};
+
+module.exports = {
+  findDetailHomestayFacility,
+  findFacilityUnits,
+  destroyDetailHomestayFacility,
+  insertDetailHomestayFacility,
+  findDetailHomestayFacilities,
+  findHomestayFacilityById,
+  findHomestayFacilities,
+  insertHomestayFacility,
+};

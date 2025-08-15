@@ -4,6 +4,9 @@ const {
   destroyGalleryPackage,
   insertGalleryPackage,
   insertGalleryHomestay,
+  destroyGalleryHomestay,
+  insertGalleryUnitHomestay,
+  destroyGalleryUnitHomestay,
 } = require("./gallery.repository");
 
 const getGalleryTourisms = async () => {
@@ -31,10 +34,26 @@ const createGalleryHomestay = async (data) => {
   return newGalleryHomestay;
 };
 
+const createGalleryUnitHomestay = async (data) => {
+  const newGalleryUnitHomestay = await insertGalleryUnitHomestay(data);
+  return newGalleryUnitHomestay;
+};
+
+const deleteGalleryHomestay = async (condition) => {
+  return (deleted = await destroyGalleryHomestay(condition));
+};
+
+const deleteGalleryUnit = async (condition) => {
+  return (deleted = await destroyGalleryUnitHomestay(condition));
+};
+
 module.exports = {
   getGalleryTourisms,
   getGalleryPackages,
   deleteGalleryPackage,
   createGalleryHomestay,
   createGalleryPackage,
+  deleteGalleryHomestay,
+  createGalleryUnitHomestay,
+  deleteGalleryUnit,
 };

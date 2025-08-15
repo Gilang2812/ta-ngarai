@@ -1,91 +1,24 @@
-import { FormInput } from "@/components/inputs/FormInput";
-import { Modal } from "@/components/modal/Modal";
-import { useCreateDetailHomestayFacility } from "@/features/dashboard/facility/useCreateDetailHomestayFacility";
-import { useCreateHomestayFacility } from "@/features/dashboard/facility/useCreateHomestayFacility";
-import { useDeleteDetailHomestayFacility } from "@/features/dashboard/facility/useDeleteDetailHomestayFacility";
-import { useFetchHomestayFacilities } from "@/features/dashboard/facility/useFetchHomestayFacilities";
-import { FetchHomestayProps } from "@/features/dashboard/homestay/useGetHomestay";
-import {
-  confirmDeleteAlert,
-  showCreateAlert,
-  showDeleteAlert,
-} from "@/utils/AlertUtils";
-import { useModal } from "@/utils/ModalUtils";
-import {
-  CreateDetailFacilityHomestaySchema,
-  CreateFacilityHomestaySchema,
-  DeleteDetailFacilitySchema,
-} from "@/validation/facilitySchema";
-import { Form, Formik } from "formik";
-import { FaTimes, FaTrashAlt } from "react-icons/fa";
+import { HomestayFacilityDetailSchema } from "@/type/schema/FacilitySchema";
+import { DeleteDetailFacilitySchema } from "@/validation/facilitySchema";
+
+import { FaTimes } from "react-icons/fa";
 import { FaPlus } from "react-icons/fa6";
 
 type DetailFacilityProps = {
-  id: string;
-  refetchHomestay: () => void;
-  dataHomestay: FetchHomestayProps;
+  toggleFacility: () => void;
+  toggleDetailFacility: () => void;
+  detailsFacility: HomestayFacilityDetailSchema[];
+  handleDeletedDetailHomestayFacility: (
+    body: DeleteDetailFacilitySchema
+  ) => void;
 };
 
 export const DetailFacilitySection = ({
-  id,
-  refetchHomestay,
-  dataHomestay,
+  toggleFacility,
+  toggleDetailFacility,
+  detailsFacility,
+  handleDeletedDetailHomestayFacility,
 }: DetailFacilityProps) => {
-  const {
-    isOpen: openFacility,
-  toggleModal:toggleFacility
-  } = useModal();
-  const {
-    isOpen: openDetailFacility,
-   toggleModal:toggleDetailFacility
-  } = useModal();
-  const { data, refetch } = useFetchHomestayFacilities();
-
-  const facilityInitialValues = {
-    name: "",
-  };
-  const deatailFacilityInitialValues = {
-    homestay_id: id,
-    facility_homestay_id: "",
-    description: "",
-  };
-
-  const { mutate: createHomestayFacility } = useCreateHomestayFacility({
-    onSuccess: async () => {
-      showCreateAlert("facility");
-      toggleFacility();
-      refetch();
-    },
-  });
-
-  const { mutate: createDetailHF } = useCreateDetailHomestayFacility({
-    onSuccess: () => {
-      showCreateAlert("facility detail");
-      toggleDetailFacility();
-      refetchHomestay();
-    },
-  });
-  const handleFacilitySubmit = (values: CreateFacilityHomestaySchema) => {
-    createHomestayFacility(values);
-  };
-  const handleDetailFacilitySubmit = (
-    values: CreateDetailFacilityHomestaySchema
-  ) => {
-    createDetailHF(values);
-  };
-  const { mutate: deleteDetailHomesty } = useDeleteDetailHomestayFacility({
-    onSuccess: async () => {
-      showDeleteAlert("facility detail deleted");
-      refetchHomestay();
-    },
-  });
-  const handleDeletedDetailHomestayFacility = (
-    body: DeleteDetailFacilitySchema
-  ) => {
-    confirmDeleteAlert("Fasilitas", body.facility_homestay_id, () =>
-      deleteDetailHomesty(body)
-    );
-  };
   return (
     <>
       <section className="bg-white rounde   d-xl p-4 space-y-4">
@@ -117,7 +50,7 @@ export const DetailFacilitySection = ({
             </tr>
           </thead>
           <tbody>
-            {dataHomestay?.details.map((d, i) => (
+            {detailsFacility.map((d, i) => (
               <tr key={i}>
                 <td className="text-center">{i + 1}</td>
                 <td>{d.facility.name}</td>
@@ -127,7 +60,7 @@ export const DetailFacilitySection = ({
                     <button
                       onClick={() =>
                         handleDeletedDetailHomestayFacility({
-                          homestay_id: id,
+                          homestay_id: d.homestay_id,
                           facility_homestay_id: d.facility_homestay_id,
                         })
                       }
@@ -143,98 +76,6 @@ export const DetailFacilitySection = ({
           </tbody>
         </table>
       </section>
-      <Modal
-        isOpen={openFacility}
-        title="data facility "
-        onClose={toggleFacility}
-      >
-        <Formik
-          initialValues={facilityInitialValues}
-          onSubmit={handleFacilitySubmit}
-        >
-          {({ resetForm }) => (
-            <Form className="space-y-6 ">
-              <div className="space-y-4 px-4 leading-loose border-b pb-6">
-                <FormInput
-                  name="name"
-                  type="text"
-                  label="Facility Name"
-                  required
-                />
-              </div>
-              <div className="border-t flex justify-end items-center gap-2 py-4">
-                <button
-                  type="submit"
-                  className="btn p-2 text-primary bg-white hover:bg-primary hover:text-white border-primary"
-                >
-                  <FaPlus />
-                </button>
-                <button
-                  type="button"
-                  onClick={() => resetForm()}
-                  className="btn p-2 text-red-600 bg-white hover:bg-red-800 hover:text-white border-red-600 "
-                >
-                  <FaTrashAlt />
-                </button>
-              </div>
-            </Form>
-          )}
-        </Formik>
-      </Modal>
-      <Modal
-        isOpen={openDetailFacility}
-        title="facility homestay"
-        onClose={toggleDetailFacility}
-      >
-        <Formik
-          initialValues={deatailFacilityInitialValues}
-          onSubmit={handleDetailFacilitySubmit}
-        >
-          {({ resetForm }) => (
-            <Form className="space-y-6  ">
-              <div className="space-y-4 leading-loose border-b pb-6">
-                <FormInput
-                  name="facility_homestay_id"
-                  type="text"
-                  label="Facility"
-                  placeholder="facility"
-                  as="select"
-                  required
-                >
-                  {data?.map((hf, index) => (
-                    <option key={index} value={hf.id}>
-                      {hf.name}
-                    </option>
-                  ))}
-                </FormInput>
-                <FormInput
-                  name="description"
-                  type="text"
-                  label="Description"
-                  as="textarea"
-                  placeholder="description"
-                  required
-                />
-              </div>
-              <div className="border-t flex justify-end items-center gap-2 py-4">
-                <button
-                  type="submit"
-                  className="btn p-2 text-primary bg-white hover:bg-primary hover:text-white border-primary"
-                >
-                  <FaPlus />
-                </button>
-                <button
-                  type="button"
-                  onClick={() => resetForm()}
-                  className="btn p-2 text-red-600 bg-white hover:bg-red-800 hover:text-white border-red-600 "
-                >
-                  <FaTrashAlt />
-                </button>
-              </div>
-            </Form>
-          )}
-        </Formik>
-      </Modal>
     </>
   );
 };

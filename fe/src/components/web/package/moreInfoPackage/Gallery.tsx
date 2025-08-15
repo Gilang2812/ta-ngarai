@@ -17,6 +17,7 @@ export const Gallery = ({ gallery, isLoading }: GalleryProps) => {
           [...Array(4)].map((_, index) => <ImageSkeleton key={index} />)}
         {gallery?.map((g, index) => (
           <ImgModal
+            id={g.id}
             key={index}
             src={`${g?.url}`}
             width={500}

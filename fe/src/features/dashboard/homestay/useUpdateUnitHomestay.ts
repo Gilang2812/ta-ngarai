@@ -3,11 +3,13 @@ import { ActionProps } from "@/type/props/ActionProps";
 import { onError } from "@/utils/ErrorHandler";
 import { useMutation } from "@tanstack/react-query";
 
-export const useUpdateHomestay = ({ onSuccess }: ActionProps) => {
+export const useUpdateUnitHomestay = ({ onSuccess }: ActionProps) => {
   return useMutation({
     mutationFn: async (body: FormData) => {
       const { data } = await axiosInstance.patch(
-        `/homestays/${body.get("id")}`,
+        `/homestays/units/${body.get("homestay_id")}/${body.get(
+          "unit_type"
+        )}/${body.get("unit_number")}`,
         body,
         {
           headers: {

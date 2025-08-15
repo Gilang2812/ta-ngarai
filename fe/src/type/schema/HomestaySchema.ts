@@ -1,6 +1,13 @@
-import { UnitFacilityDetailSchema } from "./FacilitySchema";
-import { UnitGallerySchema } from "./GalleryHomestaySchema";
-import { Geometry } from "./GeometrySchema";
+import { MultiPolygon } from "geojson";
+import {
+  HomestayFacilityDetailSchema,
+  HomestayFacilitySchema,
+  UnitFacilityDetailSchema,
+} from "./FacilitySchema";
+import {
+  GalleryHomestaySchema,
+  UnitGallerySchema,
+} from "./GalleryHomestaySchema";
 import { DetailReservationResponse } from "./ReservationSchema";
 
 export type HomestaySchema = {
@@ -10,7 +17,7 @@ export type HomestaySchema = {
   contact_person?: string;
   description?: string;
   status?: number;
-  geom?: Geometry;
+  geom?: MultiPolygon;
   open?: string;
   close?: string;
   homestay_status: number;
@@ -54,4 +61,39 @@ export type AllUnitHomestayResponseSchema = HomestayDetails & {
       };
     };
   })[];
+};
+
+export type FacilityUnit = {
+  homestay_id: string;
+  unit_type: string;
+  unit_number: string;
+  facility_unit_id: string;
+  description: string;
+  unitFacility: HomestayFacilitySchema;
+};
+
+export type UnitHomestay = UnitHomestaySchema & {
+  detailReservations: (DetailReservationResponse & {
+    reservation: {
+      id: string;
+      user_id: string;
+      customer: {
+        fullname: string;
+        username: string;
+      };
+    };
+  })[];
+  unitType: HomestayUnitType;
+  unitGalleries: UnitGallerySchema[];
+  facilityDetails: FacilityUnit[];
+};
+export type FetchHomestayProps = HomestaySchema & {
+  details: HomestayFacilityDetailSchema[];
+  galleries: GalleryHomestaySchema[];
+  units: UnitHomestay[];
+};
+
+export type DataEditHomestay = HomestaySchema & {
+  details: HomestayFacilityDetailSchema[];
+  galleries: GalleryHomestaySchema[];
 };

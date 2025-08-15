@@ -46,6 +46,7 @@ export const ROUTES = {
   HOMESTAY: "/dashboard/homestay",
   NEW_HOMESTAY: "/dashboard/homestay/new",
   MANAGE_DETAIL_HOMESTAY: (id: string) => `/dashboard/homestay/${id}`,
+  EDIT_HOMESTAY: (id: string) => `/dashboard/homestay/${id}/edit`,
   MANAGE_USERS: "/dashboard/users",
   MANAGE_UMKM: "/dashboard/umkm",
   MANAGE_CRAFT: "/dashboard/craft",
@@ -57,4 +58,6 @@ export const ROUTES = {
     `/web/reservation/${id}/homestay/detail`,
   INVOICE: (id: string, package_id?: string) =>
     package_id ? `/web/invoice/${id}/${package_id}` : `/web/invoice/${id}`,
+  MANAGE_UNIT_HOMESTAY: (homestay_id: string) =>
+    `/dashboard/unit-homestay/new/${homestay_id}`,
 };

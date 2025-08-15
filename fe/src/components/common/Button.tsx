@@ -22,6 +22,10 @@ export const buttonVariants = cva(
           "text-white  bg-green-600 disabled:hover:bg-green-600 w-fit hover:text-white hover:bg-green-800",
         regSuccess:
           "bg-white border border-green-600 disabled:hover:bg-white text-green-600 w-fit  hover:text-white hover:bg-green-900",
+        warning:
+          "text-black disabled:text-black  bg-yellow-300 disabled:hover:bg-yellow-300 w-fit hover:text-white hover:bg-yellow-400",
+        regWarning:
+          "text-yellow-400 disabled:text-yellow-300  border border-yellow-400 disabled:border-yellow-300 bg-white disabled:hover:bg-white  hover:bg-yellow-400/70 hover:text-white ",
         secondary:
           "text-black disabled:text-white disabled:hover:bg-gray-300 bg-gray-300  w-fit hover:text-white hover:bg-gray-500 ",
         regSecondary:

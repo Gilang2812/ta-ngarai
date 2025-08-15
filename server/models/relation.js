@@ -178,32 +178,27 @@ DetailReservation.belongsTo(UnitHomestay, {
 UnitHomestay.hasMany(FacilityUnitDetail, {
   foreignKey: "homestay_id",
   sourceKey: "homestay_id",
-  constraints: true,
   as: "facilityDetails",
 });
 
 UnitHomestay.hasMany(FacilityUnitDetail, {
   foreignKey: "unit_type",
   sourceKey: "unit_type",
-  constraints: true,
 });
 
 UnitHomestay.hasMany(FacilityUnitDetail, {
   foreignKey: "unit_number",
   sourceKey: "unit_number",
-  constraints: true,
 });
 FacilityUnitDetail.belongsTo(UnitHomestay, {
   foreignKey: "homestay_id",
   targetKey: "homestay_id",
-  constraints: true,
   as: "facilityUnit",
 });
 
 FacilityUnitDetail.belongsTo(UnitHomestay, {
   foreignKey: "unit_type",
   targetKey: "unit_type",
-  constraints: true,
 });
 
 FacilityUnitDetail.belongsTo(UnitHomestay, {

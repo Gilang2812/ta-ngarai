@@ -5,6 +5,7 @@ const {
   Package,
   PackageType,
   GalleryHomestay,
+  GalleryUnit,
 } = require("../../models/relation");
 
 const findGalleryTourisms = async () => {
@@ -43,6 +44,16 @@ const destroyGalleryHomestay = async (key) => {
   return deleted;
 };
 
+const insertGalleryUnitHomestay = async (data) => {
+  const created = await GalleryUnit.create(data);
+  return created;
+};
+
+const destroyGalleryUnitHomestay = async (key) => {
+  const deleted = await GalleryUnit.destroy({ where: key });
+  return deleted;
+};
+
 module.exports = {
   findGalleryTourisms,
   findGalleryPackages,
@@ -50,4 +61,6 @@ module.exports = {
   destroyGalleryHomestay,
   insertGalleryPackage,
   insertGalleryHomestay,
+  insertGalleryUnitHomestay,
+  destroyGalleryUnitHomestay
 };

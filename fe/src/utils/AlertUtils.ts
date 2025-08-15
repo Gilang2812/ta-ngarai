@@ -162,11 +162,15 @@ export const cornerError = (message: string | undefined) => {
   });
 };
 
+let activeAlertId: string | null = null;
 let swalOpen = false;
 let isLoadingAlert = false;
 
-export const showLoadingAlert = (message?: string) => {
-  if (swalOpen) return;
+export const showLoadingAlert = (message?: string, id?: string) => {
+  // Jangan tampilkan kalau alert dengan id yang sama sudah terbuka
+  if (swalOpen && activeAlertId === id) return;
+
+  activeAlertId = id || "deleting" || null;
   swalOpen = true;
   isLoadingAlert = true;
 
@@ -179,12 +183,14 @@ export const showLoadingAlert = (message?: string) => {
     willClose: () => {
       swalOpen = false;
       isLoadingAlert = false;
+      activeAlertId = null;
     },
   });
 };
 
-export const hideLoadingAlert = () => {
-  if (Swal.isVisible() && isLoadingAlert) {
+export const hideLoadingAlert = (id?: string) => {
+  // Tutup hanya jika id cocok
+  if (Swal.isVisible() && isLoadingAlert && activeAlertId === id) {
     Swal.close();
   }
 };

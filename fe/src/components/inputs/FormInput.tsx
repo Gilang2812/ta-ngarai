@@ -14,7 +14,7 @@ export const FormInput = ({
   children,
   ...props
 }: React.ComponentProps<typeof Field>) => {
-  const [field, meta] = useField(name); 
+  const [field, meta] = useField(name);
 
   return (
     <div className="grow">
@@ -35,20 +35,23 @@ export const FormInput = ({
         )}
       >
         {as === "select" ? (
-          <Field
-            {...field}
-            className="font-normal [&_option]:px-1 w-full !border-none focus:!ring-0 focus:!border-none !p-0 bg-transparent text-black focus:!outline-none"
-            id={id || name}
-            as={as}
-            readOnly={readonly}
-            onChange={(e: ChangeEvent<HTMLInputElement>) => {
-               handleAllowedInput(e, field.onChange);
-            }}
-            {...props}
-          >
-            <option value="">select</option>
-            {children}
-          </Field>
+          <>
+            <Field
+              {...field}
+              className="font-normal [&_option]:px-1 w-full !border-none focus:!ring-0 focus:!border-none !p-0 bg-transparent text-black focus:!outline-none"
+              id={id || name}
+              as={as}
+              readOnly={readonly}
+              disabled={readonly}
+              {...props}
+            >
+              <option value="">select</option>
+              {children}
+            </Field>
+            {readonly && (
+              <input type="hidden" name={name} value={field.value} />
+            )}
+          </>
         ) : (
           <>
             {Icon && <Icon className="" />}
@@ -60,7 +63,6 @@ export const FormInput = ({
               readOnly={readonly}
               {...props}
               onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                // Hanya izinkan huruf, angka, dan spasi 
                 handleAllowedInput(e, field.onChange);
               }}
             />
