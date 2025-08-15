@@ -105,7 +105,7 @@ const findHomestayById = async (id) => {
               )
             ),
           },
-          { 
+          {
             model: FacilityUnitDetail,
             as: "facilityDetails",
             on: literal(
@@ -214,6 +214,7 @@ const findUnitHomestay = async (key) => {
       {
         model: GalleryUnit,
         as: "unitGalleries",
+        required: false,
         where: Sequelize.and(
           Sequelize.where(
             Sequelize.col(`UnitHomestay.unit_type`),
@@ -326,6 +327,13 @@ const findAllUnitHomestays = async ({ homestay_id }) => {
   return units;
 };
 
+const findFacilityUnitDetail = async (key) => {
+  const facility = await FacilityUnitDetail.findOne({
+    where: key,
+  });
+  return facility;
+};
+
 const insertHomestay = async (body) => {
   const { geom, ...rest } = body;
   const geomData = geom
@@ -418,8 +426,7 @@ module.exports = {
   deleteUnitHomestay,
   deleteFacilityUnitDetail,
   findUnitTypes,
+  findFacilityUnitDetail
 };
 
-//check in besar dari check_out< tanggal check_in
-// checkin +date < reser check_in
-// check
+ 

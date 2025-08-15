@@ -17,6 +17,7 @@ const {
   findUnitTypes,
   updateUnitHomestay,
   findUnitHomestay,
+  findFacilityUnitDetail,
 } = require("./homestay.repository");
 const getAllHomestay = () => {
   const allHomestay = findHomestays();
@@ -62,12 +63,21 @@ const notFoundHomestay = async (id) => {
   return homestay;
 };
 
+const existDetailFacility = async (key) => {
+  const facility = await findFacilityUnitDetail(key);
+  if (facility) {
+    throw new CustomError("facility unit already exists for this unit", 400);
+  }
+  return facility;
+};
+
 const getUnitTypes = async () => {
   const unitTypes = await findUnitTypes();
   return unitTypes;
 };
 const getUnitHomestay = async (key) => {
   const unit = await findUnitHomestay(key);
+
   if (!unit) {
     throw new CustomError("unit not found", 404);
   }
@@ -97,6 +107,8 @@ const createUnitHomestay = async (body) => {
 };
 
 const createFacilityUnitDetail = async (body) => {
+  const { homestay_id, unit_type, unit_number, facility_unit_id } = body;
+  await existDetailFacility({ homestay_id, unit_type, unit_number, facility_unit_id });
   const newFacilityUnitDetail = await insertFacilityUnitDetail(body);
   return newFacilityUnitDetail;
 };

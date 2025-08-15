@@ -202,7 +202,7 @@ router.patch(
     try {
       const { homestay_id, unit_type, unit_number } = req.params;
       const { unit_name, capacity, price, description } = req.body;
-
+      console.log("params", req.params);
       const updatedUnitHomestay = await editUnitHomestay(
         { homestay_id, unit_type, unit_number },
         { unit_name, capacity, price, description }
@@ -259,6 +259,7 @@ router.post("/units/detail", async (req, res, next) => {
       facility_unit_id,
       description,
     } = req.body;
+    console.log(req.body)
     const facilities = await createFacilityUnitDetail({
       homestay_id,
       unit_type,

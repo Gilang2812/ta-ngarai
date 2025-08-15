@@ -1,8 +1,9 @@
 import { axiosInstance } from "@/lib/axios";
 import { ActionProps } from "@/type/props/ActionProps";
 import { useMutation } from "@tanstack/react-query";
+import { onError } from "@/utils/ErrorHandler"
 
-export const useDeleteFacilityUnitHomestay = ({ onSuccess, onError }: ActionProps) => {
+export const useDeleteFacilityUnitHomestay = ({ onSuccess }: ActionProps) => {
   return useMutation({
     mutationFn: async ({
       homestay_id,

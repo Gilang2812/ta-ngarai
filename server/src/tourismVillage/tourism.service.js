@@ -3,6 +3,7 @@ const {
   updateTourism,
   insertGallery,
   deleteGalleryByAtribut,
+  findDepositPercentage,
 } = require("./tourism.repository");
 
 const getTourismById = async (id) => {
@@ -11,6 +12,11 @@ const getTourismById = async (id) => {
     throw new Error(`Tourism with id ${id} not found`);
   }
   return tourism;
+};
+
+const getDepositPercentage = async (id) => {
+  const percentage = await findDepositPercentage(id);
+  return percentage;
 };
 
 const editTourismById = async (id, body) => {
@@ -35,4 +41,5 @@ module.exports = {
   editTourismById,
   createTourismGallery,
   deleteTourismGallery,
+  getDepositPercentage
 };

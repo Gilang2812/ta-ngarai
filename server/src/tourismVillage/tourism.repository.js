@@ -13,6 +13,14 @@ const findTourismById = async (id) => {
   return tourism;
 };
 
+const findDepositPercentage = async (id) => {
+  const tourism = await TourismVillage.findOne({
+    where: { id },
+    attributes: ["deposit_percentage"],
+  });
+  return tourism?.deposit_percentage || 0;
+};
+
 const updateTourism = async (id, body) => {
   const [updated] = await TourismVillage.update(body, {
     where: { id: id },
@@ -45,4 +53,5 @@ module.exports = {
   deleteTourism,
   insertGallery,
   deleteGalleryByAtribut,
+  findDepositPercentage,
 };

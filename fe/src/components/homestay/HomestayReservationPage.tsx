@@ -18,7 +18,6 @@ const HomestayReservationPage: React.FC<Props> = ({ id }) => {
   const {
     weathers,
     unitHomestay,
-    isLoadingUnitHomestay,
     handleSelectedUnit,
     isSelected,
     handleSubmit,
@@ -30,8 +29,11 @@ const HomestayReservationPage: React.FC<Props> = ({ id }) => {
     reservationId,
     handleNextStep,
     setCheckIn,
+    isPending,
+    deposit_percentage,
+    isLoading,
   } = useHomestayReservation(id);
-  if (isLoadingUnitHomestay) {
+  if (isLoading) {
     return <HomestayReservationSkeleton />;
   }
   return (
@@ -47,6 +49,8 @@ const HomestayReservationPage: React.FC<Props> = ({ id }) => {
             onSubmit={handleSubmit}
           >
             <HomestayReservationForm
+              isPending={isPending} 
+              deposit_percentage={deposit_percentage}
               currentStep={currentStep}
               weathers={weathers}
               unitHomestay={unitHomestay}

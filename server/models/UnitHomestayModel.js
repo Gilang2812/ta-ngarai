@@ -1,6 +1,7 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../config/database");
-const { generateCustomId } = require("../utils/generateId");
+const fs = require("fs");
+const { CustomError } = require("../utils/CustomError");
 
 const UnitHomestay = sequelize.define(
   "UnitHomestay",
@@ -58,6 +59,61 @@ UnitHomestay.beforeCreate(async (instance) => {
     order: [["unit_number", "DESC"]],
   });
   const newNumber = unit ? parseInt(unit.unit_number) + 1 : 1;
-  instance.unit_number = newNumber;
+  console.log("newNumber", newNumber.toString().length);
+  instance.unit_number = newNumber.toString().padStart(2, "0");
 });
+
+UnitHomestay.beforeBulkDestroy(async (instance) => {
+  const {
+    DetailReservation,
+    GalleryUnit,
+    FacilityUnitDetail,
+  } = require("./relation");
+  const where = instance.where;
+  const count = await DetailReservation.count({
+    where: {
+      homestay_id: where.homestay_id,
+      unit_type: where.unit_type,
+      unit_number: where.unit_number,
+    },
+  });
+  console.log("where bulk", where);
+  if (count > 0) {
+    throw new CustomError(
+      `Cannot delete, still used in ${count}Detail Reservation.`,
+      400
+    );
+  }
+  await FacilityUnitDetail.destroy({
+    where: {
+      homestay_id: where.homestay_id,
+      unit_type: where.unit_type,
+      unit_number: where.unit_number,
+    },
+  });
+
+  const gallery = await GalleryUnit.findAll({
+    where: {
+      homestay_id: where.homestay_id,
+      unit_type: where.unit_type,
+      unit_number: where.unit_number,
+    },
+  });
+
+  await GalleryUnit.destroy({
+    where: {
+      homestay_id: where.homestay_id,
+      unit_type: where.unit_type,
+      unit_number: where.unit_number,
+    },
+  });
+  for (const item of gallery) {
+    fs.unlinkSync(`public\\${item.url}`, (err) => {
+      if (err) {
+        console.error(`Error deleting file ${item.url}:`, err);
+      }
+    });
+  }
+});
+
 module.exports = { UnitHomestay };

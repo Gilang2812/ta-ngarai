@@ -7,6 +7,7 @@ export const useFetchTourism = (id: string) => {
     name: string;
     type_of_tourism: string;
     address: string;
+    deposit_percentage: number;
     open: string;
     close: string;
     ticket_price: number;

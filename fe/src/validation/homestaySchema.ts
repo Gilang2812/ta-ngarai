@@ -23,7 +23,7 @@ export const createUnitSchema = yup.object({
   unit_type: yup.string().required("please select a unit type"),
   unit_name: yup.string().min(2).max(100).required(),
   capacity: yup.number().min(1).required(),
-  price: yup.number().min(0).required(),
+  price: yup.number().min(100,"input a valid price").required(),
   description: yup.string().min(5).max(500).required(),
 });
 
@@ -53,6 +53,7 @@ export const createFacilitySchema = yup.object({
 });
 
 export type CreateUnitFormSchema = yup.InferType<typeof createUnitSchema> & {
+  unit_number?: string;
   images: FilepondType;
 };
 export type CreateFacilityFormSchema = yup.InferType<

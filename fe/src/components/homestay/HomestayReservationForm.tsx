@@ -25,6 +25,8 @@ type Props = {
   currentStep?: number;
   weathers?: OpenMeteoDailyResponse | null;
   setCheckIn: (date: string) => void;
+  isPending?: boolean;
+  deposit_percentage: number;
 };
 
 const HomestayReservationForm: React.FC<Props> = ({
@@ -37,6 +39,8 @@ const HomestayReservationForm: React.FC<Props> = ({
   weathers,
   handleNextStep,
   setCheckIn,
+  isPending = false,
+  deposit_percentage = 50,
 }) => {
   const {
     filteredUnitHomestay,
@@ -51,6 +55,8 @@ const HomestayReservationForm: React.FC<Props> = ({
     selectedUnit,
     uniqueUnitType,
     setCheckIn,
+    deposit_percentage
+    
   });
 
   return (
@@ -62,9 +68,11 @@ const HomestayReservationForm: React.FC<Props> = ({
           currentStep !== 1 && "hidden"
         )}
       >
-     
         <div className="md:col-span-2">
-          <ReservationWeather weathers={weathers} homestayName={unitHomestay?.[0]?.homestay?.name} />
+          <ReservationWeather
+            weathers={weathers}
+            homestayName={unitHomestay?.[0]?.homestay?.name}
+          />
         </div>
         <HomestrayReservationList
           filteredUnitHomestay={filteredUnitHomestay}
@@ -102,7 +110,7 @@ const HomestayReservationForm: React.FC<Props> = ({
           </div>
 
           <FormInput
-            readOnly
+            readonly
             type="datetime-local"
             label="Check out"
             name="check_out"
@@ -246,10 +254,13 @@ const HomestayReservationForm: React.FC<Props> = ({
                 className="mr-2 focus:bg-primary  focus:!outline-none focus:ring-2   focus:ring-transparent checked:bg-primary"
                 aria-describedby="partial-desc"
               />
-              <span>Partial (50% of Full Price)</span>
+              <span>
+                Partial {deposit_percentage} ({deposit_percentage * 100}% of
+                Full Price)
+              </span>
             </label>
             <p id="partial-desc" className="sr-only">
-              Pay 50% of the total amount now
+              Pay {deposit_percentage * 100}% of the total amount now
             </p>
             <label className="flex items-center cursor-pointer">
               <input
@@ -292,6 +303,8 @@ const HomestayReservationForm: React.FC<Props> = ({
             className="w-full max-w-md"
             type="submit"
             aria-describedby="payment-total"
+            isLoading={isPending}
+            disabled={isPending}
           >
             Pay
           </Button>

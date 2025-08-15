@@ -1,20 +1,17 @@
-import React from "react";
+import { useRef } from "react";
 import Swal from "sweetalert2";
 
-type Props = {};
-
 const useLoadingAlert = (id: string) => {
-  let activeAlertId: string | null = null;
-  let swalOpen = false;
-  let isLoadingAlert = false;
+  const activeAlertId = useRef<string | null>(null);
+  const swalOpen = useRef(false);
+  const isLoadingAlert = useRef(false);
 
   const showLoadingAlert = (message?: string) => {
-    // Jangan tampilkan kalau alert dengan id yang sama sudah terbuka
-    if (swalOpen && activeAlertId === id) return;
+    if (swalOpen.current && activeAlertId.current === id) return;
 
-    activeAlertId = id || "deleting" || null;
-    swalOpen = true;
-    isLoadingAlert = true;
+    activeAlertId.current = id || "loading";
+    swalOpen.current = true;
+    isLoadingAlert.current = true;
 
     Swal.fire({
       title: message || "Loading...",
@@ -23,16 +20,19 @@ const useLoadingAlert = (id: string) => {
         Swal.showLoading();
       },
       willClose: () => {
-        swalOpen = false;
-        isLoadingAlert = false;
-        activeAlertId = null;
+        swalOpen.current = false;
+        isLoadingAlert.current = false;
+        activeAlertId.current = null;
       },
     });
   };
 
-  const hideLoadingAlert = (id?: string) => {
-    // Tutup hanya jika id cocok
-    if (Swal.isVisible() && isLoadingAlert && activeAlertId === id) {
+  const hideLoadingAlert = (alertId?: string) => {
+    if (
+      Swal.isVisible() &&
+      isLoadingAlert.current &&
+      activeAlertId.current === (alertId || id)
+    ) {
       Swal.close();
     }
   };

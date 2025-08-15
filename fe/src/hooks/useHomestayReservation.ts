@@ -4,12 +4,7 @@ import {
   HomestayReservationFormSchemaType,
   ReservationDetails,
 } from "@/type/schema/ReservationSchema";
-import {
-  confirmAlert,
-  cornerError,
-  hideLoadingAlert,
-  showLoadingAlert,
-} from "@/utils/AlertUtils";
+import { confirmAlert, cornerError } from "@/utils/AlertUtils";
 import { useEffect, useState } from "react";
 import useFormStep from "./useFormStep";
 import dayjs from "dayjs";
@@ -19,6 +14,7 @@ import {
   OpenMeteoDaily,
   OpenMeteoDailyResponse,
 } from "@/type/schema/OpenMeteoSchema";
+import { useGetDepositPercentage } from "@/features/web/tourism/useGetDepositPercentage";
 
 export type SelectedUnit = {
   homestay_id: string;
@@ -30,6 +26,8 @@ const useHomestayReservation = (homestay_id: string) => {
   // Stepper logic
   const { currentStep, steps, nextStep } = useFormStep(3);
   const [checkIn, setCheckIn] = useState<string | null>(null);
+  const { data: deposit_percentage, isLoading: percentageLoading } =
+    useGetDepositPercentage("KG01");
   // Data fetching
   const { data: weathers, isLoading } = useFetchWeatherPrediction();
   const { data: unitHomestay, isLoading: isLoadingUnitHomestay } =
@@ -98,17 +96,6 @@ const useHomestayReservation = (homestay_id: string) => {
     total_price_reservation: "",
   };
 
-  useEffect(() => {
-    if (isLoading || isPending) {
-      showLoadingAlert();
-    }
-    return () => {
-      setTimeout(() => {
-        hideLoadingAlert();
-      }, 1000);
-    };
-  }, [isLoading, isPending]);
-
   const handleSelectedUnit = (unit: AllUnitHomestayResponseSchema) => {
     setSelectedUnit((prev) => {
       const existingIndex = prev.findIndex(
@@ -162,9 +149,11 @@ const useHomestayReservation = (homestay_id: string) => {
   // Return values
   return {
     weathers: filteredWeather,
-    isLoading,
+    isLoading: isLoading || isLoadingUnitHomestay || percentageLoading,
+    deposit_percentage: deposit_percentage
+      ? Number(deposit_percentage?.deposit_percentage ?? "50") / 100
+      : 50,
     unitHomestay,
-    isLoadingUnitHomestay,
     selectedUnit,
     handleSelectedUnit,
     isSelected,
@@ -174,6 +163,7 @@ const useHomestayReservation = (homestay_id: string) => {
     currentStep,
     steps,
     nextStep,
+    isPending,
     reservationId,
     handleNextStep,
     setCheckIn,

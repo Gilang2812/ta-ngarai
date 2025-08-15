@@ -9,7 +9,6 @@ export default function DataVillage() {
       <section className="grid grid-cols-1 lg:grid-cols-2 ">
         <Profile />
         <Gallery />
-   
       </section>
     </main>
   );

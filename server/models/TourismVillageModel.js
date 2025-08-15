@@ -41,6 +41,10 @@ const TourismVillage = sequelize.define(
       type: DataTypes.INTEGER,
       allowNull: true,
     },
+    deposit_percentage: {
+      type: DataTypes.INTEGER(3),
+      allowNull: true,
+    },
     contact_person: {
       type: DataTypes.STRING(13),
       allowNull: true,

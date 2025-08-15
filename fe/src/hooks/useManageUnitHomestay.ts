@@ -10,7 +10,11 @@ import { useUpdateUnitHomestay } from "@/features/dashboard/homestay/useUpdateUn
 import { formatImageUrls } from "@/lib/imgUrlFormatter";
 import { UnitGallerySchema } from "@/type/schema/GalleryHomestaySchema";
 import { UnitHomestay } from "@/type/schema/HomestaySchema";
-import { confirmDeleteAlert, cornerError } from "@/utils/AlertUtils";
+import {
+  confirmDeleteAlert,
+  cornerAlert,
+  cornerError,
+} from "@/utils/AlertUtils";
 import { createFormData } from "@/utils/common/createFormData";
 import { useModal } from "@/utils/ModalUtils";
 import {
@@ -24,13 +28,10 @@ import useLoadingAlert from "./useLoadingAlert";
 export const useManageUnitHomestay = (id: string) => {
   const { data, isLoading, refetch } = useGetHomestay(id);
   const { data: unitTypes, isLoading: loadingUnitTypes } = useFetchUnitTypes();
-  const { showLoadingAlert, hideLoadingAlert } = useLoadingAlert(id);
   const { data: facilityUnits, isLoading: loadingFacilityUnits } =
     useFetchFacilityUnits();
   const { isOpen, toggleModal } = useModal();
 
-  console.log(unitTypes);
-  console.log(facilityUnits);
   const [selectedGalleries, setSelectedGalleries] = useState<
     UnitGallerySchema[] | null
   >(null);
@@ -42,6 +43,7 @@ export const useManageUnitHomestay = (id: string) => {
     useState<CreateUnitFormSchema>({
       homestay_id: id,
       unit_type: "",
+      unit_number: "",
       unit_name: "",
       description: "",
       capacity: 0,
@@ -71,8 +73,8 @@ export const useManageUnitHomestay = (id: string) => {
   const { mutateAsync: deleteUnit, isPending: deletingUnit } =
     useDeleteUnitHomestay({
       onSuccess: () => {
+        cornerAlert("Unit Homestay deleted successfully");
         refetch();
-        toggleModal();
       },
     });
 
@@ -80,6 +82,7 @@ export const useManageUnitHomestay = (id: string) => {
     {
       onSuccess: () => {
         refetch();
+        cornerAlert("Unit Homestay updated successfully");
         toggleModal();
       },
     }
@@ -91,6 +94,8 @@ export const useManageUnitHomestay = (id: string) => {
   } = useCreateFacilityUnitDetail({
     onSuccess: () => {
       refetch();
+      toggleModal();
+      cornerAlert("facility created successfully");
     },
   });
 
@@ -108,6 +113,7 @@ export const useManageUnitHomestay = (id: string) => {
       onSuccess: () => {
         refetch();
         toggleModal();
+        cornerAlert("Facility Unit created successfully");
       },
     });
   const isPending =
@@ -115,13 +121,6 @@ export const useManageUnitHomestay = (id: string) => {
     creatingUnit ||
     creatingFacilityUnitDetail ||
     updatingUnit;
-  useEffect(() => {
-    if (isPending || deletingUnit || deletingFacilityUnitDetail) {
-      showLoadingAlert("Loading...");
-    } else {
-      hideLoadingAlert();
-    }
-  }, [isPending, deletingUnit, deletingFacilityUnitDetail]);
 
   const handleAddUnit = () => {
     setUnitInitialValues({
@@ -154,11 +153,13 @@ export const useManageUnitHomestay = (id: string) => {
     unit_name,
     price,
     unit_type,
+    unit_number,
     unitGalleries,
   }: UnitHomestay) => {
     const images = formatImageUrls(
       unitGalleries?.map((item) => item.url) || []
     );
+    console.log(unit_number);
     setFormType("edit");
     setUnitInitialValues({
       homestay_id,
@@ -167,6 +168,7 @@ export const useManageUnitHomestay = (id: string) => {
       unit_name,
       price,
       unit_type,
+      unit_number,
       images: images,
     });
     toggleModal();
@@ -237,7 +239,7 @@ export const useManageUnitHomestay = (id: string) => {
       createFacilityUnitDetail(values as CreateFacilityUnitFormSchema);
       console.log(values);
     } else if (formType === "edit") {
-      // updateUnit(formData);
+      updateUnit(formData);
       console.log(values);
     } else {
       cornerError("Missing form type");

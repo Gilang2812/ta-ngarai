@@ -10,6 +10,11 @@ import DetailHomestayReservationLoader from "@/components/loading/DetailHomestay
 import { Modal } from "@/components/modal/Modal";
 import { ROUTES } from "@/data/routes";
 import { useManageUnitHomestay } from "@/hooks/useManageUnitHomestay";
+import {
+  createFacilitySchema,
+  createFacilityUnitSchema,
+  createUnitSchema,
+} from "@/validation/homestaySchema";
 import { Form, Formik } from "formik";
 import Link from "next/link";
 import { FaTimes } from "react-icons/fa";
@@ -130,7 +135,7 @@ const ManageUnitHomestay = ({ id }: Props) => {
                 <p>capacity: {unit.capacity}</p>
                 <p>{unit.description}</p>
               </article>
-              <section className="space-y-4">
+              <section className="space-y-4 py-4">
                 <p>Facility</p>
                 <Table>
                   <thead>
@@ -189,16 +194,20 @@ const ManageUnitHomestay = ({ id }: Props) => {
         >
           {formType === "gallery" ? (
             <section className="p-4 flex justify-left items-center gap-4">
-              {selectedGalleries?.map((g, index) => (
-                <ImgCraft
-                  alt={`Gallery image ${index + 1}`}
-                  width={100}
-                  className="size-24 object-cover"
-                  height={100}
-                  key={index}
-                  src={g.url}
-                />
-              ))}
+              {selectedGalleries?.length !== 0 ? (
+                selectedGalleries?.map((g, index) => (
+                  <ImgCraft
+                    alt={`Gallery image ${index + 1}`}
+                    width={100}
+                    className="size-24 object-cover"
+                    height={100}
+                    key={index}
+                    src={g.url}
+                  />
+                ))
+              ) : (
+                <p>No images added yet</p>
+              )}
             </section>
           ) : (
             <Formik
@@ -210,6 +219,13 @@ const ManageUnitHomestay = ({ id }: Props) => {
                   : facilityInitialValues
               }
               onSubmit={handleSubmit}
+              validationSchema={
+                formType === "unit" || formType === "edit"
+                  ? createUnitSchema
+                  : formType === "detail"
+                  ? createFacilityUnitSchema
+                  : createFacilitySchema
+              }
             >
               <Form>
                 {formType === "unit" || formType === "edit" ? (

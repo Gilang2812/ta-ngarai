@@ -89,12 +89,6 @@ export const confirmDeleteAlert = async (
     confirmButtonText: "Ok",
   }).then(async (result) => {
     if (result.isConfirmed) {
-      Swal.fire({
-        title: "Deleting...",
-        allowOutsideClick: false,
-        didOpen: () => Swal.showLoading(),
-      });
-
       confirm();
       return true;
     } else {

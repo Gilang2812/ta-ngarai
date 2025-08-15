@@ -1,5 +1,5 @@
 "use client";
-import { useFetchTourism } from "@/features/web/useFetchTourism"; 
+import { useFetchTourism } from "@/features/web/useFetchTourism";
 import { LabelTextSkeleton } from "@/components/loading/LabelTextSkeleton";
 import { formatPrice } from "@/lib/priceFormatter";
 import ImgCraft from "../common/ImgCraft";
@@ -8,7 +8,7 @@ export const Profile = () => {
   const { data, isLoading } = useFetchTourism("KG01");
   if (isLoading)
     return (
-      <article className="col-span-1 space-y-6 leading-loose"> 
+      <article className="col-span-1 space-y-6 leading-loose">
         <LabelTextSkeleton />
       </article>
     );
@@ -26,6 +26,10 @@ export const Profile = () => {
         <div>
           <h2 className="font-semibold text-primary">Address</h2>
           <p>{data?.name}</p>
+        </div>
+        <div>
+          <h2 className="font-semibold text-primary">Deposit Percentage</h2>
+          <p>{data?.deposit_percentage} %</p>
         </div>
         <div className="grid grid-cols-2 gap-4">
           <div>

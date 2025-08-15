@@ -4,6 +4,7 @@ const {
   editTourismById,
   createTourismGallery,
   deleteTourismGallery,
+  getDepositPercentage,
 } = require("./tourism.service");
 const router = require("express").Router();
 
@@ -15,6 +16,18 @@ router.get("/:id", async (req, res) => {
   try {
     const tourism = await getTourismById(req.params.id);
     return res.status(200).json(tourism);
+  } catch (error) {
+    console.error(error);
+    res
+      .status(error.statusCode || 500)
+      .json(error.message || "Internal server error");
+  }
+});
+
+router.get("/:id/deposit-percentage", async (req, res) => {
+  try {
+    const percentage = await getDepositPercentage(req.params.id);
+    return res.status(200).json({ deposit_percentage: percentage });
   } catch (error) {
     console.error(error);
     res

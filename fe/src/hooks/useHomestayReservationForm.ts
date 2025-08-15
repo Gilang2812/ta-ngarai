@@ -10,6 +10,7 @@ type Props = {
   selectedUnit: AllUnitHomestayResponseSchema[];
   uniqueUnitType?: string[];
   setCheckIn: (date: string) => void;
+  deposit_percentage: number;
 };
 
 const useHomestayReservationForm = ({
@@ -17,6 +18,7 @@ const useHomestayReservationForm = ({
   selectedUnit = [],
   uniqueUnitType,
   setCheckIn,
+  deposit_percentage,
 }: Props) => {
   const { values, setFieldValue, handleChange } =
     useFormikContext<HomestayReservationFormSchemaType>();
@@ -97,11 +99,16 @@ const useHomestayReservationForm = ({
     )
   );
 
-  const reservedInComingDate = useMemo(() => [
-    ...new Set(
-      reservedDate.filter((date) => dayjs(date).isAfter(dayjs().add(3, "day")))
-    ),
-  ], [reservedDate]);
+  const reservedInComingDate = useMemo(
+    () => [
+      ...new Set(
+        reservedDate.filter((date) =>
+          dayjs(date).isAfter(dayjs().add(3, "day"))
+        )
+      ),
+    ],
+    [reservedDate]
+  );
 
   useEffect(() => {
     if (reservedInComingDate.includes(values.check_in)) {
@@ -137,7 +144,11 @@ const useHomestayReservationForm = ({
     if (value === "full") {
       setFieldValue("total_deposit", grandTotal.toString(), false);
     } else if (value === "partial") {
-      setFieldValue("total_deposit", (grandTotal / 2).toString(), false);
+      setFieldValue(
+        "total_deposit",
+        (grandTotal * deposit_percentage).toString(),
+        false
+      );
     }
   };
 
