@@ -49,6 +49,7 @@ export const useAirPlane = (
         }
       }
     };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [origin, destination, duration, delay,showAirPlane]);
 
   return { currentPosition, rotation, hasArrived };

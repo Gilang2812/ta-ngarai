@@ -25,6 +25,7 @@ export const useToggleMapOptions = <T extends Record<string, boolean>>(
 
   const toggleAllOptions = useCallback(() => {
     setState((prev) => (allChecked(prev) ? unCheckAll(prev) : checkAll(prev)));
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const checkAllOptions = useCallback(() => {
@@ -33,6 +34,7 @@ export const useToggleMapOptions = <T extends Record<string, boolean>>(
     ) as T;
 
     setState(checkedState);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const unCheckAllOptions = useCallback(() => {
@@ -41,6 +43,7 @@ export const useToggleMapOptions = <T extends Record<string, boolean>>(
     ) as T;
 
     setState(uncheckedState);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
  

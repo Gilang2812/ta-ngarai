@@ -25,7 +25,7 @@ import {
 } from "@/hooks";
 import { useGoToLocation } from "@/hooks/useGoToVillage";
 import { memo, useEffect, useRef } from "react";
-import { layerType } from "@/data/layers";
+import { LayerType } from "@/data/layers";
 import { useObjectArround } from "@/hooks/useMergeObjectLayer";
 import ObjectGeoJSON from "../map/ObjectGeoJSON";
 import { useMergeALlObject } from "@/hooks/useMergeAllObject";
@@ -89,7 +89,7 @@ function MapWeb({
       hideAllObjects();
     }
   }, [open, hideAllObjects]);
-  const { isLoading, mergedRegions } = useMapLayer(layers as layerType);
+  const { isLoading, mergedRegions } = useMapLayer(layers as LayerType);
 
   useEffect(() => {
     if (souvenir) {

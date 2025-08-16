@@ -1,10 +1,10 @@
 import { baseUrl } from "@/lib/baseUrl";
 import { formatImageUrls } from "@/lib/imgUrlFormatter";
 import { useMemo } from "react";
-const useFormatImageUrl = <T>(urls: (string | undefined)[], deps?: T) => {
+const useFormatImageUrl = (urls: (string | undefined)[]) => {
   const formattedUrl = useMemo(() => {
     return formatImageUrls(urls, baseUrl);
-  }, [urls, deps]);
+  }, [urls]);
   return formattedUrl;
 };
 

@@ -1,7 +1,6 @@
 import { useFetchInvoice } from "@/features/common/useFetchInvoice";
 import { cornerAlert, showLoadingAlert } from "@/utils/AlertUtils";
 import { useEffect } from "react";
-import Swal from "sweetalert2";
 
 const useInvoice = (id: string) => {
   const { data, refetch, isFetching, isSuccess } = useFetchInvoice(id);

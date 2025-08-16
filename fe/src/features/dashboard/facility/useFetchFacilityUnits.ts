@@ -1,6 +1,5 @@
 import { axiosInstance } from "@/lib/axios";
 import {
-  HomestayFacilityDetailSchema,
   HomestayFacilitySchema,
 } from "@/type/schema/FacilitySchema";
 import { useQuery } from "@tanstack/react-query";

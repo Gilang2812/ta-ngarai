@@ -1,5 +1,4 @@
 import Button from "@/components/common/Button";
-import useAuth from "@/hooks/useAuth";
 import useUserRole from "@/hooks/useUserRole";
 import { ReservationStatus } from "@/utils/common/getReservationStatus";
 import { FaMoneyBill } from "react-icons/fa";

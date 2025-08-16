@@ -169,7 +169,7 @@ export const showLoadingAlert = (message?: string) => {
   });
 };
 
-export const hideLoadingAlert = (id?: string) => {
+export const hideLoadingAlert = () => {
   // Tutup hanya jika id cocok
   if (Swal.isVisible()) {
     Swal.close();

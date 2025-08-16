@@ -24,7 +24,6 @@ import {
   CreateUnitFormSchema,
 } from "@/validation/homestaySchema";
 import { useEffect, useState } from "react";
-import useLoadingAlert from "./useLoadingAlert";
 
 export const useManageUnitHomestay = (id: string) => {
   const { data, isLoading, refetch } = useGetHomestay(id);
@@ -255,7 +254,7 @@ export const useManageUnitHomestay = (id: string) => {
 
   return {
     data,
-    isLoading,
+    isLoading:isLoading ||loadingFacilityUnits||loadingUnitTypes,
     unitTypes,
     facilityUnits,
     formType,

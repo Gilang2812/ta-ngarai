@@ -15,6 +15,8 @@ const AdvancedControlPanel = ({
   setLayers,
   setObjects,
   showAirPlane, 
+  isAllCheckedLayers,
+  isAllCheckedObjects,withPackage
 }: Props) => {
   return (
     <MapControlPanelLayout>
@@ -28,6 +30,9 @@ const AdvancedControlPanel = ({
         setLayers={setLayers}
         setObjects={setObjects}
         showAirPlane={showAirPlane} 
+        isAllCheckedLayers={isAllCheckedLayers}
+        isAllCheckedObjects={isAllCheckedObjects} 
+        withPackage={withPackage}
       />
     </MapControlPanelLayout>
   );

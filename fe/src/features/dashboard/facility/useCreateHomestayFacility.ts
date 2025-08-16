@@ -1,7 +1,6 @@
 import { axiosInstance } from "@/lib/axios"
 import { ActionProps } from "@/type/props/ActionProps"
-import { CustomError } from "@/type/props/ErrorProps"
-import { showErrorAlert } from "@/utils/AlertUtils"
+import { onError } from "@/utils/ErrorHandler"
 import { CreateFacilityHomestaySchema } from "@/validation/facilitySchema"
 import { useMutation } from "@tanstack/react-query"
 
@@ -11,8 +10,6 @@ export const useCreateHomestayFacility = ({onSuccess}:ActionProps) => {
             await axiosInstance.post(`/homestay-facility`,body)
         },
         onSuccess,
-        onError :(e:CustomError)=>{
-            showErrorAlert(e)
-        }
+        onError 
     })
 }

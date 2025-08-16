@@ -7,4 +7,4 @@ export const layersData= {
     tourism: true,
   }
 
-export   type layerType = typeof layersData
+export   type LayerType = typeof layersData

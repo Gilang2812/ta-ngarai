@@ -1,11 +1,7 @@
 import DetailHomestayReservation from "@/components/homestay/DetailHomestayReservation";
+import { DynamicPageProps } from "@/type/props/DynamicPageProps";
 
-export const DetailHomestayReservationPage = async ({
-  params,
-}: {
-  params: Promise<{ id: string }>;
-}) => {
-  const { id } = await params;
+export default async function Page({ params }: DynamicPageProps) {
+  const { id } =await params;
   return <DetailHomestayReservation id={id} />;
-};
-export default DetailHomestayReservationPage;
+}; 

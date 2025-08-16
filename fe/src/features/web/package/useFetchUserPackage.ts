@@ -1,6 +1,6 @@
 import { axiosInstance } from "@/lib/axios";
-import { useQuery } from "@tanstack/react-query";
-import { Packages } from "./useFetchPackage";
+import { Packages } from "@/type/schema/PackageSchema";
+import { useQuery } from "@tanstack/react-query"; 
 
 const useFetchUserPackage = () => {
   return useQuery<Packages>({

@@ -7,7 +7,7 @@ import { useMutation } from "@tanstack/react-query";
 export const useUpdateAddress = ({ onSuccess }: ActionProps) => {
   return useMutation({
     mutationFn: async (address: Address) => {
-      const { data } = await axiosInstance.patch(`/addresses/${address.id}`, address);
+      const { data } = await axiosInstance.patch(`/addresses/${address.address_id}`, address);
       return data;
     },
     onSuccess,

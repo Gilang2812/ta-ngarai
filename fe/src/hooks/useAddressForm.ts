@@ -2,7 +2,6 @@ import React from "react";
 import useGetDestination from "@/features/shipping/useGetDestination";
 import { useEffect, useState } from "react";
 import { DestinationItem } from "@/type/schema/ShippingSchema";
-import { access } from "fs";
 import { useFormikContext } from "formik";
 import { Address } from "@/type/schema/CheckoutSchema";
 export const useAddessForm = () => {
@@ -56,6 +55,7 @@ export const useAddessForm = () => {
     if (destination_id) {
       setFieldValue("destination_id", destination_id);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [destination_id, data]);
   useEffect(() => {
     if (values.kode_post) {
@@ -65,6 +65,7 @@ export const useAddessForm = () => {
     return () => {
       setDestinations(null);
     };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [values.kode_post, data]);
 
   return {

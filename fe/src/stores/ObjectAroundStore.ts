@@ -12,6 +12,7 @@ const useObjectAroundStore = create<ObjectAround>((set) => ({
     souvenir: true,
     traditional: true,
     worship: true,
+    homestay: true,
   },
   checkObject: (name, check) =>
     set((state) => ({ object: { ...state.object, [name]: check } })),
