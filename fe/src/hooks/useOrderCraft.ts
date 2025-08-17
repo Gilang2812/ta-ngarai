@@ -25,7 +25,7 @@ export const useOrderCraft = () => {
     },
   });
   const handleSubmit = async (values: CraftCartForm) => {
-    console.log(values)
+    console.log(values);
     const { id_souvenir_place, craft_variant_id, jumlah } = values;
     if (actionRef.current === "cart") {
       await createCraftCart({

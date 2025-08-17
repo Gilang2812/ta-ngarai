@@ -17,9 +17,10 @@ type Props = {
     | DetailHomestayReservation
     | DetailReservationPackage;
   refetchReservation: () => void;
+  status: ReservationStatus;
 };
 
-const usePackagePayment = ({ data, refetchReservation }: Props) => {
+const usePackagePayment = ({ data, refetchReservation, status }: Props) => {
   const item_details = getItemDetailsReservation(data?.detail || []);
   const { mutate: updateReservation, isPending: isUpdatingReservation } =
     useUpdateReservation<{
@@ -53,7 +54,7 @@ const usePackagePayment = ({ data, refetchReservation }: Props) => {
       },
     });
   const handlePayment = () => {
-    const originalStatus = status.replaceAll(" ", "-") as ReservationStatus;
+    const originalStatus = status;
     if (data && (data?.token_of_deposit || data?.token_of_payment)) {
       const token =
         originalStatus === "Deposit-Required"

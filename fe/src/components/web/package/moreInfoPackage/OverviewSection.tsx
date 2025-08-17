@@ -1,9 +1,12 @@
 import Button from "@/components/common/Button";
+import ImgCraft from "@/components/common/ImgCraft";
 import ImgNotFound from "@/components/common/ImgNotFound";
 import Rating from "@/components/common/Rating";
 import { SingleContentWrapper } from "@/components/common/SingleContentWrapper";
+import { ROUTES } from "@/data/routes";
 import { useCreateCart } from "@/features/web/package/useCreateCart";
-import { imageLoading, imageNotFound, imageUrl } from "@/lib/baseUrl";
+import useUserRole from "@/hooks/useUserRole";
+import { imageLoading } from "@/lib/baseUrl";
 import { formatPrice } from "@/lib/priceFormatter";
 import {
   PackageReservationSchema,
@@ -14,7 +17,7 @@ import { Carousel } from "flowbite-react";
 import { useFormik } from "formik";
 import Image from "next/image";
 import Link from "next/link";
-import {  FaCartPlus } from "react-icons/fa6";
+import { FaCartPlus } from "react-icons/fa6";
 
 type Props = {
   data: PackageServiceGallery & { reservation: PackageReservationSchema[] };
@@ -45,61 +48,73 @@ export const OverviewSection = ({ data, isLoading }: Props) => {
   const handleaddToCart = () => {
     formik.handleSubmit();
   };
+
+  const { isUserAuth } = useUserRole();
+
   return (
-    <SingleContentWrapper className="grid min-w-fit  grid-cols-2 gap-10 p-5  ">
-      <div className=" max-w-[300px]  ">
-        <Carousel>
-          {data?.packageGalleries?.length > 0 ? (
-            data?.packageGalleries?.map((gc, index) => (
-              <div key={index} className="w-full h-full">
-                <Image
-                  src={
-                    isLoading
-                      ? imageLoading
-                      : gc?.url
-                      ? imageUrl + "/package/" + gc?.url
-                      : imageNotFound
-                  }
-                  alt="Koto Gadang"
-                  width={500}
-                  height={500}
-                  priority
-                  className=" object-cover h-full w-full rounded-xl "
-                />
-              </div>
-            ))
+    <SingleContentWrapper>
+      <div className="grid min-w-fit  grid-cols-2 gap-10 p-5">
+        <div className=" max-w-[300px]  ">
+          {isLoading ? (
+            <Image src={imageLoading} alt="loading image" />
           ) : (
-            <ImgNotFound />
+            <Carousel>
+              {data?.packageGalleries?.length > 0 ? (
+                data?.packageGalleries?.map((gc, index) => (
+                  <div key={index} className="w-full h-full">
+                    <ImgCraft
+                      src={gc.url}
+                      alt="Koto Gadang"
+                      width={500}
+                      height={500}
+                      priority
+                      className=" object-cover h-full w-full rounded-xl "
+                    />
+                  </div>
+                ))
+              ) : (
+                <ImgNotFound />
+              )}
+            </Carousel>
           )}
-        </Carousel>
-      </div>
-      <article className="space-y-4 min-w-fit  ">
-        <h1 className="text-2xl font-bold">{data.name}</h1>
-        <Rating rating={averageRating} />
-        <section>
-          <p>Start from</p>
-          <h2 className="text-lg font-semibold">{formatPrice(data?.price)}</h2>
-        </section>
-        <section>
-          <p>{data?.type?.type_name} package</p>
-          <p>Min. {data?.min_capacity} people</p>
-        </section>
-        <div className="flex   min-w-fit flex-wrap md:flex-nowrap gap-3 font-normal">
-          <Button
-            className="text-nowrap"
-            type="button"
-            variant={"primary"}
-            onClick={() => handleaddToCart()}
-          >
-            <FaCartPlus /> Add to Cart
-          </Button>
-          <Button className="text-nowrap" asChild variant={"success"}>
-            <Link href={`/web/reservation/custombooking/${data?.id}`}>
-              Book Now
-            </Link>
-          </Button>
         </div>
-      </article>
+        <article className="space-y-4 min-w-fit  ">
+          <h1 className="text-2xl font-bold">{data.name}</h1>
+          <Rating rating={averageRating} />
+          <section>
+            <p>Start from</p>
+            <h2 className="text-lg font-semibold">
+              {formatPrice(data?.price)}
+            </h2>
+          </section>
+          <section>
+            <p>{data?.type?.type_name} package</p>
+            <p>Min. {data?.min_capacity} people</p>
+          </section>
+          <div className="flex   min-w-fit flex-wrap md:flex-nowrap gap-3 font-normal">
+            <Button
+              className="text-nowrap"
+              type="button"
+              variant={"primary"}
+              onClick={() => handleaddToCart()}
+            >
+              <FaCartPlus /> Add to Cart
+            </Button>
+            <Button
+              className="text-nowrap"
+              disabled={!isUserAuth}
+              asChild
+              variant={"success"}
+            >
+              {isUserAuth ? (
+                <Link href={ROUTES.PACKAGE_RESERVATION(data.id)}>Book Now</Link>
+              ) : (
+                "book now"
+              )}
+            </Button>
+          </div>
+        </article>
+      </div>
     </SingleContentWrapper>
   );
 };

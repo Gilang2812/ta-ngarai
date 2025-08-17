@@ -23,7 +23,7 @@ export type ReservationStatus =
   | "Unreviewed";
 
 export const getReservationStatus = (
-  reservation: ReservationDetails
+  reservation?: ReservationDetails
 ): ReservationStatus => {
   if (!reservation) {
     return "Unknown";

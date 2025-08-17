@@ -62,7 +62,20 @@ export const FormInput = ({
               as={as || "input"}
               readOnly={readonly}
               {...props}
-              onChange={(e: ChangeEvent<HTMLInputElement>) => {
+              onChange={(
+                e: ChangeEvent<
+                  HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+                >
+              ) => {
+                if (
+                  props.type === "date" &&
+                  props.type === "time" &&
+                  props.type === "datetime-local"
+                ) {
+                  return field.onChange(e);
+                }
+                field.onChange(e);
+
                 handleAllowedInput(e, field.onChange);
               }}
             />

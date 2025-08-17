@@ -6,7 +6,7 @@ import { Slot } from "@radix-ui/react-slot";
 import { Spinner } from "flowbite-react";
 
 export const buttonVariants = cva(
-  "flex justify-center items-center transition active:bg-green-300 justify-center px-3 py-2 gap-2  rounded transition-ease-in-out font-normal",
+  "flex justify-center items-center transition disabled:cursor-not-allowed active:bg-green-300 justify-center px-3 py-2 gap-2  rounded transition-ease-in-out font-normal",
   {
     variants: {
       variant: {

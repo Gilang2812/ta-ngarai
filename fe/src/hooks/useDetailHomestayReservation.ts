@@ -29,6 +29,7 @@ const useDetailHomestayReservation = (id: string) => {
   const { handlePayment, isPending, item_details } = usePackagePayment({
     data,
     refetchReservation: refetchData,
+    status: status.replaceAll(" ", "-") as ReservationStatus,
   });
 
   const { isFetching, refetch } = useInvoice(id);

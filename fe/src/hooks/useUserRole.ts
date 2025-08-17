@@ -7,7 +7,8 @@ const useUserRole = () => {
   const isAdmin = user?.role === 2;
   const isSeller = !!user?.id_souvenir_place;
   const isAuth = !!user && !!token;
-  return { isAdmin, isSeller, isAuth };
+  const isUserAuth =  (!isAdmin && isAuth)
+  return { isAdmin, isSeller, isAuth, isUserAuth };
 };
 
 export default useUserRole;

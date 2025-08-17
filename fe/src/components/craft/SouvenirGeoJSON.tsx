@@ -14,6 +14,7 @@ import ImgCraft from "../common/ImgCraft";
 import { formatPrice } from "@/lib/priceFormatter";
 import { DetailCraftManagementResponse } from "@/type/schema/DetailCraftSchema";
 import { ROUTES } from "@/data/routes";
+import useUserRole from "@/hooks/useUserRole";
 
 type Props = {
   data: (SouvenirPlaceSchema & { crafts: DetailCraftManagementResponse[] })[];
@@ -55,6 +56,7 @@ const SouvenirGeoJSON = ({ data, handleSelectStore }: Props) => {
       dataSouvenir.setMap(null);
     };
   }, [map, souvenirFeatureCollection]);
+  const { isAdmin } = useUserRole();
   return data.map(
     (sp, index) =>
       sp.geom && (
@@ -100,16 +102,24 @@ const SouvenirGeoJSON = ({ data, handleSelectStore }: Props) => {
                       <p className="text-sm text-orange-500">
                         {formatPrice(cr.price)}
                       </p>
-                      <Button type="button"  asChild>
-                        <Link
-                          href={ROUTES.DETAIL_CRAFT(
-                            cr.variant.id_craft,
-                            cr.id_souvenir_place,
-                            cr.craft_variant_id
-                          )}
-                        >
-                          Order Now
-                        </Link>
+                      <Button
+                        disabled={isAdmin}
+                        type="button"
+                        asChild={!isAdmin}
+                      >
+                        {!isAdmin ? (
+                          <Link
+                            href={ROUTES.DETAIL_CRAFT(
+                              cr.variant.id_craft,
+                              cr.id_souvenir_place,
+                              cr.craft_variant_id
+                            )}
+                          >
+                            Order Nows
+                          </Link>
+                        ) : (
+                          "Order Now"
+                        )}
                       </Button>
                     </article>
                   ))}

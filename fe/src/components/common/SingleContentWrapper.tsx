@@ -26,11 +26,13 @@ export const SingleContentWrapper: FC<Props> = ({ children, className }) => {
       transition={{ duration: 0.3, ease: "easeInOut" }}
       style={{ overflow: "hidden" }}
       className={cn(
-        `  min-w-fit to-white via-white via-[4%] from-primary/80 from-[3.6%]  bg-gradient-to-br rounded-xl`,
+        `  min-w-fit to-white min-h-fit via-white via-[4%] from-primary/80 from-[3.6%]  bg-gradient-to-br rounded-xl`,
         className
       )}
     >
-      <div className="p-5" ref={ref}>{children}</div>
+      <div className="p-5" ref={ref}>
+        {children}
+      </div>
     </motion.section>
   );
 };

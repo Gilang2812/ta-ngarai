@@ -1,6 +1,7 @@
 import Button from "@/components/common/Button";
 import { SingleContentWrapper } from "@/components/common/SingleContentWrapper";
 import { ROUTES } from "@/data/routes";
+import useUserRole from "@/hooks/useUserRole";
 import { PackageServiceGallery } from "@/type/schema/PackageSchema";
 import { useService } from "@/utils/ServiceCategory";
 import Link from "next/link";
@@ -13,14 +14,17 @@ export const PackageInformation = ({
 }) => {
   const include = useService(1, data);
   const exclude = useService(0, data);
+  const { isAdmin } = useUserRole();
   return (
     <SingleContentWrapper>
       <header className="text-xl relative font-semibold text-center">
-        <Button className="absolute  w-fit  top-0 right-0" asChild>
-          <Link href={ROUTES.EDIT_DETAIL_PACKAGE(data.id)}>
-            <FaPencil /> Edit
-          </Link>
-        </Button>
+        {isAdmin &&
+          <Button className="absolute  w-fit  top-0 right-0" asChild>
+            <Link href={ROUTES.EDIT_DETAIL_PACKAGE(data.id)}>
+              <FaPencil /> Edit
+            </Link>
+          </Button>
+        }
         <h2>Package Information</h2>
       </header>
       <table className="table-fixed w-full mt-12  ">

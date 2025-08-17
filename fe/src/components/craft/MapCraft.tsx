@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import MapWeb from "../web/MapWeb";
 import { useMapCraft } from "@/hooks/useMapCraft";
 import SouvenirGeoJSON from "./SouvenirGeoJSON";
@@ -7,10 +7,11 @@ import TourismInfo from "../web/TourismInfo";
 import TourismPackage from "../web/TourismPackage";
 import { Around } from "../web/explore/Around";
 import { useTools } from "@/hooks/useTools";
-import CraftRightSection from "./CraftRightSection"; 
+import CraftRightSection from "./CraftRightSection";
+import MapSkeletonLoader from "../loading/MapSkeleton";
 
 const MapCraft = () => {
-  const { data, selectedStore, handleSelectStore } = useMapCraft();
+  const { data, selectedStore, handleSelectStore, isLoading } = useMapCraft();
   const { packageOpen, aroundOpen, toggleAround, marketplaceOpen } = useTools();
 
   const MapCraftRightGrid = () => {
@@ -29,11 +30,7 @@ const MapCraft = () => {
     );
   };
 
-  useEffect(() => {
-    if (selectedStore) {
-      console.log("MapCraft selectedStore:", selectedStore);
-    }
-  }, [selectedStore]);
+  if (isLoading) return <MapSkeletonLoader />;
   return (
     data && (
       <ContentDiffSplitted

@@ -21,6 +21,7 @@ export const DetailReservationSection = ({ id }: { id: string }) => {
           </header>
 
           <ReservationPackage data={data} />
+
           <Description data={data} />
         </section>
 

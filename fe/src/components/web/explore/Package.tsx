@@ -2,20 +2,20 @@
 import Image from "next/image";
 import React, { useState } from "react";
 import { DayButton } from "./DayButton";
-import { 
-  useFetchPackages,
-} from "@/features/web/package/useFetchPackage";
+import { useFetchPackages } from "@/features/web/package/useFetchPackage";
 import ButtonTooltip from "@/components/common/ButtonTooltip";
 import { FaRegCalendarAlt } from "react-icons/fa";
 import Loading from "@/app/loading";
 import Link from "next/link";
 import { Packages } from "@/type/schema/PackageSchema";
+import { ROUTES } from "@/data/routes";
+import useUserRole from "@/hooks/useUserRole";
 
 // Main component
 export const Package = ({ title }: { title: string }) => {
   const { data, isLoading } = useFetchPackages<Packages>({ package: true });
   const [buttonActive, setButtonActive] = useState<string | null>(null);
-  
+  const { isUserAuth } = useUserRole();
   if (isLoading) return <Loading />;
 
   const RenderPackage = () => {
@@ -39,11 +39,16 @@ export const Package = ({ title }: { title: string }) => {
               label="Book Now"
               className="rounded-none"
               variant="success"
+              disabled={!isUserAuth}
               asChild
             >
-              <Link href={"/web/explore"}>
+              {isUserAuth ? (
+                <Link href={ROUTES.PACKAGE_RESERVATION(item.id)}>
+                  <FaRegCalendarAlt />
+                </Link>
+              ) : (
                 <FaRegCalendarAlt />
-              </Link>
+              )}
             </ButtonTooltip>
 
             <DayButton

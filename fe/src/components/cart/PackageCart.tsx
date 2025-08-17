@@ -18,6 +18,7 @@ import TableManagementHeader from "../admin/TableManagementHeader";
 import ManagementFooter from "../admin/ManagementFooter";
 import { ROUTES } from "@/data/routes";
 import TableHeaderManagement from "../admin/TableHeaderManagement";
+import useUserRole from "@/hooks/useUserRole";
 
 const PackageCart = () => {
   const { data, refetch, isLoading } = useFetchUserCarts();
@@ -63,6 +64,7 @@ const PackageCart = () => {
     confirmDeleteAlert("Cart", id, () => mutate(id));
   };
 
+  const { isUserAuth } = useUserRole();
   if (data?.length == 0)
     return (
       <div className="container mx-auto px-4 py-8">
@@ -107,10 +109,15 @@ const PackageCart = () => {
                     className="text-nowrap"
                     aria-label={`Book ${item.package_id}`}
                     asChild
+                    disabled={!isUserAuth}
                   >
-                    <Link href={ROUTES.PACKAGE_RESERVATION(item.package_id)}>
-                      Book Now
-                    </Link>
+                    {isUserAuth ? (
+                      <Link href={ROUTES.PACKAGE_RESERVATION(item.package_id)}>
+                        Book Now
+                      </Link>
+                    ) : (
+                      "Book Now"
+                    )}
                   </Button>
                   <Tooltip content="delete" placement="bottom">
                     <Button

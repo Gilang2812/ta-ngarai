@@ -17,6 +17,7 @@ import Link from "next/link";
 import useTravelRoute from "@/hooks/useTravelRoute";
 import ButtonTooltip from "../common/ButtonTooltip";
 import { ROUTES } from "@/data/routes";
+import useUserRole from "@/hooks/useUserRole";
 
 type MarkerProps = {
   position: LatLngLiteral;
@@ -58,6 +59,8 @@ export const MarkerObject = ({
   const { icon, text } = getIconAndTextSecondLine();
   const { icon: thirdIcon, text: thirdText } = getIconAndTextThirdLine();
   const { routes, handleAddUniqueRoute } = useTravelRoute();
+  const { isUserAuth } = useUserRole();
+
   return (
     <MapMarker
       icon={{
@@ -107,12 +110,16 @@ export const MarkerObject = ({
                 </ButtonTooltip>
               )}
             </section>
-            {properties.id.startsWith('HO') && (
+            {properties.id.startsWith("HO") && (
               <section className="w-full flex items-center justify-center">
-                <Button variant={"success"} asChild>
-                  <Link href={ROUTES.HOMESTAY_RESERVATION(properties.id)}>
-                    Book Now
-                  </Link>
+                <Button disabled={!isUserAuth} variant={"success"} asChild>
+                  {isUserAuth ? (
+                    <Link href={ROUTES.HOMESTAY_RESERVATION(properties.id)}>
+                      Book Now
+                    </Link>
+                  ) : (
+                    "Book Now"
+                  )}
                 </Button>
               </section>
             )}

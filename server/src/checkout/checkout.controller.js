@@ -11,7 +11,7 @@ const {
   getReviewGalleries,
   deleteReviewGalleryById,
 } = require("../reviewGallery/reviewGallery.service");
-const { 
+const {
   createShipping,
   getUserHistory,
   updateShipping,
@@ -25,7 +25,7 @@ const {
   // getUserHistory
 } = require("./checkout.service");
 const fs = require("fs");
-const { updateStatusSchema } = require("./checout.validation"); 
+const { updateStatusSchema } = require("./checout.validation");
 
 const router = require("express").Router();
 
@@ -34,6 +34,7 @@ router.post("/", async (req, res, next) => {
     const items = req.body.items;
     console.log("items", items);
     const customer_id = req.user.id;
+    
     const newItems = await checkoutOrder(items, customer_id);
 
     res.status(201).json(newItems);
@@ -129,7 +130,7 @@ router.patch(
     try {
       const { id } = req.params;
       const { status, isClose } = req.body;
-      const shippings = req.body.shippings || []; 
+      const shippings = req.body.shippings || [];
       let paymentStatus = null;
       if (!Number(isClose)) {
         paymentStatus = await getPaymentStatus(id);
@@ -208,7 +209,7 @@ router.patch(
       const { review_text, review_rating, shipping_id, seller_response } =
         req.body;
       let updatedItem = null;
-      console.log("ini lagi di test"); 
+      console.log("ini lagi di test");
       if (seller_response || seller_response == "") {
         updatedItem = await updateItemsCheckout(
           { checkout_id, craft_variant_id, id_souvenir_place },

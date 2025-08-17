@@ -1,6 +1,6 @@
 import Button from "@/components/common/Button";
 import { Table } from "@/components/common/Table";
-import { PaymentButton } from "@/components/managereservation/payment/PaymentButton";
+import Payment from "@/components/managereservation/payment/Payment";
 import ButtonConfirmation from "@/components/reservation/ButtonConfirmation";
 import ReservationStep from "@/components/reservation/ReservationStep";
 import useInvoice from "@/hooks/useInvoice";
@@ -29,7 +29,7 @@ export const PaymentSection = ({
       <header className="text-lg text-center    ">
         <h2>Payment</h2>
       </header>
-      <section className="capitalize flex items-center  ">
+      <section className="capitalize flex gap-4 items-center  ">
         {status === "Awaiting-Approval" ? (
           <>
             <ButtonConfirmation
@@ -40,15 +40,17 @@ export const PaymentSection = ({
               status={status}
               total_price={data.total_price}
             />
-            <PaymentButton handlePayment={handlePayment} status={status} />
           </>
         ) : (
-          <Button
-            onClick={() => createInvoice()}
-            className="btn btn-regsuccess"
-          >
-            <FaDownload /> Download Invoice
-          </Button>
+          <>
+            <Payment handlePayment={handlePayment} status={status} />
+            <Button
+              onClick={() => createInvoice()}
+              className="btn btn-regsuccess"
+            >
+              <FaDownload /> Download Invoice
+            </Button>
+          </>
         )}
       </section>
       <Table className="w-fit">

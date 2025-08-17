@@ -86,7 +86,7 @@ export const DayButton = ({
   return packageDays?.map((day, index) => (
     <div key={index} className="flex   text-sm font-normal  ">
       <Button
-        className="rounded-r-none px-2 "
+        className="rounded-r-none px-2 h-full "
         text={`day ${day.day}`}
         onClick={() =>
           handleAllDirection(`${day.day}${day.package_id}`, day.detailPackages)
@@ -103,7 +103,7 @@ export const DayButton = ({
         dismissOnClick={false}
         renderTrigger={() => (
           <ButtonTooltip
-            className="rounded-l-none"
+            className="rounded-l-none h-full"
             label="activities"
             Icon={FaCaretDown}
             active={

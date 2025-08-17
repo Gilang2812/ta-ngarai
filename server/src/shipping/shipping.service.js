@@ -33,7 +33,6 @@ const getUserHistory = async (condition) => {
   const shipping = await userHistory(condition);
   const checkoutWithPaymentStatus = await Promise.all(
     shipping.map(async (item) => {
-      console.log("item text", item);
       const plainItem = item.toJSON();
       const status = await getPaymentStatus(item.shippingItems[0].checkout.id);
       let paymentStatus = "";
@@ -62,7 +61,7 @@ const getSouvenirTransaction = async (condition) => {
       return { paymentStatus: paymentStatus, ...item.toJSON() };
     })
   );
-  return shippingWithPaymentStatus  ;
+  return shippingWithPaymentStatus;
 };
 
 const getUserHistoryById = async (id) => {

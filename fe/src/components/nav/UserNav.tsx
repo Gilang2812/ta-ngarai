@@ -4,11 +4,11 @@ import { FaInstagram, FaList, FaMap, FaTiktok } from "react-icons/fa";
 import { FaCalendar, FaHouse, FaSquarePollHorizontal } from "react-icons/fa6";
 import { DropDownItem } from "@/components/nav/DropDownItem";
 import { DropDownChildrenItem } from "./DropDownChildren";
-import { TbNeedleThread } from "react-icons/tb"; 
+import { TbNeedleThread } from "react-icons/tb";
 import { ROUTES } from "@/data/routes";
 import useUserRole from "@/hooks/useUserRole";
 export const UserNav = () => {
-  const { isAuth, isAdmin } = useUserRole();
+  const { isAuth, isAdmin, isUserAuth } = useUserRole();
   return (
     <nav className="mt-12 font-bold">
       <ul className="space-y-1">
@@ -22,11 +22,11 @@ export const UserNav = () => {
               label="With Our Package"
               link={ROUTES.EXPLORE_WITH_PACKAGE}
             />
-            {isAuth && (
+            {isUserAuth && (
               <DropDownChildrenItem
                 icon={FaList}
-                label="With My Village"
-                link={ROUTES.EXPLORE_WITH_MY_VILLAGE}
+                label="With My Package"
+                link={ROUTES.EXPLORE_WITH_MY_PACKAGE}
               />
             )}
           </DropDownItem>
@@ -39,24 +39,24 @@ export const UserNav = () => {
           />
         </li>
         {isAuth && (
-          <>
-            <li>
-              <SideNavItem
-                icon={BsFillGridFill}
-                label="Dashboard"
-                link={
-                  isAdmin ? ROUTES.MANAGERESERVATION : ROUTES.CRAFT_TRANSACTION
-                }
-              />
-            </li>
-            <li>
-              <SideNavItem
-                icon={FaCalendar}
-                label="my transaction"
-                link={ROUTES.MY_TRANSACTION}
-              />
-            </li>
-          </>
+          <li>
+            <SideNavItem
+              icon={BsFillGridFill}
+              label="Dashboard"
+              link={
+                isAdmin ? ROUTES.MANAGERESERVATION : ROUTES.CRAFT_TRANSACTION
+              }
+            />
+          </li>
+        )}
+        {isUserAuth && (
+          <li>
+            <SideNavItem
+              icon={FaCalendar}
+              label="my transaction"
+              link={ROUTES.MY_TRANSACTION}
+            />
+          </li>
         )}
         <li>
           <SideNavItem

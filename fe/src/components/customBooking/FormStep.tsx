@@ -5,20 +5,18 @@ import { NextStepButton } from "./NextStepButton";
 import { Guide } from "./Guide";
 import { StepFooter } from "./StepFooter";
 import { PrevStepButton } from "./PrevStepButton";
-import { FormSubmit } from "../inputs/FormSubmit"; 
+import { FormSubmit } from "../inputs/FormSubmit";
 import { useFormikContext } from "formik";
 import { ReservationFormSchema } from "./SecondStep";
 import { useService } from "@/utils/ServiceCategory";
 import { DetailServiceSchema } from "@/type/schema/ServiceSchema";
-import { PackageServiceGallery } from "@/type/schema/PackageSchema";
+import { PackageServiceGallery } from "@/type/schema/PackageSchema"; 
 type Props = {
   nextStep: () => void;
   prevStep: () => void;
   currentStep: number;
   steps: number[];
   handleCheck: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  handleTotalPeopleInput: (e: React.FormEvent<HTMLInputElement>) => void;
-  handleDateInput: (e: React.ChangeEvent<HTMLInputElement>) => void;
   total: number | null;
   minReservation: string | number;
   isValid: string | false;
@@ -32,8 +30,6 @@ export const FormStep: FC<Props> = ({
   currentStep,
   steps,
   handleCheck,
-  handleTotalPeopleInput,
-  handleDateInput,
   total,
   minReservation,
   isValid,
@@ -45,7 +41,7 @@ export const FormStep: FC<Props> = ({
   const isVisibile = isFirstStep || isLastStep;
   const include = useService(1, packageItem);
   const exclude = useService(0, packageItem);
-  const { values } = useFormikContext<ReservationFormSchema>();
+  const { values, setFieldValue } = useFormikContext<ReservationFormSchema>();
 
   const LastStepForm = () => {
     return (
@@ -154,7 +150,6 @@ export const FormStep: FC<Props> = ({
               name="total_people"
               type="number"
               label="total people"
-              onInput={handleTotalPeopleInput}
               readonly={isLastStep}
             />
             <FormInput
@@ -193,7 +188,6 @@ export const FormStep: FC<Props> = ({
               name="check_in"
               type="date"
               label="Check in"
-              onChange={handleDateInput}
               readonly={isLastStep}
               min={minReservation}
             />
@@ -208,7 +202,7 @@ export const FormStep: FC<Props> = ({
             />
             <FormInput name="check_out_time" type="text" readonly />
           </div>
-       
+
           <div className={`${!isLastStep && "hidden"} space-y-4`}>
             <FormInput
               placeholder="Make request that you want to be on the reservation record. such as the proposed food menu and price range of the package"
@@ -218,27 +212,29 @@ export const FormStep: FC<Props> = ({
               as="textarea"
               rows={4}
             />
-           {isWithHomestay&& <Accordion defaultOpen={true} title="Homestay Units">
-              <div className=" overflow-x-scroll">
-                <table className="[&_th]:p-2 w-full">
-                  <thead>
-                    <tr className="border-b-2">
-                      <th>Date</th>
-                      <th>ID</th>
-                      <th>Type</th>
-                      <th>Number</th>
-                      <th>Homestay</th>
-                      <th>Unit</th>
-                      <th>Price</th>
-                      <th>Cpty</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <RenderHomestayUnits />
-                  </tbody>
-                </table>
-              </div>
-            </Accordion>}
+            {isWithHomestay && (
+              <Accordion defaultOpen={true} title="Homestay Units">
+                <div className=" overflow-x-scroll">
+                  <table className="[&_th]:p-2 w-full">
+                    <thead>
+                      <tr className="border-b-2">
+                        <th>Date</th>
+                        <th>ID</th>
+                        <th>Type</th>
+                        <th>Number</th>
+                        <th>Homestay</th>
+                        <th>Unit</th>
+                        <th>Price</th>
+                        <th>Cpty</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <RenderHomestayUnits />
+                    </tbody>
+                  </table>
+                </div>
+              </Accordion>
+            )}
           </div>
         </section>
 

@@ -33,7 +33,7 @@ export const ROUTES = {
   MANAGE_CRAFT_TRANSACTION: "/dashboard/transactioncraft",
   CRAFT_TRANSACTION: "/dashboard/craft",
   EXPLORE_WITH_PACKAGE: "/web/explore",
-  EXPLORE_WITH_MY_VILLAGE: "/web/mypackage",
+  EXPLORE_WITH_MY_PACKAGE: "/web/mypackage",
   MY_TRANSACTION: "/web/reservation",
   MANAGE_VILLAGE: "/dashboard/koto",
   ANNOUNCEMENT: "/dashboard/announcement",

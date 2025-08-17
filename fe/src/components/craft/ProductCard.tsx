@@ -6,15 +6,26 @@ import { formatPrice } from "@/lib/priceFormatter";
 import Link from "next/link";
 import { baseUrl } from "@/lib/baseUrl";
 import { DetailCraftUserResponse } from "@/type/schema/DetailCraftSchema";
+import { ROUTES } from "@/data/routes";
+import useUserRole from "@/hooks/useUserRole";
 
 interface ProductCardProps {
   product: DetailCraftUserResponse;
 }
 
 export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
+  const { isUserAuth } = useUserRole();
   return (
     <Link
-      href={`craft/${product?.variant?.id_craft}/${product.id_souvenir_place}?idvr=${product?.variant?.id}`}
+      href={
+        isUserAuth
+          ? ROUTES.DETAIL_CRAFT(
+              product?.variant?.id_craft,
+              product.id_souvenir_place,
+              product?.craft_variant_id
+            )
+          : "#"
+      }
     >
       <div
         aria-label={`Go to ${product?.variant?.name} details`}

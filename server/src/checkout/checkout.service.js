@@ -79,6 +79,9 @@ const getIncompleteCheckout = async ({
   if (!existingCheckout) {
     console.log("dont exist");
     const address = await getUserAddress({ customer_id });
+    if (!address) {
+      throw new CustomError("complete your address first ", 404);
+    }
     console.log("address checkout", address);
     console.log("customer_id checkout", customer_id);
     existingCheckout = await createCheckout({
@@ -87,6 +90,7 @@ const getIncompleteCheckout = async ({
       checkout_date: isCheckout ? new Date() : null,
     });
   }
+  console.log("new existing checkout", existingCheckout);
   return existingCheckout;
 };
 

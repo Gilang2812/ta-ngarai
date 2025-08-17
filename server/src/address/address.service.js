@@ -25,6 +25,7 @@ const getUserAddress = async ({ customer_id }) => {
   if (!address) {
     address = await getOneAddress({ customer_id, is_primary: 0 });
   }
+
   return address;
 };
 

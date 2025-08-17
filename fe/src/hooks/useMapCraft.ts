@@ -16,13 +16,7 @@ export const useMapCraft = () => {
     crafts: DetailCraftManagementResponse[];
   }>(true);
 
-  useEffect(() => {
-    if (isLoading) {
-      showLoadingAlert("fetching map");
-    }
-   
-  }, [isLoading]);
-
+ 
   const {
     actionRef,
     handleSubmit,
