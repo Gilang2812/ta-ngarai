@@ -10,7 +10,7 @@ import { useFormikContext } from "formik";
 import { ReservationFormSchema } from "./SecondStep";
 import { useService } from "@/utils/ServiceCategory";
 import { DetailServiceSchema } from "@/type/schema/ServiceSchema";
-import { PackageServiceGallery } from "@/type/schema/PackageSchema"; 
+import { PackageServiceGallery } from "@/type/schema/PackageSchema";
 type Props = {
   nextStep: () => void;
   prevStep: () => void;
@@ -41,7 +41,7 @@ export const FormStep: FC<Props> = ({
   const isVisibile = isFirstStep || isLastStep;
   const include = useService(1, packageItem);
   const exclude = useService(0, packageItem);
-  const { values, setFieldValue } = useFormikContext<ReservationFormSchema>();
+  const { values } = useFormikContext<ReservationFormSchema>();
 
   const LastStepForm = () => {
     return (
