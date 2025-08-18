@@ -1,6 +1,10 @@
 const { Op } = require("sequelize");
 const { User } = require("../../models/UsersModels");
-const { AuthGroupUsers, AuthGroup } = require("../../models/relation");
+const {
+  AuthGroupUsers,
+  AuthGroup,
+  DetailUserSouvenir,
+} = require("../../models/relation");
 const bcrypt = require("bcrypt");
 
 const findUsers = async () => {
@@ -16,7 +20,16 @@ const findUniqueUsernameOrEmail = async (username, email) => {
 };
 
 const findUser = async (criteria) => {
-  const user = await User.findOne({ where: criteria });
+  console.log('disini kah')
+  const user = await User.findOne({
+    where: criteria,
+    include: [
+      {
+        model: DetailUserSouvenir,
+        as: "detailSouvenir",
+      },
+    ],
+  });
 
   return user;
 };

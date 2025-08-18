@@ -85,7 +85,7 @@ const ReservationStep = ({ reservation }: Props) => {
           )}
           {reservation.cancel_date && (
             <tr>
-              <td>Status Cancell</td>
+              <td>Status Cancel</td>
 
               <td>
                 :{" "}
@@ -104,13 +104,26 @@ const ReservationStep = ({ reservation }: Props) => {
               <td>: {localeDayDate(reservation.refund_date)}</td>
             </tr>
           )}
-          {reservation.refund_date && (
-            <tr>
-              <td>Status Cancell</td>
+          {reservation.refund_date &&
+            (reservation.refund_check === null ? (
+              <tr>
+                <td>Status Refund</td>
 
-              <td>Thank you.</td>
-            </tr>
-          )}
+                <td>: Waiting for the customer’s refund check.</td>
+              </tr>
+            ) : reservation.refund_check == 0 ? (
+              <tr>
+                <td>Status Refund</td>
+                <td>: Sorry. The proof of refund is incorrect.</td>
+              </tr>
+            ) : (
+              reservation.refund_check == 1 && (
+                <tr>
+                  <td>Status Refund</td>
+                  <td>: Thank you. The proof of refund is correct</td>
+                </tr>
+              )
+            ))}
           {getReservationStatus(reservation) === "Unreviewed" && (
             <tr>
               <td className="flex items-center gap-2">Reservation</td>

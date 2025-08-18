@@ -32,7 +32,11 @@ export type UserLogin = {
   name: string;
   phone: string;
   address: string;
-  id_souvenir_place: string;
+  store: {
+    user_id: string;
+    id_souvenir_place: string;
+    isOwner: number;
+  }[];
 };
 
 export type LoginResponse = {

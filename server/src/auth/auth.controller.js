@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const { userLogin, userRegister, googleLogin } = require("./auth.service");  
+const { userLogin, userRegister, googleLogin } = require("./auth.service");
 const { editUser } = require("../user/user.service.js");
 const { verifyToken } = require("../middlewares/authentication.js");
 

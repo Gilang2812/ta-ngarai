@@ -1,3 +1,4 @@
+const dayjs = require("dayjs");
 const getDaysOfStay = require("../../utils/getDaysOfStay");
 const getPaymentStatusText = require("../../utils/getPaymentStatusText");
 const { verifyToken } = require("../middlewares/authentication");
@@ -15,6 +16,7 @@ const {
   editReservation,
   destroyReservation,
 } = require("./reservation.service");
+const imageUpload = require("../../middlewares/imageUploads");
 
 const router = require("express").Router();
 
@@ -199,7 +201,7 @@ router.post("/create", async (req, res, next) => {
       days_of_stay = await getCountPackageDays(package_id);
     }
 
-    const homestayUnitsReservation = await insertReservation({
+    const newReservation = await insertReservation({
       user_id: req.user.id,
       package_id,
       request_date: new Date(),
@@ -213,15 +215,16 @@ router.post("/create", async (req, res, next) => {
 
     const newDetailReservation = await bulkInsertDetailReservation({
       selectedUnits,
-      reservation_id: homestayUnitsReservation.id,
+      reservation_id: newReservation.id,
       check_in,
       days_of_stay,
     });
-    homestayUnitsReservation.detailUnits = newDetailReservation;
+    newReservation.detailUnits = newDetailReservation;
     const response = (unit = {
-      ...homestayUnitsReservation.dataValues,
+      ...newReservation.toJSON(),
       detailUnits: newDetailReservation,
     });
+    console.log("new reservation", response);
     console.log(response);
     return res.status(200).json(response);
   } catch (error) {
@@ -229,10 +232,11 @@ router.post("/create", async (req, res, next) => {
   }
 });
 
-router.patch("/:id", async (req, res, next) => {
+router.patch("/:id", imageUpload().single("images"), async (req, res, next) => {
   try {
     const { id } = req.params;
     const updatedData = req.body;
+
     const { review_rating: rating, ...rest } = updatedData;
     const result = await editReservation({ id }, { ...rest, rating });
     return res.status(200).json(result);
@@ -249,27 +253,29 @@ router.patch("/payment/:id", async (req, res, next) => {
       total_price,
       deposit,
       status,
+      deposit_date,
       item_details,
       ...rest
     } = req.body;
     let transaction = null;
     const isFull = total_price === deposit;
-    console.log("statust payments", parseInt(status) !== 2);
-    console.log("statust payments benar", parseInt(status) === 2);
-    console.log("statust payments asli", typeof status);
-    if (parseInt(status) !== 2) {
+    const isComplete = isFull || deposit_date;
+    console.log(deposit);
+    console.log(total_price);
+    if (parseInt(status) != 2) {
       transaction = await createTokenTransaction({
-        order_id: isFull ? id + "-FULL" : id + "-DEP",
-        gross_amount: isFull ? total_price : deposit,
+        order_id: isComplete ? id + "-FULL" : id + "-DEP",
+        gross_amount: isComplete ? total_price - deposit ?? 0 : deposit,
         // item_details,
       });
     }
 
     const body = {
       rating,
-      [isFull ? "token_of_payment" : "token_of_deposit"]: transaction?.token,
+      [isComplete ? "token_of_payment" : "token_of_deposit"]: transaction?.token,
       ...rest,
       status,
+      confirmation_date: dayjs(),
     };
 
     const updatedReservation = await editReservation({ id }, body);

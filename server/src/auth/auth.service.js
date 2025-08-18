@@ -23,7 +23,7 @@ const getLoginResponse = (user) => {
     role: user.id_role,
     phone: user.phone,
     address: user.address,
-    id_souvenir_place: user.id_souvenir_place,
+    store: user.detailSouvenir,
   };
 };
 const userLogin = async (email = "", password) => {
@@ -50,11 +50,13 @@ const userLogin = async (email = "", password) => {
 const googleLogin = async (credential) => {
   const decoded = jwt.decode(credential);
   const { email, name } = decoded;
+  console.log("disinikah error nya");
   if (!email) {
     throw new CustomError("Invalid Google credential", 400);
   }
 
   let user = await findUser({ email });
+  console.log("coba disini");
   if (!user) {
     user = await User.create({
       email,
@@ -93,4 +95,4 @@ const userRegister = async (body) => {
   return user;
 };
 
-module.exports = { userLogin, userRegister, googleLogin };
+module.exports = { userLogin, userRegister, googleLogin, generateToken };

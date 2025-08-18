@@ -47,8 +47,8 @@ const createNewUser = async (data) => {
 
 const editUser = async (key, body) => {
   const existingUser = await getUser(key);
-  Object.assign(existingUser, body); 
-  await existingUser.save();  
+  Object.assign(existingUser, body);
+  await existingUser.save();
 
   return existingUser;
 };

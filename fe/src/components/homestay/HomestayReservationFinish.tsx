@@ -41,8 +41,6 @@ const HomestayReservationFinish: React.FC<ReservationSuccessProps> = ({
     }
   }, [countdown, currentStep, reservationId, router]);
 
- 
-
   return (
     <section
       className={cn("  w-full  p-8 text-center", {
@@ -83,12 +81,7 @@ const HomestayReservationFinish: React.FC<ReservationSuccessProps> = ({
 
       {/* Actions Section */}
       <nav className="space-y-6">
-        <Button
-          type="button"
-          className="h-fit py-1 mx-auto"
-          aria-describedby="redirect-notice"
-          asChild
-        >
+        <Button type="button" className="h-fit py-1 mx-auto" asChild>
           <Link href={ROUTES.HOMESTAY_RESERVATION_DETAIL(reservationId || "1")}>
             View My Reservation Details
           </Link>

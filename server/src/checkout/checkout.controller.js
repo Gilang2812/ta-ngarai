@@ -34,7 +34,7 @@ router.post("/", async (req, res, next) => {
     const items = req.body.items;
     console.log("items", items);
     const customer_id = req.user.id;
-    
+
     const newItems = await checkoutOrder(items, customer_id);
 
     res.status(201).json(newItems);

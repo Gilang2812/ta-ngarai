@@ -15,6 +15,7 @@ type Props = {
   nextStep: () => void;
   prevStep: () => void;
   packageItem: PackageServiceGallery;
+  isPending:boolean;
   isWithHomestay?: boolean;
 };
 export const ReservationForms: FC<Props> = ({
@@ -24,21 +25,17 @@ export const ReservationForms: FC<Props> = ({
   steps,
   packageItem,
   isWithHomestay,
+  isPending
 }) => {
   const [total, setTotal] = useState<number | null>(null);
   const { values, setFieldValue } = useFormikContext<FormReservationSchema>();
   const [reqValid, setReqValid] = useState({
     guide: false,
-    agree: !isWithHomestay,
     total: values.total_people,
     date: "",
   });
 
-  const isValid =
-    reqValid.guide &&
-    reqValid.agree &&
-    Number(reqValid.total) > 0 &&
-    reqValid.date;
+  const isValid = reqValid.guide && Number(reqValid.total) > 0 && reqValid.date;
 
   const minReservation = dayjs().add(3, "day").toISOString().split("T")[0];
 
@@ -105,6 +102,7 @@ export const ReservationForms: FC<Props> = ({
         total={total}
         packageItem={packageItem}
         isWithHomestay={isWithHomestay}
+        isPending={isPending}
       />
       {isLoading ? (
         <Loading />
@@ -115,7 +113,7 @@ export const ReservationForms: FC<Props> = ({
           nextStep={nextStep}
           prevStep={prevStep}
           packageTotal={total}
-          unitHomestayReservation={unitHomestay}
+          unitHomestayReservation={unitHomestay} 
         />
       )}
     </Form>

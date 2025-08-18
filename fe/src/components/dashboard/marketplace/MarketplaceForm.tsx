@@ -1,7 +1,7 @@
 import Button from "@/components/common/Button";
 import { FormInput } from "@/components/inputs/FormInput";
 import GoogleMapDrawing from "@/components/map/GoogleMapDrawing";
-import useFormMarketplace from "@/hooks/useFormMarketplace"; 
+import useFormMarketplace from "@/hooks/useFormMarketplace";
 import {
   FormMarketplace,
   marketplaceSchema,

@@ -33,7 +33,7 @@ const Reservation = sequelize.define(
     note: {
       type: DataTypes.TEXT,
       allowNull: true,
-    }, 
+    },
     deposit: {
       type: DataTypes.INTEGER,
       allowNull: false,

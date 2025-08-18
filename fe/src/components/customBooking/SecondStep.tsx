@@ -16,7 +16,7 @@ type Props = {
   currentStep: number;
   unitHomestayReservation?: UnitHomestayReservation[];
   isWithHomestay?: boolean;
-  packageTotal: number | null;
+  packageTotal: number | null; 
 };
 
 export type ReservationFormSchema = FormReservationSchema & {

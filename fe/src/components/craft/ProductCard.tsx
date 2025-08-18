@@ -46,6 +46,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             rating={product?.items?.length}
             reviewCount={product?.items?.length}
           />
+          <p className="bg-purple-500/50 text-white"></p>
           <h3 className="capitalize mt-2 text-sm font-medium text-gray-900 line-clamp-2">
             {`${product?.variant?.craft.name} ${product?.variant?.name}`}
           </h3>

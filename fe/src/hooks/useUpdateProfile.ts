@@ -8,7 +8,7 @@ import { UpdateProfileForm } from "@/validation/authSchema";
 const useUpdateProfile = () => {
   const router = useRouter();
   const { user, updateUser } = useAuth();
-  
+
   const { mutate } = useUpdateUserProfile({
     onSuccess: (data) => {
       cornerAlert("Profile updated successfully");

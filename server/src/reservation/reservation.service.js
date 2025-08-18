@@ -29,7 +29,6 @@ const getHomestayReservation = async (id) => {
 };
 
 const insertReservation = async (data) => {
-  console.log("Insert Reservation Data:", data);
   const reservation = await createReservation(data);
   return reservation;
 };
@@ -53,8 +52,7 @@ const bulkInsertDetailReservation = async ({
     }
     return detail;
   });
-
-  console.log("bulk insert ", newDetailReservations.flat);
+  
   const detailReservations = await bulkCreateDetailReservation(
     newDetailReservations
   );

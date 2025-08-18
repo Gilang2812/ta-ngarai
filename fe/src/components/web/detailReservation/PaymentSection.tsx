@@ -1,7 +1,9 @@
 import Button from "@/components/common/Button";
 import { Table } from "@/components/common/Table";
 import Payment from "@/components/managereservation/payment/Payment";
+import ButtonCancel from "@/components/reservation/ButtonCancel";
 import ButtonConfirmation from "@/components/reservation/ButtonConfirmation";
+import ButtonRefundProof from "@/components/reservation/ButtonRefundProof";
 import ReservationStep from "@/components/reservation/ReservationStep";
 import useInvoice from "@/hooks/useInvoice";
 import { formatPrice } from "@/lib/priceFormatter";
@@ -45,6 +47,7 @@ export const PaymentSection = ({
           <>
             <Payment handlePayment={handlePayment} status={status} />
             <Button
+              variant={"regEdit"}
               onClick={() => createInvoice()}
               className="btn btn-regsuccess"
             >
@@ -52,21 +55,41 @@ export const PaymentSection = ({
             </Button>
           </>
         )}
+        <ButtonRefundProof
+          id={data.id}
+          refund_check={data.refund_check}
+          proof_refund={data.proof_refund}
+          refetchData={refetch}
+        />
+        <ButtonCancel
+          cancel_date={data.cancel_date}
+          check_in={data.check_in}
+          deposit={data.deposit}
+          refetchData={refetch}
+          depositRefundPercentage={50}
+          deposit_date={data.deposit_date}
+          id={data.id}
+          payment_date={data.payment_date}
+          refund_date={data.refund_date}
+          total_price={data.total_price}
+        />
       </section>
-      <Table className="w-fit">
-        <tbody>
-          <tr>
-            <td className="min-w-[250px]">Total Reservation</td>
-            <td>:</td>
-            <td>{formatPrice(data.total_price)}</td>
-          </tr>
-          <tr className="border-b">
-            <td>Deposit Reservation</td>
-            <td>:</td>
-            <td>{formatPrice(data.deposit)}</td>
-          </tr>
-        </tbody>
-      </Table>
+      <div className="border-b w-full">
+        <Table className="w-fit">
+          <tbody>
+            <tr>
+              <td className="min-w-[250px]">Total Reservation</td>
+              <td>:</td>
+              <td>{formatPrice(data.total_price)}</td>
+            </tr>
+            <tr>
+              <td>Deposit Reservation</td>
+              <td>:</td>
+              <td>{formatPrice(data.deposit)}</td>
+            </tr>
+          </tbody>
+        </Table>
+      </div>
       <ReservationStep reservation={data} />
     </div>
   );

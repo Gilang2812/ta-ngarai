@@ -32,7 +32,7 @@ const ButtonConfirmation = ({
   const { isAdmin } = useUserRole();
   const initialValues: ConfirmationFormSchema = {
     id: reservation_id,
-    status: "" as unknown as number,
+    status: "",
     feedback: "",
   };
 
@@ -63,6 +63,7 @@ const ButtonConfirmation = ({
     // Handle form submission logic here
     updateTokenReservation({
       ...values,
+      status: values.status,
       item_details: [
         ...item_details,
         {
@@ -78,57 +79,58 @@ const ButtonConfirmation = ({
   };
 
   return (
-    (isAdmin && status === "Rejected") ||
-    (status === "Awaiting-Approval" && (
-      <>
-        <Button onClick={toggleModal}>
-          <FaEnvelope />
-          Confirmation
-        </Button>
-        <Modal title="Confirmation" isOpen={isOpen} onClose={toggleModal}>
-          <Formik
-            initialValues={initialValues}
-            onSubmit={handleSubmit}
-            validationSchema={confirmationSchema}
-          >
-            <Form className="space-y-4 p-4">
-              <h2 className="text-lg font-bold">Status Confirmation</h2>
-              <div className="flex gap-4 items-center [&_label]:border-2 [&_label]:p-2 [&_label]:rounded-full [&_label]:gap-2 [&_label]:items-center [&_label]:flex">
-                <label>
-                  <Field type="radio" name="status" value={2} />
-                  Rejected
-                </label>
-                <label>
-                  <Field type="radio" name="status" value={1} />
-                  Accepted
-                </label>
-              </div>
-              <ErrorMessage
-                name="status"
-                component="p"
-                className="text-red-600"
-              />
-              <FormInput
-                as="textarea"
-                name="feedback"
-                label="Feedback"
-                rows={4}
-                placeholder="Leave your feedback here..."
-              />
+    isAdmin &&
+    (status === "Rejected" ||
+      (status === "Awaiting-Approval" && (
+        <>
+          <Button onClick={toggleModal}>
+            <FaEnvelope />
+            Confirmation
+          </Button>
+          <Modal title="Confirmation" isOpen={isOpen} onClose={toggleModal}>
+            <Formik
+              initialValues={initialValues}
+              onSubmit={handleSubmit}
+              validationSchema={confirmationSchema}
+            >
+              <Form className="space-y-4 p-4">
+                <h2 className="text-lg font-bold">Status Confirmation</h2>
+                <div className="flex gap-4 items-center [&_label]:border-2 [&_label]:p-2 [&_label]:rounded-full [&_label]:gap-2 [&_label]:items-center [&_label]:flex">
+                  <label>
+                    <Field type="radio" name="status" value="2" />
+                    Rejected
+                  </label>
+                  <label>
+                    <Field type="radio" name="status" value="1" />
+                    Accepted
+                  </label>
+                </div>
+                <ErrorMessage
+                  name="status"
+                  component="p"
+                  className="text-red-600"
+                />
+                <FormInput
+                  as="textarea"
+                  name="feedback"
+                  label="Feedback"
+                  rows={4}
+                  placeholder="Leave your feedback here..."
+                />
 
-              <Button
-                disabled={isUpdatingToken}
-                isLoading={isUpdatingToken}
-                className="h-fit py-1"
-                type="submit"
-              >
-                Submit
-              </Button>
-            </Form>
-          </Formik>
-        </Modal>
-      </>
-    ))
+                <Button
+                  disabled={isUpdatingToken}
+                  isLoading={isUpdatingToken}
+                  className="h-fit py-1"
+                  type="submit"
+                >
+                  Submit
+                </Button>
+              </Form>
+            </Formik>
+          </Modal>
+        </>
+      )))
   );
 };
 

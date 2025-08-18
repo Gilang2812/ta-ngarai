@@ -1,5 +1,4 @@
 import {
-  ConfirmationFormSchema,
   DetailHomestayReservation,
   DetailReservationPackage,
   ReservationSchema,
@@ -7,9 +6,10 @@ import {
 import { ReservationStatus } from "@/utils/common/getReservationStatus";
 import dayjs from "dayjs";
 import { useUpdateTokenReservation } from "@/features/reservation/useUpdateTokenReservation";
-import { cornerAlert } from "@/utils/AlertUtils";
+import { cornerAlert, showLoadingAlert } from "@/utils/AlertUtils";
 import { useUpdateReservation } from "@/features/reservation/useUpdateReservation";
 import { getItemDetailsReservation } from "@/utils/common/getItemDetailsReservation";
+import { useEffect } from "react";
 
 type Props = {
   data?:
@@ -34,7 +34,7 @@ const usePackagePayment = ({ data, refetchReservation, status }: Props) => {
 
   const { mutate: updateTokenReservation, isPending: isUpdatingToken } =
     useUpdateTokenReservation<
-      ConfirmationFormSchema & {
+      { id: string; feedback: string; status: number } & {
         item_details?:
           | []
           | {
@@ -51,8 +51,15 @@ const usePackagePayment = ({ data, refetchReservation, status }: Props) => {
     >({
       onSuccess: () => {
         refetchReservation();
+        cornerAlert("Payment successful");
       },
     });
+
+  useEffect(() => {
+    if (isUpdatingToken) {
+      showLoadingAlert();
+    }
+  }, [isUpdatingToken]);
   const handlePayment = () => {
     const originalStatus = status;
     if (data && (data?.token_of_deposit || data?.token_of_payment)) {
@@ -80,7 +87,7 @@ const usePackagePayment = ({ data, refetchReservation, status }: Props) => {
                 feedback: data.feedback as string,
                 item_details,
                 deposit: data?.deposit ?? 0,
-                total_price: (data?.total_price ?? 0) - (data?.deposit ?? 0),
+                total_price: data?.total_price ?? 0,
                 deposit_date: dayjs().format("YYYY-MM-DD HH:mm:ss"),
               });
             }
@@ -98,6 +105,7 @@ const usePackagePayment = ({ data, refetchReservation, status }: Props) => {
       }
     }
   };
+
   return {
     handlePayment,
     isPending: isUpdatingReservation || isUpdatingToken,

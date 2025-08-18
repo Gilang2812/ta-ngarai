@@ -2,6 +2,7 @@ const { DataTypes } = require("sequelize");
 const sequelize = require("../config/database");
 const bcrypt = require("bcrypt");
 const { Role } = require("./RoleModel");
+
 const User = sequelize.define(
   "User",
   {
@@ -10,15 +11,10 @@ const User = sequelize.define(
       autoIncrement: true,
       primaryKey: true,
     },
-    id_souvenir_place: {
-      type: DataTypes.STRING(5),
-      allowNull: true,
-    },
     id_role: {
       type: DataTypes.INTEGER,
       allowNull: true,
     },
-
     email: {
       type: DataTypes.STRING(255),
       allowNull: false,

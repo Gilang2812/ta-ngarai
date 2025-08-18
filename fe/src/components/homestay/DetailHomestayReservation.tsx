@@ -9,12 +9,13 @@ import DetailHomestayReservationLoader from "../loading/DetailHomestayReservatio
 import TableHeaderManagement from "../admin/TableHeaderManagement";
 import { formatPrice } from "@/lib/priceFormatter";
 import Button from "../common/Button";
-import { FaPrint, FaXmark } from "react-icons/fa6";
+import { FaPrint } from "react-icons/fa6";
 import ReservationStep from "../reservation/ReservationStep";
 import { ReservationDetails } from "@/type/schema/ReservationSchema";
 
 import { ReservationStatus } from "@/utils/common/getReservationStatus";
 import ButtonConfirmation from "../reservation/ButtonConfirmation";
+import ButtonCancel from "../reservation/ButtonCancel";
 
 const DetailHomestayReservation = ({ id }: { id: string }) => {
   const {
@@ -149,9 +150,18 @@ const DetailHomestayReservation = ({ id }: { id: string }) => {
             >
               <FaPrint /> Invoice
             </Button>
-            <Button variant={"danger"}>
-              <FaXmark /> Cancel
-            </Button>
+            <ButtonCancel
+              id={data.id}
+              check_in={data.check_in}
+              payment_date={data.payment_date}
+              deposit_date={data.deposit_date}
+              refund_date={data.refund_date}
+              deposit={data.deposit}
+              total_price={data.total_price}
+              depositRefundPercentage={50}
+              refetchData={refetchData}
+              cancel_date={data.cancel_date}
+            />
           </section>
         </SingleContentWrapper>
       </section>

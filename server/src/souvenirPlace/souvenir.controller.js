@@ -1,5 +1,6 @@
 const mapUpload = require("../../middlewares/mapUploads");
 const { handleInput } = require("../../utils/handleInput");
+const { generateToken } = require("../auth/auth.service");
 const { validateData } = require("../middlewares/validation");
 const { editUser } = require("../user/user.service");
 const { findSouvenirPlace } = require("./souvenir.repository");
@@ -9,6 +10,7 @@ const {
   deleteSouvenirPlaceById,
   getSouvenirPlace,
 } = require("./souvenir.service");
+
 const { souvenirPlaceSchema } = require("./souvenir.validation");
 const router = require("express").Router();
 
@@ -36,11 +38,22 @@ router.post("/", validateData(souvenirPlaceSchema), async (req, res, next) => {
       close,
       geom,
     });
-
+    let user = {};
     if (souvenir) {
-      await editUser({ id: req.user.id }, { id_souvenir_place: souvenir.id });
+      user = await editUser(
+        { id: req.user.id },
+        { id_souvenir_place: souvenir.id }
+      );
     }
-    res.status(201).json(souvenir);
+    const token = generateToken(user);
+
+    const response = {
+      user,
+      token,
+    };
+
+    console.log(response);
+    res.status(201).json(response);
   } catch (error) {
     next(error);
   }

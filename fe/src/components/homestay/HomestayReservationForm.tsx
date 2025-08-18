@@ -55,8 +55,7 @@ const HomestayReservationForm: React.FC<Props> = ({
     selectedUnit,
     uniqueUnitType,
     setCheckIn,
-    deposit_percentage
-    
+    deposit_percentage,
   });
 
   return (
@@ -255,7 +254,7 @@ const HomestayReservationForm: React.FC<Props> = ({
                 aria-describedby="partial-desc"
               />
               <span>
-                Partial {deposit_percentage} ({deposit_percentage * 100}% of
+                Partial ({deposit_percentage * 100}% of
                 Full Price)
               </span>
             </label>

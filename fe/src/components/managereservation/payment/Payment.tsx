@@ -12,7 +12,8 @@ type Props = {
 const Payment = ({ handlePayment, status }: Props) => {
   const { isAdmin } = useUserRole();
   return (
-    !isAdmin && (
+    !isAdmin &&
+    (status === "Deposit-Required" || status === "Payment-Required") && (
       <Button onClick={handlePayment} className=" text-nowrap">
         <FaMoneyBill />
         {status === "Deposit-Required"

@@ -52,7 +52,7 @@ export type ReservationDetails = {
   account_refund: string | null;
   proof_refund: string | null;
   refund_amount: number | null;
-  refund_check: string | null;
+  refund_check: number | null;
   refund_date: string | null;
   admin_refund: string | null;
   type_of_payment: number;

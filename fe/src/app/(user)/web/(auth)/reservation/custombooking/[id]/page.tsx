@@ -9,9 +9,11 @@ import { useCreateReservation } from "@/features/reservation/useCreateReservatio
 import { useGetPackage } from "@/features/web/package/useGetPackage";
 import useFormStep from "@/hooks/useFormStep";
 import { PackageServiceGallery } from "@/type/schema/PackageSchema";
+import { cornerAlert, showLoadingAlert } from "@/utils/AlertUtils";
 import { Formik } from "formik";
 
 import { useParams } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export type FormReservationSchema = {
   package?: string | null;
@@ -32,6 +34,7 @@ export type FormReservationSchema = {
 
 const CustomBooking = () => {
   const { id }: { id: string } = useParams();
+  const [reservationId, setReservationId] = useState<string | null>(null);
   const { data: packageItem, isLoading } = useGetPackage<PackageServiceGallery>(
     id,
     ["package", "service", "gallery"]
@@ -39,15 +42,24 @@ const CustomBooking = () => {
   const isWithHomestay = packageItem && packageItem?.packageDays?.length > 1;
   const stepsLength = isWithHomestay ? 4 : 3;
   const { currentStep, steps, nextStep, prevStep } = useFormStep(stepsLength);
-  const { mutate } = useCreateReservation({
-    onSuccess: () => {
-      console.log();
+  const { mutate, isPending } = useCreateReservation({
+    onSuccess: (response) => {
+      const data = response as { id: string };
+      nextStep();
+      cornerAlert("Reservation created successfully");
+      setReservationId(data.id);
     },
   });
   const handleSubmit = (value: FormReservationSchema) => {
     mutate(value);
-    nextStep();
   };
+
+  useEffect(() => {
+    if (isPending) {
+      showLoadingAlert();
+    }
+  }, [isPending]);
+
   if (isLoading) return <Loading />;
   return (
     <div className="space-y-20 min-w-fit ">
@@ -84,10 +96,11 @@ const CustomBooking = () => {
             packageItem={packageItem}
             prevStep={prevStep}
             steps={steps}
+            isPending={isPending}
           />
         )}
       </Formik>
-      <FinishStep currentSteps={currentStep} steps={steps} />
+      <FinishStep currentSteps={currentStep} id={reservationId} steps={steps} />
     </div>
   );
 };

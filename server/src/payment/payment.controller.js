@@ -1,6 +1,9 @@
-const { snap, core } = require("../../config/midtrans");
+const {  core } = require("../../config/midtrans");
 const crypto = require("crypto");
-const { createPayment, getPaymentStatus } = require("./payment.service");
+const {
+  createPayment,
+  getPaymentStatus, 
+} = require("./payment.service");
 const { takeCheckout } = require("../checkout/checkout.service");
 const getPaymentStatusText = require("../../utils/getPaymentStatusText");
 const router = require("express").Router();
@@ -126,5 +129,7 @@ router.get("/:id", async (req, res, next) => {
     next(error);
   }
 });
+
+ 
 
 module.exports = router;

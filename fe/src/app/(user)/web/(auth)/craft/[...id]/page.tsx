@@ -8,8 +8,7 @@ export default async function ProductDetailPage({
 }: {
   params: Promise<{ id: string[] }>;
 }) {
-  const { id } = await params;
-  console.log("ProductDetailPage id:", id);
+  const { id } = await params; 
   return (
     <SingleContentWrapper>
       <ProductDetail id={id} />

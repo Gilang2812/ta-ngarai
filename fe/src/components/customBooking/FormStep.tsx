@@ -4,13 +4,13 @@ import { Accordion } from "../web/detailReservation/Accordion";
 import { NextStepButton } from "./NextStepButton";
 import { Guide } from "./Guide";
 import { StepFooter } from "./StepFooter";
-import { PrevStepButton } from "./PrevStepButton";
-import { FormSubmit } from "../inputs/FormSubmit";
+import { PrevStepButton } from "./PrevStepButton"; 
 import { useFormikContext } from "formik";
 import { ReservationFormSchema } from "./SecondStep";
 import { useService } from "@/utils/ServiceCategory";
 import { DetailServiceSchema } from "@/type/schema/ServiceSchema";
 import { PackageServiceGallery } from "@/type/schema/PackageSchema";
+import Button from "../common/Button";
 type Props = {
   nextStep: () => void;
   prevStep: () => void;
@@ -22,6 +22,7 @@ type Props = {
   isValid: string | false;
   packageItem?: PackageServiceGallery;
   isWithHomestay?: boolean;
+  isPending: boolean;
 };
 
 export const FormStep: FC<Props> = ({
@@ -35,6 +36,7 @@ export const FormStep: FC<Props> = ({
   isValid,
   packageItem,
   isWithHomestay,
+  isPending,
 }) => {
   const isFirstStep = currentStep === 1;
   const isLastStep = currentStep === steps.length - 1;
@@ -249,7 +251,9 @@ export const FormStep: FC<Props> = ({
           {isLastStep ? (
             <>
               <PrevStepButton prevStep={prevStep} />
-              <FormSubmit className="px-8" value="Submit" />
+              <Button type="submit" isLoading={isPending} disabled={isPending}>
+                Submit
+              </Button>
             </>
           ) : (
             <NextStepButton disabled={!isValid} nextStep={nextStep} />

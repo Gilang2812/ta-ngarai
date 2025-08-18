@@ -34,7 +34,7 @@ import { detailCraftSchema } from "@/type/schema/DetailCraftSchema";
 import CraftManagementForm from "@/components/craft/CraftManagementForm";
 import CraftManagementList from "@/components/craft/CraftManagementList";
 import { ViewToggleButtons } from "@/components/craft/ViewToggleButtons";
-import VariantManagementList from "@/components/craft/VariantManagementList"; 
+import VariantManagementList from "@/components/craft/VariantManagementList";
 import NoStoreSection from "@/components/dashboard/craft/NoStoreSection";
 import { ROUTES } from "@/data/routes";
 import useUserRole from "@/hooks/useUserRole";

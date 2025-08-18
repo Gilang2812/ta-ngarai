@@ -1,4 +1,4 @@
-const dayjs = require('dayjs')
+const dayjs = require("dayjs");
 const getReservationStatus = (reservation) => {
   if (!reservation) {
     return "Unknown";
@@ -11,11 +11,7 @@ const getReservationStatus = (reservation) => {
   const payDeposit =
     accepted && !reservation.deposit_date && reservation.token_of_deposit; //pay deposit
 
-  const payFull =
-    (!payDeposit || reservation.deposit === reservation.total_price) &&
-    accepted &&
-    !reservation.payment_date &&
-    reservation.token_of_payment; //pay full
+  const payFull = !reservation.payment_date && reservation.token_of_payment; //pay full
   const unReviewed =
     reservation.payment_date &&
     !reservation.review &&
@@ -24,9 +20,12 @@ const getReservationStatus = (reservation) => {
       .isBefore(dayjs()); //unreviewed
 
   const cancelRefund =
-    cancel &&
-    (payDeposit || payFull) &&
-    dayjs(reservation.cancel_date).isBefore(dayjs(reservation.check_in));
+    !!reservation.cancel_date &&
+    !!cancel &&
+    (!!reservation.deposit_date || !!reservation?.payment_date) &&
+    dayjs(reservation.cancel_date)
+      .add(2, "day")
+      .isBefore(dayjs(reservation.check_in));
 
   const enjoy =
     accepted &&

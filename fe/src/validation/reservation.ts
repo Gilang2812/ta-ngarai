@@ -17,6 +17,6 @@ export const homestaySchema = yup.object().shape({
 
 export const confirmationSchema = yup.object().shape({
   id: yup.string().required("ID is required"),
-  status: yup.number().required("select status confirmation"),
+  status: yup.string().required("select status confirmation"),
   feedback: yup.string().required("Feedback is required"),
 });

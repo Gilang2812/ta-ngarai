@@ -7,7 +7,6 @@ type Props = {
 };
 export const PaymentButton = ({ handlePayment, status }: Props) => {
   const { isAdmin } = useUserRole();
-  console.log("status user", isAdmin);
   return (
     (status === "Payment-Required" || status === "Deposit-Required") &&
     !isAdmin && (

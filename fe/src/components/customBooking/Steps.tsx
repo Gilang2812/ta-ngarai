@@ -19,14 +19,14 @@ export const Steps: FC<Props> = ({ currentStep, steps }: Props) => {
                 index + 1 <= currentStep ? "bg-primary" : "bg-slate-300"
               }`}
             >
-             {index + 1} 
+              {index + 1}
             </span>
             <p
               className={`mt-2 absolute -bottom-1/2 text-sm ${
                 index + 1 <= currentStep ? "text-primary" : "text-gray-500"
               }`}
             >
-              {index+1===steps.length?'final':`step ${index+1}`}  
+              {index + 1 === steps.length ? "final" : `step ${index + 1}`}
             </p>
           </article>
 
