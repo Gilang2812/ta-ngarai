@@ -37,7 +37,7 @@ const SouvenirPlace = sequelize.define(
     status: {
       type: DataTypes.TINYINT(1),
       allowNull: true,
-      defaultValue:0
+      defaultValue: 0,
     },
     geom: {
       type: DataTypes.GEOMETRY(),
@@ -54,4 +54,8 @@ SouvenirPlace.beforeCreate(async (instance) => {
   instance.id = await generateCustomId("SP", SouvenirPlace, 5);
 });
 
+// SouvenirPlace.beforeBulkDestroy(async (instaces) => {
+//   const where = instaces.where;
+//   const e
+// });
 module.exports = { SouvenirPlace };

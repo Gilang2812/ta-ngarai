@@ -150,6 +150,7 @@ const useManageCraftTransaction = () => {
     searchTerm,
     handleSearch,
     modalContent,
+    refetch
   };
 };
 

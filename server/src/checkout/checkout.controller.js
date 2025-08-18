@@ -188,13 +188,18 @@ router.get("/history", async (req, res, next) => {
 
 router.get("/transactions", async (req, res, next) => {
   try {
-    const checkout = await getSouvenirTransaction({
-      id_souvenir_place: req.user.id_souvenir_place,
-    });
-    if (!checkout) {
-      return res.status(404).json({ message: "Checkout not found" });
+    const id_stores = req.user.store.map((detail) => detail.id_souvenir_place);
+    let checkouts = [];
+    if (id_stores.length > 0) {
+      checkouts = await Promise.all(
+        id_stores.map((id_souvenir_place) =>
+          getSouvenirTransaction({ id_souvenir_place })
+        )
+      );
+      checkouts = checkouts.flat();
     }
-    res.status(200).json(checkout);
+
+    res.status(200).json(checkouts);
   } catch (error) {
     next(error);
   }

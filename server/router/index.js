@@ -51,7 +51,7 @@ router.use("/souvenirs", verifyToken, souvenirRouter);
 router.use("/tourism", tourismRouter);
 router.use("/users", verifyToken, userRouter);
 router.use("/variants", craftVariantRouter);
-router.use("/invoice",invoiceRouter)
+router.use("/invoice", invoiceRouter);
 
 router.use("*", (req, res, next) => {
   res.status(404).json({ message: "URl Server Not Found" });

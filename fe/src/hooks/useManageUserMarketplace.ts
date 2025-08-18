@@ -1,5 +1,4 @@
 import { useDeleteMarketplace } from "@/features/dashboard/marketplace/useDeleteMarketplace";
-import { useFetchSouvenirPlace } from "@/features/dashboard/marketplace/useFetchSouvenirPlace";
 import { SouvenirPlaceSchema } from "@/type/schema/PackageSchema";
 import {
   confirmDeleteAlert,
@@ -9,9 +8,10 @@ import {
 import { useModal } from "@/utils/ModalUtils";
 import { useEffect, useState } from "react";
 import useFormMarketplace from "./useFormMarketplace";
+import { useFetchUserSouvenirPlace } from "@/features/dashboard/marketplace/useFetchUserSouvenirPlace";
 
-export const useManageMarketplace = () => {
-  const { data, isLoading, refetch } = useFetchSouvenirPlace();
+export const useManageUserMarketplace = () => {
+  const { data, isLoading, refetch } = useFetchUserSouvenirPlace();
   const { isOpen, toggleModal } = useModal();
   const [formType, setFormType] = useState<"create" | "edit">("create");
 

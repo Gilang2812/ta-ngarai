@@ -44,7 +44,7 @@ export const UserNav = () => {
               icon={BsFillGridFill}
               label="Dashboard"
               link={
-                isAdmin ? ROUTES.MANAGERESERVATION : ROUTES.CRAFT_TRANSACTION
+                isAdmin ? ROUTES.MANAGERESERVATION : ROUTES.MARKETPLACE
               }
             />
           </li>

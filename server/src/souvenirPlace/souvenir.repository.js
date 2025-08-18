@@ -5,6 +5,7 @@ const {
   Craft,
   CraftVariant,
   DetailMarketplaceCraft,
+  DetailUserSouvenir,
 } = require("../../models/relation");
 
 const findSouvenirPlace = async (include = false) => {
@@ -53,6 +54,57 @@ const findSouvenirPlace = async (include = false) => {
 
   return souvenirPlace;
 };
+const findUserSouvenirPlace = async (user_id) => {
+  const souvenirPlace = await SouvenirPlace.findAll({
+    include: [
+      {
+        model: DetailUserSouvenir,
+        as: "detailSouvenir",
+        where: {
+          user_id,
+        },
+      },
+      {
+        model: DetailMarketplaceCraft,
+        as: "crafts",
+        include: [
+          {
+            model: CraftVariant,
+            as: "variant",
+            include: [
+              {
+                model: Craft,
+                as: "craft",
+              },
+            ],
+          },
+          {
+            model: CraftVariantGallery,
+            as: "craftGalleries",
+            where: {
+              [Op.and]: [
+                where(
+                  col("crafts.craft_variant_id"),
+                  "=",
+                  col("crafts->craftGalleries.craft_variant_id")
+                ),
+                where(
+                  col("crafts.id_souvenir_place"),
+                  "=",
+                  col("crafts->craftGalleries.id_souvenir_place")
+                ),
+              ],
+            },
+
+            required: false,
+          },
+        ],
+      },
+    ],
+  });
+
+  return souvenirPlace;
+};
 
 const insertSouvenirPlace = async (body) => {
   const { geom, ...rest } = body;
@@ -86,10 +138,17 @@ const deleteSouvenirPlace = async (id) => {
   return souvenirPlace;
 };
 
+const insertDetailUserSouvenir = async (body) => {
+  const detail = await DetailUserSouvenir.create(body);
+  return detail;
+};
+
 module.exports = {
   findSouvenirPlace,
   insertSouvenirPlace,
   findSouvenirPlaceById,
   updateSouvenirPlace,
   deleteSouvenirPlace,
+  insertDetailUserSouvenir,
+  findUserSouvenirPlace,
 };

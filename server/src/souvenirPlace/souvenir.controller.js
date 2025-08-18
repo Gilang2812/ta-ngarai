@@ -1,14 +1,16 @@
 const mapUpload = require("../../middlewares/mapUploads");
 const { handleInput } = require("../../utils/handleInput");
-const { generateToken } = require("../auth/auth.service");
+const { generateToken, getLoginResponse } = require("../auth/auth.service");
 const { validateData } = require("../middlewares/validation");
-const { editUser } = require("../user/user.service");
+const { editUser, getUser } = require("../user/user.service");
 const { findSouvenirPlace } = require("./souvenir.repository");
 const {
   createSouvenirPlace,
   editSouvenirPlaceById,
   deleteSouvenirPlaceById,
   getSouvenirPlace,
+  getUserSouvenirPlace,
+  createDetailUserSouvenir,
 } = require("./souvenir.service");
 
 const { souvenirPlaceSchema } = require("./souvenir.validation");
@@ -24,6 +26,17 @@ router.get("/", async (req, res, next) => {
     next(error);
   }
 });
+
+router.get("/user/index", async (req, res, next) => {
+  try {
+    const userId = req.user.id;
+    const souvenirPlace = await getUserSouvenirPlace(userId);
+    res.status(200).json(souvenirPlace);
+  } catch (error) {
+    next(error);
+  }
+});
+
 router.post("/", validateData(souvenirPlaceSchema), async (req, res, next) => {
   try {
     const { name, address, contact_person, open, close, description, geom } =
@@ -39,13 +52,17 @@ router.post("/", validateData(souvenirPlaceSchema), async (req, res, next) => {
       geom,
     });
     let user = {};
+    let token = "";
     if (souvenir) {
-      user = await editUser(
-        { id: req.user.id },
-        { id_souvenir_place: souvenir.id }
-      );
+      user = await getUser({ id: req.user.id });
+      await createDetailUserSouvenir({
+        user_id: req.user.id,
+        id_souvenir_place: souvenir.id,
+        isOwner: 1,
+      });
+      user = getLoginResponse(user);
+      token = generateToken(user);
     }
-    const token = generateToken(user);
 
     const response = {
       user,

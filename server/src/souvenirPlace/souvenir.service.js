@@ -5,6 +5,8 @@ const {
   findSouvenirPlaceById,
   updateSouvenirPlace,
   deleteSouvenirPlace,
+  insertDetailUserSouvenir,
+  findUserSouvenirPlace,
 } = require("./souvenir.repository");
 
 const getSouvenirPlace = async (include = false) => {
@@ -19,11 +21,20 @@ const getSouvenirPlaceById = async (id) => {
   }
   return souvenirPlace;
 };
+
+const getUserSouvenirPlace = async (user_id) => {
+  const userSouvenir = await findUserSouvenirPlace(user_id);
+  return userSouvenir;
+};
+
 const createSouvenirPlace = async (body) => {
   const souvenirPlace = await insertSouvenirPlace(body);
   return souvenirPlace;
 };
-
+const createDetailUserSouvenir = async (body) => {
+  const newDetail = await insertDetailUserSouvenir(body);
+  return newDetail;
+};
 const editSouvenirPlaceById = async (id, body) => {
   const souvenirPlace = await getSouvenirPlaceById(id);
   await updateSouvenirPlace(id, body);
@@ -44,4 +55,6 @@ module.exports = {
   getSouvenirPlaceById,
   editSouvenirPlaceById,
   deleteSouvenirPlaceById,
+  createDetailUserSouvenir,
+  getUserSouvenirPlace
 };

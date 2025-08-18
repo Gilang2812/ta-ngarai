@@ -1,4 +1,5 @@
-import { UserLogin } from "@/validation/authSchema";
+import { axiosInstance } from "@/lib/axios";
+import { LoginResponse, UserLogin } from "@/validation/authSchema";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
@@ -7,6 +8,7 @@ type AuthStoreType = {
   setUser: (user: UserLogin) => void;
   updateUser: (user: Partial<UserLogin>) => void;
   clearUser: () => void;
+  fetchMe: () => void;
 };
 
 export const useAuthStore = create<AuthStoreType>()(
@@ -19,6 +21,12 @@ export const useAuthStore = create<AuthStoreType>()(
         set((state) => ({
           user: state.user ? { ...state.user, ...user } : null,
         })),
+      fetchMe: async () => {
+        const { data } = await axiosInstance.get<LoginResponse>("/auth/me");
+        localStorage.setItem("token", data.token);
+        set({ user: data.user });
+        console.log('test')
+      },
     }),
     {
       name: "auth-storage",

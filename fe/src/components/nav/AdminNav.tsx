@@ -4,7 +4,6 @@ import {
   FaBullhorn,
   FaHouse,
   FaPagelines,
-  FaPenToSquare,
   FaPuzzlePiece,
   FaScroll,
   FaSquarePollHorizontal,
@@ -17,21 +16,30 @@ import { ROUTES } from "@/data/routes";
 import useUserRole from "@/hooks/useUserRole";
 
 export const AdminNav = () => {
-  const { isAdmin, isSeller } = useUserRole();
+  const { isAdmin } = useUserRole();
   return (
     <nav className="mt-12 font-bold">
       <ul className="space-y-1">
         <li>
           <SideNavItem icon={FaHouse} label="Home" link="/web" />
         </li>
-        {isSeller && (
-          <li>
-            <SideNavItem
-              icon={FaBullhorn}
-              label="manage craft transaction"
-              link={ROUTES.MANAGE_CRAFT_TRANSACTION}
-            />
-          </li>
+        {!isAdmin && (
+          <>
+            <li>
+              <SideNavItem
+                icon={FaBullhorn}
+                label="manage craft transaction"
+                link={ROUTES.MANAGE_CRAFT_TRANSACTION}
+              />
+            </li>
+            <li>
+              <SideNavItem
+                icon={FaStore}
+                label="Your Marketplace"
+                link={ROUTES.MARKETPLACE}
+              />
+            </li>
+          </>
         )}
         {isAdmin && (
           <>
@@ -97,18 +105,11 @@ export const AdminNav = () => {
               <SideNavItem
                 icon={FaStore}
                 label="Manage Marketplace"
-                link={ROUTES.MANAGE_UMKM}
+                link={ROUTES.MANAGE_MARKETPLACE}
               />
             </li>
           </>
         )}
-        <li>
-          <SideNavItem
-            icon={FaPenToSquare}
-            label="Manage Craft"
-            link={ROUTES.MANAGE_CRAFT}
-          />
-        </li>
       </ul>
     </nav>
   );

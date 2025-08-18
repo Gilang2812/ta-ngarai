@@ -7,20 +7,12 @@ import { UpdateProfileForm } from "@/validation/authSchema";
 
 const useUpdateProfile = () => {
   const router = useRouter();
-  const { user, updateUser } = useAuth();
+  const { user } = useAuth();
 
   const { mutate } = useUpdateUserProfile({
-    onSuccess: (data) => {
+    onSuccess: () => {
       cornerAlert("Profile updated successfully");
-      const userData = data as {
-        fullname: string;
-        address: string;
-        phone: string;
-      };
-      updateUser({
-        name: userData.fullname,
-        phone: userData.phone,
-      });
+
       router.push(ROUTES.PROFILE);
     },
   });

@@ -13,7 +13,7 @@ export const useDeleteDetailCraft = ({ onSuccess }: ActionProps) => {
       id_souvenir_place_id: string;
     }) => {
       const { data } = await axiosInstance.delete(
-        `/detail-crafts/${craft_variant_id}/${id_souvenir_place_id}`
+        `/detail-crafts/${id_souvenir_place_id}/${craft_variant_id}`
       );
       return data;
     },

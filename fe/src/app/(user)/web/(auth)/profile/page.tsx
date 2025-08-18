@@ -65,7 +65,9 @@ export default function Profile() {
                 </dt>
                 <dd
                   className={cn(
-                    "text-lg", (item.label==="address"&&"text-sm font-medium capitalize "),
+                    "text-lg",
+                    item.label === "address" &&
+                      "text-sm font-medium capitalize ",
                     ((item.label === "address" && addresses?.length === 0) ||
                       item.isEmpty) &&
                       "font-medium italic text-yellow-300"

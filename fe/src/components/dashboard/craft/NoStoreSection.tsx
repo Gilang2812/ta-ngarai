@@ -23,24 +23,24 @@ const NoStoreSection = () => {
             </div>
 
             <h3 className="text-xl font-semibold text-gray-900 mb-3">
-              Anda Belum Memiliki Toko
+              You Don't Have a Store Yet
             </h3>
 
             <p className="text-gray-500 mb-8 max-w-md mx-auto leading-relaxed">
-              Untuk mulai berjualan produk kerajinan dan souvenir dari Nagari
-              Koto Gadang, Anda perlu membuat toko terlebih dahulu. Proses
-              pembuatan toko sangat mudah dan cepat.
+              To start selling craft products and souvenirs from Nagari
+              Koto Gadang, you need to create a store first. The store
+              creation process is very easy and quick.
             </p>
 
             <Button onClick={toggle}>
               <Plus className="w-5 h-5 mr-2" />
-              Buat Toko Sekarang
+              Create Store Now
             </Button>
 
             <div className="mt-8 pt-6 border-t border-gray-100">
               <p className="text-sm text-gray-400">
-                Setelah membuat toko, Anda dapat mulai menambahkan produk dan
-                mengelola pesanan
+                After creating a store, you can start adding products and
+                managing orders
               </p>
             </div>
           </div>
@@ -49,10 +49,10 @@ const NoStoreSection = () => {
         <motion.div layout>
           <header className="flex items-center justify-between mb-4">
             <h2 className="text-lg font-semibold text-gray-900 mb-4">
-              Buat Toko
+              Create Store
             </h2>
             <Button variant={"primary"} onClick={toggle}>
-              Batal
+              Cancel
             </Button>
           </header>
           <MarketplaceForm toggle={toggle} />

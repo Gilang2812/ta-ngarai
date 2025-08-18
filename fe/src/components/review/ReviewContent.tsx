@@ -45,21 +45,24 @@ const ReviewContent = ({
 
   return (
     <article className="p-4 relative rounded-xl border space-y-4">
-      {user?.id_souvenir_place === idSouvenirPlace && handleResponse && (
-        <Button
-          onClick={() =>
-            handleResponse?.(
-              craftVariantId,
-              checkoutId,
-              idSouvenirPlace,
-              sellerResponse
-            )
-          }
-          className="absolute top-4 right-4 "
-        >
-          {sellerResponse ? "Edit Reply" : "Reply"}
-        </Button>
-      )}
+      {user?.store
+        .map((item) => item.id_souvenir_place)
+        .includes(idSouvenirPlace) &&
+        handleResponse && (
+          <Button
+            onClick={() =>
+              handleResponse?.(
+                craftVariantId,
+                checkoutId,
+                idSouvenirPlace,
+                sellerResponse
+              )
+            }
+            className="absolute top-4 right-4 "
+          >
+            {sellerResponse ? "Edit Reply" : "Reply"}
+          </Button>
+        )}
       <section className="flex items-start gap-4 font-bold text-lg capitalize text-wrap">
         <Image
           alt="profile"

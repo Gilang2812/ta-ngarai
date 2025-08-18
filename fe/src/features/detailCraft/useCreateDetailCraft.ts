@@ -6,11 +6,15 @@ import { useMutation } from "@tanstack/react-query";
 export const useCreateDetailCraft = ({ onSuccess }: ActionProps) => {
   return useMutation({
     mutationFn: async (body: FormData) => {
-      const { data } = await axiosInstance.post("/detail-crafts", body, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      const { data } = await axiosInstance.post(
+        `/detail-crafts/${body.get("id_souvenir_place")}`,
+        body,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
       return data;
     },
     onSuccess,

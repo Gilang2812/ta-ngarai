@@ -11,18 +11,16 @@ import { Spinner } from "flowbite-react";
 import { detailCraftSchema } from "@/type/schema/DetailCraftSchema";
 import { ROUTES } from "@/data/routes";
 
-type Props = {
-  id: string[];
-};
+type Props = { id_souvenir_place: string; id_craft: string };
 
-export const EditCraftForm = ({ id }: Props) => {
+export const EditCraftForm = ({ id_craft, id_souvenir_place }: Props) => {
   const {
     isLoading,
     detailCraft,
     initialValues,
     handleUpdateDetailCraft,
     isPending,
-  } = useManageUpdateCraft(id);
+  } = useManageUpdateCraft({ id_craft, id_souvenir_place });
   if (isLoading) return <ManagementSkeletonLoader />;
   return (
     <>

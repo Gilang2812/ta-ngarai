@@ -18,7 +18,7 @@ import {
 import { Spinner } from "flowbite-react";
 import { Form, Formik, useFormikContext } from "formik";
 
-const Umkm = () => {
+const ManageMarketplace = () => {
   const tableHeaders = [
     "id",
     "name",
@@ -134,4 +134,4 @@ const Umkm = () => {
   );
 };
 
-export default Umkm;
+export default ManageMarketplace;

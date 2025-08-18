@@ -1,4 +1,5 @@
 "use client";
+
 import ManagementHeader from "@/components/admin/ManagementHeader";
 import TableHeaderManagement from "@/components/admin/TableHeaderManagement";
 import Button from "@/components/common/Button";
@@ -9,15 +10,10 @@ import ManagementSkeletonLoader from "@/components/loading/ManagementSkeletonLoa
 import { Modal } from "@/components/modal/Modal";
 import { useCraftManagement } from "@/hooks/useCraftManagement";
 import { formatPrice } from "@/lib/priceFormatter";
-import {
-  type Craft,
-  craftSchema,
-  craftVariantSchema,
-} from "@/type/schema/CraftSchema";
+
 import { Spinner } from "flowbite-react";
 import { Form, Formik } from "formik";
 import Link from "next/link";
-import React from "react";
 import { FaCircleInfo, FaPencil, FaPlus } from "react-icons/fa6";
 import { registerPlugin } from "react-filepond";
 import "filepond/dist/filepond.min.css";
@@ -38,10 +34,14 @@ import VariantManagementList from "@/components/craft/VariantManagementList";
 import NoStoreSection from "@/components/dashboard/craft/NoStoreSection";
 import { ROUTES } from "@/data/routes";
 import useUserRole from "@/hooks/useUserRole";
-
+import { craftSchema, craftVariantSchema } from "@/type/schema/CraftSchema";
 registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview);
 
-const Craft = () => {
+const ManageCraftPage = ({
+  id_souvenir_place,
+}: {
+  id_souvenir_place: string;
+}) => {
   const { isSeller } = useUserRole();
   const {
     isOpenForm,
@@ -72,7 +72,7 @@ const Craft = () => {
     setView,
     handleEditVariant,
     updateVariantPending,
-  } = useCraftManagement();
+  } = useCraftManagement(id_souvenir_place);
 
   if (!isSeller) return <NoStoreSection />;
 
@@ -261,4 +261,4 @@ const Craft = () => {
   );
 };
 
-export default Craft;
+export default ManageCraftPage;

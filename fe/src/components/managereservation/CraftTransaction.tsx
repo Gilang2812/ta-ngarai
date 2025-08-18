@@ -19,6 +19,7 @@ import Link from "next/link";
 import { ModalDetail } from "../modal/ModalDetail";
 import { UserDetailPage } from "../reservation/UserDetailPage";
 import ReviewHistory from "../review/ReviewHistory";
+import EmptyTransactions from "../dashboard/transaction/EmptyTransactions";
 
 const CraftTransaction = () => {
   const {
@@ -40,8 +41,11 @@ const CraftTransaction = () => {
     modalContent,
     handleTransactionClick,
     handleTransactionClose,
+    refetch,
   } = useManageCraftTransaction();
   if (transactionLoading) return <ManagementSkeletonLoader />;
+  if (currentItems.length === 0)
+    return <EmptyTransactions onRefresh={refetch} />;
 
   const RenderTransaction = () => {
     return currentItems?.map((item, index) => (

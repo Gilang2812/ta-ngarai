@@ -6,7 +6,7 @@ import { useCreateCraftVariant } from "@/features/dashboard/craftVariant/useCrea
 import { useDeleteCraftVariant } from "@/features/dashboard/craftVariant/useDeleteCraftVariant";
 import { useUpdateCraftVariant } from "@/features/dashboard/craftVariant/useUpdateCraftVariant";
 import { useCreateDetailCraft } from "@/features/detailCraft/useCreateDetailCraft";
-import { useFetchDetailCrafts } from "@/features/detailCraft/useFetchDetailCrafts";
+import { useFetchStoreDetailCrafts } from "@/features/detailCraft/useFetchStoreDetailCraft";
 import { type CraftVariant, type Craft } from "@/type/schema/CraftSchema";
 import {
   DetailCraftManagementResponse,
@@ -21,7 +21,7 @@ import { createFormData } from "@/utils/common/createFormData";
 import { useModal } from "@/utils/ModalUtils";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
-export const useCraftManagement = () => {
+export const useCraftManagement = (id_souvenir_place: string) => {
   const [formType, setFormType] = useState<"craft" | "variant" | "detail">(
     "craft"
   );
@@ -53,10 +53,10 @@ export const useCraftManagement = () => {
     data: detailCrafts,
     isLoading: detailCraftsLoading,
     refetch: refetchDetailCraft,
-  } = useFetchDetailCrafts<DetailCraftManagementResponse>([
-    "craft",
-    "craftGalleries",
-  ]);
+  } = useFetchStoreDetailCrafts<DetailCraftManagementResponse>(
+    id_souvenir_place,
+    ["craft", "craftGalleries"]
+  );
 
   const getDefaultCraft = (): Craft => ({
     id: "",

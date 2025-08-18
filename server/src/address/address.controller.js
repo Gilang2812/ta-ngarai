@@ -9,7 +9,6 @@ const router = require("express").Router();
 
 router.get("/", async (req, res, next) => {
   try {
-
     const address = await getAddress({ customer_id: req.user.id }); // Assuming customer_id is 1 for testing purposes
     res.status(200).json(address);
   } catch (error) {

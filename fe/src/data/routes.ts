@@ -30,8 +30,7 @@ export const ROUTES = {
   LOGIN: "/login",
   REGISTER: "/register",
   MANAGERESERVATION: "/dashboard/managereservation",
-  MANAGE_CRAFT_TRANSACTION: "/dashboard/transactioncraft",
-  CRAFT_TRANSACTION: "/dashboard/craft",
+  MANAGE_CRAFT_TRANSACTION: "/dashboard/transactioncraft", 
   EXPLORE_WITH_PACKAGE: "/web/explore",
   EXPLORE_WITH_MY_PACKAGE: "/web/mypackage",
   MY_TRANSACTION: "/web/reservation",
@@ -48,8 +47,10 @@ export const ROUTES = {
   MANAGE_DETAIL_HOMESTAY: (id: string) => `/dashboard/homestay/${id}`,
   EDIT_HOMESTAY: (id: string) => `/dashboard/homestay/${id}/edit`,
   MANAGE_USERS: "/dashboard/users",
-  MANAGE_UMKM: "/dashboard/umkm",
-  MANAGE_CRAFT: "/dashboard/craft",
+  MARKETPLACE: "/dashboard/marketplace",
+  MANAGE_MARKETPLACE: "/dashboard/manage-marketplace",
+  MANAGE_CRAFT: (id_souvenir_place: string) =>
+    `/dashboard/craft/${id_souvenir_place}`,
   EDIT_CRAFT: (craft_variant_id: string, id_souvenir_place: string) =>
     `/dashboard/craft/${craft_variant_id}/${id_souvenir_place}`,
   HOMESTAY_RESERVATION: (id: string) => `/web/reservation/${id}/homestay`,

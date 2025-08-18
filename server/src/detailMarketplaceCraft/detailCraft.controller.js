@@ -21,17 +21,40 @@ const fs = require("fs");
 router.get("/", async (req, res, next) => {
   try {
     const includeKeys = req.query.include?.split(",") || [];
+    const id_stores = req.user.store.map((detail) => detail.id_souvenir_place);
 
-    const condition = { id_souvenir_place: req.user.id_souvenir_place }; // Default value, can be modified as needed
     let detailCrafts = [];
-    if (req.user.id_souvenir_place) {
-      detailCrafts = await getDetailCrafts(condition, includeKeys);
+    if (id_stores.length > 0) {
+      detailCrafts = await Promise.all(
+        id_stores.map((id_souvenir_place) => {
+          const condition = { id_souvenir_place };
+          return getDetailCrafts(condition, includeKeys);
+        })
+      );
+      // If getDetailCrafts returns arrays, you may need to flatten:
+      detailCrafts = detailCrafts.flat();
     }
+
     res.status(200).json(detailCrafts);
   } catch (error) {
     next(error);
   }
 });
+
+router.get("/:id_souvenir_place/index", async (req, res, next) => {
+  try {
+    const { id_souvenir_place } = req.params;
+    const includeKeys = req.query.include?.split(",") || [];
+    const detailCrafts = await getDetailCrafts(
+      { id_souvenir_place },
+      includeKeys
+    );
+    res.status(200).json(detailCrafts);
+  } catch (error) {
+    next(error);
+  }
+});
+
 router.get("/users", async (req, res, next) => {
   try {
     const includeKeys = req.query.include?.split(",") || [];
@@ -43,7 +66,7 @@ router.get("/users", async (req, res, next) => {
 });
 
 router.get(
-  "/detail/:craft_variant_id/:id_souvenir_place",
+  "/detail/:id_souvenir_place/:craft_variant_id",
   async (req, res, next) => {
     try {
       const { craft_variant_id, id_souvenir_place } = req.params;
@@ -62,7 +85,7 @@ router.get(
   }
 );
 
-router.get("/order/:id_craft/:id_souvenir_place", async (req, res, next) => {
+router.get("/order/:id_souvenir_place/:id_craft", async (req, res, next) => {
   try {
     const { id_craft, id_souvenir_place } = req.params;
     const detailCraft = await getOrderDetailCraft({
@@ -76,14 +99,14 @@ router.get("/order/:id_craft/:id_souvenir_place", async (req, res, next) => {
 });
 
 router.post(
-  "/",
+  "/:id_souvenir_place",
   imageUpload().array("images"),
   validateData(detailCraftSchema),
   async (req, res, next) => {
     try {
       const { craft_variant_id, price, weight, modal, stock, description } =
         req.body;
-      const id_souvenir_place = req.user.id_souvenir_place;
+      const id_souvenir_place = req.params.id_souvenir_place;
       const newDetailCraft = await createDetailCraft({
         craft_variant_id,
         id_souvenir_place,
@@ -115,7 +138,7 @@ router.post(
 );
 
 router.patch(
-  "/:craft_variant_id/:id_souvenir_place",
+  "/:id_souvenir_place/:craft_variant_id",
   imageUpload().array("images"),
   validateData(detailCraftSchema),
   async (req, res, next) => {
@@ -165,7 +188,7 @@ router.patch(
 );
 
 router.delete(
-  "/:craft_variant_id/:id_souvenir_place",
+  "/:id_souvenir_place/:craft_variant_id",
   async (req, res, next) => {
     try {
       const { craft_variant_id, id_souvenir_place } = req.params;

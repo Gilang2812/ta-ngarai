@@ -1,6 +1,5 @@
 import { useCreateMarketplace } from "@/features/dashboard/marketplace/useCreateMarketplace";
 import { useUpdateMarketplace } from "@/features/dashboard/marketplace/useUpdateMarketplace";
-import { useAuthStore } from "@/stores/AuthStore";
 import { FormMarketplace } from "@/type/schema/MarketplaceSchema";
 import { cornerAlert } from "@/utils/AlertUtils";
 import { useState } from "react";
@@ -20,23 +19,17 @@ const useFormMarketplace = ({
     description: "",
     geom: "",
   });
-  const { updateUser } = useAuthStore();
   const { mutate: createMarketplace, isPending: isPendingCreate } =
     useCreateMarketplace({
-      onSuccess: (data) => {
-        cornerAlert("success create umkm");
-        console.log("Marketplace created:", data);
-        updateUser({
-          id_souvenir_place: (data as { id: string }).id,
-        });
-
+      onSuccess: () => {
+        cornerAlert("success create marketplace");
         onSuccessForm?.();
       },
     });
   const { mutate: updateMarketplace, isPending: isPendingUpdate } =
     useUpdateMarketplace({
       onSuccess: () => {
-        cornerAlert("success update umkm");
+        cornerAlert("success update marketplace");
         onSuccessForm?.();
       },
     });
