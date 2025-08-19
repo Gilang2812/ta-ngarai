@@ -135,9 +135,10 @@ const Marketplace = () => {
   return (
     <SingleContentWrapper>
       <ManagementHeader
+        asChild
         content="marketplace"
         title="manage marketplace"
-        onCreateClick={handleOpenCreateModal}
+        href={ROUTES.NEW_MARKETPLACE}
       />
       <section>
         <RenderSouvenirPlace />

@@ -1,4 +1,4 @@
-const { Op, literal } = require("sequelize");
+const { Op, literal, Sequelize } = require("sequelize");
 const {
   Shipping,
   ItemCheckout,
@@ -116,7 +116,7 @@ const findShippingById = async (shippingId) => {
   return shipping;
 };
 
-const insertShipping = async (body) => { 
+const insertShipping = async (body) => {
   return Shipping.create(body);
 };
 
@@ -391,6 +391,26 @@ const editShipping = async (key, body) => {
     where: key,
   });
 };
+
+const editShippingByCheckoutId = async (checkout_id, body) => {
+  const shipping = await Shipping.findAll({
+    include: [
+      {
+        model: ItemCheckout,
+        as: "shippingItems",
+        where: { checkout_id },
+      },
+    ],
+  });
+  const updated = await Promise.all(
+    shipping.map((item) => {
+      item.update(body);
+    })
+  );
+  console.log(updated);
+  return shipping;
+};
+
 module.exports = {
   insertShipping,
   userHistory,
@@ -398,4 +418,5 @@ module.exports = {
   findShippingById,
   editShipping,
   findSouvenirTransaction,
+  editShippingByCheckoutId,
 };

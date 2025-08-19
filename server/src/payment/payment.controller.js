@@ -1,11 +1,13 @@
-const {  core } = require("../../config/midtrans");
+const { core } = require("../../config/midtrans");
 const crypto = require("crypto");
+const { createPayment, getPaymentStatus } = require("./payment.service");
 const {
-  createPayment,
-  getPaymentStatus, 
-} = require("./payment.service");
-const { takeCheckout } = require("../checkout/checkout.service");
+  takeCheckout,
+  updateCheckout,
+} = require("../checkout/checkout.service");
 const getPaymentStatusText = require("../../utils/getPaymentStatusText");
+const { updateShipping } = require("../shipping/shipping.service");
+const { editShippingByCheckoutId } = require("../shipping/shipping.repository");
 const router = require("express").Router();
 
 router.post("/create", async (req, res) => {
@@ -97,25 +99,30 @@ router.get("/:id", async (req, res, next) => {
       }
       return acc;
     }, []);
-    // let paymentStatus = "";
-    // if (transactionStatus.transaction_status === "capture") {
-    //   if (transactionStatus.fraud_status === "challenge") {
-    //     paymentStatus = "challenge";
-    //   } else if (transactionStatus.fraud_status === "accept") {
-    //     paymentStatus = "success";
-    //   }
-    // } else if (transactionStatus.transaction_status === "settlement") {
-    //   paymentStatus = "success";
-    // } else if (transactionStatus.transaction_status === "deny") {
-    //   paymentStatus = "deny";
-    // } else if (
-    //   transactionStatus.transaction_status === "cancel" ||
-    //   transactionStatus.transaction_status === "expire"
-    // ) {
-    //   paymentStatus = "failure";
-    // } else if (transactionStatus.transaction_status === "pending") {
-    //   paymentStatus = "pending";
-    // }
+
+    let status = await getPaymentStatus(checkout.id);
+    {
+    }
+    if (!status) {
+      status = "pending";
+    }
+    const paymentStatus = getPaymentStatusText(status);
+    console.log("status:", status);
+    console.log("Payment status:", paymentStatus);
+    if (
+      paymentStatus === "success" &&
+      checkout.items[0].shipping.status === 1
+    ) {
+      await editShippingByCheckoutId(id, { status: 2 });
+    }
+
+    if (
+      paymentStatus === "pending" &&
+      checkout.items[0].shipping.status === 6 &&
+      dayjs().isAfter(dayjs(checkout.checkout_date).add(24, "hour"))
+    ) {
+      await updateCheckout({ id }, { transaction_token: null });
+    }
     res.json({
       order_id: id,
       total_pembayaran: checkout.total_price,
@@ -129,7 +136,5 @@ router.get("/:id", async (req, res, next) => {
     next(error);
   }
 });
-
- 
 
 module.exports = router;

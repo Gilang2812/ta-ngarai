@@ -16,7 +16,6 @@ const findCrafts = async (key) => {
 };
 
 const findCraftById = async (id) => {
-  const include = buildIncludeModels(["checkout", "craftGalleries"]);
   const craft = await Craft.findOne({
     where: {
       id: id,
@@ -26,7 +25,6 @@ const findCraftById = async (id) => {
         model: CraftVariant,
         as: "variants",
         attributes: ["id", "id_craft", "name"],
-        include,
       },
     ],
     attributes: ["id", "name"],

@@ -2,13 +2,10 @@ import { useCreateMarketplace } from "@/features/dashboard/marketplace/useCreate
 import { useUpdateMarketplace } from "@/features/dashboard/marketplace/useUpdateMarketplace";
 import { FormMarketplace } from "@/type/schema/MarketplaceSchema";
 import { cornerAlert } from "@/utils/AlertUtils";
+import { createFormData } from "@/utils/common/createFormData";
 import { useState } from "react";
 
-const useFormMarketplace = ({
-  onSuccessForm,
-}: {
-  onSuccessForm?: () => void;
-} = {}) => {
+const useFormMarketplace = () => {
   const [initialValues, setInitialValues] = useState<FormMarketplace>({
     id: "",
     name: "",
@@ -18,27 +15,27 @@ const useFormMarketplace = ({
     open: "",
     description: "",
     geom: "",
+    images: [],
   });
   const { mutate: createMarketplace, isPending: isPendingCreate } =
     useCreateMarketplace({
       onSuccess: () => {
         cornerAlert("success create marketplace");
-        onSuccessForm?.();
       },
     });
   const { mutate: updateMarketplace, isPending: isPendingUpdate } =
     useUpdateMarketplace({
       onSuccess: () => {
         cornerAlert("success update marketplace");
-        onSuccessForm?.();
       },
     });
 
   const handleSubmit = (values: FormMarketplace) => {
+    const formData = createFormData(values);
     if (initialValues.id) {
-      updateMarketplace(values);
+      updateMarketplace(formData);
     } else {
-      createMarketplace(values);
+      createMarketplace(formData);
     }
   };
   return {

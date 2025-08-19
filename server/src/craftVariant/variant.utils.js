@@ -1,4 +1,9 @@
-const { Craft, CraftVariantGallery, ItemCheckout, ItemCheckoutReviewGallery } = require("../../models/relation");
+const {
+  Craft,
+  CraftVariantGallery,
+  ItemCheckout,
+  ItemCheckoutReviewGallery,
+} = require("../../models/relation");
 
 const includeMap = {
   craft: { model: Craft, as: "craft" },

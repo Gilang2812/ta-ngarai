@@ -81,7 +81,7 @@ export const useCheckout = () => {
       "",
     is_primary: editingAddress?.is_primary || 0,
   };
-  
+
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("cod");
   const [orderNotes, setOrderNotes] = useState("");
 

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { FormInput } from "../inputs/FormInput";
 import FilePondComponent from "../common/Filepond";
 import { CraftResponse } from "@/type/schema/CraftSchema";
@@ -10,10 +10,16 @@ type Props = {
   crafts: CraftResponse[];
 };
 
-const CraftManagementForm = ({ formType, crafts }: Props) => { 
-  const { values } = useFormikContext<
+const CraftManagementForm = ({ formType, crafts }: Props) => {
+  const { values, errors } = useFormikContext<
     DetailCraftSchema & { id_craft: string }
   >();
+
+  useEffect(() => {
+    if (errors) {
+      console.log(errors);
+    }
+  }, [errors]);
   const variants = crafts.find(
     (craft) => craft.id === values.id_craft
   )?.variants;

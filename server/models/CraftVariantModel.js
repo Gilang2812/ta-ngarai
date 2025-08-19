@@ -1,6 +1,7 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../config/database");
 const { generateCustomId } = require("../utils/generateId");
+const { CustomError } = require("../utils/CustomError.js");
 
 const CraftVariant = sequelize.define(
   "CraftVariant",
@@ -34,5 +35,21 @@ const CraftVariant = sequelize.define(
 
 CraftVariant.beforeCreate(async (instance) => {
   instance.id = await generateCustomId("CV", CraftVariant, 5);
+});
+CraftVariant.beforeBulkDestroy(async (crafts) => {
+  const { DetailMarketplaceCraft } = require("./relation.js");
+
+  const where = crafts.where;
+
+  const existingVariant = await DetailMarketplaceCraft.count({
+    where: { craft_variant_id: where.id },
+  });
+
+  if (existingVariant > 0) {
+    throw new CustomError(
+      `Cannot delete variants with existing in ${existingVariant} detailCraft`,
+      400
+    );
+  }
 });
 module.exports = CraftVariant;

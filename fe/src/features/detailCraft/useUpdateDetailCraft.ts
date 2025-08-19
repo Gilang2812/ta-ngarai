@@ -7,8 +7,8 @@ export const useUpdateDetailCraft = ({ onSuccess }: ActionProps) => {
   return useMutation({
     mutationFn: async (data: FormData) => {
       const { data: FormData } = await axiosInstance.patch(
-        `/detail-crafts/${data.get("craft_variant_id")}/${data.get(
-          "id_souvenir_place"
+        `/detail-crafts/${data.get("id_souvenir_place")}/${data.get(
+          "craft_variant_id"
         )}`,
         data
       );

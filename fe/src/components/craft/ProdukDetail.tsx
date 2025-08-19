@@ -1,12 +1,17 @@
 "use client";
 
-import { useEffect } from "react";
 import { ProductImageGallery } from "./ProductImageGallery";
 import { ProductInfo } from "./ProductInfo";
 import { useDetailProductCraft } from "@/hooks/useDetailProductCraft";
 import { useSearchParams } from "next/navigation";
 
-function ProductDetail({ id }: { id: string[] }) {
+function ProductDetail({
+  id_craft,
+  id_souvenir_place,
+}: {
+  id_craft: string;
+  id_souvenir_place: string;
+}) {
   const searchParms = useSearchParams();
   const idVariant = searchParms.get("idvr") || "";
   const {
@@ -23,11 +28,7 @@ function ProductDetail({ id }: { id: string[] }) {
     handleBuy,
     handleSubmit,
     crafts,
-  } = useDetailProductCraft(id, idVariant);
-
-  useEffect(() => {
-    console.log("Active Index:", activeIndex);
-  }, [activeIndex]);
+  } = useDetailProductCraft({ id_craft, id_souvenir_place, idVariant });
 
   if (isLoading) {
     return (

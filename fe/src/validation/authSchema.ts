@@ -1,3 +1,4 @@
+import { axiosInstance } from "@/lib/axios";
 import * as yup from "yup";
 
 export const loginSchema = yup.object().shape({
@@ -15,8 +16,26 @@ export const registerSchema = yup.object().shape({
   email: yup
     .string()
     .email("Invalid email format")
-    .required("Email is required"),
-  username: yup.string().min(3).max(20).required("Username is required"),
+    .required("Email is required")
+    .test("unique-email", "Email is already taken", async (value) => {
+      if (!value) return false;
+      const { data } = await axiosInstance.post("/unique-field", {
+        field: value,
+      });
+      return data.available;
+    }),
+  username: yup
+    .string()
+    .min(3)
+    .max(20)
+    .required("Username is required")
+    .test("unique-username", "Username is already taken", async (value) => {
+      if (!value) return false;
+      const { data } = await axiosInstance.post("/unique-field", {
+        field: value,
+      });
+      return data.available;
+    }),
   password: yup.string().min(8).max(20).required("Password is required"),
   confirmPassword: yup
     .string()

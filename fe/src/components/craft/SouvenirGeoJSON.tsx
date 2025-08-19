@@ -109,11 +109,11 @@ const SouvenirGeoJSON = ({ data, handleSelectStore }: Props) => {
                       >
                         {!isAdmin ? (
                           <Link
-                            href={ROUTES.DETAIL_CRAFT(
-                              cr.variant.id_craft,
-                              cr.id_souvenir_place,
-                              cr.craft_variant_id
-                            )}
+                            href={ROUTES.DETAIL_CRAFT({
+                              id_craft: cr.variant.id_craft,
+                              id_souvenir_place: cr.id_souvenir_place,
+                              id_craft_variant: cr.craft_variant_id,
+                            })}
                           >
                             Order Nows
                           </Link>

@@ -72,6 +72,7 @@ const ManageCraftPage = ({
     setView,
     handleEditVariant,
     updateVariantPending,
+    handleDeleteDetailCraft,
   } = useCraftManagement(id_souvenir_place);
 
   if (!isSeller) return <NoStoreSection />;
@@ -104,10 +105,10 @@ const ManageCraftPage = ({
                   <Link
                     title="edit"
                     className="p-3 bg-white border   rounded border-cyan-400 text-cyan-400 transition-ease-in-out hover:bg-cyan-300 hover:text-white"
-                    href={ROUTES.EDIT_CRAFT(
-                      detail.craft_variant_id,
-                      detail.id_souvenir_place
-                    )}
+                    href={ROUTES.EDIT_CRAFT({
+                      craft_variant_id: detail.craft_variant_id,
+                      id_souvenir_place: detail.id_souvenir_place,
+                    })}
                   >
                     <FaPencil />
                   </Link>
@@ -117,10 +118,11 @@ const ManageCraftPage = ({
                   />
                   <DeleteButton
                     onClick={() =>
-                      handleDeleteVariant(
-                        detail.craft_variant_id,
-                        `${detail.variant.name} ${detail.variant.craft.name}`
-                      )
+                      handleDeleteDetailCraft({
+                        craft_variant_id: detail.craft_variant_id,
+                        id_souvenir_place_id: detail.id_souvenir_place,
+                        name: ` ${detail.variant.craft.name} ${detail.variant.name}`,
+                      })
                     }
                   />
                 </div>

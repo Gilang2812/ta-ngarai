@@ -21,7 +21,7 @@ router.get("/", async (req, res, next) => {
 router.get("/:craft_variant_id", async (req, res, next) => {
   try {
     const craftCart = await getCraftCart({
-      customer_id: req.user.id, 
+      customer_id: req.user.id,
       craft_variant_id: req.params.craft_variant_id,
     });
     res.status(200).json(craftCart);
@@ -48,7 +48,7 @@ router.post("/", async (req, res, next) => {
 
 router.post("/bulk", async (req, res, next) => {
   try {
-    const { items } = req.body; 
+    const { items } = req.body;
 
     const craftCarts = await Promise.all(
       items.map((item) =>
@@ -90,17 +90,20 @@ router.patch(
   }
 );
 
-router.delete("/:craft_variant_id/:id_souvenir_place/:checkout_id", async (req, res, next) => {
-  try {
-    const craftCart = await deleteCraftCart({ 
-      craft_variant_id: req.params.craft_variant_id,
-      id_souvenir_place: req.params.id_souvenir_place,
-      checkout_id: req.params.checkout_id,
-    });
-    res.status(200).json(craftCart);
-  } catch (error) {
-    next(error);
+router.delete(
+  "/:craft_variant_id/:id_souvenir_place/:checkout_id",
+  async (req, res, next) => {
+    try {
+      const craftCart = await deleteCraftCart({
+        craft_variant_id: req.params.craft_variant_id,
+        id_souvenir_place: req.params.id_souvenir_place,
+        checkout_id: req.params.checkout_id,
+      });
+      res.status(200).json(craftCart);
+    } catch (error) {
+      next(error);
+    }
   }
-});
+);
 
 module.exports = router;

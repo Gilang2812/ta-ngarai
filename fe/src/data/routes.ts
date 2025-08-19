@@ -19,18 +19,22 @@ export const ROUTES = {
   DETAIL_PACKAGE: (id: string) => `/web/package/${id}`,
   CUSTOM_PACKAGE: (id: string) => `/web/custompackage/${id}`,
   EXTEND_PACKAGE: (id: string) => `/web/extend/${id}`,
-  DETAIL_CRAFT: (
-    id_craft: string,
-    id_souvenir_place: string,
-    id_craft_variant: string
-  ) => `/web/craft/${id_craft}/${id_souvenir_place}?idvr=${id_craft_variant}`,
+  DETAIL_CRAFT: ({
+    id_craft,
+    id_souvenir_place,
+    id_craft_variant,
+  }: {
+    id_craft: string;
+    id_souvenir_place: string;
+    id_craft_variant: string;
+  }) => `/web/craft/${id_souvenir_place}/${id_craft}?idvr=${id_craft_variant}`,
   PACKAGE_RESERVATION: (id: string) => `/web/reservation/custombooking/${id}`,
   INSTAGRAM: "#",
   TIKTOK: "#",
   LOGIN: "/login",
   REGISTER: "/register",
   MANAGERESERVATION: "/dashboard/managereservation",
-  MANAGE_CRAFT_TRANSACTION: "/dashboard/transactioncraft", 
+  MANAGE_CRAFT_TRANSACTION: "/dashboard/transactioncraft",
   EXPLORE_WITH_PACKAGE: "/web/explore",
   EXPLORE_WITH_MY_PACKAGE: "/web/mypackage",
   MY_TRANSACTION: "/web/reservation",
@@ -48,11 +52,17 @@ export const ROUTES = {
   EDIT_HOMESTAY: (id: string) => `/dashboard/homestay/${id}/edit`,
   MANAGE_USERS: "/dashboard/users",
   MARKETPLACE: "/dashboard/marketplace",
+  NEW_MARKETPLACE: "/dashboard/marketplace/new",
   MANAGE_MARKETPLACE: "/dashboard/manage-marketplace",
   MANAGE_CRAFT: (id_souvenir_place: string) =>
     `/dashboard/craft/${id_souvenir_place}`,
-  EDIT_CRAFT: (craft_variant_id: string, id_souvenir_place: string) =>
-    `/dashboard/craft/${craft_variant_id}/${id_souvenir_place}`,
+  EDIT_CRAFT: ({
+    craft_variant_id,
+    id_souvenir_place,
+  }: {
+    craft_variant_id: string;
+    id_souvenir_place: string;
+  }) => `/dashboard/craft/${id_souvenir_place}/${craft_variant_id}`,
   HOMESTAY_RESERVATION: (id: string) => `/web/reservation/${id}/homestay`,
   DETAIL_HOMESTAY: (id: string) => `/web/homestay/${id}`,
   HOMESTAY_RESERVATION_DETAIL: (id: string) =>

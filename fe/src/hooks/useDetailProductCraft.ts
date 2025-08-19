@@ -3,10 +3,21 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect } from "react";
 import { useOrderCraft } from "./useOrderCraft";
 import { useFetchOrderDetailCraft } from "@/features/detailCraft/useFetchOrderDetailCraft";
-import { DetailCraftManagementResponse, DetailCraftOrderResponse } from "@/type/schema/DetailCraftSchema";
+import {
+  DetailCraftManagementResponse,
+  DetailCraftOrderResponse,
+} from "@/type/schema/DetailCraftSchema";
 import useProdukGallery from "./useProdukGallery";
 
-export const useDetailProductCraft = (id: string[], idVariant: string) => {
+export const useDetailProductCraft = ({
+  id_craft,
+  id_souvenir_place,
+  idVariant,
+}: {
+  id_craft: string;
+  id_souvenir_place: string;
+  idVariant: string;
+}) => {
   const searchParms = useSearchParams();
   const router = useRouter();
   const pathName = usePathname();
@@ -41,11 +52,14 @@ export const useDetailProductCraft = (id: string[], idVariant: string) => {
 
   const initialValues: CraftCartForm = {
     craft_variant_id: idVariant,
-    id_souvenir_place: id[1],
+    id_souvenir_place: id_souvenir_place,
     jumlah: 1,
   };
 
-  const { data: crafts, isLoading } = useFetchOrderDetailCraft(id);
+  const { data: crafts, isLoading } = useFetchOrderDetailCraft({
+    id_craft,
+    id_souvenir_place,
+  });
 
   const initalDetailCraft =
     crafts?.find(
@@ -66,7 +80,9 @@ export const useDetailProductCraft = (id: string[], idVariant: string) => {
     }
   }, [mainImage, setSelectedImage]);
 
-  const handleSelectedDetailCraft = (detailCraft: DetailCraftOrderResponse|DetailCraftManagementResponse) => {
+  const handleSelectedDetailCraft = (
+    detailCraft: DetailCraftOrderResponse | DetailCraftManagementResponse
+  ) => {
     setSelectedDetailCraft(detailCraft);
     router.push(
       `${pathName}?${createQueryString("idvr", detailCraft.craft_variant_id)}`
@@ -76,7 +92,7 @@ export const useDetailProductCraft = (id: string[], idVariant: string) => {
   return {
     crafts,
     isLoading,
-    selectedDetailCraft:selectedDetailCraft as DetailCraftOrderResponse ,
+    selectedDetailCraft: selectedDetailCraft as DetailCraftOrderResponse,
     selectedImage,
     setSelectedDetailCraft: handleSelectedDetailCraft,
     activeIndex,

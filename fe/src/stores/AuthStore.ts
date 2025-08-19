@@ -9,12 +9,15 @@ type AuthStoreType = {
   updateUser: (user: Partial<UserLogin>) => void;
   clearUser: () => void;
   fetchMe: () => void;
+  lastPathName: string | null;
+  setLastPathname: (pathname: string | null) => void;
 };
 
 export const useAuthStore = create<AuthStoreType>()(
   persist(
     (set) => ({
       user: null,
+      lastPathName: null,
       setUser: (user) => set({ user }),
       clearUser: () => set({ user: null }),
       updateUser: (user) =>
@@ -25,8 +28,10 @@ export const useAuthStore = create<AuthStoreType>()(
         const { data } = await axiosInstance.get<LoginResponse>("/auth/me");
         localStorage.setItem("token", data.token);
         set({ user: data.user });
-        console.log('test')
+        console.log("test");
       },
+      setLastPathname: (pathname: string | null) =>
+        set({ lastPathName: pathname }),
     }),
     {
       name: "auth-storage",

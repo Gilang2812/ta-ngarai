@@ -6,6 +6,7 @@ const {
   CraftVariant,
   DetailMarketplaceCraft,
   DetailUserSouvenir,
+  GallerySouvenir,
 } = require("../../models/relation");
 
 const findSouvenirPlace = async (include = false) => {
@@ -118,7 +119,15 @@ const insertSouvenirPlace = async (body) => {
 };
 
 const findSouvenirPlaceById = async (id) => {
-  const sp = await SouvenirPlace.findByPk(id);
+  const sp = await SouvenirPlace.findOne({
+    where: { id },
+    include: [
+      {
+        model: GallerySouvenir,
+        as: "galleries",
+      },
+    ],
+  });
   return sp;
 };
 const updateSouvenirPlace = async (id, body) => {

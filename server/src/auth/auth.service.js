@@ -95,4 +95,10 @@ const userRegister = async (body) => {
   return user;
 };
 
-module.exports = { userLogin, userRegister, googleLogin, generateToken,getLoginResponse };
+module.exports = {
+  userLogin,
+  userRegister,
+  googleLogin,
+  generateToken,
+  getLoginResponse,
+};

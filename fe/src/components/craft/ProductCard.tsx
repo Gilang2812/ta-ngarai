@@ -19,11 +19,11 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     <Link
       href={
         isUserAuth
-          ? ROUTES.DETAIL_CRAFT(
-              product?.variant?.id_craft,
-              product.id_souvenir_place,
-              product?.craft_variant_id
-            )
+          ? ROUTES.DETAIL_CRAFT({
+              id_craft: product?.variant?.id_craft,
+              id_souvenir_place: product.id_souvenir_place,
+              id_craft_variant: product?.craft_variant_id,
+            })
           : "#"
       }
     >

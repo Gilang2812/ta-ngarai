@@ -38,7 +38,9 @@ export const detailCraftSchema = yup.object({
   images: yup.array().max(5, "Maksimal 5 gambar").nullable(),
 });
 
-export type DetailCraftSchema = yup.InferType<typeof detailCraftSchema>;
+export type DetailCraftSchema = yup.InferType<typeof detailCraftSchema> & {
+  id_souvenir_place: string;
+};
 
 export type DetailCraftManagementResponse = DetailCraftSchema & {
   id_souvenir_place: string;

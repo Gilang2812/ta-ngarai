@@ -2,15 +2,21 @@ import { axiosInstance } from "@/lib/axios";
 import { DetailCraftOrderResponse } from "@/type/schema/DetailCraftSchema";
 import { useQuery } from "@tanstack/react-query";
 
-export const useFetchOrderDetailCraft = (id: string[]) => {
+export const useFetchOrderDetailCraft = ({
+  id_craft,
+  id_souvenir_place,
+}: {
+  id_craft: string;
+  id_souvenir_place: string;
+}) => {
   return useQuery<DetailCraftOrderResponse[]>({
-    queryKey: ["orderDetailCraft", id.join(",")],
+    queryKey: ["orderDetailCraft", id_craft, id_souvenir_place],
     queryFn: async () => {
       const { data } = await axiosInstance.get(
-        `/detail-crafts/order/${id.join("/")}`
+        `/detail-crafts/order/${id_souvenir_place}/${id_craft}`
       );
       return data;
     },
-    enabled: id.length === 2,
+    enabled: !!id_craft && !!id_souvenir_place,
   });
 };

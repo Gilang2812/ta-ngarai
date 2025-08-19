@@ -121,6 +121,7 @@ export const confirmAlert = async (
 };
 
 export const cornerAlert = (message: string) => {
+  Swal.hideLoading();
   const Toast = Swal.mixin({
     toast: true,
     position: "top-end",

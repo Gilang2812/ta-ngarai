@@ -60,9 +60,8 @@ const getPaymentStatus = async (orderId) => {
   }
 };
 
- 
 module.exports = {
   createPayment,
   getPaymentStatus,
-  createTokenTransaction, 
+  createTokenTransaction,
 };

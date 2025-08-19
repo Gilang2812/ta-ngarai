@@ -40,7 +40,7 @@ const editCheckout = async (key, body) => {
   });
 };
 
-const findCheckout = async (key) => { 
+const findCheckout = async (key) => {
   return Checkout.findOne({
     where: key,
     include: [
@@ -189,7 +189,7 @@ const userHistory = async (condition) => {
           {
             model: CraftVariant,
             as: "craftVariant",
-            attributes: ["id", "name",  "id_craft"],
+            attributes: ["id", "name", "id_craft"],
             include: [
               {
                 model: Craft,

@@ -1,4 +1,5 @@
 import Button from "@/components/common/Button";
+import FilePondComponent from "@/components/common/Filepond";
 import { FormInput } from "@/components/inputs/FormInput";
 import GoogleMapDrawing from "@/components/map/GoogleMapDrawing";
 import useFormMarketplace from "@/hooks/useFormMarketplace";
@@ -10,13 +11,8 @@ import { Spinner } from "flowbite-react";
 import { Form, Formik, useFormikContext } from "formik";
 import React from "react";
 
-interface Props {
-  toggle: () => void;
-}
-const MarketplaceForm = ({ toggle }: Props) => {
-  const { initialValues, isPending, handleSubmit } = useFormMarketplace({
-    onSuccessForm: toggle,
-  });
+const MarketplaceForm = () => {
+  const { initialValues, isPending, handleSubmit } = useFormMarketplace();
 
   const DrawingMarketplaceMap = () => {
     const { values } = useFormikContext<FormMarketplace>();
@@ -54,6 +50,7 @@ const MarketplaceForm = ({ toggle }: Props) => {
             <FormInput type={"time"} label={`close`} name="close" />
             <FormInput type={"text"} label={`description`} name="description" />
             <FormInput type={"text"} label={`geojson`} name="geom" readonly />
+            <FilePondComponent />
           </section>
           <section className="space-y-4">
             <DrawingMarketplaceMap />

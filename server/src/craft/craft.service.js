@@ -30,7 +30,7 @@ const updateCraftById = async (id, body) => {
   await updateCraft(id, body);
   return craft;
 };
-const  deleteCraftById = async (id) => {
+const deleteCraftById = async (id) => {
   const craft = await getCraftById(id);
   await deleteCraft(id);
   return craft;

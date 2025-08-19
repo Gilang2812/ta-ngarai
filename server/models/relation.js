@@ -38,6 +38,7 @@ const Shipping = require("./ShippingModel.js");
 const DetailMarketplaceCraft = require("./DetailMarketplaceCraft.js");
 const { Role } = require("./RoleModel.js");
 const { DetailUserSouvenir } = require("./DetailUserSouvenir.js");
+const { GallerySouvenir } = require("./GallerySouvenir.js");
 
 User.hasMany(AuthGroupUsers, { foreignKey: "user_id", as: "user" });
 AuthGroup.hasMany(AuthGroupUsers, { foreignKey: "group_id", as: "group" });
@@ -241,6 +242,15 @@ GalleryUnit.belongsTo(UnitHomestay, {
 GalleryUnit.belongsTo(UnitHomestay, {
   foreignKey: "unit_number",
   targetKey: "unit_number",
+});
+
+GallerySouvenir.belongsTo(SouvenirPlace, {
+  foreignKey: "souvenir_place_id",
+  as: "souvenirPlave",
+});
+SouvenirPlace.hasMany(GallerySouvenir, {
+  foreignKey: "souvenir_place_id",
+  as: "galleries",
 });
 
 FacilityUnitDetail.belongsTo(FacilityUnit, {
@@ -488,4 +498,5 @@ module.exports = {
   Shipping,
   DetailMarketplaceCraft,
   DetailUserSouvenir,
+  GallerySouvenir,
 };

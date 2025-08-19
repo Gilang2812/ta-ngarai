@@ -24,10 +24,12 @@ const useAuth = () => {
       }
     );
   };
+
   return {
     user,
     handleLogout,
     updateUser,
+    logout,
   };
 };
 

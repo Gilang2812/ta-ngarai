@@ -6,7 +6,6 @@ import { ShippingDataWithReviewGallery } from "@/type/schema/CraftTransactionSch
 import {
   confirmAlert,
   cornerAlert,
-    
   showLoadingAlert,
 } from "@/utils/AlertUtils";
 import { useModal } from "@/utils/ModalUtils";

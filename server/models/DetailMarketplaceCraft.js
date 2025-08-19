@@ -1,5 +1,6 @@
 const { DataTypes } = require("sequelize");
 const sequlize = require("../config/database");
+const { CustomError } = require("../utils/CustomError");
 
 const DetailMarketplaceCraft = sequlize.define(
   "DetailMarketplaceCraft",
@@ -33,10 +34,10 @@ const DetailMarketplaceCraft = sequlize.define(
       type: DataTypes.INTEGER,
       allowNull: true,
     },
-    description:{
+    description: {
       type: DataTypes.STRING(255),
       allowNull: true,
-    }
+    },
   },
   {
     tableName: "detail_marketplace_craft",
@@ -44,6 +45,37 @@ const DetailMarketplaceCraft = sequlize.define(
   }
 );
 
- 
+DetailMarketplaceCraft.beforeBulkDestroy(async (crafts) => {
+  const { ItemCheckout, CraftVariantGallery } = require("./relation.js");
+
+  const where = crafts.where;
+
+  const item = await ItemCheckout.count({
+    where: {
+      craft_variant_id: where.craft_variant_id,
+      id_souvenir_place: where.id_souvenir_place,
+    },
+  });
+
+  if (item > 0) {
+    throw new CustomError(
+      `Cannot delete craft with existing in ${item} variants`,
+      400
+    );
+  }
+
+  const galleries = await CraftVariantGallery.findAll({
+    where: {
+      craft_variant_id: where.craft_variant_id,
+      id_souvenir_place: where.id_souvenir_place,
+    },
+  });
+
+  if (galleries.length > 0) {
+    for (const image of galleries) {
+      fs.unlinkSync(`public\\${image.url}`);
+    }
+  }
+});
 
 module.exports = DetailMarketplaceCraft;

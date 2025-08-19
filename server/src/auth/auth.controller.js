@@ -8,6 +8,7 @@ const {
 } = require("./auth.service");
 const { editUser, getUser } = require("../user/user.service.js");
 const { verifyToken } = require("../middlewares/authentication.js");
+const { findUniqueUsernameOrEmail } = require("../user/user.repository.js");
 
 router.post("/login", async (req, res, next) => {
   try {
@@ -47,6 +48,23 @@ router.get("/auth/me", verifyToken, async (req, res, next) => {
   }
 });
 
+router.post("/unique-field", async (req, res) => {
+  const { field } = req.body;
+
+  try {
+    // cek apakah email sudah ada
+    const rows = await findUniqueUsernameOrEmail(field, field);
+
+    if (rows) {
+      return res.json({ available: false }); // email sudah dipakai
+    } else {
+      return res.json({ available: true }); // email masih available
+    }
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ available: false });
+  }
+});
 router.patch("/user/update", verifyToken, async (req, res, next) => {
   try {
     const { fullname, phone, address } = req.body;

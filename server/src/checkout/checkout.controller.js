@@ -133,7 +133,9 @@ router.patch(
       const shippings = req.body.shippings || [];
       let paymentStatus = null;
       if (!Number(isClose)) {
+        console.log("apakah di sini");
         paymentStatus = await getPaymentStatus(id);
+        console.log("atau kah di sini");
       }
       if (!status || status === 6) {
         if (shippings.length > 0) {

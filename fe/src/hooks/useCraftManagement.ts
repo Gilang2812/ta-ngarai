@@ -6,6 +6,7 @@ import { useCreateCraftVariant } from "@/features/dashboard/craftVariant/useCrea
 import { useDeleteCraftVariant } from "@/features/dashboard/craftVariant/useDeleteCraftVariant";
 import { useUpdateCraftVariant } from "@/features/dashboard/craftVariant/useUpdateCraftVariant";
 import { useCreateDetailCraft } from "@/features/detailCraft/useCreateDetailCraft";
+import { useDeleteDetailCraft } from "@/features/detailCraft/useDeleteDetailCraft";
 import { useFetchStoreDetailCrafts } from "@/features/detailCraft/useFetchStoreDetailCraft";
 import { type CraftVariant, type Craft } from "@/type/schema/CraftSchema";
 import {
@@ -73,6 +74,7 @@ export const useCraftManagement = (id_souvenir_place: string) => {
     modal: "" as unknown as number,
     stock: "" as unknown as number,
     description: "",
+    id_souvenir_place: id_souvenir_place,
     images: [],
   });
 
@@ -114,12 +116,21 @@ export const useCraftManagement = (id_souvenir_place: string) => {
         refetchCrafts();
       },
     });
+
+  const { mutateAsync: deleteDetailCraft } = useDeleteDetailCraft({
+    onSuccess: () => {
+      cornerAlert("Detail craft deleted successfully");
+      refetchDetailCraft();
+    },
+  });
+
   const { mutateAsync: deleteVariant } = useDeleteCraftVariant({
     onSuccess: () => {
       cornerAlert("Craft variant deleted successfully");
       refetchCrafts();
     },
   });
+
   const { mutate: updateCraft, isPending: updateCraftPending } = useUpdateCraft(
     {
       onSuccess: async () => {
@@ -195,6 +206,21 @@ export const useCraftManagement = (id_souvenir_place: string) => {
       await deleteCraft(craftId);
     });
   };
+
+  const handleDeleteDetailCraft = async ({
+    craft_variant_id,
+    id_souvenir_place_id,
+    name,
+  }: {
+    name: string;
+    craft_variant_id: string;
+    id_souvenir_place_id: string;
+  }) => {
+    confirmDeleteAlert("Kerajinan", name, async () => {
+      await deleteDetailCraft({ craft_variant_id, id_souvenir_place_id });
+    });
+  };
+
   const handleEditCraft = async (values: {
     id: string;
     craft_name: string;
@@ -233,8 +259,9 @@ export const useCraftManagement = (id_souvenir_place: string) => {
   };
 
   const handleSubmit = (values: CraftVariant | Craft | DetailCraftSchema) => {
-    console.log("handleSubmit", values);
     const detailValues = values as DetailCraftSchema;
+    detailValues.id_souvenir_place = id_souvenir_place;
+
     console.log(values);
     if (formType === "variant") {
       return createVariant(values as CraftVariant);
@@ -275,5 +302,6 @@ export const useCraftManagement = (id_souvenir_place: string) => {
     setView,
     handleEditVariant,
     updateVariantPending,
+    handleDeleteDetailCraft,
   };
 };

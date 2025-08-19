@@ -38,13 +38,6 @@ const updateVariantById = async (id, body) => {
 };
 const deleteVariantById = async (id) => {
   const variant = await getVariantById(id);
-  const usedVariant = await getDetailCrafts({ craft_variant_id: id });
-  if (usedVariant.length > 0) {
-    throw new CustomError(
-      "Cannot delete variant, it is used by marketplace crafts",
-      400
-    );
-  }
   await deleteVariant(id);
   return variant;
 };
