@@ -2,7 +2,6 @@ const sequelize = require("../../config/database");
 const { Attraction } = require("../../models/Attraction");
 const CulinaryPlace = require("../../models/CulinaryPlace");
 const { Facility } = require("../../models/Facility");
-const { FacilityType } = require("../../models/FacilityType");
 const { SouvenirPlace } = require("../../models/SouvenirPlace");
 const { TraditionalHouse } = require("../../models/TraditionalHouse");
 const { WorshipPlace } = require("../../models/WorshipPlace");
@@ -29,7 +28,7 @@ const findObjectAround = async (lat, long, radius, tableName, columns) => {
   const radiusKm = parseFloat(radius) / 1000;
   let query,
     replacements = {};
-  if (lat &&lat!=0 && long &&long!=0 && radius&& radius!=0) {
+  if (lat && lat != 0 && long && long != 0 && radius && radius != 0) {
     query = generateDistanceQuery({
       tableName,
       columns,
@@ -46,8 +45,8 @@ const findObjectAround = async (lat, long, radius, tableName, columns) => {
   });
   if (tableName === "facility") {
     objects = objects.map((item) => {
-      const { type,geom, ...rest } = item;
-      return { ...rest, type: { id: item.type_id ,type: item.type },geom };
+      const { type, geom, ...rest } = item;
+      return { ...rest, type: { id: item.type_id, type: item.type }, geom };
     });
   }
 

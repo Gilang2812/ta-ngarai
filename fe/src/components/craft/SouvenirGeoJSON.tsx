@@ -64,7 +64,7 @@ const SouvenirGeoJSON = ({ data, handleSelectStore }: Props) => {
           icon={{
             url: getIconUrl(sp.id),
           }}
-          key={sp.id}
+          key={index}
           position={getCentroid(sp.geom)}
           onClick={() => {
             toggleInfoWindow(index);

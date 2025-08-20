@@ -1,14 +1,17 @@
 import { useFetchObjects } from "@/features/web/common/useFetchObjects";
 import { useFetchService } from "@/features/web/package/useFetchService";
 import { PackageActivityFormSchema } from "@/type/schema/PackageSchema";
-import {    showLoadingAlert } from "@/utils/AlertUtils";
+import { cornerAlert, showLoadingAlert } from "@/utils/AlertUtils";
 import { useFormikContext } from "formik";
 import { useEffect, useMemo } from "react";
 
 const useModifyPackageForm = () => {
   const { values, errors } = useFormikContext<PackageActivityFormSchema>();
-  const { data: attractionsData, isLoading: isLoadingAttractions } =
-    useFetchObjects("attractions", true);
+  const {
+    data: attractionsData,
+    isLoading: isLoadingAttractions,
+    isSuccess,
+  } = useFetchObjects("attractions", true);
   const { data: culinaryData, isLoading: isLoadingCulinary } = useFetchObjects(
     "culinary",
     true
@@ -37,8 +40,14 @@ const useModifyPackageForm = () => {
     if (isLoading) {
       showLoadingAlert();
     }
-   
   }, [isLoading]);
+
+  useEffect(() => {
+    if (isSuccess) {
+      cornerAlert("Data loaded successfully!");
+    }
+  }, [isSuccess]);
+
   useEffect(() => {
     if (errors) {
       console.log(errors);

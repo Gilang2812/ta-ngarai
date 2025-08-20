@@ -1,39 +1,47 @@
-const { DataTypes } = require('sequelize');
-const sequelize = require('../config/database');
+const { DataTypes } = require("sequelize");
+const sequelize = require("../config/database");
 
-const WorshipPlace = sequelize.define('WorshipPlace', {
+const WorshipPlace = sequelize.define(
+  "WorshipPlace",
+  {
     id: {
-        type: DataTypes.STRING(5),
-        allowNull: false,
-        primaryKey: true,
+      type: DataTypes.STRING(5),
+      allowNull: false,
+      primaryKey: true,
     },
     name: {
-        type: DataTypes.STRING(255),
-        allowNull: false
+      type: DataTypes.STRING(255),
+      allowNull: false,
     },
     address: {
-        type: DataTypes.STRING(255),
-        allowNull: false
+      type: DataTypes.STRING(255),
+      allowNull: false,
     },
     capacity: {
-        type: DataTypes.INTEGER,
-        allowNull: false
+      type: DataTypes.INTEGER,
+      allowNull: false,
     },
     description: {
-        type: DataTypes.TEXT,
-        allowNull: false
+      type: DataTypes.TEXT,
+      allowNull: false,
     },
     status: {
-        type: DataTypes.TINYINT(1),
-        allowNull: false
+      type: DataTypes.TINYINT(1),
+      allowNull: false,
     },
     geom: {
-        type: DataTypes.GEOMETRY(),
-        allowNull: true
-    }
-}, {
-    tableName: 'worship_place',
-    timestamps: false
+      type: DataTypes.GEOMETRY(),
+      allowNull: true,
+    },
+  },
+  {
+    tableName: "worship_place",
+    timestamps: false,
+  }
+);
+
+WorshipPlace.beforeCreate(async (instance) => {
+  instance.id = await generateCustomId("WO", WorshipPlace, 5);
 });
 
 module.exports = { WorshipPlace };

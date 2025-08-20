@@ -23,6 +23,7 @@ const {
   updatePackageType,
   deletePackageType,
   createPackageType,
+  getPackageByName,
 } = require("./package.service");
 const fs = require("fs");
 const dayjs = require("dayjs");
@@ -120,17 +121,18 @@ router.post(
       if (req?.files?.video_url) {
         requestBody.video_url = formatImageUrl(req.files.video_url[0].path);
       }
-
+      console.log("images nya ini",req.files.images);
       const newPackage = await createPackage(requestBody);
-
-      const images =
-        req?.files?.images?.map((file) => ({
-          url: formatImageUrl(file.path),
-          package_id: newPackage.id,
-        })) || [];
-      if (images.length > 0) {
-        for (const image of images) {
-          await createGalleryPackage(image);
+      if (newPackage) {
+        const images =
+          req?.files?.images?.map((file) => ({
+            url: formatImageUrl(file.path),
+            package_id: newPackage.id,
+          })) || [];
+        if (images.length > 0) {
+          for (const image of images) {
+            await createGalleryPackage(image);
+          }
         }
       }
       res.status(201).json(newPackage);
@@ -286,6 +288,7 @@ router.put(
           status,
         }
       );
+
       const existingGallery = updatedPackage.packageGalleries || [];
 
       if (existingGallery.length > 0) {
@@ -476,6 +479,20 @@ router.delete("/types/:id", async (req, res, next) => {
     const id = req.params.id;
     const deletedPackageType = await deletePackageType({ id });
     res.status(200).json(deletedPackageType);
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.post("/unique-package", async (req, res, next) => {
+  try {
+    const { name } = req.body;
+    const rows = await getPackageByName(name);
+    if (rows) {
+      return res.json({ available: false }); // email sudah dipakai
+    } else {
+      return res.json({ available: true }); // email masih available
+    }
   } catch (error) {
     next(error);
   }

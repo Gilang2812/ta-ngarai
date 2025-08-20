@@ -1,9 +1,9 @@
 import { ROUTES } from "@/data/routes";
-import { useCreateModifyPackage } from "@/features/web/extend/useCreateModifyPackage"; 
+import { useCreateModifyPackage } from "@/features/web/extend/useCreateModifyPackage";
 import { useFetchPackages } from "@/features/web/package/useFetchPackage";
 import { useModifyPackage } from "@/features/web/package/useModifyPackage";
 import { PackageGallery, PackageSchema } from "@/type/schema/PackageSchema";
-import {    showLoadingAlert } from "@/utils/AlertUtils";
+import { showLoadingAlert } from "@/utils/AlertUtils";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
@@ -52,7 +52,6 @@ export const usePackageList = () => {
     if (isPending || isCreating) {
       showLoadingAlert();
     }
-   
   }, [isPending, isCreating]);
 
   return {

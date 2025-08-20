@@ -11,6 +11,8 @@ import { formatImageUrls } from "@/lib/imgUrlFormatter";
 import { useMemo } from "react";
 import usePackageHandler from "./usePackageHandler";
 import { findMissingDays } from "@/lib/findMissingDays";
+import { ROUTES } from "@/data/routes";
+import { useRouter } from "next/navigation";
 
 export const useEditPackage = (id: string) => {
   const { data, isLoading, refetch } = useGetPackage<PackageServiceGallery>(
@@ -37,6 +39,7 @@ export const useEditPackage = (id: string) => {
   } = usePackageHandler(id, refetch, findMissingDays(data?.packageDays || []));
 
   const { data: types } = useFetchPackageTypes();
+  const router = useRouter();
   const images = useMemo(
     () =>
       formatImageUrls(
@@ -66,11 +69,11 @@ export const useEditPackage = (id: string) => {
       onSuccess: () => {
         refetch();
         cornerAlert("Package updated successfully");
+        router.push(ROUTES.DETAIL_PACKAGE(id));
       },
     });
 
   const handleUpdatePackage = (values: EditPackageSchema) => {
-    console.log("Update package with values:", values);
     const formData = createFormData(values);
     updatePackage(formData);
   };

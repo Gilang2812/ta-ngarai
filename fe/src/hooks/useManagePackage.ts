@@ -6,6 +6,7 @@ import useTableManagement from "./useTableManagement";
 import { useDeletePackage } from "@/features/web/package/useDeletePackage";
 import {
   confirmDeleteAlert,
+  cornerAlert,
   showLoadingAlert,
 } from "@/utils/AlertUtils";
 
@@ -19,6 +20,7 @@ const useManagePackage = () => {
   const { mutateAsync: deletePackage, isPending } = useDeletePackage({
     onSuccess: () => {
       refetch();
+      cornerAlert("Package deleted successfully");
     },
   });
   const { searchTerm, handleSearch } = useSearchTable();
@@ -77,7 +79,7 @@ const useManagePackage = () => {
     indexOfFirstItem,
     indexOfLastItem,
     itemsPerPage,
-    totalPages, 
+    totalPages,
     handleSearch,
     totalItems,
     handleDeletePackage,

@@ -9,11 +9,14 @@ export const useFetchSouvenirPlace = <T>(craft = false) => {
   const queryClient = useQueryClient();
   useEffect(() => {
     if (!socket) return;
+    
     joinRoom("sp-user");
     const handler = () => {
       queryClient.invalidateQueries({ queryKey: ["sp"] });
     };
+    
     socket.on("souvenirPlace", handler);
+
     return () => {
       leaveRoom("sp");
       socket.off("souvenirPlace", handler);

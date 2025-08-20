@@ -30,17 +30,24 @@ const findSouvenirPlace = async (include = false) => {
           {
             model: CraftVariantGallery,
             as: "craftGalleries",
+
             where: {
               [Op.and]: [
                 where(
-                  col("crafts.craft_variant_id"),
+                  col("detailSouvenir->souvenirPlace->crafts.craft_variant_id"),
                   "=",
-                  col("crafts->craftGalleries.craft_variant_id")
+                  col(
+                    "detailSouvenir->souvenirPlace->crafts->craftGalleries.craft_variant_id"
+                  )
                 ),
                 where(
-                  col("crafts.id_souvenir_place"),
+                  col(
+                    "detailSouvenir->souvenirPlace->crafts.id_souvenir_place"
+                  ),
                   "=",
-                  col("crafts->craftGalleries.id_souvenir_place")
+                  col(
+                    "detailSouvenir->souvenirPlace->crafts->craftGalleries.id_souvenir_place"
+                  )
                 ),
               ],
             },

@@ -1,3 +1,5 @@
+import { axiosInstance } from "@/lib/axios";
+import { CheckSUserResponse } from "@/type/schema/UsersSchema";
 import * as yup from "yup";
 
 export const packageDayFormSchema = yup.object().shape({
@@ -16,7 +18,19 @@ export const detailPackageFormSchema = yup.object().shape({
 });
 
 export const editPackageFormSchema = yup.object().shape({
-  name: yup.string().required(),
+  name: yup
+    .string()
+    .required()
+    .test("unique-name", "name already exists", async (value) => {
+      if (!value) return false;
+      const { data } = await axiosInstance.post<CheckSUserResponse>(
+        "/packages/unique-package",
+        {
+          name: value,
+        }
+      );
+      return data.available;
+    }),
   type_id: yup.string().required(),
   min_capacity: yup.number().min(1).required(),
   contact_person: yup.string().required(),

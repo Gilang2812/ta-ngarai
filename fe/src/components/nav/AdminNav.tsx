@@ -108,6 +108,25 @@ export const AdminNav = () => {
                 link={ROUTES.MANAGE_MARKETPLACE}
               />
             </li>
+            <li>
+              <DropDownItem icon={FaSquarePollHorizontal} label="Manage Object">
+                <DropDownChildrenItem
+                  icon={FaSquarePollHorizontal}
+                  label="Manage Attraction"
+                  link={ROUTES.MANAGE_ATTRACTION}
+                />
+                <DropDownChildrenItem
+                  icon={FaPuzzlePiece}
+                  label="Manage Culinary"
+                  link={ROUTES.MANAGE_CULINARY}
+                />
+                <DropDownChildrenItem
+                  icon={FaPuzzlePiece}
+                  label="Service Worshipme"
+                  link={ROUTES.MANAGE_CULINARY}
+                />
+              </DropDownItem>
+            </li>
           </>
         )}
       </ul>

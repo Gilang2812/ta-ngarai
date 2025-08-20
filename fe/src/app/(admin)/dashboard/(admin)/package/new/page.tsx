@@ -1,6 +1,6 @@
 "use client";
 
-import Button from "@/components/common/Button"; 
+import Button from "@/components/common/Button";
 import { ContentWrapper } from "@/components/common/ContentWrapper";
 import { EqualsContentChildren } from "@/components/common/EqualsContentChildren";
 import FilePondComponent from "@/components/common/Filepond";
@@ -36,7 +36,7 @@ const NewPackage = () => {
                   ))}
                 </FormInput>
 
-                <FormInput type="number" readonly name="price" label="Price" /> 
+                <FormInput type="number" readonly name="price" label="Price" />
                 <FormInput
                   type="number"
                   name="min_capacity"

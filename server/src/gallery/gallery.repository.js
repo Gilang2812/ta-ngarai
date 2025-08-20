@@ -1,5 +1,8 @@
+const { GalleryAttraction } = require("../../models/GalleryAttraction");
+const { GalleryCulinary } = require("../../models/GalleryCulinary");
 const { GalleryPackage } = require("../../models/GalleryPackage");
 const { GalleryTourism } = require("../../models/GalleryTourismModel");
+const { GalleryWorship } = require("../../models/GalleryWorship");
 const {
   TourismVillage,
   Package,
@@ -64,6 +67,35 @@ const destroyGallerySouvenir = async (key) => {
   return deleted;
 };
 
+const insertGalleryAttraction = async (data) => {
+  const created = await GalleryAttraction.create(data);
+  return created;
+};
+
+const destroyGalleryAttraction = async (key) => {
+  const deleted = await GalleryAttraction.destroy({ where: key });
+  return deleted;
+};
+
+const insertGalleryCulinary = async () => {
+  const culinary = await GalleryCulinary.findAll();
+  return culinary;
+};
+const destroyGalleryCulinary = async () => {
+  const culinary = await GalleryCulinary.findAll();
+  return culinary;
+};
+
+const insertGalleryWorship = async (data) => {
+  const created = await GalleryWorship.create(data);
+  return created;
+};
+
+const destroyGalleryWorship = async (key) => {
+  const deleted = await GalleryWorship.destroy({ where: key });
+  return deleted;
+};
+
 module.exports = {
   findGalleryTourisms,
   findGalleryPackages,
@@ -75,4 +107,11 @@ module.exports = {
   insertGalleryUnitHomestay,
   destroyGalleryUnitHomestay,
   destroyGallerySouvenir,
+  destroyGalleryAttraction,
+  destroyGalleryWorship,
+  insertGalleryCulinary,
+  destroyGalleryCulinary,
+  insertGalleryWorship,
+  destroyGalleryWorship,
+  insertGalleryAttraction,
 };

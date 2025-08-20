@@ -14,6 +14,7 @@ const findAllPackage = async (condition, { package, gallery, service }) => {
   const packages = await Package.findAll({
     where: condition,
     include: includes,
+    order: [["id", "DESC"]],
   });
   return packages;
 };
@@ -195,12 +196,22 @@ const destroyPackageType = async (key) => {
   return deletedPackageType;
 };
 
+const findPackageByName = async (name) => {
+  const package = await Package.findOne({
+    where: {
+      name,
+    },
+  });
+  return package;
+};
+
 module.exports = {
   updatePackage,
   findPackageDay,
   findDetailPackage,
   findAllPackage,
   findPackage,
+  findPackageByName,
   countPackageDays,
   findUserPackage,
   insertPackageDay,

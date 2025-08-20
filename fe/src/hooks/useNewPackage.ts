@@ -1,10 +1,14 @@
+import { ROUTES } from "@/data/routes";
 import { useCreatePackage } from "@/features/web/package/useCreatePackage";
 import { useFetchPackageTypes } from "@/features/web/package/useFetchPackageTypes";
 import { EditPackageSchema } from "@/type/schema/PackageSchema";
 import { cornerAlert } from "@/utils/AlertUtils";
+import { createFormData } from "@/utils/common/createFormData";
+import { useRouter } from "next/router";
 
 export const useNewPackage = () => {
   const { data: types, isLoading } = useFetchPackageTypes();
+  const router = useRouter();
   const initialValues: EditPackageSchema = {
     name: "",
     type_id: "",
@@ -18,11 +22,13 @@ export const useNewPackage = () => {
   const { mutate: createPackage, isPending } = useCreatePackage({
     onSuccess: () => {
       cornerAlert("Package created successfully");
+      router.push(ROUTES.PACKAGE);
     },
   });
 
   const handleSubmit = (values: EditPackageSchema) => {
-    createPackage(values);
+    const formData = createFormData(values);
+    createPackage(formData);
   };
 
   return { isPending, types, isLoading, handleSubmit, initialValues };

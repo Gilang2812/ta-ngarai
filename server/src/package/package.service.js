@@ -20,6 +20,7 @@ const {
   editPackageType,
   insertPackageType,
   destroyPackageType,
+  findPackageByName,
 } = require("./package.repository");
 
 const getAllPackage = async (condition, query) => {
@@ -193,6 +194,11 @@ const deletePackageType = async (key) => {
   return deletedPackageType;
 };
 
+const getPackageByName = async (name) => {
+  const package = await findPackageByName(name);
+  return package;
+};
+
 module.exports = {
   getAllPackage,
   getPackage,
@@ -205,6 +211,7 @@ module.exports = {
   deleteDetailPackage,
   deletePackageDay,
   deletePackage,
+  getPackageByName,
   editPackage,
   createPackage,
   editAllDataPackage,

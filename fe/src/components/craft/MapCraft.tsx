@@ -35,7 +35,7 @@ const MapCraft = () => {
     data && (
       <ContentDiffSplitted
         left={
-          <MapWeb zoom={18}>
+          <MapWeb zoom={17}>
             {!aroundOpen && (
               <SouvenirGeoJSON
                 handleSelectStore={handleSelectStore}

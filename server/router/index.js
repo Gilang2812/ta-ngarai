@@ -26,6 +26,9 @@ const shippingRouter = require("../src/shipping/shipping.controller");
 const detailCraftRouter = require("../src/detailMarketplaceCraft/detailCraft.controller");
 const { verifyToken } = require("../src/middlewares/authentication");
 const invoiceRouter = require("../src/invoice/invoice.controller");
+const attractionRouter = require("../src/attraction/attraction.controller");
+const culinaryRouter = require("../src/culinary/culinary.controller");
+const worship = require("../src/worship/worship.controller");
 
 router.use("/", authRouter);
 router.use("/addresses", verifyToken, addressRouter);
@@ -52,6 +55,9 @@ router.use("/tourism", tourismRouter);
 router.use("/users", verifyToken, userRouter);
 router.use("/variants", craftVariantRouter);
 router.use("/invoice", invoiceRouter);
+router.use("/attractions", attractionRouter);
+router.use("/culinary", culinaryRouter);
+router.use("/worship", worship);
 
 router.use("*", (req, res, next) => {
   res.status(404).json({ message: "URl Server Not Found" });

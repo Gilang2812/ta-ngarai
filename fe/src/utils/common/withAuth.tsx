@@ -1,9 +1,10 @@
 "use client";
 
+import MainSkeletonLoader from "@/components/loading/MainSkeletonLoader";
 import { ROUTES } from "@/data/routes";
 import { useAuthStore } from "@/stores/AuthStore";
 import { useRouter, usePathname } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 
 type RoleType = "admin" | "guest" | "auth";
@@ -21,14 +22,28 @@ const withAuth = <P extends object>(
     const isAdmin = user?.role === 2;
     const router = useRouter();
     const pathName = usePathname();
-    const token =
-      typeof window !== "undefined" ? localStorage.getItem("token") : null;
+
+    // ⬇️ tambahin state loading biar ga buru-buru redirect
+    const [ready, setReady] = useState(false);
+    const [token, setToken] = useState<string | null>(null);
+
     useEffect(() => {
+      if (typeof window !== "undefined") {
+        const storedToken = localStorage.getItem("token");
+        setToken(storedToken);
+      }
+      setReady(true); // tandain kalau udah siap check
+    }, []);
+
+    useEffect(() => {
+      if (!ready) return; // ⬅️ tunggu sampai token dan user siap
+
       const needsProfileUpdate =
         user &&
         !user.phone &&
         pathName !== ROUTES.UPDATE_PROFILE &&
         pathName !== ROUTES.PROFILE;
+
       const showProfileUpdateAlert = async () => {
         await Swal.fire({
           title: "Update Profile",
@@ -58,7 +73,12 @@ const withAuth = <P extends object>(
       } else if (needsProfileUpdate) {
         showProfileUpdateAlert();
       }
-    }, [router, user, token, isAdmin, pathName]);
+    }, [ready, router, user, token, isAdmin, pathName]);
+
+    if (!ready) {
+      return <MainSkeletonLoader />; // bisa spinner biar lebih bagus
+    }
+
     return <Component {...props} />;
   };
 

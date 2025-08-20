@@ -1,9 +1,5 @@
-import { Spinner } from "flowbite-react";
+import MainSkeletonLoader from "@/components/loading/MainSkeletonLoader"; 
 
 export default function Loading() {
-  return (
-    <center>
-      <Spinner />
-    </center>
-  );
+  return <MainSkeletonLoader />;
 }

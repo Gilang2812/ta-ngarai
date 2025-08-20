@@ -30,7 +30,7 @@ const { deleteFacilityUnitDetail } = require("./homestay.repository");
 router.get("/", async (req, res, next) => {
   try {
     const homestays = await getAllHomestay();
-    res.json(200, homestays);
+    res.status(200).json(homestays);
   } catch (error) {
     next(error);
   }
@@ -126,13 +126,12 @@ router.patch(
       body.id = id;
       body.geom = JSON.parse(body.geom);
       const homestay = await editHomestay(body);
-
       const existingGalleries = homestay.toJSON().galleries || [];
 
       for (const g of existingGalleries) {
         fs.unlinkSync(`public\\${g.url}`);
       }
-      console.log("file images", req.files);
+      
       await deleteGalleryHomestay({ homestay_id: id });
       if (req?.files && req?.files?.length > 0) {
         const newImages = req?.files?.map((file) => ({

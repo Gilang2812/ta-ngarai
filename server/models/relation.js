@@ -39,6 +39,12 @@ const DetailMarketplaceCraft = require("./DetailMarketplaceCraft.js");
 const { Role } = require("./RoleModel.js");
 const { DetailUserSouvenir } = require("./DetailUserSouvenir.js");
 const { GallerySouvenir } = require("./GallerySouvenir.js");
+const { Attraction } = require("./Attraction.js");
+const { GalleryAttraction } = require("./GalleryAttraction.js");
+const CulinaryPlace = require("./CulinaryPlace.js");
+const { GalleryCulinary } = require("./GalleryCulinary.js");
+const { WorshipPlace } = require("./WorshipPlace.js");
+const { GalleryWorship } = require("./GalleryWorship.js");
 
 User.hasMany(AuthGroupUsers, { foreignKey: "user_id", as: "user" });
 AuthGroup.hasMany(AuthGroupUsers, { foreignKey: "group_id", as: "group" });
@@ -459,6 +465,36 @@ Role.hasMany(User, {
   as: "users",
 });
 
+Attraction.hasMany(GalleryAttraction, {
+  foreignKey: "attraction_id",
+  as: "galleries",
+});
+
+GalleryAttraction.belongsTo(Attraction, {
+  foreignKey: "attraction_id",
+  as: "attraction",
+});
+
+CulinaryPlace.hasMany(GalleryCulinary, {
+  foreignKey: "culinary_place_id",
+  as: "galleries",
+});
+
+GalleryCulinary.belongsTo(CulinaryPlace, {
+  foreignKey: "culinary_place_id",
+  as: "culinaryPlace",
+});
+
+WorshipPlace.hasMany(GalleryWorship, {
+  foreignKey: "worship_place_id",
+  as: "galleries",
+});
+
+GalleryWorship.belongsTo(WorshipPlace, {
+  foreignKey: "worship_place_id",
+  as: "worshipPlace",
+});
+
 module.exports = {
   AuthGroup,
   AuthGroupUsers,
@@ -499,4 +535,10 @@ module.exports = {
   DetailMarketplaceCraft,
   DetailUserSouvenir,
   GallerySouvenir,
+  Attraction,
+  GalleryAttraction,
+  CulinaryPlace,
+  GalleryCulinary,
+  WorshipPlace,
+  GalleryWorship,
 };

@@ -23,7 +23,10 @@ type Props = {
   dayInitialValues: PackageDayFormSchema;
   getServiceInitialValues: DetailServiceFormSchema;
   handleSubmit: (
-    values: PackageDayFormSchema | PackageActivityFormSchema | DetailServiceFormSchema
+    values:
+      | PackageDayFormSchema
+      | PackageActivityFormSchema
+      | DetailServiceFormSchema
   ) => void;
   isPending: boolean;
   packageDays: (PackageDay & {

@@ -1,7 +1,5 @@
-import { Spinner } from "@/components/loading/Spinner";
+import MainSkeletonLoader from "@/components/loading/MainSkeletonLoader";   
 
-export default function Loading(){
-    return <center>
-    <Spinner />
-    </center>
+export default function Loading() {
+  return <MainSkeletonLoader />;
 }
