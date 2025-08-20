@@ -107,7 +107,6 @@ router.get("/:id", async (req, res, next) => {
         );
       }
     }
-
     return res.status(200).json(reservation);
   } catch (error) {
     next(error);
@@ -239,6 +238,7 @@ router.patch("/:id", imageUpload().single("images"), async (req, res, next) => {
 
     const { review_rating: rating, ...rest } = updatedData;
     const result = await editReservation({ id }, { ...rest, rating });
+    io.to(`detailReservation:${id}`).emit("detailReservation", result);
     return res.status(200).json(result);
   } catch (error) {
     next(error);
@@ -272,7 +272,8 @@ router.patch("/payment/:id", async (req, res, next) => {
 
     const body = {
       rating,
-      [isComplete ? "token_of_payment" : "token_of_deposit"]: transaction?.token,
+      [isComplete ? "token_of_payment" : "token_of_deposit"]:
+        transaction?.token,
       ...rest,
       status,
       confirmation_date: dayjs(),

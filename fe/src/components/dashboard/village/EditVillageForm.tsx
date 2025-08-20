@@ -3,7 +3,7 @@ import Button from "@/components/common/Button";
 import FilePondComponent from "@/components/common/Filepond";
 import { FormInput } from "@/components/inputs/FormInput";
 import ManagementSkeletonLoader from "@/components/loading/ManagementSkeletonLoader";
-import { useEditVillage } from "@/hooks/useEditVillage";
+import { tourismVillageSchema, useEditVillage } from "@/hooks/useEditVillage";
 import { Form, Formik } from "formik";
 import React from "react";
 
@@ -15,10 +15,12 @@ const EditVillageForm = ({ id }: Props) => {
   const { isLoading, initialValues, isPending, handleSubmit } =
     useEditVillage(id);
   if (isLoading) return <ManagementSkeletonLoader />;
+
   return (
     <Formik
       initialValues={initialValues}
       enableReinitialize
+      validationSchema={tourismVillageSchema}
       onSubmit={handleSubmit}
     >
       <Form encType="multipart/form-data">
@@ -36,6 +38,11 @@ const EditVillageForm = ({ id }: Props) => {
             <FormInput label="Close Time" name="close" type="time" />
             <FormInput label="Ticket Price" name="ticket_price" type="number" />
             <FormInput
+              label="Deposit Percentage"
+              name="deposit_percentage"
+              type="number"
+            />
+            <FormInput
               label="Contact Person"
               name="contact_person"
               type="text"
@@ -52,7 +59,6 @@ const EditVillageForm = ({ id }: Props) => {
               name="bank_account_number"
               type="text"
             />
-
             <div>
               <FilePondComponent
                 allowMultiple={false}

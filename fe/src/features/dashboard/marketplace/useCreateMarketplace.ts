@@ -1,6 +1,6 @@
 import { axiosInstance } from "@/lib/axios";
 import { useAuthStore } from "@/stores/AuthStore";
-import { ActionProps } from "@/type/props/ActionProps"; 
+import { ActionProps } from "@/type/props/ActionProps";
 import { onError } from "@/utils/ErrorHandler";
 import { useMutation } from "@tanstack/react-query";
 
@@ -8,7 +8,11 @@ export const useCreateMarketplace = ({ onSuccess }: ActionProps) => {
   const { fetchMe } = useAuthStore();
   return useMutation({
     mutationFn: async (body: FormData) => {
-      const { data } = await axiosInstance.post("/souvenirs", body);
+      const { data } = await axiosInstance.post("/souvenirs", body, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
       return data;
     },
     onSuccess: (data) => {

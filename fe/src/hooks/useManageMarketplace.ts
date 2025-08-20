@@ -9,20 +9,16 @@ import {
 import { useModal } from "@/utils/ModalUtils";
 import { useEffect, useState } from "react";
 import useFormMarketplace from "./useFormMarketplace";
+import { UserMarketplaceSchema } from "@/type/schema/SouvenirSchema";
 
 export const useManageMarketplace = () => {
   const { data, isLoading, refetch } = useFetchSouvenirPlace();
   const { isOpen, toggleModal } = useModal();
   const [formType, setFormType] = useState<"create" | "edit">("create");
-
-  const onSuccessForm = () => {
-    refetch();
-    toggleModal();
-  };
+  const [selectedItem, setSelectedItem] =
+    useState<UserMarketplaceSchema | null>(null);
   const { initialValues, setInitialValues, isPending, handleSubmit } =
-    useFormMarketplace({
-      onSuccessForm,
-    });
+    useFormMarketplace();
 
   const { mutateAsync: deleteMarketplace, isPending: deletingMarketplace } =
     useDeleteMarketplace({
@@ -48,6 +44,7 @@ export const useManageMarketplace = () => {
       open: "",
       description: "",
       geom: "",
+      images: [],
     });
     toggleModal();
   };
@@ -62,6 +59,7 @@ export const useManageMarketplace = () => {
       open: souvenirPlace.open,
       description: souvenirPlace.description,
       geom: JSON.stringify(souvenirPlace.geom) || "", // optional
+      images: [],
     });
 
     toggleModal();
@@ -73,6 +71,11 @@ export const useManageMarketplace = () => {
     }
   }, [deletingMarketplace]);
 
+  const handleSelect = (item: UserMarketplaceSchema) => {
+    setSelectedItem(item);
+    toggleModal();
+  };
+
   return {
     handleSubmit,
     handleOpenEditModal,
@@ -80,9 +83,10 @@ export const useManageMarketplace = () => {
     isOpen,
     initialValues,
     handleDelete,
-    toggleModal,
+    toggleModal, handleSelect,
     handleOpenCreateModal,
     isLoading,
+    selectedItem,
     data,
     formType,
   };

@@ -1,3 +1,4 @@
+import { ROUTES } from "@/data/routes";
 import { useCreateDetailHomestayFacility } from "@/features/dashboard/facility/useCreateDetailHomestayFacility";
 import { useCreateHomestayFacility } from "@/features/dashboard/facility/useCreateHomestayFacility";
 import { useDeleteDetailHomestayFacility } from "@/features/dashboard/facility/useDeleteDetailHomestayFacility";
@@ -15,9 +16,11 @@ import {
   DeleteDetailFacilitySchema,
 } from "@/validation/facilitySchema";
 import { CreateHomestaySchema } from "@/validation/homestaySchema";
+import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
 
 export const useEditHomestay = (id: string) => {
+  const router = useRouter();
   const { data, isLoading, refetch: refetchHomestay } = useGetEditHomestay(id);
   const { isOpen, toggleModal } = useModal();
   const [formType, setFormType] = useState<"detail" | "facility">("detail");
@@ -101,6 +104,7 @@ export const useEditHomestay = (id: string) => {
   const { mutate, isPending } = useUpdateHomestay({
     onSuccess: () => {
       cornerAlert("homestay updated successfully");
+      router.push(ROUTES.MANAGE_DETAIL_HOMESTAY(id));
       refetch();
     },
   });

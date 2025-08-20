@@ -8,7 +8,7 @@ export const useDetailReservationPackage = (id: string) => {
   const { handlePayment, isPending, item_details } = usePackagePayment({
     refetchReservation: refetch,
     data,
-    status:getReservationStatus(data)
+    status: getReservationStatus(data),
   });
   return {
     data,

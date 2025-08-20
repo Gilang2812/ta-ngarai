@@ -7,11 +7,12 @@ import ManagementSkeletonLoader from "../components/loading/ManagementSkeletonLo
 import { FaCartShopping } from "react-icons/fa6";
 import Link from "next/link";
 import Button from "@/components/common/Button";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import useToggleOpen from "@/hooks/useToggleOpen";
 import useAuth from "@/hooks/useAuth";
 import { ROUTES } from "@/data/routes";
 import useClickOutside from "@/hooks/useOutsideClick";
+import NotifInvitations from "./NotifInvitations";
 
 export default function SidebarLayout({
   children,
@@ -22,7 +23,7 @@ export default function SidebarLayout({
 }) {
   const { isOpen, toggle, setIsOpen } = useToggleOpen();
   const { user, handleLogout } = useAuth();
-  const ref = useClickOutside<HTMLUListElement>(() => {
+  const ref = useClickOutside<HTMLDivElement>(() => {
     setIsOpen(false);
   });
   return (
@@ -39,17 +40,20 @@ export default function SidebarLayout({
           </section>
           <div>
             {user ? (
-              <section className="grid grid-cols-2 gap-2">
-                <Link
-                  className="flex items-center justify-center p-4 bg-white rounded-lg cursor-pointer"
-                  href={ROUTES.CART}
-                >
-                  <FaCartShopping />
-                </Link>
-                <div className="relative">
+              <section className="grid grid-cols-3 gap-2 grid-flow-col">
+                <NotifInvitations />
+                <div>
+                  <Link
+                    className="flex w-full h-full border border-transparent aspect-square transition-ease-in-out hover:bg-primary/10 hover:shadow-xl items-center justify-center p-4 hover:border-primary bg-white rounded-lg cursor-pointer"
+                    href={ROUTES.CART}
+                  >
+                    <FaCartShopping />
+                  </Link>
+                </div>
+                <div className="relative" ref={ref}>
                   <button
                     type="button"
-                    className="flex items-center justify-center p-4 bg-white rounded-lg cursor-pointer"
+                    className="flex items-center hover:bg-primary/10 border border-transparent hover:border-primary hover:shadow-xl transition-ease-in-out justify-center p-4 bg-white rounded-lg cursor-pointer"
                     onClick={toggle}
                   >
                     <Image
@@ -60,22 +64,27 @@ export default function SidebarLayout({
                       className="size-12"
                     />
                   </button>
-                  <motion.ul
-                    layout
-                    ref={ref}
-                    className={`absolute   [&_li]:ease-in-out  right-0 top-full mt-2 w-48 bg-white shadow-lg rounded-lg p-2 ${
-                      isOpen ? "block" : "hidden"
-                    }`}
-                  >
-                    <li className="hover:bg-primary transition-ease-in-out hover:text-white">
-                      <a href="/web/profile">Profile</a>
-                    </li>
-                    <li className="hover:bg-primary transition-ease-in-out hover:text-white">
-                      <button onClick={handleLogout} type="button">
-                        Logout
-                      </button>
-                    </li>
-                  </motion.ul>
+                  <AnimatePresence>
+                    {isOpen && (
+                      <motion.ul
+                        layout
+                        initial={{ opacity: 0, y: -10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -10 }}
+                        transition={{ duration: 0.2 }}
+                        className={`absolute z-10  [&_li]:ease-in-out  right-0 top-full mt-2 w-48 bg-white shadow-lg rounded-lg p-2 `}
+                      >
+                        <li className="hover:bg-primary transition-ease-in-out hover:text-white">
+                          <a href="/web/profile">Profile</a>
+                        </li>
+                        <li onClick={handleLogout}  className="hover:bg-primary transition-ease-in-out hover:text-white">
+                          <button type="button">
+                            Logout
+                          </button>
+                        </li>
+                      </motion.ul>
+                    )}
+                  </AnimatePresence>
                 </div>
               </section>
             ) : (

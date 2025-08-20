@@ -7,14 +7,8 @@ export const createHomestaySchema = yup.object({
   contact_person: yup.string().min(2).max(100).required(),
   description: yup.string().min(5).max(500).required(),
   geom: yup.string().required("draw your homestay on the map"),
-  open: yup
-    .string()
-    .matches(/^\d{1,2}:\d{2}$/, "Invalid time format")
-    .required(),
-  close: yup
-    .string()
-    .matches(/^\d{1,2}:\d{2}$/, "Invalid time format")
-    .required(),
+  open: yup.string().required(),
+  close: yup.string().required(),
   images: yup.array().of(yup.mixed()).required(),
 });
 
@@ -23,7 +17,7 @@ export const createUnitSchema = yup.object({
   unit_type: yup.string().required("please select a unit type"),
   unit_name: yup.string().min(2).max(100).required(),
   capacity: yup.number().min(1).required(),
-  price: yup.number().min(100,"input a valid price").required(),
+  price: yup.number().min(100, "input a valid price").required(),
   description: yup.string().min(5).max(500).required(),
 });
 

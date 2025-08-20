@@ -2,21 +2,14 @@
 import ManagementHeader from "@/components/admin/ManagementHeader";
 import TableHeaderManagement from "@/components/admin/TableHeaderManagement";
 import Button from "@/components/common/Button";
-import { DeleteButton } from "@/components/common/DeleteButton";
-import { EditButton } from "@/components/common/EditButton";
 import { SingleContentWrapper } from "@/components/common/SingleContentWrapper";
-import { FormInput } from "@/components/inputs/FormInput";
+import DetailMarketplaceSection from "@/components/dashboard/marketplace/DetailMarketplaceSection";
 import { TableRawSkeleton } from "@/components/loading/TableRawSkeleton";
-import GoogleMapDrawing from "@/components/map/GoogleMapDrawing";
 import { Modal } from "@/components/modal/Modal";
+import { ROUTES } from "@/data/routes";
 import { useManageMarketplace } from "@/hooks/useManageMarketplace";
 import { timeFormatter } from "@/lib/timeFormatter";
-import {
-  FormMarketplace,
-  marketplaceSchema,
-} from "@/type/schema/MarketplaceSchema";
-import { Spinner } from "flowbite-react";
-import { Form, Formik, useFormikContext } from "formik";
+import { FaCircleInfo } from "react-icons/fa6";
 
 const ManageMarketplace = () => {
   const tableHeaders = [
@@ -29,29 +22,8 @@ const ManageMarketplace = () => {
     "description",
   ];
 
-  const {
-    handleOpenCreateModal,
-    handleOpenEditModal,
-    handleSubmit,
-    initialValues,
-    isOpen,
-    handleDelete,
-    isPending,
-    toggleModal,
-    data,
-    isLoading,
-    formType,
-  } = useManageMarketplace();
-
-  const DrawingMarketplaceMap = () => {
-    const { values } = useFormikContext<FormMarketplace>();
-    return (
-      <GoogleMapDrawing
-        geom={values.geom ? JSON.parse(values.geom) : null}
-        formType={formType}
-      />
-    );
-  };
+  const { isOpen, toggleModal, data, isLoading, selectedItem, handleSelect } =
+    useManageMarketplace();
 
   const RenderSouvenirPlace = () => {
     if (isLoading) return <TableRawSkeleton tableHead={tableHeaders} />;
@@ -71,8 +43,9 @@ const ManageMarketplace = () => {
               <td>{sp.description}</td>
               <td>
                 <div className="flex gap-2 justify-center items-center">
-                  <EditButton onClick={() => handleOpenEditModal(sp)} />
-                  <DeleteButton onClick={() => handleDelete(sp.name, sp.id)} />
+                  <Button onClick={() => handleSelect(sp)}>
+                    <FaCircleInfo />
+                  </Button>
                 </div>
               </td>
             </tr>
@@ -83,54 +56,27 @@ const ManageMarketplace = () => {
   };
 
   return (
-    <SingleContentWrapper>
-      <ManagementHeader
-        content="marketplace"
-        title="manage marketplace"
-        onCreateClick={handleOpenCreateModal}
-      />
-      <section>
-        <RenderSouvenirPlace />
-      </section>
+    data && (
+      <SingleContentWrapper>
+        <ManagementHeader
+          content="marketplace"
+          title="manage marketplace"
+          asChild
+          href={ROUTES.NEW_MARKETPLACE}
+        />
+        <section>
+          <RenderSouvenirPlace />
+        </section>
 
-      <Modal
-        isOpen={isOpen}
-        onClose={toggleModal}
-        title={`${initialValues.id ? "edit" : "create"} marketplace`}
-      >
-        <Formik
-          initialValues={initialValues}
-          onSubmit={handleSubmit}
-          validationSchema={marketplaceSchema}
-          enableReinitialize
+        <Modal
+          isOpen={isOpen}
+          onClose={toggleModal}
+          title={`Detail Marketplace`}
         >
-          <Form className="space-y-2">
-            {initialValues.id && (
-              <FormInput type={"text"} label={`id`} name="id" readonly />
-            )}
-            <FormInput type={"text"} label={`name`} name="name" />
-            <FormInput type={"text"} label={`address`} name="address" />
-            <FormInput
-              type={"text"}
-              label={`contact_person`}
-              name="contact_person"
-            />
-            <FormInput type={"time"} label={`open`} name="open" />
-            <FormInput type={"time"} label={`close`} name="close" />
-            <FormInput type={"text"} label={`description`} name="description" />
-            <FormInput type={"text"} label={`geojson`} name="geom" readonly />
-            <DrawingMarketplaceMap />
-            <Button
-              variant={`${isPending ? "secondary" : "default"}`}
-              type="submit"
-              disabled={isPending}
-            >
-              {isPending ? <Spinner /> : initialValues.id ? "edit" : "Submit"}
-            </Button>
-          </Form>
-        </Formik>
-      </Modal>
-    </SingleContentWrapper>
+          <DetailMarketplaceSection souvenirPlace={selectedItem} />
+        </Modal>
+      </SingleContentWrapper>
+    )
   );
 };
 

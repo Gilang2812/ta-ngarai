@@ -1,5 +1,4 @@
 import { useDeleteMarketplace } from "@/features/dashboard/marketplace/useDeleteMarketplace";
-import { SouvenirPlaceSchema } from "@/type/schema/PackageSchema";
 import {
   confirmDeleteAlert,
   cornerAlert,
@@ -7,23 +6,24 @@ import {
 } from "@/utils/AlertUtils";
 import { useModal } from "@/utils/ModalUtils";
 import { useEffect, useState } from "react";
-import useFormMarketplace from "./useFormMarketplace";
 import { useFetchUserSouvenirPlace } from "@/features/dashboard/marketplace/useFetchUserSouvenirPlace";
+
+import { UserMarketplaceSchema } from "@/type/schema/SouvenirSchema";
+import { useCreateDetailUserSouvenir } from "@/features/dashboard/marketplace/useCreateDetailUserSouvenir";
 
 export const useManageUserMarketplace = () => {
   const { data, isLoading, refetch } = useFetchUserSouvenirPlace();
+  const [modalType, setModalType] = useState<"form" | "detail" | "info">(
+    "form"
+  );
   const { isOpen, toggleModal } = useModal();
-  const [formType, setFormType] = useState<"create" | "edit">("create");
+  const [selectedSouvenir, setSelectedSouvenir] =
+    useState<UserMarketplaceSchema | null>(null);
 
-  const onSuccessForm = () => {
-    refetch();
-    toggleModal();
+  const initialValues = {
+    id_souvenir_place: "",
+    user: "",
   };
-  const { initialValues, setInitialValues, isPending, handleSubmit } =
-    useFormMarketplace({
-      onSuccessForm,
-    });
-
   const { mutateAsync: deleteMarketplace, isPending: deletingMarketplace } =
     useDeleteMarketplace({
       onSuccess: () => {
@@ -32,39 +32,18 @@ export const useManageUserMarketplace = () => {
       },
     });
 
+  const { mutate: recruitStaff, isPending: recruiting } =
+    useCreateDetailUserSouvenir({
+      onSuccess: () => {
+        cornerAlert("recruiting has been send wait for user to confirm");
+        toggleModal();
+      },
+    });
+
   const handleDelete = (name: string, id: string) => {
     confirmDeleteAlert("marketplace", name, async () => {
       await deleteMarketplace(id);
     });
-  };
-  const handleOpenCreateModal = () => {
-    setFormType("create");
-    setInitialValues({
-      id: "",
-      name: "",
-      address: "",
-      contact_person: "",
-      close: "",
-      open: "",
-      description: "",
-      geom: "",
-    });
-    toggleModal();
-  };
-  const handleOpenEditModal = (souvenirPlace: SouvenirPlaceSchema) => {
-    setFormType("edit");
-    setInitialValues({
-      id: souvenirPlace.id,
-      name: souvenirPlace.name,
-      address: souvenirPlace.address,
-      contact_person: souvenirPlace.contact_person,
-      close: souvenirPlace.close,
-      open: souvenirPlace.open,
-      description: souvenirPlace.description,
-      geom: JSON.stringify(souvenirPlace.geom) || "", // optional
-    });
-
-    toggleModal();
   };
 
   useEffect(() => {
@@ -73,17 +52,38 @@ export const useManageUserMarketplace = () => {
     }
   }, [deletingMarketplace]);
 
+  const handleDetailSouvenir = (souvenir: UserMarketplaceSchema) => {
+    setSelectedSouvenir(souvenir);
+    toggleModal();
+    setModalType("detail");
+  };
+
+  const handleOpenForm = () => {
+    toggleModal();
+    setModalType("form");
+  };
+
+  const handleInfoRecruit = () => {
+    toggleModal();
+    setModalType("info");
+  };
+  const handleSubmit = ({ id_souvenir_place, user }: typeof initialValues) => {
+    console.log("Submitting form with values:", { id_souvenir_place, user });
+    recruitStaff({ id_souvenir_place, user });
+  };
   return {
-    handleSubmit,
-    handleOpenEditModal,
-    isPending,
     isOpen,
-    initialValues,
     handleDelete,
+    handleDetailSouvenir,
     toggleModal,
-    handleOpenCreateModal,
     isLoading,
     data,
-    formType,
+    selectedSouvenir,
+    modalType,
+    handleOpenForm,
+    handleSubmit,
+    initialValues,
+    recruiting,
+    handleInfoRecruit,
   };
 };

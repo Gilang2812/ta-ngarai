@@ -190,7 +190,8 @@ router.get("/history", async (req, res, next) => {
 
 router.get("/transactions", async (req, res, next) => {
   try {
-    const id_stores = req.user.store.map((detail) => detail.id_souvenir_place);
+    const stores = req?.user?.store ?? [];
+    const id_stores = stores?.map((detail) => detail.id_souvenir_place);
     let checkouts = [];
     if (id_stores.length > 0) {
       checkouts = await Promise.all(

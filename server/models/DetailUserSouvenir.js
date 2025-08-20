@@ -1,5 +1,6 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../config/database");
+const { CustomError } = require("../utils/CustomError");
 
 const DetailUserSouvenir = sequelize.define(
   "DetailUserSouvenir",
@@ -14,9 +15,10 @@ const DetailUserSouvenir = sequelize.define(
       primaryKey: true,
       allowNull: false,
     },
-    isOwner: {
+    status: {
       type: DataTypes.TINYINT(1),
       allowNull: false,
+      defaultValue: 0,
     },
   },
   {
@@ -24,5 +26,18 @@ const DetailUserSouvenir = sequelize.define(
     timestamps: false,
   }
 );
+
+DetailUserSouvenir.beforeCreate(async (instance) => {
+  console.log("test");
+  const existingData = await DetailUserSouvenir.findOne({
+    where: {
+      user_id: instance.user_id,
+      id_souvenir_place: instance.id_souvenir_place,
+    },
+  });
+  if (existingData) {
+    throw new CustomError("User already exists at this souvenir place", 400);
+  }
+});
 
 module.exports = { DetailUserSouvenir };

@@ -4,18 +4,20 @@ import { FormMarketplace } from "@/type/schema/MarketplaceSchema";
 import { cornerAlert } from "@/utils/AlertUtils";
 import { createFormData } from "@/utils/common/createFormData";
 import { useState } from "react";
-
-const useFormMarketplace = () => {
+const useFormMarketplace = (
+  existingMarketplace?: FormMarketplace,
+  onSuccessUpdate?: () => void
+) => {
   const [initialValues, setInitialValues] = useState<FormMarketplace>({
-    id: "",
-    name: "",
-    address: "",
-    contact_person: "",
-    close: "",
-    open: "",
-    description: "",
-    geom: "",
-    images: [],
+    id: existingMarketplace?.id || "",
+    name: existingMarketplace?.name || "",
+    address: existingMarketplace?.address || "",
+    contact_person: existingMarketplace?.contact_person || "",
+    close: existingMarketplace?.close || "",
+    open: existingMarketplace?.open || "",
+    description: existingMarketplace?.description || "",
+    geom: existingMarketplace?.geom || "",
+    images: existingMarketplace?.images || [],
   });
   const { mutate: createMarketplace, isPending: isPendingCreate } =
     useCreateMarketplace({
@@ -27,6 +29,7 @@ const useFormMarketplace = () => {
     useUpdateMarketplace({
       onSuccess: () => {
         cornerAlert("success update marketplace");
+        onSuccessUpdate?.();
       },
     });
 

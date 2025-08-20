@@ -167,6 +167,8 @@ export type PackageService = Packages & {
 };
 
 export type EditPackageSchema = yup.InferType<typeof editPackageFormSchema> & {
+  id?:string;
+  price?:number;
   images: FilepondType;
   video_url: FilepondType;
 };

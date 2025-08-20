@@ -6,6 +6,7 @@ import "swiper/css";
 import Script from "next/script";
 import { ResultErrorProps, ResultProps } from "@/type/props/ResultProps";
 import ReactGoogleOAuthProvider from "@/layout/ReactGoogleOAuthProvider";
+import SocketLayout from "@/layout/SocketLayout";
 
 export const metadata: Metadata = {
   title: "Desa Wisata Koto Gadang",
@@ -36,16 +37,18 @@ export default function RootLayout({
   return (
     <ReactGoogleOAuthProvider>
       <ReactQueryProvider>
-        <html lang="en">
-          <body className={` font-nunito antialiased`}>
-            {children}
-            <Script
-              src="https://app.sandbox.midtrans.com/snap/snap.js"
-              data-client-key={process.env.NEXT_PUBLIC_MIDTRANS_CLIENT_KEY}
-              strategy="beforeInteractive"
-            />
-          </body>
-        </html>
+        <SocketLayout>
+          <html lang="en">
+            <body className={` font-nunito antialiased`}>
+              {children}
+              <Script
+                src="https://app.sandbox.midtrans.com/snap/snap.js"
+                data-client-key={process.env.NEXT_PUBLIC_MIDTRANS_CLIENT_KEY}
+                strategy="beforeInteractive"
+              />
+            </body>
+          </html>
+        </SocketLayout>
       </ReactQueryProvider>
     </ReactGoogleOAuthProvider>
   );

@@ -9,7 +9,11 @@ const NewHomestay = ({}) => {
   const { isPending, initialValues, handleSubmit } = useNewHomestay();
   return (
     <main className="p-4">
-      <Formik initialValues={initialValues} validationSchema={createHomestaySchema} onSubmit={handleSubmit}>
+      <Formik
+        initialValues={initialValues}
+        validationSchema={createHomestaySchema}
+        onSubmit={handleSubmit}
+      >
         <FormNewHomestay isPending={isPending} />
       </Formik>
     </main>

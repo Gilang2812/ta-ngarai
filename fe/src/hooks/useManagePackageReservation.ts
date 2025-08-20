@@ -1,5 +1,5 @@
 import { useFetchReservations } from "@/features/reservation/useFetchReservation";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import useSearchTable from "./useSearchTable";
 import dayjs from "dayjs";
 import useTableManagement from "./useTableManagement";
@@ -12,9 +12,7 @@ export const useManagePackageReservation = () => {
     null
   );
   const { data, isLoading } = useFetchReservations();
-  useEffect(() => {
-    console.log("Data fetched for package reservations:", data);
-  }, [data]);
+
   const { searchTerm, handleSearch } = useSearchTable();
   const filteredData = useMemo(() => {
     return (
@@ -70,6 +68,6 @@ export const useManagePackageReservation = () => {
     handleHistoryClick,
     isOpen,
     toggleModal,
-    reservation
+    reservation,
   };
 };

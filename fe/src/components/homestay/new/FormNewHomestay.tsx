@@ -81,7 +81,7 @@ const FormNewHomestay: React.FC<Props> = ({
           <FormInput
             placeholder="contact person"
             name="contact_person"
-            type="text"
+            type="number"
             label="Contact Person"
           />
 

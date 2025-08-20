@@ -1,7 +1,9 @@
 import { PlusCircle, ShoppingBag } from "lucide-react";
 import Button from "./Button";
+import { ROUTES } from "@/data/routes";
+import Link from "next/link";
 
-export const EmptyState = ({ onAddNew }: { onAddNew: () => void }) => {
+export const EmptyState = () => {
   return (
     <div className="w-full py-16 flex flex-col items-center justify-center bg-gray-50 rounded-lg border border-gray-200">
       <div className="text-center space-y-3 max-w-md mx-auto px-4 flex flex-col items-center justify-center">
@@ -14,9 +16,11 @@ export const EmptyState = ({ onAddNew }: { onAddNew: () => void }) => {
           your first item.
         </p>
 
-        <Button onClick={onAddNew}>
-          <PlusCircle className="mr-2 h-5 w-5" />
-          Add First Item
+        <Button asChild>
+          <Link href={ROUTES.NEW_MARKETPLACE}>
+            <PlusCircle className="mr-2 h-5 w-5" />
+            Add First Item
+          </Link>
         </Button>
       </div>
     </div>

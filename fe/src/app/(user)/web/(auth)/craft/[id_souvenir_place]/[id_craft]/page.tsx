@@ -11,7 +11,10 @@ export default async function ProductDetailPage({
   const { id_craft, id_souvenir_place } = await params;
   return (
     <SingleContentWrapper>
-      <ProductDetail id_craft={id_craft} id_souvenir_place={id_souvenir_place} />
+      <ProductDetail
+        id_craft={id_craft}
+        id_souvenir_place={id_souvenir_place}
+      />
     </SingleContentWrapper>
   );
 }

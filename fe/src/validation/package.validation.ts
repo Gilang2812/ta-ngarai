@@ -16,10 +16,8 @@ export const detailPackageFormSchema = yup.object().shape({
 });
 
 export const editPackageFormSchema = yup.object().shape({
-  id: yup.string().required(),
   name: yup.string().required(),
   type_id: yup.string().required(),
-  price: yup.number().min(0).required().nullable(),
   min_capacity: yup.number().min(1).required(),
   contact_person: yup.string().required(),
   description: yup.string().required(),

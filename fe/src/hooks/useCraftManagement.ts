@@ -64,7 +64,7 @@ export const useCraftManagement = (id_souvenir_place: string) => {
     name: "",
   });
 
-  const getDefaultDetailCraft = (): DetailCraftSchema & {
+  const getDefaultDetailCraft = useCallback((): DetailCraftSchema & {
     id_craft: string;
   } => ({
     id_craft: "",
@@ -76,7 +76,7 @@ export const useCraftManagement = (id_souvenir_place: string) => {
     description: "",
     id_souvenir_place: id_souvenir_place,
     images: [],
-  });
+  }), [id_souvenir_place]);
 
   const getDefaultVariant = (): CraftVariant => ({
     id: "",
@@ -179,7 +179,7 @@ export const useCraftManagement = (id_souvenir_place: string) => {
         case "detail":
           return getDefaultDetailCraft();
       }
-    }, [formType]);
+    }, [formType, getDefaultDetailCraft]);
 
   const handleCraftForm = useCallback(() => {
     toggleForm();

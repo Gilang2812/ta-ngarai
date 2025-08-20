@@ -7,6 +7,7 @@ export type DetailCraftInclude = (
   | "craftGalleries"
   | "checkout"
   | "reviewGalleries"
+  | "souvenirPlace"
 )[];
 
 export const detailCraftSchema = yup.object({

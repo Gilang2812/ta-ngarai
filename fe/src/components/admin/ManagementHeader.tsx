@@ -20,7 +20,7 @@ const ManagementHeader = ({
   href,
 }: Props) => {
   return (
-    <header className=" mb-8 capitalize gap-4 flex justify-between items-center ">
+    <header className="grow mb-8 capitalize gap-4 flex justify-between items-center ">
       <h1>{title}</h1>
       {content && (
         <Button asChild={asChild} onClick={onCreateClick}>

@@ -1,5 +1,5 @@
 import { useFetchSouvenirPlace } from "@/features/dashboard/marketplace/useFetchSouvenirPlace";
-import {    showLoadingAlert } from "@/utils/AlertUtils";
+import { showLoadingAlert } from "@/utils/AlertUtils";
 import { useCallback, useEffect, useState } from "react";
 import { useOrderCraft } from "./useOrderCraft";
 import { DetailCraftManagementResponse } from "@/type/schema/DetailCraftSchema";
@@ -16,7 +16,6 @@ export const useMapCraft = () => {
     crafts: DetailCraftManagementResponse[];
   }>(true);
 
- 
   const {
     actionRef,
     handleSubmit,
@@ -30,7 +29,6 @@ export const useMapCraft = () => {
     if (isChecking) {
       showLoadingAlert("Checking out...");
     }
-   
   }, [isChecking]);
 
   const handleSelectStore = useCallback(

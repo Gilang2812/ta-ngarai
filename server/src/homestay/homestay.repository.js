@@ -426,7 +426,5 @@ module.exports = {
   deleteUnitHomestay,
   deleteFacilityUnitDetail,
   findUnitTypes,
-  findFacilityUnitDetail
+  findFacilityUnitDetail,
 };
-
- 

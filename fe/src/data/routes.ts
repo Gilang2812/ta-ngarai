@@ -53,6 +53,7 @@ export const ROUTES = {
   MANAGE_USERS: "/dashboard/users",
   MARKETPLACE: "/dashboard/marketplace",
   NEW_MARKETPLACE: "/dashboard/marketplace/new",
+  EDIT_MARKETPLACE: (id: string) => `/dashboard/marketplace/${id}/edit`,
   MANAGE_MARKETPLACE: "/dashboard/manage-marketplace",
   MANAGE_CRAFT: (id_souvenir_place: string) =>
     `/dashboard/craft/${id_souvenir_place}`,

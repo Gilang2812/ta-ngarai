@@ -10,6 +10,7 @@ import DetailHomestayReservationLoader from "@/components/loading/DetailHomestay
 import { Modal } from "@/components/modal/Modal";
 import { ROUTES } from "@/data/routes";
 import { useManageUnitHomestay } from "@/hooks/useManageUnitHomestay";
+import { formatPrice } from "@/lib/priceFormatter";
 import {
   createFacilitySchema,
   createFacilityUnitSchema,
@@ -131,7 +132,7 @@ const ManageUnitHomestay = ({ id }: Props) => {
                 </section>
               </header>
               <article>
-                <p>price: {unit.price} </p>
+                <p>price: {formatPrice(unit.price)} </p>
                 <p>capacity: {unit.capacity}</p>
                 <p>{unit.description}</p>
               </article>

@@ -1,5 +1,6 @@
 import Button from "@/components/common/Button";
 import FilePondComponent from "@/components/common/Filepond";
+import { ValidateClose } from "@/components/common/ValidateClose";
 import { FormInput } from "@/components/inputs/FormInput";
 import GoogleMapDrawing from "@/components/map/GoogleMapDrawing";
 import useFormMarketplace from "@/hooks/useFormMarketplace";
@@ -11,18 +12,30 @@ import { Spinner } from "flowbite-react";
 import { Form, Formik, useFormikContext } from "formik";
 import React from "react";
 
-const MarketplaceForm = () => {
-  const { initialValues, isPending, handleSubmit } = useFormMarketplace();
+const MarketplaceForm = ({
+  existingMarketplace,
+  updateSuccess,
+  formType = "create",
+}: {
+  updateSuccess?: () => void;
+  existingMarketplace?: FormMarketplace;
+  formType?: "edit" | "create";
+}) => {
+  const { initialValues, isPending, handleSubmit } = useFormMarketplace(
+    existingMarketplace,
+    updateSuccess
+  );
 
   const DrawingMarketplaceMap = () => {
     const { values } = useFormikContext<FormMarketplace>();
     return (
       <GoogleMapDrawing
         geom={values.geom ? JSON.parse(values.geom) : null}
-        formType={"create"}
+        formType={formType}
       />
     );
   };
+
   return (
     <div>
       <Formik
@@ -41,7 +54,7 @@ const MarketplaceForm = () => {
             <FormInput type={"text"} label={`name`} name="name" />
             <FormInput type={"text"} label={`address`} name="address" />
             <FormInput
-              type={"text"}
+              type={"number"}
               label={`contact_person`}
               name="contact_person"
             />
@@ -51,6 +64,7 @@ const MarketplaceForm = () => {
             <FormInput type={"text"} label={`description`} name="description" />
             <FormInput type={"text"} label={`geojson`} name="geom" readonly />
             <FilePondComponent />
+            <ValidateClose />
           </section>
           <section className="space-y-4">
             <DrawingMarketplaceMap />

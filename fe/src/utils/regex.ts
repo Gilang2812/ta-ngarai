@@ -1,4 +1,4 @@
-export const allowedCharsRegex = /^[a-zA-Z0-9\s+'.,/&()\-@:]*$/;
+export const allowedCharsRegex = /^[a-zA-Z0-9\s+'.,/&()\-@:!]*$/;
 
 import { ChangeEvent } from "react";
 

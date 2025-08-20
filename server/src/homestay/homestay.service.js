@@ -85,7 +85,7 @@ const getUnitHomestay = async (key) => {
 };
 
 const createHomestay = async (body) => {
-  await existsHomestay(body.id);
+ 
   const newHomestay = await insertHomestay(body);
   return newHomestay;
 };

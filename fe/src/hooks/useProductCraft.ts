@@ -7,6 +7,7 @@ export const useProductCraft = () => {
       "checkout",
       "craft",
       "craftGalleries",
+      "souvenirPlace",
     ]);
   return {
     crafts,

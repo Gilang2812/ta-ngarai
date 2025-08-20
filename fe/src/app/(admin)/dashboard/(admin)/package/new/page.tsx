@@ -1,5 +1,7 @@
 "use client";
+
 import Button from "@/components/common/Button";
+import { CheckError } from "@/components/common/CheckError";
 import { ContentWrapper } from "@/components/common/ContentWrapper";
 import { EqualsContentChildren } from "@/components/common/EqualsContentChildren";
 import FilePondComponent from "@/components/common/Filepond";
@@ -11,6 +13,7 @@ import { Form, Formik } from "formik";
 
 const NewPackage = () => {
   const { isPending, types, initialValues, handleSubmit } = useNewPackage();
+
   return (
     <ContentWrapper>
       <EqualsContentChildren>
@@ -35,7 +38,7 @@ const NewPackage = () => {
                 </FormInput>
 
                 <FormInput type="number" readonly name="price" label="Price" />
-
+                <CheckError />
                 <FormInput
                   type="number"
                   name="min_capacity"
@@ -60,7 +63,11 @@ const NewPackage = () => {
                   label="Video"
                   allowMultiple={false}
                 />
-                <Button isLoading={isPending} disabled={isPending}>
+                <Button
+                  type="submit"
+                  isLoading={isPending}
+                  disabled={isPending}
+                >
                   Save
                 </Button>
               </Form>

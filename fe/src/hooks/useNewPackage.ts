@@ -6,7 +6,6 @@ import { cornerAlert } from "@/utils/AlertUtils";
 export const useNewPackage = () => {
   const { data: types, isLoading } = useFetchPackageTypes();
   const initialValues: EditPackageSchema = {
-    id: "",
     name: "",
     type_id: "",
     price: "" as unknown as number,

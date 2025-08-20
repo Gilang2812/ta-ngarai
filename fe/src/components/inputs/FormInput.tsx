@@ -74,7 +74,6 @@ export const FormInput = ({
                 ) {
                   return field.onChange(e);
                 }
-                field.onChange(e);
 
                 handleAllowedInput(e, field.onChange);
               }}

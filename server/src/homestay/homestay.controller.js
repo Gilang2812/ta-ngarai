@@ -32,10 +32,7 @@ router.get("/", async (req, res, next) => {
     const homestays = await getAllHomestay();
     res.json(200, homestays);
   } catch (error) {
-    console.error(error);
-    res
-      .status(error.statusCode || 500)
-      .json(error.message || "Internal server error, ");
+    next(error);
   }
 });
 
@@ -80,7 +77,8 @@ router.post(
   imageUpload("public/images").array("images"),
   async (req, res, next) => {
     try {
-      const { name, address, open, close, contact_person, geom } = req.body;
+      const { name, address, open, close, contact_person, description, geom } =
+        req.body;
       req.body.geom = req.body.geom;
       console.log(geom);
       const newHomestay = await createHomestay({
@@ -90,15 +88,17 @@ router.post(
         close,
         contact_person,
         geom,
+        description,
       });
-
-      if (req.files && req.files.length > 0) {
-        const images = req.files.map((file) => ({
-          url: formatImageUrl(file.path),
-          homestay_id: newHomestay.id,
-        }));
-        for (const image of images) {
-          await createGalleryHomestay(image);
+      if (newHomestay) {
+        if (req.files && req.files.length > 0) {
+          const images = req.files.map((file) => ({
+            url: formatImageUrl(file.path),
+            homestay_id: newHomestay.id,
+          }));
+          for (const image of images) {
+            await createGalleryHomestay(image);
+          }
         }
       }
       res.status(201).json(newHomestay);
@@ -259,7 +259,7 @@ router.post("/units/detail", async (req, res, next) => {
       facility_unit_id,
       description,
     } = req.body;
-    console.log(req.body)
+    console.log(req.body);
     const facilities = await createFacilityUnitDetail({
       homestay_id,
       unit_type,

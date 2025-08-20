@@ -20,7 +20,7 @@ const findUniqueUsernameOrEmail = async (username, email) => {
 };
 
 const findUser = async (criteria) => {
-  console.log('disini kah')
+  console.log("disini kah");
   const user = await User.findOne({
     where: criteria,
     include: [

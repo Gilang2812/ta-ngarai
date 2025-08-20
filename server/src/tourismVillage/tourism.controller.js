@@ -54,6 +54,7 @@ router.patch(
         ticket_price: req.body?.ticket_price,
         contact_person: req.body?.contact_person,
         description: req.body?.description,
+        deposit_percentage: req.body?.deposit_percentage,
         geom: req.body?.geom,
         lat: req.body?.lat,
         lng: req.body?.lng,

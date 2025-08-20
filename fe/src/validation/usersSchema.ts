@@ -16,6 +16,4 @@ export const createUserSchema = yup.object({
     .required("Username is required"),
 });
 
-
-
 export type CreateUserSchema = yup.InferType<typeof createUserSchema>;
