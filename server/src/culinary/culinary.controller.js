@@ -3,10 +3,18 @@ const { CulinaryPlace, GalleryCulinary } = require("../../models/relation");
 const fs = require("fs");
 const { insertGalleryCulinary } = require("../gallery/gallery.repository");
 const router = require("express").Router();
+const { formatImageUrl } = require("../../utils/formatImageUrl");
 
 router.get("/", async (req, res, next) => {
   try {
-    const culinaryGallery = await CulinaryPlace.findAll();
+    const culinaryGallery = await CulinaryPlace.findAll({
+      include: [
+        {
+          model: GalleryCulinary,
+          as: "galleries",
+        },
+      ],
+    });
     res.json(culinaryGallery);
   } catch (error) {
     next(error);
@@ -15,7 +23,39 @@ router.get("/", async (req, res, next) => {
 
 router.post("/", imageUpload().array("image"), async (req, res, next) => {
   try {
-    const newCulinaryPlace = await CulinaryPlace.create(req.body);
+    const {
+      name,
+      address,
+      contact_person,
+      open,
+      close,
+      capacity,
+      description,
+      status,
+      geom,
+    } = req.body;
+    const newCulinaryPlace = await CulinaryPlace.create({
+      name,
+      address,
+      contact_person,
+      open,
+      close,
+      capacity,
+      description,
+      status,
+      geom: JSON.parse(geom),
+    });
+
+    const images = req.files.map((file) => ({
+      url: formatImageUrl(file.path),
+      culinary_place_id: newCulinaryPlace.id,
+    }));
+    if (images.length > 0) {
+      for (const file of images) {
+        await insertGalleryCulinary(file);
+      }
+    }
+
     res.status(201).json(newCulinaryPlace);
   } catch (error) {
     next(error);
@@ -24,13 +64,39 @@ router.post("/", imageUpload().array("image"), async (req, res, next) => {
 
 router.patch("/:id", imageUpload().array("image"), async (req, res, next) => {
   try {
+    const {
+      name,
+      address,
+      contact_person,
+      open,
+      close,
+      capacity,
+      description,
+      status,
+      geom,
+    } = req.body;
+
     const { id } = req.params;
     const existingGalleries = await GalleryCulinary.findAll({
       where: { culinary_place_id: id },
     });
-    const updated = await CulinaryPlace.update(req.body, {
-      where: { id },
-    });
+
+    const updated = await CulinaryPlace.update(
+      {
+        name,
+        address,
+        contact_person,
+        open,
+        close,
+        capacity,
+        description,
+        status,
+        geom: JSON.parse(geom),
+      },
+      {
+        where: { id },
+      }
+    );
 
     if (existingGalleries.length > 0) {
       for (const gallery of existingGalleries) {
@@ -43,7 +109,8 @@ router.patch("/:id", imageUpload().array("image"), async (req, res, next) => {
     });
 
     const images = req.files.images.map((file) => ({
-      url: file.path,
+      url: formatImageUrl(file.path),
+
       worship_place_id: id,
     }));
 

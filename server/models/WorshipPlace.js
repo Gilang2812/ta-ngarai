@@ -1,33 +1,35 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../config/database");
+const { generateCustomId } = require("../utils/generateId");
 
 const WorshipPlace = sequelize.define(
   "WorshipPlace",
   {
     id: {
       type: DataTypes.STRING(5),
-      allowNull: false,
+      allowNull: true,
       primaryKey: true,
     },
     name: {
       type: DataTypes.STRING(255),
-      allowNull: false,
+      allowNull: true,
     },
     address: {
       type: DataTypes.STRING(255),
-      allowNull: false,
+      allowNull: true,
     },
     capacity: {
       type: DataTypes.INTEGER,
-      allowNull: false,
+      allowNull: true,
     },
     description: {
       type: DataTypes.TEXT,
-      allowNull: false,
+      allowNull: true,
     },
     status: {
       type: DataTypes.TINYINT(1),
-      allowNull: false,
+      defaultValue: 1,
+      allowNull: true,
     },
     geom: {
       type: DataTypes.GEOMETRY(),

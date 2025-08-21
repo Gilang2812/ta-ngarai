@@ -72,7 +72,7 @@ export const ROUTES = {
     package_id ? `/web/invoice/${id}/${package_id}` : `/web/invoice/${id}`,
   MANAGE_UNIT_HOMESTAY: (homestay_id: string) =>
     `/dashboard/unit-homestay/new/${homestay_id}`,
-  MANAGE_ATTRACTION: `/dashboard/object/attraction`,
-  MANAGE_WORSHIP_PLACE: `/dashboard/object/worship`,
-  MANAGE_CULINARY: `/dashboard/object/culinary`,
+  MANAGE_ATTRACTION: `/dashboard/attraction`,
+  MANAGE_WORSHIP_PLACE: `/dashboard/worship`,
+  MANAGE_CULINARY: `/dashboard/culinary`,
 };

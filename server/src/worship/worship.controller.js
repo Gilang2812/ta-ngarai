@@ -1,13 +1,22 @@
 const imageUpload = require("../../middlewares/imageUploads");
-const { CulinaryPlace, GalleryWorship } = require("../../models/relation");
+const { GalleryWorship } = require("../../models/relation");
 const { WorshipPlace } = require("../../models/relation");
 const { insertGalleryWorship } = require("../gallery/gallery.repository");
+const fs = require("fs");
+const { formatImageUrl } = require("../../utils/formatImageUrl");
 
 const router = require("express").Router();
 
 router.get("/", async (req, res, next) => {
   try {
-    const worshipGallery = await WorshipPlace.findAll();
+    const worshipGallery = await WorshipPlace.findAll({
+      include: [
+        {
+          model: GalleryWorship,
+          as: "galleries",
+        },
+      ],
+    });
     res.json(worshipGallery);
   } catch (error) {
     next(error);
@@ -17,6 +26,15 @@ router.get("/", async (req, res, next) => {
 router.post("/", imageUpload().array("image"), async (req, res, next) => {
   try {
     const newWorshipPlace = await WorshipPlace.create(req.body);
+    const images = req.files.map((file) => ({
+      url: formatImageUrl(file.path),
+      worship_place_id: newWorshipPlace.id,
+    }));
+    if (images.length > 0) {
+      for (const file of images) {
+        await insertGalleryWorship(file);
+      }
+    }
     res.status(201).json(newWorshipPlace);
   } catch (error) {
     next(error);
@@ -44,7 +62,8 @@ router.patch("/:id", imageUpload().array("image"), async (req, res, next) => {
     });
 
     const images = req.files.images.map((file) => ({
-      url: file.path,
+      url: formatImageUrl(file.path),
+
       worship_place_id: id,
     }));
 

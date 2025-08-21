@@ -51,6 +51,7 @@ export type DetailCraftManagementResponse = DetailCraftSchema & {
 
 export type DetailCraftUserResponse = DetailCraftManagementResponse & {
   items: CheckoutItem[];
+  
 };
 
 export type DetailCraftOrderResponse = DetailCraftUserResponse & {

@@ -123,7 +123,7 @@ export const AdminNav = () => {
                 <DropDownChildrenItem
                   icon={FaPuzzlePiece}
                   label="Service Worshipme"
-                  link={ROUTES.MANAGE_CULINARY}
+                  link={ROUTES.MANAGE_WORSHIP_PLACE}
                 />
               </DropDownItem>
             </li>

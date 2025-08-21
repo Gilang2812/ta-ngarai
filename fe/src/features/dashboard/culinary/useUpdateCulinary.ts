@@ -8,7 +8,12 @@ export const useUpdateCulinary = ({ onSuccess }: ActionProps) => {
     mutationFn: async (body: FormData) => {
       const { data } = await axiosInstance.patch(
         `/culinary/${body.get("id")}`,
-        body
+        body,
+        {
+          headers: {
+            "Content-Type": "multipart/formdata",
+          },
+        }
       );
       return data;
     },

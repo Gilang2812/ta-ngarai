@@ -5,12 +5,13 @@ import { Rating } from "./Rating";
 import { formatPrice } from "@/lib/priceFormatter";
 import Link from "next/link";
 import { baseUrl } from "@/lib/baseUrl";
-import { DetailCraftUserResponse } from "@/type/schema/DetailCraftSchema";
+import { DetailCraftOrderResponse } from "@/type/schema/DetailCraftSchema";
 import { ROUTES } from "@/data/routes";
 import useUserRole from "@/hooks/useUserRole";
+import { Store } from "lucide-react";
 
 interface ProductCardProps {
-  product: DetailCraftUserResponse;
+  product: DetailCraftOrderResponse;
 }
 
 export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
@@ -41,12 +42,22 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           />
         </div>
-        <div className="p-4">
+        <div className="p-4 space-y-2">
           <Rating
-            rating={product?.items?.length}
-            reviewCount={product?.items?.length}
+            rating={
+              product?.items?.reduce(
+                (acc, item) => acc + (item.review_rating || 0),
+                0
+              ) / product?.items?.filter((item) => item.review_rating).length
+            }
+            reviewCount={
+              product?.items?.filter((item) => item.review_rating).length
+            }
           />
-          <p className="bg-purple-500/50 text-white"></p>
+          <p className="bg-purple-800/70 text-white flex rounded gap-2 text-nowrap p-1">
+            <Store />
+            {product.souvenirPlace.name}
+          </p>
           <h3 className="capitalize mt-2 text-sm font-medium text-gray-900 line-clamp-2">
             {`${product?.variant?.craft.name} ${product?.variant?.name}`}
           </h3>

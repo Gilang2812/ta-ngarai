@@ -19,24 +19,91 @@
 /* * {
   outline: 2px solid green !important;
 } */
-input[type="time"]::-webkit-calendar-picker-indicator {
-  display: block !important;
+
+/* Pastikan date/time picker selalu muncul */
+input[type="date"],
+input[type="time"],
+input[type="datetime-local"],
+input[type="month"],
+input[type="week"] {
   -webkit-appearance: auto !important;
+  appearance: auto !important;
+  position: relative;
+  color-scheme: light; /* Pastikan menggunakan light theme */
 }
 
-input {
-  @apply focus:outline-none    focus:border-primary;
-}
-input[type="time"] {
-  -webkit-appearance: textfield;
-  appearance: auto;
+/* Webkit browsers (Chrome, Safari, Edge) - PAKSA TERLIHAT */
+input[type="date"]::-webkit-calendar-picker-indicator,
+input[type="time"]::-webkit-calendar-picker-indicator,
+input[type="datetime-local"]::-webkit-calendar-picker-indicator,
+input[type="month"]::-webkit-calendar-picker-indicator,
+input[type="week"]::-webkit-calendar-picker-indicator {
+  display: block !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  cursor: pointer !important;
+
+  /* Paksa tampilkan dengan background image */
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%23374151'%3e%3cpath fill-rule='evenodd' d='M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z' clip-rule='evenodd'/%3e%3c/svg%3e") !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+  background-size: 16px 16px !important;
+
+  position: absolute !important;
+  right: 8px !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  width: 20px !important;
+  height: 20px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: none !important;
+
+  /* Warna background untuk kontras */
+  background-color: transparent !important;
+  color: #374151 !important;
+
+  /* Reset any filters */
+  filter: none !important;
+  -webkit-filter: none !important;
 }
 
+/* Khusus untuk time input - gunakan icon clock */
 input[type="time"]::-webkit-calendar-picker-indicator {
-  display: block;
-  -webkit-appearance: auto;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%23374151'%3e%3cpath fill-rule='evenodd' d='M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z' clip-rule='evenodd'/%3e%3c/svg%3e") !important;
 }
 
+/* Firefox */
+input[type="date"]::-moz-calendar-picker-indicator,
+input[type="time"]::-moz-time-picker-indicator {
+  opacity: 1 !important;
+  visibility: visible !important;
+  cursor: pointer !important;
+  width: 20px !important;
+  height: 20px !important;
+}
+
+/* Hover effect yang lebih jelas */
+input[type="date"]::-webkit-calendar-picker-indicator:hover,
+input[type="time"]::-webkit-calendar-picker-indicator:hover,
+input[type="datetime-local"]::-webkit-calendar-picker-indicator:hover {
+  background-color: rgba(0, 0, 0, 0.1) !important;
+  border-radius: 4px !important;
+}
+
+/* Untuk dark mode jika dibutuhkan */
+@media (prefers-color-scheme: dark) {
+  input[type="date"]::-webkit-calendar-picker-indicator,
+  input[type="time"]::-webkit-calendar-picker-indicator,
+  input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%23ffffff'%3e%3cpath fill-rule='evenodd' d='M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z' clip-rule='evenodd'/%3e%3c/svg%3e") !important;
+    color: #ffffff !important;
+  }
+
+  input[type="time"]::-webkit-calendar-picker-indicator {
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%23ffffff'%3e%3cpath fill-rule='evenodd' d='M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z' clip-rule='evenodd'/%3e%3c/svg%3e") !important;
+  }
+}
 input[type="radio"] {
   @apply focus:bg-primary  focus:!outline-none focus:ring-2   focus:ring-transparent checked:bg-primary;
 }
@@ -132,27 +199,26 @@ body {
   }
 
   &::-webkit-scrollbar-thumb {
-    background-color: theme('colors.white'); /* warna awal */
+    background-color: theme("colors.white"); /* warna awal */
     border-radius: 9999px;
     transition: background-color 0.3s ease-in-out;
   }
 
   &::-webkit-scrollbar-track {
-    background-color: theme('colors.white'); /* warna awal */
+    background-color: theme("colors.white"); /* warna awal */
     border-radius: 9999px;
     transition: background-color 0.3s ease-in-out;
   }
 
   /* saat hover di container */
   &:hover::-webkit-scrollbar-thumb {
-    background-color: theme('colors.gray.300'); /* warna akhir */
+    background-color: theme("colors.gray.300"); /* warna akhir */
   }
 
   &:hover::-webkit-scrollbar-track {
-    background-color: theme('colors.gray.100'); /* warna akhir */
+    background-color: theme("colors.gray.100"); /* warna akhir */
   }
 }
-
 
 input[type="range"] {
   -webkit-appearance: none;

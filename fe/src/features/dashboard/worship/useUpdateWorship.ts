@@ -8,7 +8,12 @@ export const useUpdateWorship = ({ onSuccess }: ActionProps) => {
     mutationFn: async (body: FormData) => {
       const { data } = await axiosInstance.patch(
         `/worship/${body.get("id")}`,
-        body
+        body,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
       );
       return data;
     },

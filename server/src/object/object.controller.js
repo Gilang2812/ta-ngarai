@@ -178,7 +178,7 @@ router.get("/homestay", async (req, res, next) => {
       "address",
       "contact_person",
       "open",
-      "close", 
+      "close",
       "description",
       "status",
       "video_url",

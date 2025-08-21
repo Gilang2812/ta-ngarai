@@ -8,7 +8,12 @@ export const useUpdateAttraction = ({ onSuccess }: ActionProps) => {
     mutationFn: async (body: FormData) => {
       const { data } = await axiosInstance.patch(
         `/attractions/${body.get("id")}`,
-        body
+        body,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
       );
       return data;
     },

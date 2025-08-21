@@ -68,8 +68,8 @@ export const FormInput = ({
                 >
               ) => {
                 if (
-                  props.type === "date" &&
-                  props.type === "time" &&
+                  props.type === "date" ||
+                  props.type === "time" ||
                   props.type === "datetime-local"
                 ) {
                   return field.onChange(e);

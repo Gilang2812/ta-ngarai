@@ -5,7 +5,7 @@ export const CheckError = () => {
   const { errors, values } = useFormikContext();
   useEffect(() => {
     if (errors || values) {
-      console.error("Form errors:", errors);
+      console.log("Form errors:", errors);
       console.log(values);
     }
     console.log("Form values:", values);

@@ -34,20 +34,14 @@ const findSouvenirPlace = async (include = false) => {
             where: {
               [Op.and]: [
                 where(
-                  col("detailSouvenir->souvenirPlace->crafts.craft_variant_id"),
+                  col("crafts.craft_variant_id"),
                   "=",
-                  col(
-                    "detailSouvenir->souvenirPlace->crafts->craftGalleries.craft_variant_id"
-                  )
+                  col("crafts->craftGalleries.craft_variant_id")
                 ),
                 where(
-                  col(
-                    "detailSouvenir->souvenirPlace->crafts.id_souvenir_place"
-                  ),
+                  col("crafts.id_souvenir_place"),
                   "=",
-                  col(
-                    "detailSouvenir->souvenirPlace->crafts->craftGalleries.id_souvenir_place"
-                  )
+                  col("crafts->craftGalleries.id_souvenir_place")
                 ),
               ],
             },
@@ -58,46 +52,17 @@ const findSouvenirPlace = async (include = false) => {
       }
     : [];
   const souvenirPlace = await SouvenirPlace.findAll({
-    attributes: ["id"],
     include: [
+      { model: GallerySouvenir, as: "galleries" },
       {
         model: DetailUserSouvenir,
         as: "detailSouvenir",
-        attributes: ["id_souvenir_place"],
-        include: [
-          {
-            model: SouvenirPlace,
-            as: "souvenirPlace",
-            include: [
-              { model: GallerySouvenir, as: "galleries" },
-              {
-                model: DetailUserSouvenir,
-                as: "detailSouvenir",
-                include: [
-                  {
-                    model: User,
-                    as: "user",
-                    attributes: [
-                      "id",
-                      "username",
-                      "email",
-                      "fullname",
-                      "user_image",
-                    ],
-                  },
-                ],
-              },
-              ...(Array.isArray(includeItems) ? includeItems : [includeItems]),
-            ],
-          },
-        ],
       },
+      ...(Array.isArray(includeItems) ? includeItems : [includeItems]),
     ],
   });
-  const reformSouvenir = souvenirPlace.flatMap((sp) =>
-    sp.detailSouvenir.map((ds) => ds.souvenirPlace)
-  );
-  return reformSouvenir;
+ 
+  return souvenirPlace;
 };
 const findUserSouvenirPlace = async (user_id) => {
   const souvenirPlace = await SouvenirPlace.findAll({

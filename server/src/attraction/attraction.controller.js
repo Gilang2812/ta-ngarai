@@ -1,12 +1,20 @@
 const imageUpload = require("../../middlewares/imageUploads");
 const { Attraction, GalleryAttraction } = require("../../models/relation");
+const { formatImageUrl } = require("../../utils/formatImageUrl");
 const { insertGalleryAttraction } = require("../gallery/gallery.repository");
-
+const fs = require("fs");
 const router = require("express").Router();
 
 router.get("/", async (req, res, next) => {
   try {
-    const attractions = await Attraction.findAll();
+    const attractions = await Attraction.findAll({
+      include: [
+        {
+          model: GalleryAttraction,
+          as: "galleries",
+        },
+      ],
+    });
     res.json(attractions);
   } catch (error) {
     next(error);
@@ -15,11 +23,30 @@ router.get("/", async (req, res, next) => {
 
 router.post("/", imageUpload().array("images"), async (req, res, next) => {
   try {
-    const newAttraction = await Attraction.create(req.body);
+    const {
+      name,
+      type,
+      price,
+      category,
+      min_capacity,
+      description,
+      video_url,
+      geom,
+    } = req.body;
+    const newAttraction = await Attraction.create({
+      name,
+      type,
+      price,
+      category,
+      min_capacity,
+      description,
+      video_url,
+      geom: JSON.parse(geom),
+    });
 
     const images =
       req?.files?.map((file) => ({
-        url: file.path,
+        url: formatImageUrl(file.path),
         attraction_id: newAttraction.id,
       })) || [];
 
@@ -37,6 +64,16 @@ router.post("/", imageUpload().array("images"), async (req, res, next) => {
 router.patch("/:id", imageUpload().array("images"), async (req, res, next) => {
   try {
     const { id } = req.params;
+    const {
+      name,
+      type,
+      price,
+      category,
+      min_capacity,
+      description,
+      video_url,
+      geom,
+    } = req.body;
     const updatedAttraction = await Attraction.findOne({
       where: { id },
     });
@@ -54,13 +91,26 @@ router.patch("/:id", imageUpload().array("images"), async (req, res, next) => {
       where: { attraction_id: id },
     });
 
-    await Attraction.update(req.body, {
-      where: { id },
-    });
+    await Attraction.update(
+      {
+        name,
+        type,
+        price,
+        category,
+        min_capacity,
+        description,
+        video_url,
+        geom: JSON.parse(geom),
+      },
+      {
+        where: { id },
+      }
+    );
 
     const images =
       req?.files?.map((file) => ({
-        url: file.path,
+        url: formatImageUrl(file.path),
+
         attraction_id: updatedAttraction.id,
       })) || [];
 
@@ -69,7 +119,7 @@ router.patch("/:id", imageUpload().array("images"), async (req, res, next) => {
         await insertGalleryAttraction(file);
       }
     }
-    res.json(updatedAttraction[1][0]);
+    res.json(updatedAttraction);
   } catch (error) {
     next(error);
   }

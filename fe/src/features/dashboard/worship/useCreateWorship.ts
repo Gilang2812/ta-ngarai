@@ -6,7 +6,11 @@ import { useMutation } from "@tanstack/react-query";
 export const useCreateWorship = ({ onSuccess }: ActionProps) => {
   return useMutation({
     mutationFn: async (body: FormData) => {
-      const { data } = await axiosInstance.post("/worship", body);
+      const { data } = await axiosInstance.post("/worship", body, {
+        headers: {
+          "Content-Type": "multipart/formdata",
+        },
+      });
       return data;
     },
     onSuccess,

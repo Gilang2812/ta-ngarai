@@ -6,7 +6,11 @@ import { useMutation } from "@tanstack/react-query";
 const useCreateAttraction = ({ onSuccess }: ActionProps) => {
   return useMutation({
     mutationFn: async (body: FormData) => {
-      const { data } = await axiosInstance.post("/attractions", body);
+      const { data } = await axiosInstance.post("/attractions", body, {
+        headers: {
+          "Content-Type": "multipart/formdata",
+        },
+      });
       return data;
     },
     onSuccess,

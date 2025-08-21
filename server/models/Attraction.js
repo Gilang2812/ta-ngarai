@@ -1,37 +1,38 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../config/database");
+const { generateCustomId } = require("../utils/generateId");
 
 const Attraction = sequelize.define(
   "Attraction",
   {
     id: {
       type: DataTypes.STRING(5),
-      allowNull: false,
+      allowNull: true,
       primaryKey: true,
     },
     name: {
       type: DataTypes.STRING(255),
-      allowNull: false,
+      allowNull: true,
     },
     type: {
       type: DataTypes.STRING(255),
-      allowNull: false,
+      allowNull: true,
     },
     price: {
       type: DataTypes.INTEGER,
-      allowNull: false,
+      allowNull: true,
     },
     category: {
       type: DataTypes.INTEGER,
-      allowNull: false,
+      allowNull: true,
     },
     min_capacity: {
       type: DataTypes.INTEGER,
-      allowNull: false,
+      allowNull: true,
     },
     description: {
       type: DataTypes.TEXT,
-      allowNull: false,
+      allowNull: true,
     },
     video_url: {
       type: DataTypes.STRING(255),

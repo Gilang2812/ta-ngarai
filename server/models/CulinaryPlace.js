@@ -8,39 +8,40 @@ const CulinaryPlace = sequelize.define(
     id: {
       type: DataTypes.STRING(5),
       primaryKey: true,
-      allowNull: false,
+      allowNull: true,
     },
     name: {
       type: DataTypes.STRING(255),
-      allowNull: false,
+      allowNull: true,
     },
     address: {
       type: DataTypes.STRING(255),
-      allowNull: false,
+      allowNull: true,
     },
     contact_person: {
       type: DataTypes.STRING(13),
-      allowNull: false,
+      allowNull: true,
     },
     open: {
       type: DataTypes.TIME,
-      allowNull: false,
+      allowNull: true,
     },
     close: {
       type: DataTypes.TIME,
-      allowNull: false,
+      allowNull: true,
     },
     capacity: {
       type: DataTypes.INTEGER,
-      allowNull: false,
+      allowNull: true,
     },
     description: {
       type: DataTypes.TEXT,
-      allowNull: false,
+      allowNull: true,
     },
     status: {
       type: DataTypes.TINYINT,
-      allowNull: false,
+      defaultValue: 1,
+      allowNull: true,
     },
     geom: {
       type: DataTypes.GEOMETRY,

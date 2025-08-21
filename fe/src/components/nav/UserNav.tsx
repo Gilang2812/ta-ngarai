@@ -43,9 +43,7 @@ export const UserNav = () => {
             <SideNavItem
               icon={BsFillGridFill}
               label="Dashboard"
-              link={
-                isAdmin ? ROUTES.MANAGERESERVATION : ROUTES.MARKETPLACE
-              }
+              link={isAdmin ? ROUTES.MANAGERESERVATION : ROUTES.MARKETPLACE}
             />
           </li>
         )}
