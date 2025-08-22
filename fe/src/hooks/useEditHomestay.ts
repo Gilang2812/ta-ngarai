@@ -39,8 +39,8 @@ export const useEditHomestay = (id: string) => {
     close: String(data?.close),
     description: data?.description ?? "",
     images: images,
-    latitude: String(getCentroid(data?.geom).lat) ?? "",
-    longitude: String(getCentroid(data?.geom).lng) ?? "",
+    latitude: (getCentroid(data?.geom).lat) ?? 0,
+    longitude: (getCentroid(data?.geom).lng) ?? 0,
   };
 
   const facilityInitialValues = {

@@ -16,7 +16,7 @@ const GalleryWorship = sequelize.define(
     url: DataTypes.STRING(255),
   },
   {
-    tableName: "gallery_worship",
+    tableName: "gallery_worship_place",
     timestamps: false,
   }
 );

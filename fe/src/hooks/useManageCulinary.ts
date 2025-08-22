@@ -14,23 +14,28 @@ import {
   cornerAlert,
   showLoadingAlert,
 } from "@/utils/AlertUtils";
+import { LatLngType } from "@/type/props/mapProps";
 
 const useManageCulinary = () => {
   const { data, isLoading, refetch } = useFetchCulinary();
   const { isOpen, toggleModal } = useModal();
-  const [initialValues, setInitialValues] = useState<CulinaryForm>({
-    id: "",
-    name: "",
-    address: "",
-    capacity: 0,
-    open: "",
-    close: "",
-    contact_person: "",
-    description: "",
-    images: [],
-    status: "" as unknown as number,
-    geom: "",
-  });
+  const [initialValues, setInitialValues] = useState<CulinaryForm & LatLngType>(
+    {
+      id: "",
+      name: "",
+      address: "",
+      capacity: 0,
+      open: "",
+      close: "",
+      contact_person: "",
+      description: "",
+      images: [],
+      latitude: 0,
+      longitude: 0,
+      status: "" as unknown as number,
+      geom: "",
+    }
+  );
   const { handleSearch, searchTerm } = useSearchTable();
   const filteredData = useMemo(() => {
     if (!data) return [];
@@ -88,7 +93,8 @@ const useManageCulinary = () => {
 
   const handleAddCulinary = () => {
     toggleModal();
-    setInitialValues({
+    setInitialValues((prev) => ({
+      ...prev,
       id: "",
       name: "",
       address: "",
@@ -101,7 +107,7 @@ const useManageCulinary = () => {
       description: "",
 
       images: [],
-    });
+    }));
   };
 
   const handleEditCulinary = (culinary: CulinarySchema) => {
@@ -109,7 +115,13 @@ const useManageCulinary = () => {
     const images = formatImageUrls(
       culinary?.galleries?.map((gallery) => gallery.url) || []
     );
-    setInitialValues({ ...culinary, images: images });
+    const geom = JSON.stringify(culinary.geom);
+    setInitialValues((prev) => ({
+      ...prev,
+      ...culinary,
+      geom,
+      images: images,
+    }));
   };
 
   const handleDeleteCulinary = (id: string, name: string) => {

@@ -8,7 +8,7 @@ const useCreateAttraction = ({ onSuccess }: ActionProps) => {
     mutationFn: async (body: FormData) => {
       const { data } = await axiosInstance.post("/attractions", body, {
         headers: {
-          "Content-Type": "multipart/formdata",
+          "Content-Type": "multipart/form-data",
         },
       });
       return data;

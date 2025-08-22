@@ -189,14 +189,7 @@ const Attraction = () => {
                   />
                 </section>
                 <section className="py-4">
-                  <GoogleMapDrawing
-                    formType={initialValues.id ? "edit" : "create"}
-                    geom={
-                      initialValues.geom &&
-                      typeof initialValues.geom === "string"
-                        ? JSON.parse(initialValues.geom)
-                        : undefined
-                    }
+                  <GoogleMapDrawing 
                   />
                 </section>
               </article>

@@ -21,7 +21,7 @@ router.get("/", async (req, res, next) => {
   }
 });
 
-router.post("/", imageUpload().array("image"), async (req, res, next) => {
+router.post("/", imageUpload().array("images"), async (req, res, next) => {
   try {
     const {
       name,
@@ -46,10 +46,12 @@ router.post("/", imageUpload().array("image"), async (req, res, next) => {
       geom: JSON.parse(geom),
     });
 
-    const images = req.files.map((file) => ({
-      url: formatImageUrl(file.path),
-      culinary_place_id: newCulinaryPlace.id,
-    }));
+    const images =
+      req?.files?.map((file) => ({
+        url: formatImageUrl(file.path),
+        culinary_place_id: newCulinaryPlace.id,
+      })) || [];
+    console.log("imgages", images);
     if (images.length > 0) {
       for (const file of images) {
         await insertGalleryCulinary(file);
@@ -62,7 +64,7 @@ router.post("/", imageUpload().array("image"), async (req, res, next) => {
   }
 });
 
-router.patch("/:id", imageUpload().array("image"), async (req, res, next) => {
+router.patch("/:id", imageUpload().array("images"), async (req, res, next) => {
   try {
     const {
       name,
@@ -81,6 +83,8 @@ router.patch("/:id", imageUpload().array("image"), async (req, res, next) => {
       where: { culinary_place_id: id },
     });
 
+    console.log("imgages", req.files);
+
     const updated = await CulinaryPlace.update(
       {
         name,
@@ -98,7 +102,7 @@ router.patch("/:id", imageUpload().array("image"), async (req, res, next) => {
       }
     );
 
-    if (existingGalleries.length > 0) {
+    if (existingGalleries?.length > 0) {
       for (const gallery of existingGalleries) {
         fs.unlinkSync(`public/${gallery.url}`);
       }
@@ -108,11 +112,12 @@ router.patch("/:id", imageUpload().array("image"), async (req, res, next) => {
       where: { culinary_place_id: id },
     });
 
-    const images = req.files.images.map((file) => ({
-      url: formatImageUrl(file.path),
-
-      worship_place_id: id,
-    }));
+    const images =
+      req?.files?.map((file) => ({
+        url: formatImageUrl(file.path),
+        culinary_place_id: id,
+      })) || [];
+    console.log("imgages", images);
 
     if (images.length > 0) {
       for (const file of images) {

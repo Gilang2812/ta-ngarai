@@ -15,11 +15,14 @@ import {
   cornerAlert,
   showLoadingAlert,
 } from "@/utils/AlertUtils";
+import { LatLngType } from "@/type/props/mapProps";
 
 const useManageAttraction = () => {
   const { data, isLoading, refetch } = useFetchAttraction();
   const { isOpen, toggleModal } = useModal();
-  const [initialValues, setInitialValues] = useState<AttractionForm>({
+  const [initialValues, setInitialValues] = useState<
+    AttractionForm & LatLngType
+  >({
     id: "",
     name: "",
     type: "",
@@ -28,6 +31,8 @@ const useManageAttraction = () => {
     price: 0,
     description: "",
     geom: "",
+    latitude: 0,
+    longitude: 0,
     images: [],
   });
   const { handleSearch, searchTerm } = useSearchTable();
@@ -91,7 +96,8 @@ const useManageAttraction = () => {
 
   const handleAddAttraction = () => {
     toggleModal();
-    setInitialValues({
+    setInitialValues((prev) => ({
+      ...prev,
       id: "",
       name: "",
       type: "",
@@ -101,7 +107,7 @@ const useManageAttraction = () => {
       geom: "",
       description: "",
       images: [],
-    });
+    }));
   };
 
   const handleEditAttraction = (attraction: AttractionSchema) => {
@@ -111,7 +117,12 @@ const useManageAttraction = () => {
       attraction?.galleries?.map((gallery) => gallery.url) || []
     );
     const geom = JSON.stringify(attraction?.geom);
-    setInitialValues({ ...attraction, geom, images: images });
+    setInitialValues((prev) => ({
+      ...prev,
+      ...attraction,
+      geom,
+      images: images,
+    }));
   };
 
   const handleDeleteAttraction = (id: string, name: string) => {

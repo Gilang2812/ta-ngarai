@@ -1,5 +1,6 @@
 import { useCreateMarketplace } from "@/features/dashboard/marketplace/useCreateMarketplace";
 import { useUpdateMarketplace } from "@/features/dashboard/marketplace/useUpdateMarketplace";
+import { LatLngType } from "@/type/props/mapProps";
 import { FormMarketplace } from "@/type/schema/MarketplaceSchema";
 import { cornerAlert } from "@/utils/AlertUtils";
 import { createFormData } from "@/utils/common/createFormData";
@@ -8,7 +9,9 @@ const useFormMarketplace = (
   existingMarketplace?: FormMarketplace,
   onSuccessUpdate?: () => void
 ) => {
-  const [initialValues, setInitialValues] = useState<FormMarketplace>({
+  const [initialValues, setInitialValues] = useState<
+    FormMarketplace & LatLngType
+  >({
     id: existingMarketplace?.id || "",
     name: existingMarketplace?.name || "",
     address: existingMarketplace?.address || "",
@@ -18,6 +21,8 @@ const useFormMarketplace = (
     description: existingMarketplace?.description || "",
     geom: existingMarketplace?.geom || "",
     images: existingMarketplace?.images || [],
+    latitude: 0,
+    longitude: 0,
   });
   const { mutate: createMarketplace, isPending: isPendingCreate } =
     useCreateMarketplace({

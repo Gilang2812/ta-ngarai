@@ -8,7 +8,7 @@ export const useCreateWorship = ({ onSuccess }: ActionProps) => {
     mutationFn: async (body: FormData) => {
       const { data } = await axiosInstance.post("/worship", body, {
         headers: {
-          "Content-Type": "multipart/formdata",
+          "Content-Type": "multipart/form-data",
         },
       });
       return data;

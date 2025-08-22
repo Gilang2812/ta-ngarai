@@ -6,9 +6,9 @@ import { useMutation } from "@tanstack/react-query";
 export const useCreateCulinary = ({ onSuccess }: ActionProps) => {
   return useMutation({
     mutationFn: async (body: FormData) => {
-      const { data } = await axiosInstance.post("/culinarys", body, {
+      const { data } = await axiosInstance.post("/culinary", body, {
         headers: {
-          "Content-Type": "multipart/formdata",
+          "Content-Type": "multipart/form-data",
         },
       });
       return data;

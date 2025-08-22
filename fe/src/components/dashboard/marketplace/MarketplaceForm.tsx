@@ -9,32 +9,20 @@ import {
   marketplaceSchema,
 } from "@/type/schema/MarketplaceSchema";
 import { Spinner } from "flowbite-react";
-import { Form, Formik, useFormikContext } from "formik";
+import { Form, Formik } from "formik";
 import React from "react";
 
 const MarketplaceForm = ({
   existingMarketplace,
   updateSuccess,
-  formType = "create",
 }: {
   updateSuccess?: () => void;
   existingMarketplace?: FormMarketplace;
-  formType?: "edit" | "create";
 }) => {
   const { initialValues, isPending, handleSubmit } = useFormMarketplace(
     existingMarketplace,
     updateSuccess
   );
-
-  const DrawingMarketplaceMap = () => {
-    const { values } = useFormikContext<FormMarketplace>();
-    return (
-      <GoogleMapDrawing
-        geom={values.geom ? JSON.parse(values.geom) : null}
-        formType={formType}
-      />
-    );
-  };
 
   return (
     <div>
@@ -67,7 +55,7 @@ const MarketplaceForm = ({
             <ValidateClose />
           </section>
           <section className="space-y-4">
-            <DrawingMarketplaceMap />
+            <GoogleMapDrawing />
             <Button
               variant={`${isPending ? "secondary" : "default"}`}
               type="submit"

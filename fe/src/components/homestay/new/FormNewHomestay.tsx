@@ -34,8 +34,22 @@ const FormNewHomestay: React.FC<Props> = ({
 
   useEffect(() => {
     if (values.geom) {
-      setFieldValue("latitude", getCentroid(JSON.parse(values.geom)).lat);
-      setFieldValue("longitude", getCentroid(JSON.parse(values.geom)).lng);
+      setFieldValue(
+        "latitude",
+        getCentroid(
+          typeof values.geom === "string"
+            ? JSON.parse(values.geom)
+            : values.geom
+        ).lat
+      );
+      setFieldValue(
+        "longitude",
+        getCentroid(
+          typeof values.geom === "string"
+            ? JSON.parse(values.geom)
+            : values.geom
+        ).lng
+      );
     }
   }, [values.geom, setFieldValue]);
 
@@ -139,10 +153,7 @@ const FormNewHomestay: React.FC<Props> = ({
             className="flex border-2 items-center min-h-fit relative overflow-hidden  border-red-500 justify-center w-full h-64 text-black bg-gray-200"
             aria-label="Google Maps Placeholder"
           >
-            <GoogleMapDrawing
-              geom={values.geom ? JSON.parse(values.geom) : null}
-              formType={formType}
-            />
+            <GoogleMapDrawing />
           </div>
         </div>
         {right}

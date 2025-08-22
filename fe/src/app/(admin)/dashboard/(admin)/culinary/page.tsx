@@ -8,6 +8,7 @@ import Button from "@/components/common/Button";
 import FilePondComponent from "@/components/common/Filepond";
 import { SingleContentWrapper } from "@/components/common/SingleContentWrapper";
 import { Table } from "@/components/common/Table";
+import { ValidateClose } from "@/components/common/ValidateClose";
 import { FormInput } from "@/components/inputs/FormInput";
 import ManagementSkeletonLoader from "@/components/loading/ManagementSkeletonLoader";
 import GoogleMapDrawing from "@/components/map/GoogleMapDrawing";
@@ -118,6 +119,7 @@ const Culinary = () => {
                   {initialValues.id && (
                     <FormInput label="ID" name="id" placeholder="id" />
                   )}
+
                   <FormInput
                     label="Culinary Name"
                     name="name"
@@ -141,6 +143,7 @@ const Culinary = () => {
                   />
                 </section>
                 <section>
+                  <ValidateClose />
                   <FormInput
                     label="Open Time"
                     name="open"
@@ -200,15 +203,7 @@ const Culinary = () => {
                   />
                 </section>
                 <section className="py-4">
-                  <GoogleMapDrawing
-                    formType={initialValues.id ? "edit" : "create"}
-                    geom={
-                      initialValues.geom &&
-                      typeof initialValues.geom === "string"
-                        ? JSON.parse(initialValues.geom)
-                        : undefined
-                    }
-                  />
+                  <GoogleMapDrawing />
                 </section>
               </article>
             </Form>

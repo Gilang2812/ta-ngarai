@@ -11,7 +11,7 @@ export const useUpdateCulinary = ({ onSuccess }: ActionProps) => {
         body,
         {
           headers: {
-            "Content-Type": "multipart/formdata",
+            "Content-Type": "multipart/form-data",
           },
         }
       );

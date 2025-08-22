@@ -77,8 +77,8 @@ const destroyGalleryAttraction = async (key) => {
   return deleted;
 };
 
-const insertGalleryCulinary = async () => {
-  const culinary = await GalleryCulinary.findAll();
+const insertGalleryCulinary = async (data) => {
+  const culinary = await GalleryCulinary.create(data);
   return culinary;
 };
 const destroyGalleryCulinary = async () => {

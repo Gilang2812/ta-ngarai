@@ -23,13 +23,22 @@ router.get("/", async (req, res, next) => {
   }
 });
 
-router.post("/", imageUpload().array("image"), async (req, res, next) => {
+router.post("/", imageUpload().array("images"), async (req, res, next) => {
   try {
-    const newWorshipPlace = await WorshipPlace.create(req.body);
-    const images = req.files.map((file) => ({
-      url: formatImageUrl(file.path),
-      worship_place_id: newWorshipPlace.id,
-    }));
+    const { name, address, capacity, description, status, geom } = req.body;
+    const newWorshipPlace = await WorshipPlace.create({
+      name,
+      address,
+      capacity,
+      description,
+      status,
+      geom: typeof geom !== "object" ? JSON.parse(geom) : geom,
+    });
+    const images =
+      req?.files?.map((file) => ({
+        url: formatImageUrl(file.path),
+        worship_place_id: newWorshipPlace.id,
+      })) || [];
     if (images.length > 0) {
       for (const file of images) {
         await insertGalleryWorship(file);
@@ -41,12 +50,23 @@ router.post("/", imageUpload().array("image"), async (req, res, next) => {
   }
 });
 
-router.patch("/:id", imageUpload().array("image"), async (req, res, next) => {
+router.patch("/:id", imageUpload().array("images"), async (req, res, next) => {
   try {
     const { id } = req.params;
-    const updatedWorshipPlace = await WorshipPlace.update(req.body, {
-      where: { id },
-    });
+    const { name, address, capacity, description, status, geom } = req.body;
+    const updatedWorshipPlace = await WorshipPlace.update(
+      {
+        name,
+        address,
+        capacity,
+        description,
+        status,
+        geom: typeof geom !== "object" ? JSON.parse(geom) : geom,
+      },
+      {
+        where: { id },
+      }
+    );
     const existingGalleries = await GalleryWorship.findAll({
       where: { worship_place_id: id },
     });
@@ -61,11 +81,12 @@ router.patch("/:id", imageUpload().array("image"), async (req, res, next) => {
       where: { worship_place_id: id },
     });
 
-    const images = req.files.images.map((file) => ({
-      url: formatImageUrl(file.path),
+    const images =
+      req?.files?.map((file) => ({
+        url: formatImageUrl(file.path),
 
-      worship_place_id: id,
-    }));
+        worship_place_id: id,
+      })) || [];
 
     if (images.length > 0) {
       for (const file of images) {

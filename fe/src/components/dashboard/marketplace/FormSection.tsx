@@ -23,7 +23,6 @@ export const FormStoreSection = ({
       <MarketplaceForm
         existingMarketplace={existingMarketplace}
         updateSuccess={updateSuccess}
-        formType="edit"
       />
     </SingleContentWrapper>
   );

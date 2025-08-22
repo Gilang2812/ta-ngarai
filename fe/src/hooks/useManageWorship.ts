@@ -14,12 +14,13 @@ import {
   cornerAlert,
   showLoadingAlert,
 } from "@/utils/AlertUtils";
+import { LatLngType } from "@/type/props/mapProps";
 
 const useManageWorship = () => {
   const { data, isLoading, refetch } = useFetchWorship();
   const { isOpen, toggleModal } = useModal();
 
-  const [initialValues, setInitialValues] = useState<WorshipForm>({
+  const [initialValues, setInitialValues] = useState<WorshipForm & LatLngType>({
     id: "",
     name: "",
     address: "",
@@ -28,6 +29,8 @@ const useManageWorship = () => {
     status: 1,
     geom: "",
     images: [],
+    latitude: 0,
+    longitude: 0,
   });
   const { handleSearch, searchTerm } = useSearchTable();
   const filteredData = useMemo(() => {
@@ -86,7 +89,8 @@ const useManageWorship = () => {
 
   const handleAddWorship = () => {
     toggleModal();
-    setInitialValues({
+    setInitialValues((prev) => ({
+      ...prev,
       id: "",
       name: "",
       address: "",
@@ -95,7 +99,7 @@ const useManageWorship = () => {
       status: 1,
       geom: "",
       images: [],
-    });
+    }));
   };
 
   const handleEditWorship = (worship: WorshipSchema) => {
@@ -103,7 +107,16 @@ const useManageWorship = () => {
     const images = formatImageUrls(
       worship?.galleries?.map((gallery) => gallery.url) || []
     );
-    setInitialValues({ ...worship, images: images });
+    const geom =
+      typeof worship.geom !== "string"
+        ? JSON.stringify(worship.geom)
+        : worship.geom;
+    setInitialValues((prev) => ({
+      ...prev,
+      ...worship,
+      images: images,
+      geom
+    }));
   };
 
   const handleDeleteWorship = (id: string, name: string) => {

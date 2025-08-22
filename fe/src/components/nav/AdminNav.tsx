@@ -117,12 +117,12 @@ export const AdminNav = () => {
                 />
                 <DropDownChildrenItem
                   icon={FaPuzzlePiece}
-                  label="Manage Culinary"
+                  label="Manage Culinary Place"
                   link={ROUTES.MANAGE_CULINARY}
                 />
                 <DropDownChildrenItem
                   icon={FaPuzzlePiece}
-                  label="Service Worshipme"
+                  label="Manage Worship Place"
                   link={ROUTES.MANAGE_WORSHIP_PLACE}
                 />
               </DropDownItem>

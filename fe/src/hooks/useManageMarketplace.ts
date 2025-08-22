@@ -44,13 +44,16 @@ export const useManageMarketplace = () => {
       open: "",
       description: "",
       geom: "",
+      latitude: 0,
+      longitude: 0,
       images: [],
     });
     toggleModal();
   };
   const handleOpenEditModal = (souvenirPlace: SouvenirPlaceSchema) => {
     setFormType("edit");
-    setInitialValues({
+    setInitialValues((prev) => ({
+      ...prev,
       id: souvenirPlace.id,
       name: souvenirPlace.name,
       address: souvenirPlace.address,
@@ -60,7 +63,7 @@ export const useManageMarketplace = () => {
       description: souvenirPlace.description,
       geom: JSON.stringify(souvenirPlace.geom) || "", // optional
       images: [],
-    });
+    }));
 
     toggleModal();
   };
@@ -83,7 +86,8 @@ export const useManageMarketplace = () => {
     isOpen,
     initialValues,
     handleDelete,
-    toggleModal, handleSelect,
+    toggleModal,
+    handleSelect,
     handleOpenCreateModal,
     isLoading,
     selectedItem,

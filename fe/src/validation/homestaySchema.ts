@@ -62,6 +62,6 @@ export type CreateHomestaySchema = yup.InferType<
 > & {
   status?: number;
   video_url?: string;
-  latitude?: string;
-  longitude?: string;
+  latitude?: number;
+  longitude?: number;
 };

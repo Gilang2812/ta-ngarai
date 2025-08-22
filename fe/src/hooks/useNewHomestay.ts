@@ -15,9 +15,9 @@ export const useNewHomestay = () => {
     open: "",
     close: "",
     description: "",
+    latitude: 0,
+    longitude: 0,
     images: [],
-    latitude: "",
-    longitude: "",
   };
   const { mutate, isPending } = useCreateHomestay({
     onSuccess: () => {
