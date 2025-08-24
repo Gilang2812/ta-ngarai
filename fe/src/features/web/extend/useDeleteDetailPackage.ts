@@ -1,10 +1,11 @@
-import { axiosInstance } from "@/lib/axios";
+import { useAxiosAuth } from "@/lib/axios";
 import { ActionProps } from "@/type/props/ActionProps";
 import { useMutation } from "@tanstack/react-query";
 import { onError } from "@/utils/ErrorHandler";
 
 export const useDeleteDetailPackage = ({ onSuccess }: ActionProps) => {
-  return useMutation({
+  const axiosInstance = useAxiosAuth()
+ return useMutation({
     mutationFn: async ({
       activity,
       day,

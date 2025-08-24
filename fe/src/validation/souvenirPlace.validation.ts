@@ -1,4 +1,4 @@
-import { axiosInstance } from "@/lib/axios";
+import { useAxiosAuth } from "@/lib/axios";
 import { CheckSUserResponse } from "@/type/schema/UsersSchema";
 import * as yup from "yup";
 

@@ -13,6 +13,8 @@ import useAuth from "@/hooks/useAuth";
 import { ROUTES } from "@/data/routes";
 import useClickOutside from "@/hooks/useOutsideClick";
 import NotifInvitations from "./NotifInvitations";
+import { useSession } from "next-auth/react";
+import MainSkeletonLoader from "@/components/loading/MainSkeletonLoader";
 
 export default function SidebarLayout({
   children,
@@ -22,10 +24,12 @@ export default function SidebarLayout({
   NavComponent: () => JSX.Element;
 }) {
   const { isOpen, toggle, setIsOpen } = useToggleOpen();
-  const { user, handleLogout } = useAuth();
+  const { handleLogout } = useAuth();
+  const { status } = useSession();
   const ref = useClickOutside<HTMLDivElement>(() => {
     setIsOpen(false);
   });
+  if (status === "loading") return <MainSkeletonLoader />;
   return (
     <main className=" flex h-lvh relative min-w-fit max-w-screen  max-h-screen overflow-clip   bg-basic">
       <Sidebar>
@@ -39,7 +43,7 @@ export default function SidebarLayout({
             <h2>Tourism Village</h2>
           </section>
           <div>
-            {user ? (
+            {status === "authenticated" ? (
               <section className="grid grid-cols-3 gap-2 grid-flow-col">
                 <NotifInvitations />
                 <div>
@@ -72,15 +76,16 @@ export default function SidebarLayout({
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -10 }}
                         transition={{ duration: 0.2 }}
-                        className={`absolute z-10  [&_li]:ease-in-out  right-0 top-full mt-2 w-48 bg-white shadow-lg rounded-lg p-2 `}
+                        className={`absolute z-50 top-full hover:[&_li]:bg-primary/50 [&_li]:px-2 [&_li]:transition [&_li]:ease-in-out [&_li]:duration-300 border bg-white/30 backdrop-blur-sm  right-0  w-48 shadow-lg rounded-lg py-2 it`}
                       >
                         <li className="hover:bg-primary transition-ease-in-out hover:text-white">
                           <a href="/web/profile">Profile</a>
                         </li>
-                        <li onClick={handleLogout}  className="hover:bg-primary transition-ease-in-out hover:text-white">
-                          <button type="button">
-                            Logout
-                          </button>
+                        <li
+                          onClick={handleLogout}
+                          className="hover:bg-primary transition-ease-in-out hover:text-white"
+                        >
+                          <button type="button">Logout</button>
                         </li>
                       </motion.ul>
                     )}

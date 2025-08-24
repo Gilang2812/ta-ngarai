@@ -1,4 +1,4 @@
-import { axiosInstance } from "@/lib/axios";
+import { useAxiosAuth } from "@/lib/axios";
 import { CheckSUserResponse } from "@/type/schema/UsersSchema";
 import * as yup from "yup";
 
@@ -51,18 +51,20 @@ export const registerSchema = yup.object().shape({
 });
 
 export type UserLogin = {
-  id: number;
+  id: number | string;
   email: string;
   username: string;
-  role: number;
+  role: number | string;
   name: string;
   phone: string;
   address: string;
-  store: {
-    user_id: string;
-    id_souvenir_place: string;
-    isOwner: number;
-  }[];
+  store: UserStore[];
+};
+
+export type UserStore = {
+  user_id: string;
+  id_souvenir_place: string;
+  isOwner: number;
 };
 
 export type LoginResponse = {

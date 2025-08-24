@@ -6,9 +6,9 @@ import { NavItem } from "../common/NavItem";
 import useToggleOpen from "@/hooks/useToggleOpen";
 import useAuth from "@/hooks/useAuth";
 import useClickOutside from "@/hooks/useOutsideClick";
-import { motion } from "framer-motion";
-import { ROUTES } from "@/data/routes";
+import { AnimatePresence, motion } from "framer-motion";
 import { cn } from "@/utils/common/cn";
+import { signIn, useSession } from "next-auth/react";
 type Props = {
   isNavOpen?: boolean;
   onAwardClick: () => void;
@@ -16,12 +16,23 @@ type Props = {
 
 const LandingPageNav = ({ isNavOpen, onAwardClick }: Props) => {
   const { isOpen, toggle, setIsOpen } = useToggleOpen();
-  const { user, handleLogout } = useAuth();
-  const ref = useClickOutside<HTMLUListElement>(() => {
+  const { data: session, status } = useSession();
+  const ref = useClickOutside<HTMLDivElement>(() => {
     setIsOpen(false);
   });
+  const { handleLogout } = useAuth();
+  console.log(session?.user);
+  console.log(status);
+  console.log(status);
+
+  if (status === "loading") return null;
   return (
-    <nav className={cn(" space-x-9 font-opensans flex gap-4 items-center ",isNavOpen ? "max-h-[999px]" : "max-h-0 md:max-h-full")}>
+    <nav
+      className={cn(
+        " space-x-9 font-opensans flex gap-4 items-center ",
+        isNavOpen ? "max-h-[999px]" : "max-h-0 md:max-h-full"
+      )}
+    >
       <Link className="text-primary" href="/">
         HOME
       </Link>
@@ -40,12 +51,15 @@ const LandingPageNav = ({ isNavOpen, onAwardClick }: Props) => {
       </a>
 
       <div>
-        {user ? (
-          <div className="relative">
+        {status === "authenticated" ? (
+          <div ref={ref} className="relative">
             <button
               type="button"
               className="flex items-center justify-center min-w-fit p-4 bg-white rounded-lg cursor-pointer"
-              onClick={toggle}
+              onClick={() => {
+                toggle();
+                console.log("click");
+              }}
             >
               <Image
                 src="/images/profile.png"
@@ -55,26 +69,31 @@ const LandingPageNav = ({ isNavOpen, onAwardClick }: Props) => {
                 className="size-8 min-w-8 flex-1 aspect-square"
               />
             </button>
-            <motion.ul
-              layout
-              ref={ref}
-              className={`absolute right-0 top-full mt-2 w-48 bg-white shadow-lg rounded-lg p-2 ${
-                isOpen ? "block" : "hidden"
-              }`}
-            >
-              <li>
-                <a href="/web/profile">Profile</a>
-              </li>
-              <li>
-                <button onClick={handleLogout} type="button">
-                  Logout
-                </button>
-              </li>
-            </motion.ul>
+            <AnimatePresence>
+              {isOpen && (
+                <motion.ul
+                  layout
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.2 }}
+                  className={`absolute z-50 top-full hover:[&_li]:bg-primary/50 [&_li]:px-2 [&_li]:transition [&_li]:ease-in-out [&_li]:duration-300 border bg-white/30 backdrop-blur-sm  right-0  w-48 shadow-lg rounded-lg py-2 `}
+                >
+                  <li>
+                    <a href="/web/profile">Profile</a>
+                  </li>
+                  <li>
+                    <button onClick={handleLogout} type="button">
+                      Logout
+                    </button>
+                  </li>
+                </motion.ul>
+              )}
+            </AnimatePresence>
           </div>
         ) : (
-          <Button className=" w-fit" asChild>
-            <Link href={ROUTES.LOGIN}>Login</Link>
+          <Button onClick={() => signIn()} className=" w-fit">
+            Login
           </Button>
         )}
       </div>

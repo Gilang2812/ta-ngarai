@@ -1,4 +1,4 @@
-import { axiosInstance } from "@/lib/axios";
+import { useAxiosAuth } from "@/lib/axios";
 import { DetailCraftInclude } from "@/type/schema/DetailCraftSchema";
 import { useQuery } from "@tanstack/react-query";
 
@@ -6,7 +6,8 @@ export const useFetchStoreDetailCrafts = <T>(
   id_souvenir_place: string,
   option: DetailCraftInclude
 ) => {
-  return useQuery<T[]>({
+  const axiosInstance = useAxiosAuth()
+ return useQuery<T[]>({
     queryKey: ["detailCrafts", id_souvenir_place, option.toString()],
     queryFn: async () => {
       const { data } = await axiosInstance.get(

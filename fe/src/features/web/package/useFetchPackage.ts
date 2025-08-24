@@ -1,4 +1,4 @@
-import { axiosInstance } from "@/lib/axios";
+import { useAxiosAuth } from "@/lib/axios";
 import { GalleryPackageSchema } from "@/type/schema/GallerySchema";
 import {
   DetailPackageSchema,
@@ -25,7 +25,8 @@ type Props = PackageSchema & {
 };
 
 export const useFetchPackages = <T extends Props>(query: FetchProps) => {
-  return useQuery<T[]>({
+  const axiosInstance = useAxiosAuth()
+ return useQuery<T[]>({
     queryKey: ["package"],
     queryFn: async () => {
       const { data } = await axiosInstance.get("/packages", {

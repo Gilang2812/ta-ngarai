@@ -1,4 +1,4 @@
-import { axiosInstance } from "@/lib/axios";
+import { useAxiosAuth } from "@/lib/axios";
 import { useSocketStore } from "@/stores/socketStore";
 import { DetailHomestayReservation } from "@/type/schema/ReservationSchema";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
@@ -20,10 +20,11 @@ export const useGetHomestayReservation = (id: string) => {
     };
   }, [socket, joinRoom, leaveRoom, queryClient, id]);
 
-  return useQuery<DetailHomestayReservation>({
+  const axiosInstance = useAxiosAuth()
+ return useQuery<DetailHomestayReservation>({
     queryKey: ["homestay-reservation", id],
     queryFn: async () => {
-      const { data } = await axiosInstance.get(`reservations/homestay/${id}`);
+      const { data } = await axiosInstance.get(`/reservations/homestay/${id}`);
       return data;
     },
     enabled: !!id,

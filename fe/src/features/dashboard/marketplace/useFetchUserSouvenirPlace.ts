@@ -1,4 +1,4 @@
-import { axiosInstance } from "@/lib/axios";
+import { useAxiosAuth } from "@/lib/axios";
 import { useSocketStore } from "@/stores/socketStore";
 import { UserMarketplaceSchema } from "@/type/schema/SouvenirSchema";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
@@ -19,7 +19,8 @@ export const useFetchUserSouvenirPlace = () => {
       socket.off("souvenirPlace", handler);
     };
   }, [socket, joinRoom, leaveRoom, queryClient]);
-  return useQuery<UserMarketplaceSchema[]>({
+  const axiosInstance = useAxiosAuth()
+ return useQuery<UserMarketplaceSchema[]>({
     queryKey: ["sp-user"],
     queryFn: async () => {
       const { data } = await axiosInstance("/souvenirs/user/index");

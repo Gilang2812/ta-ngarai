@@ -4,7 +4,8 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
 const useFetchWeatherPrediction = () => {
-  return useQuery<OpenMeteoDailyResponse>({
+ 
+ return useQuery<OpenMeteoDailyResponse>({
     queryKey: ["weatherPrediction"],
     queryFn: async () => {
       const { data } = await axios.get(

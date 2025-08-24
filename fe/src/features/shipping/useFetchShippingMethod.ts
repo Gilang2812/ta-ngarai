@@ -1,4 +1,4 @@
-import { axiosInstance } from "@/lib/axios"; 
+import { useAxiosAuth } from "@/lib/axios"; 
 import { ShippingData } from "@/type/schema/ShippingSchema";
 import { useQuery } from "@tanstack/react-query";
 
@@ -16,7 +16,8 @@ export const useFetchShippingMethod = ({
   item_value,
   cod = "no",
 }: ShippingMethodParams) => {
-  return useQuery<ShippingData>({
+  const axiosInstance = useAxiosAuth()
+ return useQuery<ShippingData>({
     queryKey: ["shippingMethods"],
     queryFn: async () => {
       const { data } = await axiosInstance.get("/shipping/calculate", {

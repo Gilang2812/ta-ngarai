@@ -1,11 +1,12 @@
-import { axiosInstance } from "@/lib/axios";
+import { useAxiosAuth } from "@/lib/axios";
 import { ActionProps } from "@/type/props/ActionProps";
 import { HomestayReviewFormSchema } from "@/type/schema/ReservationSchema";
 import { onError } from "@/utils/ErrorHandler";
 import { useMutation } from "@tanstack/react-query";
 
 export const useUpdateDetailReservation = ({ onSuccess }: ActionProps) => {
-  return useMutation({
+  const axiosInstance = useAxiosAuth()
+ return useMutation({
     mutationFn: async (body: HomestayReviewFormSchema) => {
       const {
         date,

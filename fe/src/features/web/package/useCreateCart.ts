@@ -1,10 +1,11 @@
-import { axiosInstance } from "@/lib/axios";
+import { useAxiosAuth } from "@/lib/axios";
 import { ActionProps } from "@/type/props/ActionProps";
 import { onError } from "@/utils/ErrorHandler";
 import { useMutation } from "@tanstack/react-query";
 
 export const useCreateCart = ({ onSuccess }: ActionProps) => {
-  return useMutation({
+  const axiosInstance = useAxiosAuth()
+ return useMutation({
     mutationFn: async (body: { package_id: string }) => {
       console.log("Creating cart with body:", body);
       const { data } = await axiosInstance.post("/carts", body);

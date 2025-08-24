@@ -1,4 +1,4 @@
-import { axiosInstance } from "@/lib/axios";
+import { useAxiosAuth } from "@/lib/axios";
 import { useAuthStore } from "@/stores/AuthStore";
 import { ActionProps } from "@/type/props/ActionProps";
 import { onError } from "@/utils/ErrorHandler";
@@ -6,7 +6,8 @@ import { useMutation } from "@tanstack/react-query";
 
 export const useUpdateDetailSouvenir = ({ onSuccess }: ActionProps) => {
   const { fetchMe } = useAuthStore();
-  return useMutation({
+  const axiosInstance = useAxiosAuth()
+ return useMutation({
     mutationFn: async ({
       status,
       id_souvenir_place,

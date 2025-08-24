@@ -1,19 +1,20 @@
-import { useAuthStore } from "@/stores/AuthStore";
 import { usePathname, useRouter } from "next/navigation";
-import useAuth from "./useAuth";
 import Swal from "sweetalert2";
+import { useSession } from "next-auth/react";
+import { ROUTES } from "@/data/routes";
 
 const useUserRole = () => {
-  const { user, setLastPathname } = useAuthStore();
-  const { logout } = useAuth();
+  const pathName = usePathname();
+  const { data, status } = useSession();
+  const user = data?.user;
   const router = useRouter();
-  const pathname = usePathname();
-  const token =
-    typeof window !== "undefined" ? localStorage.getItem("token") : null;
-  const isAdmin = user?.role === 2;
-  const isSeller = user && user?.store?.length > 0;
-  const isAuth = !!user || !!token;
+  const isAdmin = user?.role && parseInt(user?.role) === 2;
+  const isSeller = user?.store && user?.store?.length > 0;
+  const isAuth = status === "authenticated";
   const isUserAuth = !isAdmin && isAuth;
+  const url = new URL(ROUTES.LOGIN, window.location.origin);
+  url.searchParams.set("callbackUrl", encodeURI(pathName));
+
   const handleUnAuth = () => {
     if (!isAuth) {
       Swal.fire({
@@ -22,9 +23,7 @@ const useUserRole = () => {
         icon: "warning",
         confirmButtonText: "Login",
       }).then(() => {
-        logout();
-        setLastPathname(pathname);
-        router.push("/login");
+        router.push(url.toString());
       });
     }
   };

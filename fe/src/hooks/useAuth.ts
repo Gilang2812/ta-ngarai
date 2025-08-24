@@ -1,19 +1,12 @@
-import { ROUTES } from "@/data/routes";
 import { useAuthStore } from "@/stores/AuthStore";
 import { confirmAlert } from "@/utils/AlertUtils";
+import { signOut, useSession } from "next-auth/react";
 
 const useAuth = () => {
-  const { user, clearUser, updateUser } = useAuthStore();
-
+  const { updateUser } = useAuthStore();
+  const { data: session } = useSession();
   const logout = () => {
-    clearUser();
-    localStorage.removeItem("token");
-    if (
-      location.pathname !== ROUTES.HOME ||
-      location.pathname !== ROUTES.PACKAGE
-    ) {
-      location.reload();
-    }
+    signOut();
   };
   const handleLogout = () => {
     confirmAlert(
@@ -26,7 +19,7 @@ const useAuth = () => {
   };
 
   return {
-    user,
+    user: session?.user,
     handleLogout,
     updateUser,
     logout,

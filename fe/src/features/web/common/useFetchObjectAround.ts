@@ -1,4 +1,4 @@
-import { axiosInstance } from "@/lib/axios";
+import { useAxiosAuth } from "@/lib/axios";
 import { useUserPositionStore } from "@/stores/UserPositionStore";
 import { objectRoutesType } from "@/type/common/ObjectRouteType";
 import { SimplifiedObject } from "@/type/schema/PackageSchema";
@@ -9,7 +9,8 @@ export const useFetchObjectAround = (object: objectRoutesType) => {
 
   const allDefined = userPosition != null && radius != null && radius > 0;
 
-  return useQuery<SimplifiedObject[]>({
+  const axiosInstance = useAxiosAuth()
+ return useQuery<SimplifiedObject[]>({
     queryKey: [
       "objectAround",
       object,

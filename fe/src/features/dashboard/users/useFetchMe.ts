@@ -1,7 +1,8 @@
-import { axiosInstance } from "@/lib/axios";
+import { useAxiosAuth } from "@/lib/axios";
 import { useQuery } from "@tanstack/react-query";
 
 export const useFetchMe = () => {
+  const axiosInstance = useAxiosAuth();
   return useQuery({
     queryKey: ["me"],
     queryFn: async () => {

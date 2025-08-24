@@ -1,4 +1,4 @@
-import { axiosInstance } from "@/lib/axios";
+import { useAxiosAuth } from "@/lib/axios";
 import { DetailCraftOrderResponse } from "@/type/schema/DetailCraftSchema";
 import { useQuery } from "@tanstack/react-query";
 
@@ -9,7 +9,8 @@ export const useFetchOrderDetailCraft = ({
   id_craft: string;
   id_souvenir_place: string;
 }) => {
-  return useQuery<DetailCraftOrderResponse[]>({
+  const axiosInstance = useAxiosAuth()
+ return useQuery<DetailCraftOrderResponse[]>({
     queryKey: ["orderDetailCraft", id_craft, id_souvenir_place],
     queryFn: async () => {
       const { data } = await axiosInstance.get(

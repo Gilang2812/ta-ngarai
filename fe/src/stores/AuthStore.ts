@@ -1,4 +1,4 @@
-import { axiosInstance } from "@/lib/axios";
+import { useAxiosAuth } from "@/lib/axios";
 import { LoginResponse, UserLogin } from "@/validation/authSchema";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";

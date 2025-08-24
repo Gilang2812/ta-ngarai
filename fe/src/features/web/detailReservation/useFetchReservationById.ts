@@ -1,4 +1,4 @@
-import { axiosInstance } from "@/lib/axios";
+import { useAxiosAuth } from "@/lib/axios";
 import { useSocketStore } from "@/stores/socketStore";
 import { DetailReservationPackage } from "@/type/schema/ReservationSchema";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
@@ -20,7 +20,8 @@ export const useFetchReservationByID = (id: string) => {
     };
   }, [socket, joinRoom, leaveRoom, queryClient, id]);
 
-  return useQuery<DetailReservationPackage>({
+  const axiosInstance = useAxiosAuth()
+ return useQuery<DetailReservationPackage>({
     queryKey: ["detailReservation", id],
     queryFn: async () => {
       const { data } = await axiosInstance.get(`/reservations/${id}`);

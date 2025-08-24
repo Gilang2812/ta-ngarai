@@ -1,34 +1,87 @@
 "use client";
 import { Form, Formik } from "formik";
 import { FaRegUser, FaShieldVirus } from "react-icons/fa";
+import { getSession, signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { use, useState } from "react";
 import Heading from "@/components/auth/Heading";
 import { FormSubmit } from "@/components/inputs/FormSubmit";
 import { FormInput } from "@/components/inputs/FormInput";
-import { cornerAlert, showErrorAlert } from "@/utils/AlertUtils";
-import { useLogin } from "@/features/auth/useLogin";
-import { GoogleLogin } from "@react-oauth/google";
-import { useRouter } from "next/navigation";
-import { LoginResponse, loginSchema } from "@/validation/authSchema";
-import { useAuthStore } from "@/stores/AuthStore";
+import { cornerAlert, cornerError } from "@/utils/AlertUtils";
+import { loginSchema } from "@/validation/authSchema";
+import Button from "@/components/common/Button";
+import { FaGoogle } from "react-icons/fa6";
 
-// Define the validation schema using Yup
+interface LoginFormValues {
+  email: string;
+  password: string;
+}
+type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
 
-export default function Login() {
-  const { setUser } = useAuthStore();
+export default function Login({
+  searchParams,
+}: {
+  searchParams: SearchParams;
+}) {
+  const [isPending, setIsPending] = useState(false);
+  const router = useRouter();
+  const callbackUrlParam = use(searchParams).callbackUrl;
+  const callbackUrl: string = Array.isArray(callbackUrlParam)
+    ? callbackUrlParam[0]
+    : callbackUrlParam || "/web";
+  const handleCredentialsLogin = async (values: LoginFormValues) => {
+    setIsPending(true);
+    try {
+      const result = await signIn("credentials", {
+        email: values.email,
+        password: values.password,
+        redirect: false,
+      });
+      if (result?.error) {
+        cornerError("Invalid credentials. Please try again.");
+        return;
+      }
 
-  const route = useRouter();
-  const { mutate, isPending } = useLogin({
-    onSuccess: (data) => {
-      cornerAlert("Login successful!");
-      const response = data as LoginResponse;
+      if (result?.ok) {
+        cornerAlert("Login successful!");
 
-      route.replace("/web");
-      setUser(response.user);
-    },
-    onError: (e) => {
-      showErrorAlert(e);
-    },
-  });
+        router.replace(callbackUrl);
+      }
+    } catch (error) {
+      console.error("Login error:", error);
+      cornerError("An error occurred during login. Please try again.");
+    } finally {
+      setIsPending(false);
+    }
+  };
+  const handleGoogleLogin = async (credential: string) => {
+    setIsPending(true);
+    try {
+      const result = await signIn("google", {
+        credential,
+        redirect: false,
+      });
+
+      if (result?.error) {
+        console.log("error");
+        cornerError("Google login failed. Please try again.");
+        return;
+      }
+
+      if (result?.ok) {
+        cornerAlert("Google login successful!");
+        // Get the updated session
+        const session = await getSession();
+        console.log("Session after Google login:", session);
+        router.replace("/web");
+      }
+    } catch (error) {
+      console.error("Google login error:", error);
+      cornerError("An error occurred during Google login. Please try again.");
+    } finally {
+      setIsPending(false);
+    }
+  };
 
   return (
     <section
@@ -40,9 +93,7 @@ export default function Login() {
       <Formik
         initialValues={{ email: "", password: "" }}
         validationSchema={loginSchema}
-        onSubmit={(values) => {
-          mutate(values);
-        }}
+        onSubmit={handleCredentialsLogin}
       >
         <Form>
           <fieldset className="mb-8 space-y-4">
@@ -66,19 +117,27 @@ export default function Login() {
           <FormSubmit isLoading={isPending} value="Login" />
         </Form>
       </Formik>
-      <GoogleLogin
+
+      {/* <GoogleLogin
         onSuccess={(tokenResponse) => {
           console.log("Google login successful:", tokenResponse);
-          mutate({
-            credential: tokenResponse.credential,
-            email: "",
-            password: "",
-          });
+          if (tokenResponse.credential) {
+            handleGoogleLogin(tokenResponse.credential);
+          }
         }}
         onError={() => {
           console.log("Login Failed");
+          cornerError("Google login failed. Please try again.");
         }}
-      ></GoogleLogin>
+      /> */}
+      <Button
+        onClick={() => signIn("google")}
+        className="w-full text-black"
+        variant={"regSecondary"}
+      >
+        <FaGoogle className="text-red-600" /> Login With Google
+      </Button>
+
       <a
         href="/register"
         className="block text-center font-bold transition-ease-in-out text-primary hover:text-secondary"

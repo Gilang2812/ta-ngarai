@@ -1,12 +1,13 @@
-import { axiosInstance } from '@/lib/axios' 
+import { useAxiosAuth } from '@/lib/axios' 
 import { DestinationResponse } from '@/type/schema/ShippingSchema'
 import { useQuery } from '@tanstack/react-query'
 
 const useGetDestination = (keyword?:string) => {
-  return useQuery<DestinationResponse>({
+  const axiosInstance = useAxiosAuth()
+ return useQuery<DestinationResponse>({
     queryKey: ['destination'],
     queryFn: async ()=>{
-        const {data} = await axiosInstance.get('/shipping/destination',{
+        const { data } = await axiosInstance.get('/shipping/destination',{
             params:{
                 keyword: keyword
             }

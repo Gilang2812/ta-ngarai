@@ -1,11 +1,12 @@
-import { axiosInstance } from "@/lib/axios";
+import { useAxiosAuth } from "@/lib/axios";
 import {
   HomestayFacilitySchema,
 } from "@/type/schema/FacilitySchema";
 import { useQuery } from "@tanstack/react-query";
 
 export const useFetchFacilityUnits = () => {
-  return useQuery<HomestayFacilitySchema[]>({
+  const axiosInstance = useAxiosAuth()
+ return useQuery<HomestayFacilitySchema[]>({
     queryKey: ["homestayFacilitiesUnit"],
     queryFn: async () => {
       const { data } = await axiosInstance.get(`/homestay-facility/units/index`);

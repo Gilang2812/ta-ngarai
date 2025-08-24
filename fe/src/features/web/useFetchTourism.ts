@@ -1,8 +1,9 @@
-import { axiosInstance } from "@/lib/axios";
+import { useAxiosAuth } from "@/lib/axios";
 import { useQuery } from "@tanstack/react-query";
 
 export const useFetchTourism = (id: string) => {
-  return useQuery<{
+  const axiosInstance = useAxiosAuth()
+ return useQuery<{
     id: string;
     name: string;
     type_of_tourism: string;

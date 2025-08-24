@@ -6,18 +6,23 @@ interface SubmitButtonProps {
   value: string;
   className?: string;
   onClick?: () => void;
-  isLoading?:boolean
+  isLoading?: boolean;
 }
 
-export const  FormSubmit: React.FC<SubmitButtonProps> = ({ value, className = "", onClick ,isLoading}) => {
+export const FormSubmit: React.FC<SubmitButtonProps> = ({
+  value,
+  className = "",
+  onClick,
+  isLoading,
+}) => {
   return (
     <button
-      type="submit" 
+      type="submit"
       className={`w-fit bg-primary hover:bg-secondary flex justify-center text-center transition-ease-in-out rounded-md px-2 py-2 text-white drop-shadow-xl  transition-colors duration-300 ease-in-out ${className}`}
       onClick={onClick}
       disabled={isLoading}
-    >{isLoading?<Spinner />:value} </button>
+    >
+      {isLoading ? <Spinner /> : value}{" "}
+    </button>
   );
 };
-
- 

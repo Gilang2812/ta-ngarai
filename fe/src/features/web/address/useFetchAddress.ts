@@ -1,4 +1,4 @@
-import { axiosInstance } from "@/lib/axios";
+import { useAxiosAuth } from "@/lib/axios";
 import { Address } from "@/type/schema/CheckoutSchema";
 import { useQuery } from "@tanstack/react-query"
 

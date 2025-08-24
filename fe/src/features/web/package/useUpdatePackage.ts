@@ -1,4 +1,4 @@
-import { axiosInstance } from "@/lib/axios";
+import { useAxiosAuth } from "@/lib/axios";
 import { ActionProps } from "@/type/props/ActionProps";
 import { onError } from "@/utils/ErrorHandler";
 import { useMutation } from "@tanstack/react-query";
@@ -6,7 +6,8 @@ import { useMutation } from "@tanstack/react-query";
 export const useUpdatePackage = <T extends { id: string }>({
   onSuccess,
 }: ActionProps) => {
-  return useMutation({
+  const axiosInstance = useAxiosAuth()
+ return useMutation({
     mutationFn: async ({ id, ...rest }: T) => {
       const { data } = await axiosInstance.patch(`/packages/update/${id}`, {
         id,

@@ -24,6 +24,7 @@ type Props = {
   isLoading?: boolean;
 };
 export const OverviewSection = ({ data, isLoading }: Props) => {
+  const { isUserAuth, isAuth, handleUnAuth } = useUserRole();
   const rating =
     data?.reservation?.reduce((acc, curr) => acc + (curr.rating || 0), 0) || 0;
   const rated =
@@ -46,10 +47,11 @@ export const OverviewSection = ({ data, isLoading }: Props) => {
   });
 
   const handleaddToCart = () => {
+    if (!isAuth) {
+      return handleUnAuth();
+    }
     formik.handleSubmit();
   };
-
-  const { isUserAuth } = useUserRole();
 
   return (
     <SingleContentWrapper>
@@ -103,7 +105,7 @@ export const OverviewSection = ({ data, isLoading }: Props) => {
             <Button
               className="text-nowrap"
               disabled={!isUserAuth}
-              asChild
+              asChild={isUserAuth}
               variant={"success"}
             >
               {isUserAuth ? (

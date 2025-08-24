@@ -1,8 +1,9 @@
-import { axiosInstance } from "@/lib/axios";
+import { useAxiosAuth } from "@/lib/axios";
 import { useQuery } from "@tanstack/react-query";
 
 export const useGetDepositPercentage = (id: string) => {
-  return useQuery<number>({
+  const axiosInstance = useAxiosAuth()
+ return useQuery<number>({
     queryKey: ["deposit-percentage", id],
     queryFn: async () => {
       const { data } = await axiosInstance.get(

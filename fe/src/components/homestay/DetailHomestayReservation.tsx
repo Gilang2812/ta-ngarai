@@ -32,6 +32,8 @@ const DetailHomestayReservation = ({ id }: { id: string }) => {
     item_details,
   } = useDetailHomestayReservation(id);
   const centroid = getCentroid(geom);
+  console.log("centroid:", centroid);
+  console.log("geom:", geom);
   if (isLoading) return <DetailHomestayReservationLoader />;
   return (
     data &&
@@ -57,7 +59,7 @@ const DetailHomestayReservation = ({ id }: { id: string }) => {
               zoom={18}
               center={centroid}
             >
-              <ReservationHomestayMap geom={geom} />
+              {geom && <ReservationHomestayMap geom={geom} />}
             </MapLayout>
           </SingleContentWrapper>
         </div>

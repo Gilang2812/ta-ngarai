@@ -126,7 +126,10 @@ const findHomestayReservation = async (id) => {
   const reponse = data;
   if (getDayOfStay) {
     reponse.days_of_stay = getDayOfStay;
+  } else if (getDayOfStay === 0) {
+    reponse.days_of_stay = 0;
   }
+
   return reponse;
 };
 

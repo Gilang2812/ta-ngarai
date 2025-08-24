@@ -20,7 +20,7 @@ export default function Home() {
     <main className="min-w-fit relative mx-auto">
       <div className="h-screen mb-8">
         <Header onAwardClick={() => scrollToSection(geoparkRef)} />
-        <section className="z-10 h-[calc(100vh-5rem)] min-w-[640px] grow grid grid-cols-1 lg:grid-cols-2">
+        <section className="z-[-1] h-[calc(100vh-5rem)] min-w-[640px] grow grid grid-cols-1 lg:grid-cols-2">
           <WelcomeSection />
           <CarouselArticle />
         </section>

@@ -1,11 +1,12 @@
-import { axiosInstance } from "@/lib/axios";
+import { useAxiosAuth } from "@/lib/axios";
 import { ActionProps } from "@/type/props/ActionProps";
 import { UpdateCraftCartForm } from "@/type/schema/CraftCartSchema";
 import { onError } from "@/utils/ErrorHandler";
 import { useMutation } from "@tanstack/react-query";
 
 export const useUpdateCraftCart = ({ onSuccess }: ActionProps) => {
-  return useMutation({
+  const axiosInstance = useAxiosAuth()
+ return useMutation({
     mutationFn: async ({
       id_souvenir_place,
       craft_variant_id,
