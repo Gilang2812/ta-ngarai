@@ -15,6 +15,12 @@ const findUsers = async () => {
 const findUniqueUsernameOrEmail = async (username, email) => {
   const user = await User.findOne({
     where: { [Op.or]: [{ username }, { email }] },
+    include: [
+      {
+        model: DetailUserSouvenir,
+        as: "detailSouvenir",
+      },
+    ],
   });
   return user;
 };

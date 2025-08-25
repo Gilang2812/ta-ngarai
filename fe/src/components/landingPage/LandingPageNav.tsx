@@ -9,6 +9,7 @@ import useClickOutside from "@/hooks/useOutsideClick";
 import { AnimatePresence, motion } from "framer-motion";
 import { cn } from "@/utils/common/cn";
 import { signIn, useSession } from "next-auth/react";
+import { ROUTES } from "@/data/routes";
 type Props = {
   isNavOpen?: boolean;
   onAwardClick: () => void;
@@ -16,14 +17,11 @@ type Props = {
 
 const LandingPageNav = ({ isNavOpen, onAwardClick }: Props) => {
   const { isOpen, toggle, setIsOpen } = useToggleOpen();
-  const { data: session, status } = useSession();
+  const { status } = useSession();
   const ref = useClickOutside<HTMLDivElement>(() => {
     setIsOpen(false);
   });
   const { handleLogout } = useAuth();
-  console.log(session?.user);
-  console.log(status);
-  console.log(status);
 
   if (status === "loading") return null;
   return (
@@ -80,7 +78,7 @@ const LandingPageNav = ({ isNavOpen, onAwardClick }: Props) => {
                   className={`absolute z-50 top-full hover:[&_li]:bg-primary/50 [&_li]:px-2 [&_li]:transition [&_li]:ease-in-out [&_li]:duration-300 border bg-white/30 backdrop-blur-sm  right-0  w-48 shadow-lg rounded-lg py-2 `}
                 >
                   <li>
-                    <a href="/web/profile">Profile</a>
+                    <Link href={ROUTES.PROFILE}>Profile</Link>
                   </li>
                   <li>
                     <button onClick={handleLogout} type="button">

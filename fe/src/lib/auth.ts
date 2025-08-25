@@ -38,8 +38,7 @@ export const authOptions: NextAuthOptions = {
             };
           }
           return null;
-        } catch (error) {
-          console.error("Login error:", error);
+        } catch {
           return null;
         }
       },
@@ -77,21 +76,44 @@ export const authOptions: NextAuthOptions = {
             return true;
           }
           return false;
-        } catch (error) {
-          console.error("Google login error:", error);
+        } catch {
           return false;
         }
       }
       return true;
     },
-    async jwt({ token, user }) {
-      if (user) {
+    async jwt({ token, user, trigger, session, account }) {
+      if (account?.provider === "credentials") {
         token.role = user.role;
         token.username = user.username;
         token.phone = user.phone;
         token.address = user.address;
         token.store = user.store;
         token.accessToken = user.accessToken;
+        token.name = user.name;
+      }
+      if (account?.provider === "google") {
+        token.name = user.name;
+        token.role = user.role;
+        token.username = user.username;
+        token.phone = user.phone;
+        token.address = user.address;
+        token.store = user.store;
+        token.accessToken = user.accessToken;
+      }
+      if (trigger === "update") {
+        if (session?.user) {
+          token.role = session.user.role;
+          token.username = session.user.username;
+          token.phone = session.user.phone;
+          token.address = session.user.address;
+          token.store = session.user.store;
+          token.accessToken = session.user.accessToken;
+          token.name = session.user.name;
+        }
+        if (session?.accessToken) {
+          token.accessToken = session.accessToken;
+        }
       }
       return token;
     },

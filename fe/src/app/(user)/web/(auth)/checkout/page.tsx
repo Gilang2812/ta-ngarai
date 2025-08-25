@@ -9,12 +9,7 @@ import { useCheckout } from "@/hooks/useCheckout";
 import CheckoutSkeletonLoader from "@/components/loading/CheckoutSkeletonLoader";
 import Link from "next/link";
 import { useFormik } from "formik";
-import {
-  cornerAlert,
-  cornerError,
-    
-  showLoadingAlert,
-} from "@/utils/AlertUtils";
+import { cornerAlert, cornerError, showLoadingAlert } from "@/utils/AlertUtils";
 import { useEffect } from "react";
 import { createShippingStoreBody } from "@/lib/createShippingStoreBody";
 import { useCompleteCheckout } from "@/features/web/checkout/useCompleteCheckout";
@@ -212,8 +207,7 @@ export default function CheckoutPage() {
   }
 
   return (
-    checkout &&
-    selectedAddress && (
+    checkout && (
       <SingleContentWrapper>
         <h1 className="text-2xl font-bold mb-8">Checkout</h1>
 
@@ -224,34 +218,39 @@ export default function CheckoutPage() {
                 Billing Information
               </h2>
 
-              <ShippingMethodSelector
-                shippingMethods={shippingMethods}
-                groupedItems={groupedItems}
-                selectedAddressId={selectedAddress.destination_id}
-                itemShipping={itemShipping}
-                setItemShipping={setItemShipping}
-                setShippingMethods={setShippingMethods}
-                handleNoteChange={handleNoteChange}
-              />
+              {selectedAddress && (
+                <ShippingMethodSelector
+                  shippingMethods={shippingMethods}
+                  groupedItems={groupedItems}
+                  selectedAddressId={selectedAddress.destination_id}
+                  itemShipping={itemShipping}
+                  setItemShipping={setItemShipping}
+                  setShippingMethods={setShippingMethods}
+                  handleNoteChange={handleNoteChange}
+                />
+              )}
             </div>
           </div>
 
           <div className="lg:col-span-1">
             <div className="bg-white rounded-lg border border-gray-200 p-6 sticky top-6 space-y-6">
-              <AddressSection
-                editingAddress={editingAddress}
-                handleSaveAddress={handleSaveAddress}
-                handleCancelAddressForm={handleCancelAddressForm}
-                addresses={checkout?.shippingAddress.addressCustomer.addresses}
-                isPending={isPending}
-                addressInitialValues={addressInitialValues}
-                selectedAddress={selectedAddress}
-                onSelectAddress={handleSelectAddress}
-                onAddNewAddress={handleAddNewAddress}
-                onEditAddress={handleEditAddress}
-                showAddressForm={showAddressForm}
-              />
-
+              {selectedAddress && (
+                <AddressSection
+                  editingAddress={editingAddress}
+                  handleSaveAddress={handleSaveAddress}
+                  handleCancelAddressForm={handleCancelAddressForm}
+                  addresses={
+                    checkout?.shippingAddress.addressCustomer.addresses
+                  }
+                  isPending={isPending}
+                  addressInitialValues={addressInitialValues}
+                  selectedAddress={selectedAddress}
+                  onSelectAddress={handleSelectAddress}
+                  onAddNewAddress={handleAddNewAddress}
+                  onEditAddress={handleEditAddress}
+                  showAddressForm={showAddressForm}
+                />
+              )}
               <form onSubmit={formikOrder.handleSubmit}>
                 <h2 className="text-lg font-semibold  py-4 border-t">
                   Order Summary

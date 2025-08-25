@@ -25,7 +25,6 @@ type Props = {
 
 const SouvenirGeoJSON = ({ data, handleSelectStore }: Props) => {
   const { open, toggleInfoWindow } = useInfoWindow();
-  console.log("data", data);
   const souvenirFeatureCollection: FeatureCollection = useMemo(() => {
     return {
       type: "FeatureCollection",
@@ -42,7 +41,6 @@ const SouvenirGeoJSON = ({ data, handleSelectStore }: Props) => {
   const map = useGoogleMap();
   useEffect(() => {
     if (!map && !souvenirFeatureCollection) return;
-    console.log(souvenirFeatureCollection);
     const dataSouvenir = new google.maps.Data();
     dataSouvenir.addGeoJson(souvenirFeatureCollection);
     dataSouvenir.setStyle({

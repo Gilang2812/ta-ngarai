@@ -34,13 +34,13 @@ export const Package = ({ title }: { title: string }) => {
           </td>
         </tr>
         <tr className="border-b ">
-          <td className="flex gap-1 relative flex-wrap gap-y-2 p-2">
+          <td className="flex gap-1 items-center relative flex-wrap gap-y-2 p-2">
             <ButtonTooltip
               label="Book Now"
               className="rounded-none"
               variant="success"
               disabled={!isUserAuth}
-              asChild
+              asChild={isUserAuth}
             >
               {isUserAuth ? (
                 <Link href={ROUTES.PACKAGE_RESERVATION(item.id)}>

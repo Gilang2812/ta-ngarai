@@ -8,21 +8,16 @@ import {
   FormMarketplace,
   marketplaceSchema,
 } from "@/type/schema/MarketplaceSchema";
-import { Spinner } from "flowbite-react";
 import { Form, Formik } from "formik";
 import React from "react";
 
 const MarketplaceForm = ({
   existingMarketplace,
-  updateSuccess,
 }: {
-  updateSuccess?: () => void;
   existingMarketplace?: FormMarketplace;
 }) => {
-  const { initialValues, isPending, handleSubmit } = useFormMarketplace(
-    existingMarketplace,
-    updateSuccess
-  );
+  const { initialValues, isPending, handleSubmit } =
+    useFormMarketplace(existingMarketplace);
 
   return (
     <div>
@@ -43,7 +38,7 @@ const MarketplaceForm = ({
             <FormInput type={"text"} label={`address`} name="address" />
             <FormInput
               type={"number"}
-              label={`contact_person`}
+              label={`contact person`}
               name="contact_person"
             />
 
@@ -53,17 +48,18 @@ const MarketplaceForm = ({
             <FormInput type={"text"} label={`geojson`} name="geom" readonly />
             <FilePondComponent />
             <ValidateClose />
-          </section>
-          <section className="space-y-4">
-            <GoogleMapDrawing />
             <Button
               variant={`${isPending ? "secondary" : "default"}`}
               type="submit"
               className="h-fit"
               disabled={isPending}
+              isLoading={isPending}
             >
-              {isPending ? <Spinner /> : initialValues.id ? "edit" : "Submit"}
+              {initialValues.id ? "edit" : "Submit"}
             </Button>
+          </section>
+          <section className="space-y-4">
+            <GoogleMapDrawing />
           </section>
         </Form>
       </Formik>

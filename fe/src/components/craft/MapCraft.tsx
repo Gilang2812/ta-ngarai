@@ -30,23 +30,22 @@ const MapCraft = () => {
     );
   };
 
-  if (isLoading) return <MapSkeletonLoader />;
+  if (isLoading || !data) return <MapSkeletonLoader />;
+
   return (
-    data && (
-      <ContentDiffSplitted
-        left={
-          <MapWeb zoom={17}>
-            {!aroundOpen && (
-              <SouvenirGeoJSON
-                handleSelectStore={handleSelectStore}
-                data={data}
-              />
-            )}
-          </MapWeb>
-        }
-        right={<MapCraftRightGrid />}
-      />
-    )
+    <ContentDiffSplitted
+      left={
+        <MapWeb zoom={17}>
+          {!aroundOpen && (
+            <SouvenirGeoJSON
+              handleSelectStore={handleSelectStore}
+              data={data}
+            />
+          )}
+        </MapWeb>
+      }
+      right={<MapCraftRightGrid />}
+    />
   );
 };
 

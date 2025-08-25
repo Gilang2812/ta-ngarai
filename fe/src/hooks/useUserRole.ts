@@ -8,12 +8,15 @@ const useUserRole = () => {
   const { data, status } = useSession();
   const user = data?.user;
   const router = useRouter();
-  const isAdmin = user?.role && parseInt(user?.role) === 2;
+  const isAdmin = !!(user?.role && parseInt(user?.role) === 2);
   const isSeller = user?.store && user?.store?.length > 0;
   const isAuth = status === "authenticated";
   const isUserAuth = !isAdmin && isAuth;
-  const url = new URL(ROUTES.LOGIN, window.location.origin);
-  url.searchParams.set("callbackUrl", encodeURI(pathName));
+  let url: URL | null = null;
+  if (typeof window !== "undefined") {
+    url = new URL(ROUTES.LOGIN, window.location.origin);
+    url.searchParams.set("callbackUrl", encodeURI(pathName));
+  }
 
   const handleUnAuth = () => {
     if (!isAuth) {
@@ -23,7 +26,7 @@ const useUserRole = () => {
         icon: "warning",
         confirmButtonText: "Login",
       }).then(() => {
-        router.push(url.toString());
+        router.push(url?.toString() ?? "");
       });
     }
   };

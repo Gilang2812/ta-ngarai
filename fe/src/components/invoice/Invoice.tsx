@@ -10,21 +10,15 @@ import {
 import dayjs from "dayjs";
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
-import { useEffect } from "react";
 
 export const Invoice = ({ id }: { id: string }) => {
-  const { data, isLoading, isSuccess } = useGetHomestayReservation(id);
+  const { data, isLoading } = useGetHomestayReservation(id);
   const searchParams = useSearchParams();
   const userSearch = searchParams.get("user");
   const { detail, ...reservation } = data || {};
   const status = getReservationStatus(reservation as ReservationDetails);
   const { user: userAuth } = useAuth();
   const user = userAuth || (userSearch ? JSON.parse(userSearch) : null);
-  useEffect(() => {
-    if (isSuccess && data) {
-      window.status = "ready"; // Set a custom status to indicate the page is ready
-    }
-  }, [isSuccess, data]);
 
   return (
     !isLoading &&

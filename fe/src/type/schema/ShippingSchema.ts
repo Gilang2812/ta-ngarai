@@ -51,3 +51,62 @@ export type DestinationItem = {
   province_name: string;
   zip_code: string;
 };
+
+export type ItemRatesType = {
+  name: string;
+  value: number;
+  weight: number;
+  quantity: number;
+};
+export type CourierRatesRequestBody = {
+  origin_area_id: string;
+  destination_area_id: string;
+  couriers: string;
+  items: ItemRatesType[];
+};
+
+export type LocationInfo = {
+  location_id: string | null;
+  latitude: number | null;
+  longitude: number | null;
+  postal_code: number;
+  country_name: string;
+  country_code: string;
+  administrative_division_level_1_name: string;
+  administrative_division_level_1_type: string;
+  administrative_division_level_2_name: string;
+  administrative_division_level_2_type: string;
+  administrative_division_level_3_name: string;
+  administrative_division_level_3_type: string;
+  administrative_division_level_4_name: string;
+  administrative_division_level_4_type: string;
+  address: string | null;
+};
+
+export type CourierPricing = {
+  available_collection_method: string[];
+  available_for_cash_on_delivery: boolean;
+  available_for_proof_of_delivery: boolean;
+  available_for_instant_waybill_id: boolean;
+  available_for_insurance: boolean;
+  company: string;
+  courier_name: string;
+  courier_code: string;
+  courier_service_name: string;
+  courier_service_code: string;
+  currency: string;
+  description: string;
+  duration: string;
+  shipment_duration_range: string;
+  shipment_duration_unit: string;
+  service_type: string;
+  shipping_type: string;
+  price: number;
+  type: string;
+};
+
+export type CourierRatesResponse = {
+  success: boolean;
+  object: string;    
+  pricing: CourierPricing[];
+};

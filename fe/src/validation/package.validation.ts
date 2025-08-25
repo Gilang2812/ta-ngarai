@@ -1,4 +1,4 @@
-import { useAxiosAuth } from "@/lib/axios";
+import { axiosServer } from "@/lib/axios";
 import { CheckSUserResponse } from "@/type/schema/UsersSchema";
 import * as yup from "yup";
 
@@ -23,7 +23,7 @@ export const editPackageFormSchema = yup.object().shape({
     .required()
     .test("unique-name", "name already exists", async (value) => {
       if (!value) return false;
-      const { data } = await axiosInstance.post<CheckSUserResponse>(
+      const { data } = await axiosServer.post<CheckSUserResponse>(
         "/packages/unique-package",
         {
           name: value,

@@ -1,4 +1,4 @@
-import { useAxiosAuth } from "@/lib/axios";
+import { axiosServer } from "@/lib/axios";
 import { CheckSUserResponse } from "@/type/schema/UsersSchema";
 import * as yup from "yup";
 
@@ -9,7 +9,7 @@ export const recrutStaff = yup.object().shape({
     .test("is-exist-user", "User is not exist", async (value) => {
       if (!value) return false;
 
-      const { data } = await axiosInstance.post<CheckSUserResponse>(
+      const { data } = await axiosServer.post<CheckSUserResponse>(
         "/unique-field",
         {
           field: value,

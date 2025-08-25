@@ -121,7 +121,7 @@ router.post(
       if (req?.files?.video_url) {
         requestBody.video_url = formatImageUrl(req.files.video_url[0].path);
       }
-      console.log("images nya ini",req.files.images);
+      console.log("images nya ini", req.files.images);
       const newPackage = await createPackage(requestBody);
       if (newPackage) {
         const images =
@@ -488,10 +488,11 @@ router.post("/unique-package", async (req, res, next) => {
   try {
     const { name } = req.body;
     const rows = await getPackageByName(name);
+
     if (rows) {
-      return res.json({ available: false }); // email sudah dipakai
+      return res.json({ available: false });
     } else {
-      return res.json({ available: true }); // email masih available
+      return res.json({ available: true });
     }
   } catch (error) {
     next(error);

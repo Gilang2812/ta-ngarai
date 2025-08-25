@@ -10,8 +10,10 @@ import { useFetchUserSouvenirPlace } from "@/features/dashboard/marketplace/useF
 
 import { UserMarketplaceSchema } from "@/type/schema/SouvenirSchema";
 import { useCreateDetailUserSouvenir } from "@/features/dashboard/marketplace/useCreateDetailUserSouvenir";
+import { useSession } from "next-auth/react";
 
 export const useManageUserMarketplace = () => {
+  const { data: session } = useSession();
   const { data, isLoading, refetch } = useFetchUserSouvenirPlace();
   const [modalType, setModalType] = useState<"form" | "detail" | "info">(
     "form"
@@ -71,13 +73,40 @@ export const useManageUserMarketplace = () => {
     console.log("Submitting form with values:", { id_souvenir_place, user });
     recruitStaff({ id_souvenir_place, user });
   };
+  const marketplace = data?.filter((item) =>
+    item.detailSouvenir.some(
+      (ds) =>
+        ds.status !== 0 && Number(session?.user?.id) === Number(ds.user_id)
+    )
+  );
+
+  const souvenirPlace =
+    data
+      ?.filter((store) =>
+        store.detailSouvenir.some(
+          (ds) =>
+            ds.status === 1 && Number(session?.user?.id) === Number(ds.user_id)
+        )
+      )
+      ?.map((store) => ({
+        id: store.id,
+        name: store.name,
+      })) || [];
+
+  const isOwner = (souvenirPlace: UserMarketplaceSchema) => {
+    return souvenirPlace.detailSouvenir.some(
+      (sp) =>
+        Number(session?.user?.id) === Number(sp.user_id) && sp.status === 1
+    );
+  };
+
   return {
     isOpen,
     handleDelete,
     handleDetailSouvenir,
     toggleModal,
     isLoading,
-    data,
+    data: marketplace,
     selectedSouvenir,
     modalType,
     handleOpenForm,
@@ -85,5 +114,7 @@ export const useManageUserMarketplace = () => {
     initialValues,
     recruiting,
     handleInfoRecruit,
+    souvenirPlace,
+    isOwner,
   };
 };

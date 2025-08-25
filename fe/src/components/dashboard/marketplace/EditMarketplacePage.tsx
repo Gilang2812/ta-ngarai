@@ -5,16 +5,13 @@ import useGetSouvenirPlace from "@/features/dashboard/marketplace/useGetSouvenir
 import ManagementSkeletonLoader from "@/components/loading/ManagementSkeletonLoader";
 import { FormMarketplace } from "@/type/schema/MarketplaceSchema";
 import { formatImageUrls } from "@/lib/imgUrlFormatter";
-import { useRouter } from "next/navigation";
-import { ROUTES } from "@/data/routes";
 
 type Props = {
   id: string;
 };
 
 const EditMarketplacePage = ({ id }: Props) => {
-  const router = useRouter();
-  const { data, isLoading, refetch } = useGetSouvenirPlace(id);
+  const { data, isLoading } = useGetSouvenirPlace(id);
   const images = useMemo(() => {
     return formatImageUrls(
       data?.galleries?.map((gallery) => gallery.url) || []
@@ -33,15 +30,7 @@ const EditMarketplacePage = ({ id }: Props) => {
     id: data.id,
     images,
   };
-  return (
-    <FormStoreSection
-      existingMarketplace={existingSouvenir}
-      updateSuccess={() => {
-        router.push(ROUTES.MARKETPLACE);
-        refetch();
-      }}
-    />
-  );
+  return <FormStoreSection existingMarketplace={existingSouvenir} />;
 };
 
 export default EditMarketplacePage;

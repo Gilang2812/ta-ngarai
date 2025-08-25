@@ -15,6 +15,7 @@ import useClickOutside from "@/hooks/useOutsideClick";
 import NotifInvitations from "./NotifInvitations";
 import { useSession } from "next-auth/react";
 import MainSkeletonLoader from "@/components/loading/MainSkeletonLoader";
+import useUserRole from "@/hooks/useUserRole";
 
 export default function SidebarLayout({
   children,
@@ -25,6 +26,7 @@ export default function SidebarLayout({
 }) {
   const { isOpen, toggle, setIsOpen } = useToggleOpen();
   const { handleLogout } = useAuth();
+  const { isAdmin } = useUserRole();
   const { status } = useSession();
   const ref = useClickOutside<HTMLDivElement>(() => {
     setIsOpen(false);
@@ -46,14 +48,16 @@ export default function SidebarLayout({
             {status === "authenticated" ? (
               <section className="grid grid-cols-3 gap-2 grid-flow-col">
                 <NotifInvitations />
-                <div>
-                  <Link
-                    className="flex w-full h-full border border-transparent aspect-square transition-ease-in-out hover:bg-primary/10 hover:shadow-xl items-center justify-center p-4 hover:border-primary bg-white rounded-lg cursor-pointer"
-                    href={ROUTES.CART}
-                  >
-                    <FaCartShopping />
-                  </Link>
-                </div>
+                {!isAdmin && (
+                  <div>
+                    <Link
+                      className="flex w-full h-full border border-transparent aspect-square transition-ease-in-out hover:bg-primary/10 hover:shadow-xl items-center justify-center p-4 hover:border-primary bg-white rounded-lg cursor-pointer"
+                      href={ROUTES.CART}
+                    >
+                      <FaCartShopping />
+                    </Link>
+                  </div>
+                )}
                 <div className="relative" ref={ref}>
                   <button
                     type="button"
@@ -79,7 +83,7 @@ export default function SidebarLayout({
                         className={`absolute z-50 top-full hover:[&_li]:bg-primary/50 [&_li]:px-2 [&_li]:transition [&_li]:ease-in-out [&_li]:duration-300 border bg-white/30 backdrop-blur-sm  right-0  w-48 shadow-lg rounded-lg py-2 it`}
                       >
                         <li className="hover:bg-primary transition-ease-in-out hover:text-white">
-                          <a href="/web/profile">Profile</a>
+                          <Link href={ROUTES.PROFILE}>Profile</Link>
                         </li>
                         <li
                           onClick={handleLogout}

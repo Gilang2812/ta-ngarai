@@ -29,7 +29,7 @@ export default function withAuth(
     });
     const isPublic =
       publicRoutes.includes(pathname) ||
-      dynamicPublicRoutes.some((route) => { 
+      dynamicPublicRoutes.some((route) => {
         return pathname.startsWith(route);
       });
 
@@ -39,7 +39,8 @@ export default function withAuth(
     if (
       requireAuth.includes(pathname) ||
       pathname.startsWith("/web/") ||
-      pathname.startsWith("/dashboard/")
+      pathname.startsWith("/dashboard/") ||
+      pathname.startsWith("/profile/")
     ) {
       const token = await getToken({
         req,

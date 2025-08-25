@@ -9,8 +9,8 @@ export const useFetchOrderDetailCraft = ({
   id_craft: string;
   id_souvenir_place: string;
 }) => {
-  const axiosInstance = useAxiosAuth()
- return useQuery<DetailCraftOrderResponse[]>({
+  const axiosInstance = useAxiosAuth();
+  return useQuery<DetailCraftOrderResponse[]>({
     queryKey: ["orderDetailCraft", id_craft, id_souvenir_place],
     queryFn: async () => {
       const { data } = await axiosInstance.get(

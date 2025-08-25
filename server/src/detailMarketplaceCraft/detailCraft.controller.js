@@ -5,10 +5,10 @@ const {
   insertGallery,
   deleteGalleryByAtribut,
 } = require("../craftGalleries/craftGalleries.service");
+const { verifyToken } = require("../middlewares/authentication");
 const { validateData } = require("../middlewares/validation");
 const {
   getDetailCrafts,
-  selectDetailCrafts,
   getDetailCraft,
   createDetailCraft,
   updateDetailCraft,
@@ -18,6 +18,20 @@ const {
 const { detailCraftSchema } = require("./detailCraft.validation");
 const fs = require("fs");
 
+router.get("/order/:id_souvenir_place/:id_craft", async (req, res, next) => {
+  try {
+    const { id_craft, id_souvenir_place } = req.params;
+    const detailCraft = await getOrderDetailCraft({
+      id_craft,
+      id_souvenir_place,
+    });
+    res.status(200).json(detailCraft);
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.use(verifyToken);
 router.get("/", async (req, res, next) => {
   try {
     const includeKeys = req.query.include?.split(",") || [];
@@ -84,19 +98,6 @@ router.get(
     }
   }
 );
-
-router.get("/order/:id_souvenir_place/:id_craft", async (req, res, next) => {
-  try {
-    const { id_craft, id_souvenir_place } = req.params;
-    const detailCraft = await getOrderDetailCraft({
-      id_craft,
-      id_souvenir_place,
-    });
-    res.status(200).json(detailCraft);
-  } catch (error) {
-    next(error);
-  }
-});
 
 router.post(
   "/:id_souvenir_place",

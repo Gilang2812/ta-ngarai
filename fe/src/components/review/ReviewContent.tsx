@@ -3,7 +3,7 @@ import React from "react";
 import { Rating } from "../craft/Rating";
 import ImgCraft from "../common/ImgCraft";
 import { Button } from "flowbite-react";
-import { useAuthStore } from "@/stores/AuthStore";
+import { useSession } from "next-auth/react";
 
 type Props = {
   customerName: string;
@@ -41,12 +41,12 @@ const ReviewContent = ({
   const responseDate = response_date
     ? new Date(response_date).toLocaleDateString()
     : "";
-  const { user } = useAuthStore();
-
+  const { data } = useSession();
+  const user = data?.user;
   return (
     <article className="p-4 relative rounded-xl border space-y-4">
       {user?.store
-        .map((item) => item.id_souvenir_place)
+        ?.map((item) => item.id_souvenir_place)
         .includes(idSouvenirPlace) &&
         handleResponse && (
           <Button

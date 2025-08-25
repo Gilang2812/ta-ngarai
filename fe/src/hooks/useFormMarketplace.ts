@@ -1,14 +1,14 @@
+import { ROUTES } from "@/data/routes";
 import { useCreateMarketplace } from "@/features/dashboard/marketplace/useCreateMarketplace";
 import { useUpdateMarketplace } from "@/features/dashboard/marketplace/useUpdateMarketplace";
 import { LatLngType } from "@/type/props/mapProps";
 import { FormMarketplace } from "@/type/schema/MarketplaceSchema";
 import { cornerAlert } from "@/utils/AlertUtils";
 import { createFormData } from "@/utils/common/createFormData";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
-const useFormMarketplace = (
-  existingMarketplace?: FormMarketplace,
-  onSuccessUpdate?: () => void
-) => {
+const useFormMarketplace = (existingMarketplace?: FormMarketplace) => {
+  const router = useRouter();
   const [initialValues, setInitialValues] = useState<
     FormMarketplace & LatLngType
   >({
@@ -28,13 +28,14 @@ const useFormMarketplace = (
     useCreateMarketplace({
       onSuccess: () => {
         cornerAlert("success create marketplace");
+        router.push(ROUTES.MARKETPLACE);
       },
     });
   const { mutate: updateMarketplace, isPending: isPendingUpdate } =
     useUpdateMarketplace({
       onSuccess: () => {
         cornerAlert("success update marketplace");
-        onSuccessUpdate?.();
+        router.push(ROUTES.MARKETPLACE);
       },
     });
 

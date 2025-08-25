@@ -1,11 +1,12 @@
 import { formatPrice } from "@/lib/priceFormatter";
 import { CheckoutItem } from "@/type/schema/CheckoutSchema";
-import { ShippingItem } from "@/type/schema/ShippingSchema";
+import { ItemRatesType, ShippingItem } from "@/type/schema/ShippingSchema";
 import { Clock, CreditCard } from "lucide-react";
 import React, { useEffect } from "react";
 import ImgCraft from "../common/ImgCraft";
 import { useFetchShippingMethod } from "@/features/shipping/useFetchShippingMethod";
 import Swal from "sweetalert2";
+import useCourierRates from "@/features/shipping/useCourierRates";
 
 type Props = {
   items: CheckoutItem[];
@@ -40,6 +41,23 @@ const ShippingMethodItems = ({
       0
     ),
   });
+  const itemsRates: ItemRatesType[] = items?.map((item) => ({
+    name: `${item.detailCraft.variant.craft.name} ${item.detailCraft.variant.name}`,
+    quantity: item.jumlah,
+    value: item.detailCraft.price,
+    weight: item.detailCraft.weight,
+  }));
+  const { data: courier } = useCourierRates({
+    couriers: "tiki,anteraja,jne,sicepat",
+    destination_area_id: "IDNP6IDNC148IDND836IDZ12410",
+    origin_area_id: "IDNP6IDNC148IDND836IDZ12410",
+    items: itemsRates,
+  });
+
+  useEffect(() => {
+    console.log(courier);
+  }, [courier]);
+
   useEffect(() => {
     refetch();
   }, [selectedAddressId, refetch]);

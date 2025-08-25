@@ -44,6 +44,8 @@ const createDetailUserSouvenir = async (body) => {
 };
 const editSouvenirPlaceById = async (id, body) => {
   const souvenirPlace = await getSouvenirPlaceById(id);
+  Object.assign(souvenirPlace, body);
+  await souvenirPlace.save();
   return souvenirPlace;
 };
 
@@ -72,5 +74,5 @@ module.exports = {
   getUserSouvenirPlace,
   getDetailUserSouvenir,
   editDetailUserSouvenir,
-  deleteDetailUserSouvenir
+  deleteDetailUserSouvenir,
 };

@@ -4,7 +4,7 @@ import AddressSelector from "@/components/checkout/AddressSelector";
 import EmptyAddress from "@/components/checkout/EmptyAddress";
 import Button from "@/components/common/Button";
 import { SingleContentWrapper } from "@/components/common/SingleContentWrapper";
-import ProfileSkeleton from "@/components/loading/ProfileSkeleton";
+import {ProfileSkeleton} from "@/components/loading/ProfileSkeleton";
 import { InfoModal } from "@/components/modal/InfoModal";
 import { ROUTES } from "@/data/routes";
 import useProfile from "@/hooks/useProfile";
@@ -32,7 +32,7 @@ export default function Profile() {
     handleEditAddress,
     isPending,
   } = useProfile();
-
+  console.log(addresses);
   if (isLoading) return <ProfileSkeleton />;
   return (
     <SingleContentWrapper className="relative mx-auto overflow-x-hidden">

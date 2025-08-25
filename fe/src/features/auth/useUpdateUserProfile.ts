@@ -8,9 +8,11 @@ import { useFetchMe } from "./useFetchMe";
 import { useSession } from "next-auth/react";
 
 export const useUpdateUserProfile = ({ onSuccess }: ActionProps) => {
-  const { data: user, refetch } = useFetchMe();
+  const { refetch } = useFetchMe();
+
   const { update } = useSession();
-  const axiosInstance = useAxiosAuth();
+
+  const axiosInstance = useAxiosAuth(); 
   return useMutation({
     mutationFn: async (body: UpdateProfileForm) => {
       const { data } = await axiosInstance.patch("/user/update", body);
@@ -18,10 +20,10 @@ export const useUpdateUserProfile = ({ onSuccess }: ActionProps) => {
       return data;
     },
     onSuccess: async (data) => {
-      await refetch();
+      const refreshed = await refetch();
       await update({
-        user: user?.user,
-        accessToken: user?.token,
+        user: refreshed?.data?.user,
+        accessToken: refreshed?.data?.token,
       });
       onSuccess(data);
     },

@@ -4,7 +4,7 @@ import { useFetchPackageTypes } from "@/features/web/package/useFetchPackageType
 import { EditPackageSchema } from "@/type/schema/PackageSchema";
 import { cornerAlert } from "@/utils/AlertUtils";
 import { createFormData } from "@/utils/common/createFormData";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 
 export const useNewPackage = () => {
   const { data: types, isLoading } = useFetchPackageTypes();

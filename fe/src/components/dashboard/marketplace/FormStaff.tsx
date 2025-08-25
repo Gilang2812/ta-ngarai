@@ -15,7 +15,7 @@ const FormStaff = ({
 }) => {
   return (
     <Form className="leading-loose p-6 space-y-4">
-      <FormInput as="select" name="id_souvenir_place" label="Staff Role">
+      <FormInput as="select" name="id_souvenir_place" label="Souvenir Place">
         {souvenirPlace.map((place) => (
           <option key={place.id} value={place.id}>
             {place.name}

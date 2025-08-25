@@ -3,6 +3,7 @@ import Button from "@/components/common/Button";
 import { SingleContentWrapper } from "@/components/common/SingleContentWrapper";
 import FormUpdateProfile from "@/components/web/profile/FormUpdateProfile";
 import useUpdateProfile from "@/hooks/useUpdateProfile";
+import { updateProfileSchema } from "@/validation/authSchema";
 import { Formik } from "formik";
 
 export default function UpdateProfile() {
@@ -13,7 +14,11 @@ export default function UpdateProfile() {
         <h1 className="text-2xl font-semibold text-gray-900">Update Profile</h1>
         <Button aria-label="Edit profile information">Edit Profile</Button>
       </header>
-      <Formik onSubmit={handleSubmit} initialValues={initialValues}>
+      <Formik
+        onSubmit={handleSubmit}
+        validationSchema={updateProfileSchema}
+        initialValues={initialValues}
+      >
         <FormUpdateProfile />
       </Formik>
     </SingleContentWrapper>

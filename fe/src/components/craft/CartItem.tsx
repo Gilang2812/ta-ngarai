@@ -67,7 +67,6 @@ export const CartItemComponent = ({
         if (isDirty || isUpdating) {
           setDirty(true);
           e.preventDefault();
-          e.returnValue = ""; // For some browsers
         }
       };
       window.addEventListener("beforeunload", handleBeforeUnload);

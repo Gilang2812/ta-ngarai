@@ -9,4 +9,12 @@ const axiosShipping = axios.create({
   },
 });
 
-module.exports = axiosShipping;
+const axiosBiteship = axios.create({
+  baseURL: process.env.BITESHIP_BASE_URL || "https://api.biteships.com",
+  headers: {
+    "Content-Type": "application/json",
+    "Authorization": process.env.BITESHIP_API_KEY || "default-key",
+  },
+});
+
+module.exports = { axiosShipping, axiosBiteship };

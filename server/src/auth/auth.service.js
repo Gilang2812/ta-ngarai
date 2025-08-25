@@ -62,7 +62,6 @@ const googleLogin = async (credential) => {
       email,
       fullname: name,
       password_hash: "",
-      role: "user",
     });
   }
 

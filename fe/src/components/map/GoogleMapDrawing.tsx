@@ -1,3 +1,4 @@
+"use client";
 import { apiKey } from "@/lib/googleMap";
 import { LANDMARK_POSITION } from "@/lib/objectLandmark";
 import { DrawingManager, GoogleMap } from "@react-google-maps/api";
@@ -40,6 +41,8 @@ const GoogleMapDrawing = ({ ...props }: Props) => {
     handleRemovePolygon,
   } = useDrawingMap();
 
+  const notGeom =
+    !values.geom || (typeof values.geom === "string" && values.geom === "null");
   if (!isLoaded) return <MapSkeletonLoader />;
   if (!apiKey) return <div>Google Maps API key is missing</div>;
   return (
@@ -62,7 +65,7 @@ const GoogleMapDrawing = ({ ...props }: Props) => {
         </Button>
       </div>
       <div className="py-4 w-full min-w-fit min-h-fit">
-        {!values.geom ? (
+        {notGeom ? (
           <GoogleMap
             onLoad={(map) => {
               mapRef.current = map;
@@ -87,7 +90,7 @@ const GoogleMapDrawing = ({ ...props }: Props) => {
                 onPolygonComplete(poly);
               }}
               drawingMode={
-                values.geom
+                !notGeom
                   ? google.maps.drawing.OverlayType.MARKER
                   : google.maps.drawing.OverlayType.POLYGON
               }
@@ -109,7 +112,9 @@ const GoogleMapDrawing = ({ ...props }: Props) => {
                 },
               }}
             />
-            {values.geom && geom && <MapMarker position={getCentroid(geom)} />}
+            {!notGeom && values.geom && geom && (
+              <MapMarker position={getCentroid(geom)} />
+            )}
           </GoogleMap>
         ) : (
           <PolygonComponent

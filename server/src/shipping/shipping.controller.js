@@ -1,6 +1,11 @@
 const express = require("express");
-const router = express.Router(); 
-const { getDestination, calculateShipping, getUserHistoryById } = require("./shipping.service");
+const router = express.Router();
+const {
+  getDestination,
+  calculateShipping,
+  getUserHistoryById,
+  courerRates,
+} = require("./shipping.service");
 
 // GET /api/shipping/destination?keyword=...
 router.get("/destination", async (req, res) => {
@@ -26,15 +31,15 @@ router.get("/calculate", async (req, res) => {
   }
 });
 
-router.get("/:id", async (req, res,next) => {
-  try { 
+router.get("/:id", async (req, res, next) => {
+  try {
     const { id } = req.params;
     const shipping = await getUserHistoryById(id);
     return res.json(shipping);
   } catch (err) {
     next(err);
   }
-}); 
+});
 
 router.post("/store", async (req, res) => {
   try {
@@ -97,7 +102,7 @@ router.post("/store", async (req, res) => {
     //     ]
     // }
     const { data } = await storeShipment({
-      order_data ,
+      order_data,
       brand_name,
       shipper_name,
       shipper_phone,
@@ -126,6 +131,48 @@ router.post("/store", async (req, res) => {
   }
 });
 
+router.get("/courier/index", async (req, res, next) => {
+  try {
+    const { origin_area_id, destination_area_id, couriers } = req.query;
+    let items = req.query.items;
+    console.log("ini querynya", req.query);
+    // Validate required parameters
+    console.log("i");
+    const isValid =
+      !origin_area_id ||
+      !destination_area_id ||
+      !couriers ||
+      items.length === 0;
+    console.log("isvalid", isValid);
+    if (isValid) {
+      return res.status(400).json({
+        message:
+          "Missing required parameters: origin_area_id, destination_area_id, and couriers are required",
+      });
+    }
 
+    items =
+      items?.map((item) => {
+        return {
+          name: item.name,
+          value: item.value,
+          weight: item.weight,
+          quantity: item.quantity,
+        };
+      }) || [];
+    const request = {
+      origin_area_id,
+      destination_area_id,
+      couriers,
+      items,
+    };
+    console.log("request", request);
+    const data = await courerRates(request);
+
+    res.json(data);
+  } catch (err) {
+    next(err);
+  }
+});
 
 module.exports = router;

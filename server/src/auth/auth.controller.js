@@ -20,6 +20,8 @@ router.post("/login", async (req, res, next) => {
     } else {
       result = await googleLogin(credential);
     }
+
+    console.log("result login:", result);
     res.json(result);
   } catch (error) {
     next(error);
@@ -67,10 +69,10 @@ router.post("/unique-field", async (req, res) => {
 });
 router.patch("/user/update", verifyToken, async (req, res, next) => {
   try {
-    const { fullname, phone, address } = req.body;
+    const { fullname, username, phone, address } = req.body;
     const updatedUser = await editUser(
       { id: req.user.id },
-      { fullname, phone, address }
+      { fullname, phone, address, username }
     );
 
     res.json(updatedUser);

@@ -7,6 +7,8 @@ import { registerSchema } from "@/validation/authSchema";
 import { useRegister } from "@/features/auth/useRegister";
 import { cornerAlert } from "@/utils/AlertUtils";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { ROUTES } from "@/data/routes";
 
 // Define schema with Yup for validation
 
@@ -59,12 +61,12 @@ export default function Register() {
 
           <FormSubmit value="Register" isLoading={isPending} />
 
-          <a
-            href="/login"
+          <Link
+            href={ROUTES.LOGIN}
             className="block mt-4 text-center text-primary hover:text-secondary transition-ease-in-out"
           >
             <strong>Already have an account? Login</strong>
-          </a>
+          </Link>
         </Form>
       </Formik>
     </section>

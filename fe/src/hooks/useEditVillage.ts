@@ -2,6 +2,7 @@ import { ROUTES } from "@/data/routes";
 import { useEditTourism } from "@/features/web/useEditTourism";
 import { useFetchTourism } from "@/features/web/useFetchTourism";
 import { formatImageUrls } from "@/lib/imgUrlFormatter";
+import { FilepondType } from "@/type/common/FilepondType";
 import { cornerAlert } from "@/utils/AlertUtils";
 import { createFormData } from "@/utils/common/createFormData";
 import { useRouter } from "next/navigation";
@@ -22,7 +23,7 @@ export const tourismVillageSchema = yup.object({
     .min(0)
     .max(100),
   contact_person: yup.string().required("Contact person is required"),
-  bank_code: yup.string().required("Bank code is required"),  
+  bank_code: yup.string().required("Bank code is required"),
   bank_account_holder: yup.string().required("Bank account holder is required"),
   bank_account_number: yup.string().required("Bank account number is required"),
 });
@@ -42,8 +43,8 @@ type EditVillageForm = {
   bank_account: string;
   bank_account_holder: string;
   bank_account_number: string;
-  qr_url: { source: string; option: { type: string } }[] | string[];
-  images: { source: string; option: { type: string } }[] | string[];
+  qr_url: FilepondType;
+  images: FilepondType;
 };
 
 export const useEditVillage = (id: string) => {

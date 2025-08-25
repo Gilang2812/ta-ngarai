@@ -1,4 +1,4 @@
-const axiosShipping = require("../../config/axiosShipping");
+const { axiosShipping, axiosBiteship } = require("../../config/axiosShipping");
 const getPaymentStatusText = require("../../utils/getPaymentStatusText");
 const { getPaymentStatus } = require("../payment/payment.service");
 const {
@@ -24,7 +24,10 @@ const calculateShipping = async (params) => {
 const storeShipment = async (data) => {
   return await axiosShipping.post(`order/api/v1/orders/store`, data);
 };
-
+const courerRates = async (body) => {
+  const { data } = await axiosBiteship.post(`/v1/rates/couriers`, body);
+  return data;
+};
 const createShipping = async (body) => {
   return await insertShipping(body);
 };
@@ -82,4 +85,5 @@ module.exports = {
   getUserHistoryById,
   updateShipping,
   getSouvenirTransaction,
+  courerRates,
 };

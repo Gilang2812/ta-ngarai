@@ -44,7 +44,7 @@ const DetailMarketplaceSection = ({ souvenirPlace }: Props) => {
             <h4 className="font-semibold ">Galeri</h4>
           </div>
 
-          {souvenirPlace?.galleries.length > 1 && (
+          {souvenirPlace?.galleries.length > 0 && (
             <div className="flex gap-2 overflow-x-auto pb-2">
               {souvenirPlace?.galleries.map((gallery, index) => (
                 <div key={index}>
@@ -66,7 +66,13 @@ const DetailMarketplaceSection = ({ souvenirPlace }: Props) => {
             <div className="flex items-center gap-2">
               <Users className="w-5 h-5 " />
               <h4 className="font-semibold ">
-                Anggota ({souvenirPlace?.detailSouvenir?.length})
+                Anggota (
+                {
+                  souvenirPlace?.detailSouvenir?.filter(
+                    (detail) => detail.status !== 0
+                  ).length
+                }
+                )
               </h4>
             </div>
 
@@ -75,7 +81,7 @@ const DetailMarketplaceSection = ({ souvenirPlace }: Props) => {
                 ?.filter((detail) => detail.status !== 0)
                 .map((detail) => (
                   <div
-                    key={detail?.user?.id}
+                    key={`${detail?.user_id}-${detail.id_souvenir_place}`}
                     className="flex items-center gap-4 p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
                   >
                     <div className="relative">

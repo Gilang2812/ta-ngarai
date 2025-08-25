@@ -1,26 +1,26 @@
-import React from 'react';
+import React from "react";
 
 // Individual skeleton components
-const SkeletonLine = ({ width = "100%", height = "h-4" }) => (
-  <div 
+export const SkeletonLine = ({ width = "100%", height = "h-4" }) => (
+  <div
     className={`${height} bg-gray-300 rounded animate-pulse`}
     style={{ width }}
   />
 );
 
-const SkeletonCircle = ({ size = "w-12 h-12" }) => (
+export const SkeletonCircle = ({ size = "w-12 h-12" }) => (
   <div className={`${size} bg-gray-300 rounded-full animate-pulse`} />
 );
 
-const SkeletonRectangle = ({ width = "100%", height = "h-32" }) => (
-  <div 
+export const SkeletonRectangle = ({ width = "100%", height = "h-32" }) => (
+  <div
     className={`${height} bg-gray-300 rounded animate-pulse`}
     style={{ width }}
   />
 );
 
 // Profile skeleton (matches the profile component)
-const ProfileSkeleton = () => (
+export const ProfileSkeleton = () => (
   <main className="bg-gray-50 min-h-screen p-6">
     <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-sm p-8">
       {/* Header */}
@@ -87,25 +87,55 @@ const ProfileSkeleton = () => (
 );
 
 // Card skeleton
-const CardSkeleton = () => (
-  <div className="bg-white rounded-lg shadow-sm p-6 space-y-4">
-    <div className="flex items-center space-x-4">
-      <SkeletonCircle size="w-16 h-16" />
-      <div className="flex-1 space-y-2">
-        <SkeletonLine width="70%" height="h-5" />
-        <SkeletonLine width="50%" height="h-4" />
+export const CardSkeleton = () => (
+  <div className="space-y-6">
+    <div className="bg-white rounded-lg shadow-sm p-6 space-y-4">
+      <div className="flex items-center space-x-4">
+        <SkeletonCircle size="w-16 h-16" />
+        <div className="flex-1 space-y-2">
+          <SkeletonLine width="70%" height="h-5" />
+          <SkeletonLine width="50%" height="h-4" />
+        </div>
+      </div>
+      <div className="space-y-2">
+        <SkeletonLine width="100%" height="h-4" />
+        <SkeletonLine width="90%" height="h-4" />
+        <SkeletonLine width="75%" height="h-4" />
       </div>
     </div>
-    <div className="space-y-2">
-      <SkeletonLine width="100%" height="h-4" />
-      <SkeletonLine width="90%" height="h-4" />
-      <SkeletonLine width="75%" height="h-4" />
+    <div className="bg-white rounded-lg shadow-sm p-6 space-y-4">
+      <div className="flex items-center space-x-4">
+        <SkeletonCircle size="w-16 h-16" />
+        <div className="flex-1 space-y-2">
+          <SkeletonLine width="70%" height="h-5" />
+          <SkeletonLine width="50%" height="h-4" />
+        </div>
+      </div>
+      <div className="space-y-2">
+        <SkeletonLine width="100%" height="h-4" />
+        <SkeletonLine width="90%" height="h-4" />
+        <SkeletonLine width="75%" height="h-4" />
+      </div>
+    </div>
+    <div className="bg-white rounded-lg shadow-sm p-6 space-y-4">
+      <div className="flex items-center space-x-4">
+        <SkeletonCircle size="w-16 h-16" />
+        <div className="flex-1 space-y-2">
+          <SkeletonLine width="70%" height="h-5" />
+          <SkeletonLine width="50%" height="h-4" />
+        </div>
+      </div>
+      <div className="space-y-2">
+        <SkeletonLine width="100%" height="h-4" />
+        <SkeletonLine width="90%" height="h-4" />
+        <SkeletonLine width="75%" height="h-4" />
+      </div>
     </div>
   </div>
 );
 
 // List skeleton
-const ListSkeleton = () => (
+export const ListSkeleton = () => (
   <div className="bg-white rounded-lg shadow-sm divide-y divide-gray-200">
     {Array.from({ length: 5 }).map((_, index) => (
       <div key={index} className="p-4 flex items-center space-x-4">
@@ -121,7 +151,7 @@ const ListSkeleton = () => (
 );
 
 // Table skeleton
-const TableSkeleton = () => (
+export const TableSkeleton = () => (
   <div className="bg-white rounded-lg shadow-sm overflow-hidden">
     {/* Table header */}
     <div className="bg-gray-50 px-6 py-3 border-b border-gray-200">
@@ -131,16 +161,19 @@ const TableSkeleton = () => (
         ))}
       </div>
     </div>
-    
+
     {/* Table rows */}
     {Array.from({ length: 6 }).map((_, rowIndex) => (
-      <div key={rowIndex} className="px-6 py-4 border-b border-gray-200 last:border-b-0">
+      <div
+        key={rowIndex}
+        className="px-6 py-4 border-b border-gray-200 last:border-b-0"
+      >
         <div className="grid grid-cols-4 gap-4 items-center">
           {Array.from({ length: 4 }).map((_, colIndex) => (
-            <SkeletonLine 
-              key={colIndex} 
-              width={colIndex === 0 ? "90%" : colIndex === 3 ? "60%" : "70%"} 
-              height="h-4" 
+            <SkeletonLine
+              key={colIndex}
+              width={colIndex === 0 ? "90%" : colIndex === 3 ? "60%" : "70%"}
+              height="h-4"
             />
           ))}
         </div>
@@ -150,7 +183,7 @@ const TableSkeleton = () => (
 );
 
 // Article skeleton
-const ArticleSkeleton = () => (
+export const ArticleSkeleton = () => (
   <article className="bg-white rounded-lg shadow-sm p-6 space-y-4">
     <SkeletonRectangle width="100%" height="h-48" />
     <div className="space-y-3">
@@ -171,35 +204,47 @@ const ArticleSkeleton = () => (
 );
 
 // Main component showcasing different skeletons
-type ViewKey = 'profile' | 'cards' | 'list' | 'table' | 'article';
+type ViewKey = "profile" | "cards" | "list" | "table" | "article";
 
 export default function LoadingSkeletons() {
-  const [currentView, setCurrentView] = React.useState<ViewKey>('profile');
+  const [currentView, setCurrentView] = React.useState<ViewKey>("profile");
 
   const views: Record<ViewKey, { component: React.FC; title: string }> = {
-    profile: { component: ProfileSkeleton, title: 'Profile Skeleton' },
-    cards: { component: () => (
-      <div className="p-6 space-y-6">
-        <CardSkeleton />
-        <CardSkeleton />
-        <CardSkeleton />
-      </div>
-    ), title: 'Card Skeletons' },
-    list: { component: () => (
-      <div className="p-6">
-        <ListSkeleton />
-      </div>
-    ), title: 'List Skeleton' },
-    table: { component: () => (
-      <div className="p-6">
-        <TableSkeleton />
-      </div>
-    ), title: 'Table Skeleton' },
-    article: { component: () => (
-      <div className="p-6">
-        <ArticleSkeleton />
-      </div>
-    ), title: 'Article Skeleton' }
+    profile: { component: ProfileSkeleton, title: "Profile Skeleton" },
+    cards: {
+      component: () => (
+        <div className="p-6 space-y-6">
+          <CardSkeleton />
+          <CardSkeleton />
+          <CardSkeleton />
+        </div>
+      ),
+      title: "Card Skeletons",
+    },
+    list: {
+      component: () => (
+        <div className="p-6">
+          <ListSkeleton />
+        </div>
+      ),
+      title: "List Skeleton",
+    },
+    table: {
+      component: () => (
+        <div className="p-6">
+          <TableSkeleton />
+        </div>
+      ),
+      title: "Table Skeleton",
+    },
+    article: {
+      component: () => (
+        <div className="p-6">
+          <ArticleSkeleton />
+        </div>
+      ),
+      title: "Article Skeleton",
+    },
   };
 
   const CurrentComponent = views[currentView].component;
@@ -215,8 +260,8 @@ export default function LoadingSkeletons() {
               onClick={() => setCurrentView(key as ViewKey)}
               className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
                 currentView === key
-                  ? 'bg-black text-white'
-                  : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                  ? "bg-black text-white"
+                  : "bg-gray-200 text-gray-700 hover:bg-gray-300"
               }`}
             >
               {view.title}

@@ -8,7 +8,7 @@ const FacilityUnit = sequelize.define(
     id: {
       type: DataTypes.STRING(5),
       primaryKey: true,
-      allowNull: false,
+      allowNull: true,
     },
     name: {
       type: DataTypes.STRING(50),
@@ -22,6 +22,6 @@ const FacilityUnit = sequelize.define(
 );
 
 FacilityUnit.beforeCreate(async (instance) => {
-  instance.id = await generateCustomId("FU", FacilityUnit, 5);
+  instance.id = await generateCustomId("FU", FacilityUnit, 4);
 });
 module.exports = { FacilityUnit };

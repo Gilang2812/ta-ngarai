@@ -2,15 +2,16 @@
 "use client";
 import { useEffect } from "react";
 import { useQueryClient } from "@tanstack/react-query";
-import { useAuthStore } from "@/stores/AuthStore";
 import { useSocketStore } from "@/stores/socketStore";
+import { useSession } from "next-auth/react";
 
 export default function SocketLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const user = useAuthStore((s) => s.user);
+  const { data } = useSession();
+  const user = data?.user;
   const connect = useSocketStore((s) => s.connect);
   const socket = useSocketStore((s) => s.socket);
   const queryClient = useQueryClient();
@@ -22,7 +23,6 @@ export default function SocketLayout({
 
   useEffect(() => {
     if (!socket) return;
-    console.log("Socket connected");
     socket.on("detail-updated", (detail) => {
       queryClient.invalidateQueries({
         queryKey: ["detailReservation", detail.id],

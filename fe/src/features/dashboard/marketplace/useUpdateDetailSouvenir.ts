@@ -1,13 +1,15 @@
+import { useFetchMe } from "@/features/auth/useFetchMe";
 import { useAxiosAuth } from "@/lib/axios";
-import { useAuthStore } from "@/stores/AuthStore";
 import { ActionProps } from "@/type/props/ActionProps";
 import { onError } from "@/utils/ErrorHandler";
 import { useMutation } from "@tanstack/react-query";
+import { useSession } from "next-auth/react";
 
 export const useUpdateDetailSouvenir = ({ onSuccess }: ActionProps) => {
-  const { fetchMe } = useAuthStore();
-  const axiosInstance = useAxiosAuth()
- return useMutation({
+  const { refetch } = useFetchMe();
+  const { update } = useSession();
+  const axiosInstance = useAxiosAuth();
+  return useMutation({
     mutationFn: async ({
       status,
       id_souvenir_place,
@@ -23,9 +25,11 @@ export const useUpdateDetailSouvenir = ({ onSuccess }: ActionProps) => {
       );
       return data;
     },
-    onSuccess: (data) => {
+    onSuccess: async (data) => {
+      await refetch().then((res) => {
+        update({ user: res.data?.user, accessToken: res.data?.token });
+      });
       onSuccess(data);
-      fetchMe();
     },
     onError,
   });

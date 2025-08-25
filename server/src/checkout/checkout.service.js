@@ -80,7 +80,7 @@ const getIncompleteCheckout = async ({
     console.log("dont exist");
     const address = await getUserAddress({ customer_id });
     if (!address) {
-      throw new CustomError("complete your address first ", 404);
+      throw new CustomError("complete your address first ", 400);
     }
     console.log("address checkout", address);
     console.log("customer_id checkout", customer_id);

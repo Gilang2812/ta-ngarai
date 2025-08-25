@@ -2,6 +2,8 @@ import { FaPlay } from "react-icons/fa";
 import Modal from "../modal/ModalVideo";
 import { useModal } from "@/utils/ModalUtils";
 import Image from "next/image";
+import Link from "next/link";
+import { ROUTES } from "@/data/routes";
 
 export default function WelcomeSection() {
   const { isOpen, toggleModal } = useModal();
@@ -19,12 +21,12 @@ export default function WelcomeSection() {
         <h2 className="text-custom">Welcome to </h2>
         <h1>Desa Wisata Nagari Koto Gadang</h1>
         <div className="flex text-lg mt-4  gap-8 items-center">
-          <a
-            href="/web"
+          <Link
+            href={ROUTES.HOME}
             className="hover:bg-success text-lg mr-12 transition-ease-in-out bg-primary  py-2  px-4 lg:py-4 lg:px-8"
           >
             Explore
-          </a>
+          </Link>
           <div className="animate-FadeIn ">
             <div className="absolute bg-white rounded-full h-16 w-16 flex items-center justify-center animate-ping"></div>
             <button

@@ -43,6 +43,8 @@ const Marketplace = () => {
     initialValues,
     recruiting,
     handleInfoRecruit,
+    souvenirPlace,
+    isOwner,
   } = useManageUserMarketplace();
   const router = useRouter();
 
@@ -125,25 +127,29 @@ const Marketplace = () => {
                 >
                   <FaCircleInfo />
                 </Button>
-                <Link
-                  href={ROUTES.EDIT_MARKETPLACE(sp.id)}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                  }}
-                  className="p-2 text-primary hover:bg-blue-50 rounded-lg transition-colors"
-                >
-                  <Edit size={16} />
-                </Link>
-                <Button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleDelete(sp.name, sp.id);
-                  }}
-                  className="rounded-full"
-                  variant={"regDanger"}
-                >
-                  <Trash2 size={16} />
-                </Button>
+                {isOwner(sp) && (
+                  <>
+                    <Link
+                      href={ROUTES.EDIT_MARKETPLACE(sp.id)}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                      }}
+                      className="p-2 text-primary hover:bg-blue-50 rounded-lg transition-colors"
+                    >
+                      <Edit size={16} />
+                    </Link>
+                    <Button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleDelete(sp.name, sp.id);
+                      }}
+                      className="rounded-full"
+                      variant={"regDanger"}
+                    >
+                      <Trash2 size={16} />
+                    </Button>
+                  </>
+                )}
               </section>
             </article>
           ))}
@@ -162,14 +168,18 @@ const Marketplace = () => {
             title="manage marketplace"
             href={ROUTES.NEW_MARKETPLACE}
           />
-          <Button onClick={handleOpenForm}>
-            <FaPlus />
-            Recrut Staff
-          </Button>
-          <Button variant={"regEdit"} onClick={handleInfoRecruit}>
-            <FaCircleInfo />
-            Recrut Info
-          </Button>
+          {data.length > 0 && (
+            <>
+              <Button onClick={handleOpenForm}>
+                <FaPlus />
+                Recrut Staff
+              </Button>
+              <Button variant={"regEdit"} onClick={handleInfoRecruit}>
+                <FaCircleInfo />
+                Recrut Info
+              </Button>
+            </>
+          )}
         </section>
         <section>
           <RenderSouvenirPlace />
@@ -183,19 +193,24 @@ const Marketplace = () => {
           {modalType === "detail" ? (
             <DetailMarketplaceSection souvenirPlace={selectedSouvenir} />
           ) : modalType === "form" ? (
-            <Formik
-              validationSchema={recrutStaff}
-              onSubmit={handleSubmit}
-              initialValues={initialValues}
-            >
-              <FormStaff
-                souvenirPlace={data?.map((store) => ({
-                  id: store.id,
-                  name: store.name,
-                }))}
-                isPending={recruiting}
-              />
-            </Formik>
+            souvenirPlace.length > 0 ? (
+              <Formik
+                validationSchema={recrutStaff}
+                onSubmit={handleSubmit}
+                initialValues={initialValues}
+              >
+                <FormStaff
+                  souvenirPlace={souvenirPlace}
+                  isPending={recruiting}
+                />
+              </Formik>
+            ) : (
+              <>
+                <p className="p-4 border rounded-xl  text-yellow-500 bg-yellow-100 border-yellow-300">
+                  You Don&apos;t have your own souvenir places yet.
+                </p>
+              </>
+            )
           ) : (
             <RecruitInfo data={data} />
           )}

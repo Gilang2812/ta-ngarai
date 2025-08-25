@@ -6,7 +6,6 @@ import { SingleContentWrapper } from "@/components/common/SingleContentWrapper";
 import DetailMarketplaceSection from "@/components/dashboard/marketplace/DetailMarketplaceSection";
 import { TableRawSkeleton } from "@/components/loading/TableRawSkeleton";
 import { Modal } from "@/components/modal/Modal";
-import { ROUTES } from "@/data/routes";
 import { useManageMarketplace } from "@/hooks/useManageMarketplace";
 import { timeFormatter } from "@/lib/timeFormatter";
 import { FaCircleInfo } from "react-icons/fa6";
@@ -58,12 +57,7 @@ const ManageMarketplace = () => {
   return (
     data && (
       <SingleContentWrapper>
-        <ManagementHeader
-          content="marketplace"
-          title="manage marketplace"
-          asChild
-          href={ROUTES.NEW_MARKETPLACE}
-        />
+        <ManagementHeader title="manage marketplace" />
         <section>
           <RenderSouvenirPlace />
         </section>

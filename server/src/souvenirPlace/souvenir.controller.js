@@ -81,7 +81,7 @@ router.post(
         await createDetailUserSouvenir({
           user_id: req.user.id,
           id_souvenir_place: souvenir.id,
-          isOwner: 1,
+          status: 1,
         });
         user = getLoginResponse(user);
         token = generateToken(user);
@@ -126,7 +126,7 @@ router.patch(
         open,
         close,
         description,
-        geom,
+        geom: typeof geom === "string" ? JSON.parse(geom) : geom,
       });
 
       const existingGalleries = (await souvenirPlace.galleries) || [];

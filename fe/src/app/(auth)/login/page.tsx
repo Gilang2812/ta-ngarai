@@ -1,7 +1,7 @@
 "use client";
 import { Form, Formik } from "formik";
 import { FaRegUser, FaShieldVirus } from "react-icons/fa";
-import { getSession, signIn } from "next-auth/react";
+import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { use, useState } from "react";
 import Heading from "@/components/auth/Heading";
@@ -11,6 +11,8 @@ import { cornerAlert, cornerError } from "@/utils/AlertUtils";
 import { loginSchema } from "@/validation/authSchema";
 import Button from "@/components/common/Button";
 import { FaGoogle } from "react-icons/fa6";
+import Link from "next/link";
+import { ROUTES } from "@/data/routes";
 
 interface LoginFormValues {
   email: string;
@@ -50,34 +52,6 @@ export default function Login({
     } catch (error) {
       console.error("Login error:", error);
       cornerError("An error occurred during login. Please try again.");
-    } finally {
-      setIsPending(false);
-    }
-  };
-  const handleGoogleLogin = async (credential: string) => {
-    setIsPending(true);
-    try {
-      const result = await signIn("google", {
-        credential,
-        redirect: false,
-      });
-
-      if (result?.error) {
-        console.log("error");
-        cornerError("Google login failed. Please try again.");
-        return;
-      }
-
-      if (result?.ok) {
-        cornerAlert("Google login successful!");
-        // Get the updated session
-        const session = await getSession();
-        console.log("Session after Google login:", session);
-        router.replace("/web");
-      }
-    } catch (error) {
-      console.error("Google login error:", error);
-      cornerError("An error occurred during Google login. Please try again.");
     } finally {
       setIsPending(false);
     }
@@ -131,19 +105,19 @@ export default function Login({
         }}
       /> */}
       <Button
-        onClick={() => signIn("google")}
+        onClick={() => signIn("google", { callbackUrl, redirect: false })}
         className="w-full text-black"
         variant={"regSecondary"}
       >
         <FaGoogle className="text-red-600" /> Login With Google
       </Button>
 
-      <a
-        href="/register"
+      <Link
+        href={ROUTES.REGISTER}
         className="block text-center font-bold transition-ease-in-out text-primary hover:text-secondary"
       >
         Need an account?
-      </a>
+      </Link>
     </section>
   );
 }

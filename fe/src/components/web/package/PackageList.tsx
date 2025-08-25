@@ -15,12 +15,13 @@ import { formatPrice } from "@/lib/priceFormatter";
 import { usePackageList } from "@/hooks/usePackageList";
 import { ContentHeader } from "@/components/common/ContentHeader";
 import ImgCraft from "@/components/common/ImgCraft";
+import { CardSkeleton } from "@/components/loading/ProfileSkeleton";
 export const PackageList = () => {
   const { data, isLoading, handleModifyPackage, createPackage } =
     usePackageList();
 
   const RenderPackage = () => {
-    if (!data || !Array.isArray(data)) return null;
+    if (!data || !Array.isArray(data)) return <CardSkeleton />;
     return (
       data &&
       data?.map((item, index) => (

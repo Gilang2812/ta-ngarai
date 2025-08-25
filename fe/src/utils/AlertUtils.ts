@@ -43,6 +43,7 @@ export const showDeleteAlert = (message: string) => {
 };
 
 export const showErrorAlert = (error: AxiosError) => {
+  Swal.hideLoading();
   const responseData = error?.response?.data;
 
   const dataError = responseData as DataError;
@@ -65,6 +66,8 @@ export const showErrorAlert = (error: AxiosError) => {
 };
 
 export const showWarningAlert = (message: string) => {
+  Swal.hideLoading();
+
   return Swal.fire({
     icon: "warning",
     title: "Warning",
@@ -140,6 +143,8 @@ export const cornerAlert = (message: string) => {
 };
 
 export const cornerError = (message: string | undefined) => {
+  Swal.hideLoading();
+
   const Toast = Swal.mixin({
     toast: true,
     position: "top-end",
@@ -158,6 +163,7 @@ export const cornerError = (message: string | undefined) => {
 };
 
 export const showLoadingAlert = (message?: string) => {
+  if (typeof window === "undefined") return;
   Swal.fire({
     title: message || "Loading...",
     allowOutsideClick: false,

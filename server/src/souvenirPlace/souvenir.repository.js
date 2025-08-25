@@ -57,11 +57,18 @@ const findSouvenirPlace = async (include = false) => {
       {
         model: DetailUserSouvenir,
         as: "detailSouvenir",
+        include: [
+          {
+            model: User,
+            as: "user",
+            attributes: ["id", "username", "email", "fullname", "user_image"],
+          },
+        ],
       },
       ...(Array.isArray(includeItems) ? includeItems : [includeItems]),
     ],
   });
- 
+
   return souvenirPlace;
 };
 const findUserSouvenirPlace = async (user_id) => {

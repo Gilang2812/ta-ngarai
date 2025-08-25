@@ -11,7 +11,7 @@ import ReviewTransactionSkeleton from "../loading/ReviewTransactionSkeleton";
 import { reviewFormSchema } from "@/type/schema/ReviewSchema";
 import ReviewItem from "./ReviewItem";
 import ReviewContent from "./ReviewContent";
-import { useAuthStore } from "@/stores/AuthStore";
+import { useSession } from "next-auth/react";
 
 type Props = {
   id: string;
@@ -31,8 +31,8 @@ const ReviewItemCard = ({ id }: Props) => {
     handleResponse,
     initialValues,
   } = useRatingItems(id);
-  const { user } = useAuthStore();
-
+  const { data: session } = useSession();
+  const user = session?.user;
   if (isLoading && !data) return <ReviewTransactionSkeleton />;
 
   return (
@@ -51,7 +51,7 @@ const ReviewItemCard = ({ id }: Props) => {
                 quantity={item?.jumlah}
               />
               <section>
-                {item.checkout.customer_id === user?.id && (
+                {item.checkout.customer_id === Number(user?.id) && (
                   <Button
                     onClick={() =>
                       handleOpenModal(

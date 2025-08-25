@@ -1,4 +1,4 @@
-import { useAxiosAuth } from "@/lib/axios";
+import { axiosServer } from "@/lib/axios";
 import { CheckSUserResponse } from "@/type/schema/UsersSchema";
 import * as yup from "yup";
 
@@ -20,7 +20,7 @@ export const registerSchema = yup.object().shape({
     .required("Email is required")
     .test("unique-email", "Email is already taken", async (value) => {
       if (!value) return false;
-      const { data } = await axiosInstance.post<CheckSUserResponse>(
+      const { data } = await axiosServer.post<CheckSUserResponse>(
         "/unique-field",
         {
           field: value,
@@ -35,7 +35,7 @@ export const registerSchema = yup.object().shape({
     .required("Username is required")
     .test("unique-username", "Username is already taken", async (value) => {
       if (!value) return false;
-      const { data } = await axiosInstance.post<CheckSUserResponse>(
+      const { data } = await axiosServer.post<CheckSUserResponse>(
         "/unique-field",
         {
           field: value,
@@ -48,6 +48,26 @@ export const registerSchema = yup.object().shape({
     .string()
     .oneOf([yup.ref("password")], "Passwords must match")
     .required("Confirm Password is required"),
+});
+
+export const updateProfileSchema = yup.object().shape({
+  fullname: yup.string().required("Fullname is required"),
+  username: yup
+    .string()
+    .min(3)
+    .max(20)
+    .required("Username is required")
+    .test("unique-username", "Username is already taken", async (value) => {
+      if (!value) return false;
+      const { data } = await axiosServer.post<CheckSUserResponse>(
+        "/unique-field",
+        {
+          field: value,
+        }
+      );
+      return data.available;
+    }),
+  phone: yup.string().required("Phone is required"),
 });
 
 export type UserLogin = {

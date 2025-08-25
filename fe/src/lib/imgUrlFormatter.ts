@@ -1,9 +1,10 @@
+import { FilepondType } from "@/type/common/FilepondType";
 import { baseUrl } from "./baseUrl";
 
 export const formatImageUrls = (
   urls: (string | undefined)[],
   defaultUrl = baseUrl
-): { source: string; option: { type: string } }[] => {
+): FilepondType => {
   if (!urls || urls.length === 0) {
     return [];
   }

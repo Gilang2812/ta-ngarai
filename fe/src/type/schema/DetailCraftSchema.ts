@@ -2,6 +2,7 @@ import * as yup from "yup";
 import { CraftVariantGallery, FetchCraftVariant } from "./CraftSchema";
 import { CheckoutItem } from "./CheckoutSchema";
 import { SouvenirPlace } from "./CraftTransactionSchema";
+import { FilepondType } from "../common/FilepondType";
 export type DetailCraftInclude = (
   | "craft"
   | "craftGalleries"
@@ -41,6 +42,7 @@ export const detailCraftSchema = yup.object({
 
 export type DetailCraftSchema = yup.InferType<typeof detailCraftSchema> & {
   id_souvenir_place: string;
+  images: FilepondType;
 };
 
 export type DetailCraftManagementResponse = DetailCraftSchema & {

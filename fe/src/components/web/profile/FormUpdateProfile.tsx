@@ -7,7 +7,11 @@ import Image from "next/image";
 import React from "react";
 
 const FormUpdateProfile = () => {
-  const { setFieldValue } = useFormikContext();
+  const { setFieldValue, initialValues } = useFormikContext<{
+    username: string;
+    fullname: string;
+    phone: string;
+  }>();
   return (
     <Form>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -18,8 +22,13 @@ const FormUpdateProfile = () => {
 
           <div className="space-y-8">
             <FormInput name="fullname" label="Fullname" />
-            <FormInput name="username" label="Username" type="text" readonly/>
-            <FormInput name="email" label="Email" type="email" readonly/>
+            <FormInput
+              name="username"
+              label="Username"
+              type="text"
+              readonly={!!initialValues?.username}
+            />
+            <FormInput name="email" label="Email" type="email" readonly />
             <FormInput
               name="phone"
               label="Phone"

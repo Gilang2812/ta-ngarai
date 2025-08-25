@@ -133,24 +133,9 @@ const FormNewHomestay: React.FC<Props> = ({
         <div>
           <h2 className="mb-4 text-lg font-semibold">Google Maps</h2>
 
-          <div className="grid grid-cols-2 mb-8  gap-4">
-            <FormInput
-              name="latitude"
-              type="text"
-              label="Latitude"
-              placeholder="eg. -0.52435750"
-            />
-            <FormInput
-              name="longitude"
-              type="text"
-              label="Longitude"
-              placeholder="eg. 100.49234850"
-            />
-          </div>
-
           {/* Map Section */}
           <div
-            className="flex border-2 items-center min-h-fit relative overflow-hidden  border-red-500 justify-center w-full h-64 text-black bg-gray-200"
+            className=" min-h-fit relative   w-full   "
             aria-label="Google Maps Placeholder"
           >
             <GoogleMapDrawing />

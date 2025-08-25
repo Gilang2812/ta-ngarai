@@ -12,7 +12,7 @@ const ImgCraft = ({
   ...props
 }: { src: string } & React.ComponentProps<typeof Image>) => {
   const notFound = "/images/Image_not_available.png";
-  const foundedSrc = `${baseUrl}/${src}`;
+  const foundedSrc = src ? `${baseUrl}/${src}` : notFound;
   const [imgSrc, setImgSrc] = useState(src ? foundedSrc : notFound);
   useEffect(() => {
     setImgSrc(foundedSrc);
