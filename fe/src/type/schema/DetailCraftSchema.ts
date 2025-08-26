@@ -53,7 +53,6 @@ export type DetailCraftManagementResponse = DetailCraftSchema & {
 
 export type DetailCraftUserResponse = DetailCraftManagementResponse & {
   items: CheckoutItem[];
-  
 };
 
 export type DetailCraftOrderResponse = DetailCraftUserResponse & {
@@ -61,5 +60,9 @@ export type DetailCraftOrderResponse = DetailCraftUserResponse & {
 };
 
 export type DetailCraftResponseSouvenirPlace = DetailCraftManagementResponse & {
-  souvenirPlace: SouvenirPlace & { address: string; contact_person: string };
+  souvenirPlace: SouvenirPlace & {
+    destination_id: string;
+    address: string;
+    contact_person: string;
+  };
 };

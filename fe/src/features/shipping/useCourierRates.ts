@@ -1,15 +1,32 @@
 import { axiosServer } from "@/lib/axios";
-import { CourierRatesRequestBody } from "@/type/schema/ShippingSchema";
+import {
+  CourierPricing,
+  CourierRatesRequestBody,
+} from "@/type/schema/ShippingSchema";
 import { useQuery } from "@tanstack/react-query";
 
-const useCourierRates = (body: CourierRatesRequestBody) => {
-  return useQuery({
-    queryKey: ["courierRates", body],
+const useCourierRates = ({
+  couriers,
+  destination_area_id,
+  origin_area_id,
+  items,
+}: CourierRatesRequestBody) => {
+  return useQuery<CourierPricing[]>({
+    queryKey: [
+      "courierRates",
+      couriers,
+      destination_area_id,
+      origin_area_id,
+      items.toString(),
+    ],
     queryFn: async () => {
-      console.log("test");
-
       const { data } = await axiosServer.get("/shipping/courier/index", {
-        params: body,
+        params: {
+          couriers,
+          destination_area_id,
+          origin_area_id,
+          items,
+        },
       });
       return data;
     },

@@ -60,10 +60,10 @@ const CraftTransaction = () => {
           {selectedHistory &&
             (modalContent === "items" ? (
               <UserDetailPage history={selectedHistory} />
+            ) : modalContent === "rate" ? (
+              <ReviewHistory shippingItems={selectedHistory.shippingItems} />
             ) : (
-              modalContent === "rate" && (
-                <ReviewHistory shippingItems={selectedHistory.shippingItems} />
-              )
+              modalContent === "tracking" && <>hello world</>
             ))}
         </ModalDetail>
       </section>

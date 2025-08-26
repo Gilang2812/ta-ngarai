@@ -125,7 +125,13 @@ const findUserCheckouts = async (condition) => {
               {
                 model: SouvenirPlace,
                 as: "souvenirPlace",
-                attributes: ["id", "name", "address", "contact_person"],
+                attributes: [
+                  "id",
+                  "destination_id",
+                  "name",
+                  "address",
+                  "contact_person",
+                ],
               },
             ],
           },

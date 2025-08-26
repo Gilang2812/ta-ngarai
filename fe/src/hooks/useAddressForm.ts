@@ -1,82 +1,102 @@
-import React from "react";
-import useGetDestination from "@/features/shipping/useGetDestination";
-import { useEffect, useState } from "react";
-import { DestinationItem } from "@/type/schema/ShippingSchema";
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useMemo, useState } from "react";
+import { useEffect } from "react";
 import { useFormikContext } from "formik";
 import { Address } from "@/type/schema/CheckoutSchema";
-export const useAddessForm = () => {
-  const { setFieldValue, values, setFieldError } = useFormikContext<Address>();
+import useGetArea from "@/features/shipping/useGetArea";
+import { hideLoadingAlert, showLoadingAlert } from "@/utils/AlertUtils";
+import { debounce } from "lodash";
+export const useAddressForm = () => {
+  const { setFieldValue, values } = useFormikContext<Address>();
+  const [input, setInput] = useState<string>("");
+  const { data: areaData, isLoading, isSuccess } = useGetArea(input);
 
-  const { data, refetch } = useGetDestination(values.kode_post || "");
   const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFieldValue("is_primary", e.target.checked ? 1 : 0);
   };
-  const [destinations, setDestinations] = useState<DestinationItem[] | null>(
-    null
-  );
-  const onVerify = () => {
-    setDestinations(data?.data || []);
-    if (!data || Array.isArray(data) ? data?.length === 0 : !data) {
-      setFieldError("kode_post", "Postal code not found");
-      return;
+
+  const areas = useMemo(() => areaData?.areas || [], [areaData]);
+
+  const countryName = [...new Set(areas.map((item) => item.country_name))];
+  console.log(areaData);
+  const provinceName = [
+    ...new Set(
+      areas
+        .filter((item) => item.country_name === values.negara)
+        .map((item) => item.administrative_division_level_1_name)
+    ),
+  ];
+
+  useEffect(() => {
+    if (isLoading) {
+      showLoadingAlert();
     }
-    refetch();
-  };
-
-  const district = [
-    ...new Set(destinations && destinations?.map((item) => item.district_name)),
-  ];
-  const kota = [
-    ...new Set(destinations && destinations?.map((item) => item.city_name)),
-  ];
-  const province = [
-    ...new Set(destinations && destinations?.map((item) => item.province_name)),
-  ];
-
-  const groupedDistrict = destinations?.reduce((access, item) => {
-    const key = item.district_name;
-    if (!access[key]) {
-      access[key] = [];
+    if (isSuccess) {
+      hideLoadingAlert();
     }
-    access[key].push(item.subdistrict_name);
+  }, [isLoading]);
 
-    return access;
-  }, {} as Record<string, string[]>);
+  const cityName = [
+    ...new Set(
+      areas
+        .filter(
+          (item) =>
+            item.country_name === values.negara &&
+            item.administrative_division_level_1_name === values.provinsi
+        )
+        .map((item) => item.administrative_division_level_2_name)
+    ),
+  ];
 
-  const destination = destinations?.find(
+  const districtName = [
+    ...new Set(
+      areas
+        .filter(
+          (item) =>
+            item.country_name === values.negara &&
+            item.administrative_division_level_1_name === values.provinsi &&
+            item.administrative_division_level_2_name === values.kota
+        )
+        .map((item) => item.administrative_division_level_3_name)
+    ),
+  ];
+
+  const destination = areas?.find(
     (item) =>
-      item.zip_code == values.kode_post &&
-      item.district_name === values.kecamatan &&
-      item.subdistrict_name === values.kelurahan
+      item.country_name == values.negara &&
+      item.administrative_division_level_1_name == values.provinsi &&
+      item.administrative_division_level_2_name === values.kota &&
+      item.administrative_division_level_3_name === values.kecamatan
   );
+
   const destination_id = destination?.id || "";
- 
+
+  useEffect(() => {
+    if (String(values.kode_post)?.length === 5) {
+      debounce(() => {
+        setInput(values.kode_post || "");
+      }, 500)();
+    }
+  }, [values.kode_post]);
+
   useEffect(() => {
     if (destination_id) {
       setFieldValue("destination_id", destination_id);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [destination_id, data]);
-  useEffect(() => {
-    if (values.kode_post) {
-      setDestinations(data?.data || []);
-      refetch();
+    if (areas.length === 0) {
+      setFieldValue("destination_id", "");
     }
-    return () => {
-      setDestinations(null);
-    };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [values.kode_post, data]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [destination_id, areas]);
 
   return {
-    district,
-    kota,
-    province,
-    groupedDistrict,
-    destination_id,
     handleCheckboxChange,
-    onVerify,
-
     values,
+    areas,
+    countryName,
+    provinceName,
+    districtName,
+    cityName,
+    areaData,
   };
 };

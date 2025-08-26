@@ -1,6 +1,8 @@
 import React from "react";
 import Button from "../common/Button";
 import Link from "next/link";
+import { ROUTES } from "@/data/routes";
+import { FaTruck } from "react-icons/fa6";
 
 type Props = {
   status: number | string;
@@ -9,6 +11,7 @@ type Props = {
   handleCompleteOrder: (order_id: string, shipping_id: string) => void;
   handleRateClick: () => void;
   token?: string;
+  tracking_id: string;
   paymentStatus?: string;
 };
 
@@ -20,6 +23,7 @@ const ItemReservationButton = ({
   handleRateClick,
   paymentStatus,
   token,
+  tracking_id,
 }: Props) => {
   switch (status) {
     case 1:
@@ -49,15 +53,29 @@ const ItemReservationButton = ({
       );
     case 3:
       return (
-        <Button
-          onClick={(e) => {
-            e.stopPropagation();
-            handleCompleteOrder(order_id as string, shipping_id as string);
-          }}
-          type="button"
-        >
-          Finish the order
-        </Button>
+        <>
+          {tracking_id && (
+            <Button
+              onClick={(e) => {
+                e.stopPropagation();
+              }}
+              asChild
+            >
+              <Link href={ROUTES.TRACKING_ORDER(tracking_id)}>
+                <FaTruck /> Track
+              </Link>
+            </Button>
+          )}
+          <Button
+            onClick={(e) => {
+              e.stopPropagation();
+              handleCompleteOrder(order_id as string, shipping_id as string);
+            }}
+            type="button"
+          >
+            Finish the order
+          </Button>
+        </>
       );
     case 4:
       return (
@@ -91,8 +109,6 @@ const ItemReservationButton = ({
           variant={token ? "default" : "secondary"}
           onClick={(e) => {
             e.stopPropagation();
-            if (token) {
-            }
           }}
           type="button"
           disabled={!token || paymentStatus === "failure"}

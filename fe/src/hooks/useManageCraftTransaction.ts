@@ -39,16 +39,19 @@ const useManageCraftTransaction = () => {
   }, [updatingStatus]);
 
   const MySwal = withReactContent(Swal);
+
   const handleShipProducts = ({
     content,
     checkout_id,
     shipping_id,
+    draft_id,
   }: {
     content: JSX.Element;
     checkout_id: string;
     shipping_id: string;
+    draft_id: string;
   }) => {
-    console.log(shipping_id);
+    console.log("draft_id", draft_id);
     MySwal.fire({
       title: "Ship Products?",
       text: "Are you sure you want to ship these products?",
@@ -60,10 +63,12 @@ const useManageCraftTransaction = () => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         // Handle the shipping logic here
+
         await updateStatus({
           id: checkout_id,
           status: 3,
           shippings: [shipping_id],
+          draft_id,
         });
       }
     });
@@ -117,7 +122,6 @@ const useManageCraftTransaction = () => {
     setSelectedTransaction(null);
     toggleModal();
   };
-
   const {
     currentItems,
     currentPage,
@@ -129,6 +133,7 @@ const useManageCraftTransaction = () => {
     indexOfFirstItem,
     indexOfLastItem,
   } = useTableManagement<ShippingDataWithReviewGallery>(filteredData);
+  console.log(currentItems);
 
   return {
     transaction,
@@ -150,7 +155,7 @@ const useManageCraftTransaction = () => {
     searchTerm,
     handleSearch,
     modalContent,
-    refetch
+    refetch,
   };
 };
 

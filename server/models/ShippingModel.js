@@ -14,6 +14,18 @@ const Shipping = sequelize.define(
       type: DataTypes.STRING(50),
       allowNull: true,
     },
+    order_id: {
+      type: DataTypes.STRING(50),
+      allowNull: true,
+    },
+    draft_id: {
+      type: DataTypes.STRING(50),
+      allowNull: true,
+    },
+    tracking_id: {
+      type: DataTypes.STRING(50),
+      allowNull: true,
+    },
 
     awb: {
       type: DataTypes.STRING(20),
@@ -48,7 +60,12 @@ const Shipping = sequelize.define(
 );
 
 Shipping.beforeCreate(async (instance) => {
-  instance.shipping_id = await generateCustomId("S", Shipping, 5, "shipping_id");
+  instance.shipping_id = await generateCustomId(
+    "S",
+    Shipping,
+    5,
+    "shipping_id"
+  );
   // Generate shipping_no in the format KOM<shipping_id><current date: YYMMDD><random 4 digits>
   const date = new Date();
   const yy = String(date.getFullYear()).slice(-2);

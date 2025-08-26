@@ -237,6 +237,9 @@ const userHistory = async ({ shipping_id = null, customer_id = null }) => {
     attributes: [
       "shipping_id",
       "shipping_no",
+      "draft_id",
+      "order_id",
+      "tracking_id",
       "grand_total",
       "shipping_name",
       "shipping_type",
@@ -370,6 +373,9 @@ const findSouvenirTransaction = async ({ id_souvenir_place = null } = {}) => {
     attributes: [
       "shipping_id",
       "shipping_no",
+      "draft_id",
+      "order_id",
+      "tracking_id",
       "grand_total",
       "shipping_name",
       "shipping_type",

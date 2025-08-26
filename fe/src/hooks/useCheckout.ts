@@ -2,7 +2,7 @@ import { useCreateAddress } from "@/features/web/address/useCreateAddress";
 import { useUpdateAddress } from "@/features/web/address/useUpdateAddress";
 import { useGetUserCheckout } from "@/features/web/checkout/useGetUserCheckout";
 import { CheckoutItem, type Address } from "@/type/schema/CheckoutSchema";
-import { ShippingItem } from "@/type/schema/ShippingSchema";
+import { CourierPricing } from "@/type/schema/ShippingSchema";
 import { cornerAlert } from "@/utils/AlertUtils";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -11,13 +11,13 @@ type PaymentMethod = "cod" | "bank" | "apar";
 
 export const useCheckout = () => {
   const router = useRouter();
-  const [itemShipping, setItemShipping] = useState<ShippingItem[]>([]);
+  const [itemShipping, setItemShipping] = useState<CourierPricing[]>([]);
   const [showAddressForm, setShowAddressForm] = useState(false);
   const [editingAddress, setEditingAddress] = useState<Address | undefined>(
     undefined
   );
 
-  const [shippingMethods, setShippingMethods] = useState<ShippingItem[]>([]);
+  const [shippingMethods, setShippingMethods] = useState<CourierPricing[]>([]);
   const {
     data: checkout,
     isLoading: checkoutLoading,

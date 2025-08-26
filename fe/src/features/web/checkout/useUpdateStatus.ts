@@ -4,8 +4,8 @@ import { onError } from "@/utils/ErrorHandler";
 import { useMutation } from "@tanstack/react-query";
 
 export const useUpdateStatus = ({ onSuccess }: ActionProps) => {
-  const axiosInstance = useAxiosAuth()
- return useMutation({
+  const axiosInstance = useAxiosAuth();
+  return useMutation({
     mutationFn: async ({
       id,
       ...rest
@@ -15,6 +15,7 @@ export const useUpdateStatus = ({ onSuccess }: ActionProps) => {
       payment_date?: string;
       shippings: (string | number)[];
       isClose?: 0 | 1;
+      draft_id?: string;
     }) => {
       const { data } = await axiosInstance.patch(`/checkouts/status/${id}`, {
         ...rest,

@@ -11,6 +11,7 @@ export const ROUTES = {
   UPDATE_PROFILE: "/web/profile/update",
   CHANGE_PASSWORD: "/web/profile/changePassword",
   CART: "/web/cart",
+  TRACKING_ORDER: (id: string) => `/web/reservation/${id}/tracking`,
   DETAIL_RESERVATION: (id: string) => `/web/detail-reservation/${id}`,
   DETAIL_RESERVATION_REVIEW: (id: string) =>
     `/web/detail-reservation/review/${id}`,

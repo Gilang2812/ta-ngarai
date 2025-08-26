@@ -5,18 +5,38 @@ const {
   calculateShipping,
   getUserHistoryById,
   courerRates,
+  getAreas,
+  trackOrder,
 } = require("./shipping.service");
 
 // GET /api/shipping/destination?keyword=...
-router.get("/destination", async (req, res) => {
+router.get("/destination", async (req, res, next) => {
   try {
     const { keyword } = req.query;
-    console.log("test");
     const { data } = await getDestination({ keyword });
     return res.json(data);
   } catch (err) {
-    console.log("testerr");
-    res.status(err.response?.status || 500).json({ err });
+    next(err);
+  }
+});
+
+router.get("/maps/areas", async (req, res, next) => {
+  try {
+    const input = req.query.input;
+    const data = await getAreas(input);
+    return res.json(data);
+  } catch (err) {
+    next(err);
+  }
+});
+
+router.get("/tracking/:tracking_id", async (req, res, next) => {
+  try {
+    const { tracking_id } = req.params;
+    const data = await trackOrder(tracking_id);
+    return res.json(data);
+  } catch (err) {
+    next(err);
   }
 });
 
@@ -135,15 +155,12 @@ router.get("/courier/index", async (req, res, next) => {
   try {
     const { origin_area_id, destination_area_id, couriers } = req.query;
     let items = req.query.items;
-    console.log("ini querynya", req.query);
     // Validate required parameters
-    console.log("i");
     const isValid =
       !origin_area_id ||
       !destination_area_id ||
       !couriers ||
       items.length === 0;
-    console.log("isvalid", isValid);
     if (isValid) {
       return res.status(400).json({
         message:
@@ -166,10 +183,9 @@ router.get("/courier/index", async (req, res, next) => {
       couriers,
       items,
     };
-    console.log("request", request);
     const data = await courerRates(request);
 
-    res.json(data);
+    res.json(data.pricing);
   } catch (err) {
     next(err);
   }

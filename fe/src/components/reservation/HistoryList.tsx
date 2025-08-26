@@ -109,6 +109,7 @@ const HistoryList: FC<Props> = ({
           handleRateClick={handleRateClick}
           token={history?.shippingItems?.[0]?.checkout?.transaction_token}
           paymentStatus={history?.paymentStatus}
+          tracking_id={history?.tracking_id}
         />
         <Button
           type="button"

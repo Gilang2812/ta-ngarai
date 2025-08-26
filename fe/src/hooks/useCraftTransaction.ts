@@ -18,7 +18,9 @@ export const useCraftTransaction = () => {
   const [selectedHistory, setSelectedHistory] =
     useState<ShippingDataWithReviewGallery | null>(null);
 
-  const [modalContent, setModalContent] = useState<"items" | "rate">("items");
+  const [modalContent, setModalContent] = useState<
+    "items" | "rate" | "tracking"
+  >("items");
 
   const { mutate: updateStatus, isPending: isUpdating } = useUpdateStatus({
     onSuccess: () => {

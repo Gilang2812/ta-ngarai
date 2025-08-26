@@ -16,6 +16,8 @@ const {
   getUserHistory,
   updateShipping,
   getSouvenirTransaction,
+  createDraftOrder,
+  confirmDraftOrder,
 } = require("../shipping/shipping.service");
 const {
   getUserCheckouts,
@@ -78,7 +80,6 @@ router.get("/", async (req, res, next) => {
 router.patch("/:id", async (req, res, next) => {
   try {
     const { id } = req.params;
-    console.log("id checkout", id);
     const { items, item_details, shippings, sub_total, total_shipping_cost } =
       req.body;
     const transaction = await createPayment({
@@ -89,23 +90,23 @@ router.patch("/:id", async (req, res, next) => {
     console.log("body checkout", transaction);
     const shippingsResult = [];
     for (const [index, item] of shippings.entries()) {
-      // const { data } = await storeShipment(item); // karena ada masalah di storeShipment API komship
-      const prevIndex = item.order_details.slice(0, index).length ?? 0;
+      const data = await createDraftOrder(item);
+      const prevIndex = item.items.slice(0, index).length ?? 0;
       const newShipping = await createShipping({
         // shipping_id: data.order_id,  // belum bisa di gunakan
         // shipping_no: data.order_no,
+        draft_id: data.id,
         shipping_name: item.shipping,
         shipping_type: item.shipping_type,
         total_shipping_cost: item.shipping_cost,
         grand_total: item.grand_total,
       });
       shippingsResult.push(newShipping.shipping_id);
-      for (const [detailIndex, detail] of item.order_details.entries()) {
-        detail.shipping_id = newShipping.shipping_id;
+      for (const [detailIndex, detail] of item.items.entries()) {
         await updateItemsCheckout(
           {
             checkout_id: id,
-            craft_variant_id: detail.product_id.split("-")[1],
+            craft_variant_id: detail.craft_variant_id,
             id_souvenir_place: detail.id_souvenir_place,
           },
           {
@@ -129,13 +130,12 @@ router.patch(
   async (req, res, next) => {
     try {
       const { id } = req.params;
-      const { status, isClose } = req.body;
+      const { status, isClose, draft_id } = req.body;
+      console.log("ini body nya", req.body)
       const shippings = req.body.shippings || [];
       let paymentStatus = null;
       if (!Number(isClose)) {
-        console.log("apakah di sini");
         paymentStatus = await getPaymentStatus(id);
-        console.log("atau kah di sini");
       }
       if (!status || status === 6) {
         if (shippings.length > 0) {
@@ -150,14 +150,23 @@ router.patch(
         }
       } else {
         if (shippings.length > 0) {
-          for (const shipping_id of shippings) {
-            await updateShipping(
-              { shipping_id },
-              {
-                status: status,
+          await Promise.all(
+            shippings.map(async (shipping_id) => {
+              let updatedBody = null;
+              if (status === 3) {
+                const data = await confirmDraftOrder(draft_id);
+                updatedBody = {
+                  order_id: data.id,
+                  tracking_id: data.courier.tracking_id,
+                  awb: data.courier.waybill_id,
+                };
               }
-            );
-          }
+              return updateShipping(
+                { shipping_id },
+                { status, ...(updatedBody ?? {}) }
+              );
+            })
+          );
         }
 
         const checkout = await updateCheckout(

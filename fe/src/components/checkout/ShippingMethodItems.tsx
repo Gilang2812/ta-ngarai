@@ -1,20 +1,20 @@
 import { formatPrice } from "@/lib/priceFormatter";
 import { CheckoutItem } from "@/type/schema/CheckoutSchema";
-import { ItemRatesType, ShippingItem } from "@/type/schema/ShippingSchema";
+import { CourierPricing, ItemRatesType } from "@/type/schema/ShippingSchema";
 import { Clock, CreditCard } from "lucide-react";
 import React, { useEffect } from "react";
-import ImgCraft from "../common/ImgCraft";
-import { useFetchShippingMethod } from "@/features/shipping/useFetchShippingMethod";
+import ImgCraft from "../common/ImgCraft"; 
 import Swal from "sweetalert2";
 import useCourierRates from "@/features/shipping/useCourierRates";
 
 type Props = {
   items: CheckoutItem[];
   index: number;
-  itemShipping?: ShippingItem[];
+  itemShipping?: CourierPricing[];
+
   selectedAddressId: string;
-  setShippingMethods: React.Dispatch<React.SetStateAction<ShippingItem[]>>;
-  setItemShipping: React.Dispatch<React.SetStateAction<ShippingItem[]>>;
+  setShippingMethods: React.Dispatch<React.SetStateAction<CourierPricing[]>>;
+  setItemShipping: React.Dispatch<React.SetStateAction<CourierPricing[]>>;
   handleSelectShipping: (index: number) => void;
   handleNoteChange: (
     event: React.ChangeEvent<HTMLInputElement>,
@@ -32,59 +32,50 @@ const ShippingMethodItems = ({
   handleSelectShipping,
   handleNoteChange,
 }: Props) => {
-  const { data, isLoading, refetch } = useFetchShippingMethod({
-    receiver_destination_id: selectedAddressId || "", // Example ID, replace with actual
-    weight:
-      items.reduce((acc, item) => acc + item?.detailCraft?.weight, 0) / 1000,
-    item_value: items.reduce(
-      (access, item) => access + item?.detailCraft?.price * item.jumlah,
-      0
-    ),
-  });
   const itemsRates: ItemRatesType[] = items?.map((item) => ({
     name: `${item.detailCraft.variant.craft.name} ${item.detailCraft.variant.name}`,
     quantity: item.jumlah,
     value: item.detailCraft.price,
     weight: item.detailCraft.weight,
   }));
-  const { data: courier } = useCourierRates({
+  const {
+    data: courier,
+    isLoading: courierLoading,
+    refetch: refetchCourier,
+  } = useCourierRates({
     couriers: "tiki,anteraja,jne,sicepat",
-    destination_area_id: "IDNP6IDNC148IDND836IDZ12410",
-    origin_area_id: "IDNP6IDNC148IDND836IDZ12410",
+    destination_area_id: items[0]?.detailCraft?.souvenirPlace.destination_id,
+    origin_area_id: selectedAddressId,
     items: itemsRates,
   });
 
   useEffect(() => {
-    console.log(courier);
-  }, [courier]);
+    refetchCourier();
+  }, [selectedAddressId, refetchCourier]);
 
   useEffect(() => {
-    refetch();
-  }, [selectedAddressId, refetch]);
-
-  useEffect(() => {
-    if (isLoading) {
+    if (courierLoading) {
       Swal.fire({
         title: "Loading Shipping Methods",
         allowOutsideClick: false,
         didOpen: () => Swal.showLoading(),
       });
     }
-    if (data) {
+    if (courier) {
       setItemShipping([]);
     }
     return () => {
       Swal.close();
     };
-  }, [data, isLoading, setItemShipping]);
+  }, [setItemShipping, courierLoading, courier]);
 
   const handleSelectShippingMethod = (index: number) => {
-    if (!data) {
+    if (!courier) {
       return;
     }
     handleSelectShipping(index);
 
-    setShippingMethods(data && Object.values(data).flat());
+    setShippingMethods(courier || []);
   };
 
   return (
@@ -137,18 +128,19 @@ const ShippingMethodItems = ({
           <>
             <div>
               <p className="uppercase">
-                {itemShipping[index].shipping_name} -
-                {itemShipping[index].service_name}
+                {itemShipping[index].courier_name} -
+                {itemShipping[index].courier_service_name}
               </p>
               <p className="font-normal flex items-center gap-2 text-slate-800">
                 <Clock />
-                {itemShipping[index].etd === "-"
-                  ? "Besok"
-                  : itemShipping[index].etd}
+
+                {itemShipping[index].shipment_duration_range === "0"
+                  ? itemShipping[index].service_type.replaceAll("_", " ")
+                  : itemShipping[index].duration}
               </p>
             </div>
             <div>
-              <p>{formatPrice(itemShipping[index].shipping_cost_net)}</p>
+              <p>{formatPrice(itemShipping[index].price)}</p>
             </div>
           </>
         )}

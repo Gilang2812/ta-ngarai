@@ -13,7 +13,6 @@ import { cornerAlert, cornerError, showLoadingAlert } from "@/utils/AlertUtils";
 import { useEffect } from "react";
 import { createShippingStoreBody } from "@/lib/createShippingStoreBody";
 import { useCompleteCheckout } from "@/features/web/checkout/useCompleteCheckout";
-import { CheckoutPayload } from "@/type/schema/CheckoutSchema";
 import { useRouter } from "next/navigation";
 import { useUpdateStatus } from "@/features/web/checkout/useUpdateStatus";
 
@@ -38,7 +37,15 @@ export default function CheckoutPage() {
     groupedItems,
   } = useCheckout();
   const router = useRouter();
+  const subTotal = groupedItems
+    .flat()
+    .reduce((acc, item) => acc + item?.detailCraft?.price * item?.jumlah, 0);
+  const total_shipping_cost = itemShipping?.reduce(
+    (acc, item) => acc + item?.price,
+    0
+  );
 
+  const total = subTotal + (total_shipping_cost || 0);
   const { mutateAsync: updateStatus, isPending: updatingStatus } =
     useUpdateStatus({
       onSuccess: () => {
@@ -116,21 +123,11 @@ export default function CheckoutPage() {
       item_details: [],
       shippings: [],
     },
-    onSubmit: (values: CheckoutPayload) => {
+    onSubmit: () => {
       if (groupedItems.length !== itemShipping.filter((i) => i).length) {
         return cornerError("Please select shipping method for all items");
       }
-
-      checkoutOrder(values);
-    },
-  });
-
-  useEffect(() => {
-    if (groupedItems.length > 0) {
-      formikOrder.setFieldValue("items", groupedItems.flat());
-      formikOrder.setFieldValue("checkout_id", checkout?.id);
-
-      formikOrder.setFieldValue("item_details", [
+      const itemDetails = [
         ...groupedItems.flat().map((item) => ({
           id: `${item.id_souvenir_place}-${item?.craft_variant_id}`,
           name: `${item?.detailCraft?.variant?.craft?.name} - ${item?.detailCraft?.variant?.name}`,
@@ -141,45 +138,28 @@ export default function CheckoutPage() {
           id: "shipping",
           name: "Shipping Cost",
           price: itemShipping.reduce(
-            (acc, curr) => acc + (curr?.shipping_cost_net || 0),
+            (acc, curr) => acc + (curr?.price || 0),
             0
           ),
           quantity: 1,
         },
-      ]);
-
-      formikOrder.setFieldValue(
-        "sub_total",
-        groupedItems
-          .flat()
-          .reduce(
-            (acc, item) => acc + item?.detailCraft?.price * item?.jumlah,
-            0
-          )
-      );
-
-      formikOrder.setFieldValue(
-        "shippings",
-        createShippingStoreBody(
+      ];
+      checkoutOrder({
+        checkout_id: checkout?.id,
+        total_shipping_cost: total_shipping_cost,
+        sub_total: subTotal,
+        total: total,
+        items: groupedItems.flat(),
+        item_details: itemDetails,
+        shippings: createShippingStoreBody({
           groupedItems,
           checkout,
           itemShipping,
-          selectedAddress
-        )
-      );
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [groupedItems, checkout, itemShipping, selectedAddress]);
-
-  useEffect(() => {
-    if (itemShipping.length > 0) {
-      formikOrder.setFieldValue(
-        "total_shipping_cost",
-        itemShipping?.reduce((acc, item) => acc + item?.shipping_cost_net, 0)
-      );
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [itemShipping]);
+          selectedAddress,
+        }),
+      });
+    },
+  });
 
   const handleNoteChange = (
     event: React.ChangeEvent<HTMLInputElement>,
@@ -259,25 +239,18 @@ export default function CheckoutPage() {
                 <div className="border-t border-gray-200 pt-4 space-y-2">
                   <div className="flex justify-between">
                     <span className="text-gray-600">Subtotal:</span>
-                    <span>{formatPrice(formikOrder.values.sub_total)}</span>
+                    <span>{formatPrice(subTotal)}</span>
                   </div>
 
                   <div className="flex justify-between">
                     <span className="text-gray-600">Shipping:</span>
-                    <span>
-                      {formatPrice(formikOrder.values.total_shipping_cost)}
-                    </span>
+                    <span>{formatPrice(total_shipping_cost)}</span>
                   </div>
 
                   <div className="border-t border-gray-200 pt-2 mt-2">
                     <div className="flex justify-between font-semibold">
                       <span>Total:</span>
-                      <span>
-                        {formatPrice(
-                          formikOrder.values.sub_total +
-                            formikOrder.values.total_shipping_cost
-                        )}
-                      </span>
+                      <span>{formatPrice(total)}</span>
                     </div>
                   </div>
                 </div>

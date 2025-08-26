@@ -107,6 +107,77 @@ export type CourierPricing = {
 
 export type CourierRatesResponse = {
   success: boolean;
-  object: string;    
+  object: string;
   pricing: CourierPricing[];
+};
+
+export type DraftRequestForm = {
+  origin_contact_name: string;
+  origin_contact_phone: string;
+  origin_address: string;
+  origin_note: string;
+  origin_area_id: string;
+  destination_contact_name: string;
+  destination_contact_phone: string;
+  destination_contact_email: string;
+  destination_address: string;
+  destination_area_id: string;
+  destination_note: string;
+  courier_company: string;
+  courier_type: string;
+  delivery_type: string;
+  order_note: string;
+  items: ItemRatesType[];
+};
+
+export type AreaItem = {
+  id: string;
+  name: string;
+  country_name: string;
+  country_code: string;
+  administrative_division_level_1_name: string;
+  administrative_division_level_1_type: string;
+  administrative_division_level_2_name: string;
+  administrative_division_level_2_type: string;
+  administrative_division_level_3_name: string;
+  administrative_division_level_3_type: string;
+  postal_code: number;
+};
+
+export type AreaResponse = {
+  success: boolean;
+  areas: AreaItem[];
+};
+
+export type TrackingCourier = {
+  company: string;
+  driver_name: string;
+  driver_phone: string; 
+};
+
+export type TrackingContact = {
+  contact_name: string;
+  address: string;
+};
+
+export type TrackingHistoryItem = {
+  note: string;
+  service_type: string;
+  updated_at: string;
+  status: string;
+};
+
+export type TrackingResponse = {
+  success: boolean;
+  messsage: string;
+  object: string;
+  id: string;
+  waybill_id: string;
+  courier: TrackingCourier;
+  origin: TrackingContact;
+  destination: TrackingContact;
+  history: TrackingHistoryItem[];
+  link: string;
+  order_id: string;
+  status: string;
 };

@@ -15,6 +15,13 @@ const getDestination = async (params) => {
   });
 };
 
+const getAreas = async (input) => {
+  const { data } = await axiosBiteship.get("/v1/maps/areas", {
+    params: { input, type: "single" },
+  });
+  return data;
+};
+
 const calculateShipping = async (params) => {
   return await axiosShipping.get(`/tariff/api/v1/calculate`, {
     params,
@@ -28,6 +35,24 @@ const courerRates = async (body) => {
   const { data } = await axiosBiteship.post(`/v1/rates/couriers`, body);
   return data;
 };
+
+const createDraftOrder = async (body) => {
+  const { data } = await axiosBiteship.post(`/v1/draft_orders`, body);
+  return data;
+};
+
+const confirmDraftOrder = async (draft_id) => {
+  const { data } = await axiosBiteship.post(
+    `/v1/draft_orders/${draft_id}/confirm`
+  );
+  return data;
+};
+
+const trackOrder = async (tracking_id) => {
+  const { data } = await axiosBiteship.get(`/v1/trackings/${tracking_id}`);
+  return data;
+};
+
 const createShipping = async (body) => {
   return await insertShipping(body);
 };
@@ -86,4 +111,8 @@ module.exports = {
   updateShipping,
   getSouvenirTransaction,
   courerRates,
+  createDraftOrder,
+  confirmDraftOrder,
+  getAreas,
+  trackOrder,
 };

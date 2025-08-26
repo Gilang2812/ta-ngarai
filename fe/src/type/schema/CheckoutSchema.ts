@@ -1,5 +1,6 @@
 import * as yup from "yup";
-import {   DetailCraftResponseSouvenirPlace } from "./DetailCraftSchema";
+import { DetailCraftResponseSouvenirPlace } from "./DetailCraftSchema";
+import { DraftRequestForm } from "./ShippingSchema";
 
 export const addressFormSchema = yup.object({
   destination_id: yup
@@ -217,7 +218,7 @@ export type CheckoutPayload = {
   sub_total: number;
   total: number;
   items: CheckoutItem[];
-  shippings: Shipping[];
+  shippings: DraftRequestForm[];
   item_details: {
     id: string;
     name: string;

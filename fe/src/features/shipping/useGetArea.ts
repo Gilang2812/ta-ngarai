@@ -1,0 +1,20 @@
+import { axiosServer } from "@/lib/axios";
+import { AreaResponse } from "@/type/schema/ShippingSchema";
+import { useQuery } from "@tanstack/react-query";
+
+const useGetArea = (input: string | number) => {
+  return useQuery<AreaResponse>({
+    queryKey: ["areas", input],
+    queryFn: async () => {
+      const { data } = await axiosServer.get("/shipping/maps/areas", {
+        params: {
+          input,
+        },
+      });
+      return data;
+    },
+    enabled: !!input,
+  });
+};
+
+export default useGetArea;

@@ -1,13 +1,13 @@
 "use client";
 
-import { Search, X } from "lucide-react";
+import { X } from "lucide-react";
 import { Address } from "@/type/schema/CheckoutSchema";
 import Button from "../common/Button";
 import { motion } from "framer-motion";
 import { Form } from "formik";
 import { FormInput } from "../inputs/FormInput";
 import { CheckBoxLabel } from "../common/CheckBoxLabel";
-import { useAddessForm } from "@/hooks/useAddressForm";
+import { useAddressForm } from "@/hooks/useAddressForm";
 
 interface AddressFormProps {
   onSave: (values: Address) => void;
@@ -22,14 +22,14 @@ export const AddressForm = ({
   isPending,
 }: AddressFormProps) => {
   const {
-    district,
-    groupedDistrict,
     handleCheckboxChange,
-    kota,
-    onVerify,
-    province,
     values,
-  } = useAddessForm();
+    countryName,
+    provinceName,
+    districtName,
+    cityName,
+    areaData,
+  } = useAddressForm();
 
   return (
     <motion.div
@@ -55,42 +55,63 @@ export const AddressForm = ({
             label="destination id"
             readonly
           />
-          <div className="flex [&_>div]:flex-1 items-end  [&_>div]:mr-2">
+          <div>
             <FormInput
               type="number"
               name="kode_post"
               label="Postal Code"
               autoFocus
             />
-            <Button className="p-1 " type="button" onClick={onVerify}>
-              <Search />
-            </Button>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 gap-y-6">
-            <FormInput
-              name="label"
-              label="label"
-              placeholder="ex : home , office"
-            />
-            <FormInput name="recipient_name" label="Recipient Name" />
+            {areaData && values.kode_post && countryName.length === 0 && (
+              <p className="text-red-600 text-sm font-bold">
+                postal code not found
+              </p>
+            )}
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <FormInput name="recipient_phone" label="Phone" />
-            <FormInput name="negara" label="Country" />
+            <FormInput as="select" name="negara" label="Country">
+              {!countryName || countryName.length === 0 ? (
+                <option value="" disabled>
+                  No Country Available, Input Postal Code First
+                </option>
+              ) : (
+                <>
+                  {countryName?.map((item, index) => (
+                    <option key={index} value={item}>
+                      {item}
+                    </option>
+                  ))}
+                </>
+              )}
+            </FormInput>
+            <FormInput as="select" name="provinsi" label="State/Province">
+              {!provinceName || provinceName.length === 0 ? (
+                <option value="" disabled>
+                  No Province Available, Select Country First
+                </option>
+              ) : (
+                <>
+                  {provinceName?.map((item, index) => (
+                    <option key={index} value={item}>
+                      {item}
+                    </option>
+                  ))}
+                </>
+              )}
+            </FormInput>
           </div>
 
           <>
             <div className="grid grid-cols-1 md:grid-cols-2  gap-4">
-              <FormInput as="select" name="kecamatan" label="District">
-                {!district || district.length === 0 ? (
+              <FormInput as="select" name="kota" label="City">
+                {!cityName || cityName.length === 0 ? (
                   <option value="" disabled>
-                    No District Available
+                    No City Available
                   </option>
                 ) : (
                   <>
-                    {district?.map((item, index) => (
+                    {cityName?.map((item, index) => (
                       <option key={index} value={item}>
                         {item}
                       </option>
@@ -98,15 +119,14 @@ export const AddressForm = ({
                   </>
                 )}
               </FormInput>
-              <FormInput as="select" name="kelurahan" label="Subdistrict">
-                {!groupedDistrict?.[values.kecamatan] ||
-                groupedDistrict[values.kecamatan].length === 0 ? (
+              <FormInput as="select" name="kecamatan" label="District">
+                {!districtName || districtName.length === 0 ? (
                   <option value="" disabled>
-                    select district first
+                    No District Available, select City First
                   </option>
                 ) : (
                   <>
-                    {groupedDistrict[values.kecamatan]?.map((item, index) => (
+                    {districtName?.map((item, index) => (
                       <option key={index} value={item}>
                         {item}
                       </option>
@@ -116,40 +136,19 @@ export const AddressForm = ({
               </FormInput>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <FormInput as="select" name="kota" label="City">
-                {!kota || kota.length === 0 ? (
-                  <option value="" disabled>
-                    No City Available
-                  </option>
-                ) : (
-                  <>
-                    {kota?.map((item, index) => (
-                      <option key={index} value={item}>
-                        {item}
-                      </option>
-                    ))}
-                  </>
-                )}
-              </FormInput>
-              <FormInput as="select" name="provinsi" label="State/Province">
-                {!province || province.length === 0 ? (
-                  <option value="" disabled>
-                    No Province Available
-                  </option>
-                ) : (
-                  <>
-                    {province?.map((item, index) => (
-                      <option key={index} value={item}>
-                        {item}
-                      </option>
-                    ))}
-                  </>
-                )}
-              </FormInput>
+              <FormInput name="kelurahan" label="Subdistrict" />
+              <FormInput name="recipient_phone" label="Phone" />
             </div>
           </>
-
           <FormInput name="street" label="Street" />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 gap-y-6">
+            <FormInput
+              name="label"
+              label="label"
+              placeholder="ex : home , office"
+            />
+            <FormInput name="recipient_name" label="Recipient Name" />
+          </div>
           <FormInput
             name="details"
             label="Address Details"

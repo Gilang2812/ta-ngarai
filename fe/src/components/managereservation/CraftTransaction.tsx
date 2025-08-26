@@ -124,6 +124,7 @@ const CraftTransaction = () => {
                   ),
                   checkout_id: item.shippingItems[0].checkout.id,
                   shipping_id: item.shipping_id,
+                  draft_id: item.draft_id,
                 })
               }
               status={item.status}

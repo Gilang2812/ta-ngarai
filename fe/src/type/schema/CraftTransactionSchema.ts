@@ -2,10 +2,12 @@ import { DetailCraftResponseSouvenirPlace } from "./DetailCraftSchema";
 import { ReviewGallerySchema } from "./ReviewSchema";
 
 export type ShippingData = {
-  paymentStatus:string;
-
+  paymentStatus: string;
   shipping_id: string;
   shipping_no: string;
+  draft_id: string;
+  order_id: string;
+  tracking_id: string;
   grand_total: number;
   total_shipping_cost: number;
   shipping_type: string;
@@ -15,9 +17,12 @@ export type ShippingData = {
 };
 
 export type ShippingDataWithReviewGallery = {
-  paymentStatus:string;
+  paymentStatus: string;
   shipping_id: string;
   shipping_no: string;
+  draft_id: string;
+  order_id: string;
+  tracking_id: string;
   grand_total: number;
   total_shipping_cost: number;
   shipping_type: string;

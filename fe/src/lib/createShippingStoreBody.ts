@@ -1,53 +1,54 @@
 import { Address, Checkout, CheckoutItem } from "@/type/schema/CheckoutSchema";
-import { ShippingItem } from "@/type/schema/ShippingSchema";
+import { CourierPricing, DraftRequestForm } from "@/type/schema/ShippingSchema";
 
-export const createShippingStoreBody = (
-  groupedItems: CheckoutItem[][],
-  checkout: Checkout | undefined,
-  itemShipping: ShippingItem[],
-  selectedAddress: Address | undefined
-) => {
-  return groupedItems.map((items, index) => ({
-    order_date: new Date(
-      new Date().getTime() - new Date().getTimezoneOffset() * 60000
-    ).toISOString(),
-    brand_name: "Craft",
-    shipper_name: checkout?.items?.[0]?.detailCraft?.souvenirPlace.name,
-    shipper_phone:
-      checkout?.items?.[0]?.detailCraft?.souvenirPlace.contact_person,
-    shipper_destination_id: 49279,
-    shipper_address: checkout?.items?.[0]?.detailCraft?.souvenirPlace.address,
-    shipper_email: "not registered",
-    receiver_name: checkout?.shippingAddress.addressCustomer.fullname,
-    receiver_phone: checkout?.shippingAddress.addressCustomer.phone ||"085274953252",
-    receiver_destination_id: parseInt(
-      checkout?.shippingAddress.destination_id as string
-    ),
-    receiver_address: Object.values(selectedAddress || {}).join(", "),
-    shipping: itemShipping[index]?.shipping_name,
-    shipping_type: itemShipping[index]?.service_name,
-    payment_method: "COD",
-    shipping_cost: itemShipping[index]?.shipping_cost_net,
-    shipping_cashback: itemShipping[index]?.shipping_cashback,
-    service_fee: Math.ceil(0.028 * itemShipping[index]?.grandtotal),
-    additional_cost: 0,
-    grand_total: itemShipping[index]?.grandtotal,
-    cod_value: itemShipping[index]?.grandtotal,
+export const createShippingStoreBody = ({
+  checkout,
+  groupedItems,
+  itemShipping,
+  selectedAddress,
+}: {
+  groupedItems: CheckoutItem[][];
+  checkout: Checkout | undefined;
+  itemShipping: CourierPricing[];
+  selectedAddress: Address | undefined;
+}) => {
+  const data: DraftRequestForm[] = groupedItems.map((items, index) => ({
+    origin_contact_name:
+      checkout?.items?.[0]?.detailCraft?.souvenirPlace?.name ?? "",
+    origin_contact_phone:
+      checkout?.items?.[0]?.detailCraft?.souvenirPlace?.contact_person ?? "",
+    origin_address:
+      checkout?.items?.[0]?.detailCraft?.souvenirPlace?.address ?? "",
+    origin_note: items[0]?.note ?? "",
+    origin_area_id: checkout?.shippingAddress?.destination_id ?? "",
+    destination_contact_name:
+      checkout?.shippingAddress?.addressCustomer?.fullname ?? "",
+    destination_contact_phone:
+      checkout?.shippingAddress?.addressCustomer?.phone ?? "085274953252",
+    destination_contact_email:
+      checkout?.shippingAddress?.addressCustomer?.email ?? "",
+    destination_address: Object.values(selectedAddress || {}).join(", "),
+    destination_area_id: checkout?.shippingAddress.destination_id as string,
+    destination_note: "",
+    courier_company: itemShipping[index]?.company,
+    courier_type: itemShipping[index]?.courier_service_code,
+    delivery_type: "now",
+    order_note: "",
+    shipping_cost: itemShipping[index]?.price,
     insurance_value: 0,
-    order_details: items.map((i) => ({
-      product_id: `${i.detailCraft.id_souvenir_place}-${i.detailCraft.craft_variant_id}`,
-      product_name: i.detailCraft?.variant.craft.name,
-      product_variant_name: i.detailCraft?.variant.name,
+    items: items.map((i) => ({
+      craft_variant_id: i.detailCraft.craft_variant_id,
+      name: `${i.detailCraft?.variant.craft.name} ${i.detailCraft?.variant.name}`,
       id_souvenir_place: i.detailCraft?.id_souvenir_place,
       note: i.note,
-      shipping_id: i.shipping_id,
-      product_price: i.detailCraft?.price,
-      product_weight:
+      value: i.detailCraft?.price,
+      weight:
         i.detailCraft?.weight < 1
           ? Math.ceil(i.detailCraft?.weight)
           : Math.round(i.detailCraft?.weight),
-      qty: i.jumlah,
-      subtotal: i.detailCraft.price * i.jumlah,
+      quantity: i.jumlah,
     })),
   }));
+  return data;
 };
+  

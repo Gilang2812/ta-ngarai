@@ -10,7 +10,7 @@ const axiosShipping = axios.create({
 });
 
 const axiosBiteship = axios.create({
-  baseURL: process.env.BITESHIP_BASE_URL || "https://api.biteships.com",
+  baseURL: process.env.BITESHIP_BASE_URL || "https://api.biteship.com",
   headers: {
     "Content-Type": "application/json",
     "Authorization": process.env.BITESHIP_API_KEY || "default-key",
