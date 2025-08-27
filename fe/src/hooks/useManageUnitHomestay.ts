@@ -104,6 +104,7 @@ export const useManageUnitHomestay = (id: string) => {
     isPending: deletingFacilityUnitDetail,
   } = useDeleteFacilityUnitHomestay({
     onSuccess: () => {
+      cornerAlert("facility deleted successfully");
       refetch();
     },
   });
@@ -254,7 +255,7 @@ export const useManageUnitHomestay = (id: string) => {
 
   return {
     data,
-    isLoading:isLoading ||loadingFacilityUnits||loadingUnitTypes,
+    isLoading: isLoading || loadingFacilityUnits || loadingUnitTypes,
     unitTypes,
     facilityUnits,
     formType,

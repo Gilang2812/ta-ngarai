@@ -62,6 +62,7 @@ const FilePondComponent = ({
             forceRevert={true}
             allowRevert={true}
             server={null}
+  
             imageResizeMode="contain"
             credits={false}
             imagePreviewTransparencyIndicator="grid"

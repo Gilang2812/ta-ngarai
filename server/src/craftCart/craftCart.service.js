@@ -1,4 +1,8 @@
+const { CustomError } = require("../../utils/CustomError");
 const { getIncompleteCheckout } = require("../checkout/checkout.service");
+const {
+  findDetailCraft,
+} = require("../detailMarketplaceCraft/detailCraft.repository");
 const {
   insertCraftCart,
   destroyCraftCart,
@@ -33,9 +37,38 @@ const createCraftCart = async ({
     id_souvenir_place,
   };
   const existingItemCart = await findCraftCart(condition);
+  const currenCraftItem = await findDetailCraft(
+    {
+      craft_variant_id,
+      id_souvenir_place,
+    },
+    []
+  );
+  if (!currenCraftItem.stock || currenCraftItem.stock === 0) {
+    console.log("stok saat ini ", currenCraftItem);
+    throw new CustomError("Out of Stocks", 400);
+  }
+  if (Number(jumlah) > Number(currenCraftItem.stock || 0)) {
+    throw new CustomError("Stok tidak cukup", 400);
+  }
+  // Do something with currenCraftItem
+
   if (existingItemCart) {
-      await editCraftCart(
-      { 
+    if (
+      Number(existingItemCart.jumlah || 0) + jumlah >
+      Number(currenCraftItem.stock || 0)
+    ) {
+      throw new CustomError(
+        `Stock tidak cukup anda memiliki ${
+          existingItemCart.jumlah
+        } item di keranjang sehingga totalnya ${
+          Number(existingItemCart.jumlah || 0) + jumlah
+        }`,
+        400
+      );
+    }
+    await editCraftCart(
+      {
         checkout_id: existingItemCart.checkout_id,
         id_souvenir_place: existingItemCart.id_souvenir_place,
       },

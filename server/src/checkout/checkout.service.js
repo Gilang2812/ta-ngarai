@@ -13,6 +13,9 @@ const {
   editItemsCheckout,
   userHistory,
 } = require("./checkout.repository");
+const {
+  findDetailCraft,
+} = require("../detailMarketplaceCraft/detailCraft.repository");
 
 const getCheckout = async (key) => {
   const checkout = await findCheckout(key);
@@ -99,10 +102,20 @@ const checkoutOrder = async (body, customer_id) => {
     customer_id,
     isCheckout: true,
   });
-  console.log("existingCheckout", existingCheckout);
   await deleteItemsCheckout({ checkout_id: existingCheckout.id });
   const newItems = await Promise.all(
     body.map(async (item) => {
+      const { craft_variant_id, id_souvenir_place } = item;
+      const currenCraftItem = await findDetailCraft(
+        { craft_variant_id, id_souvenir_place },
+        []
+      );
+      if (!currenCraftItem.stock || currenCraftItem.stock === 0) {
+        throw new CustomError("Out of Stocks", 400);
+      }
+      if (Number(item.jumlah) > Number(currenCraftItem.stock || 0)) {
+        throw new CustomError("Stock tidak cukup", 400);
+      }
       if (item.checkout_id) {
         const updated = await updateItemsCheckout(
           {

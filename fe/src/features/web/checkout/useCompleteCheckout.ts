@@ -2,11 +2,12 @@ import { useAxiosAuth } from "@/lib/axios";
 import { ActionProps } from "@/type/props/ActionProps";
 import { CheckoutPayload } from "@/type/schema/CheckoutSchema";
 import { onError } from "@/utils/ErrorHandler";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export const useCompleteCheckout = ({ onSuccess }: ActionProps) => {
-  const axiosInstance = useAxiosAuth()
- return useMutation({
+  const axiosInstance = useAxiosAuth();
+  const queryClient = useQueryClient();
+  return useMutation({
     mutationFn: async (body: CheckoutPayload) => {
       const { data } = await axiosInstance.patch(
         `/checkouts/${body.checkout_id}`,
@@ -14,7 +15,10 @@ export const useCompleteCheckout = ({ onSuccess }: ActionProps) => {
       );
       return data;
     },
-    onSuccess,
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ["orderDetailCraft"] }); 
+      if (onSuccess) onSuccess(data);
+    },
     onError,
   });
 };

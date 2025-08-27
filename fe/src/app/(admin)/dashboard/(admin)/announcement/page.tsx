@@ -16,7 +16,7 @@ import { useFetchAnnouncements } from "@/features/web/useFetchAnnouncement";
 
 import { AnnouncementSchema } from "@/type/schema/AnnouncementSchema";
 import { confirmDeleteAlert, cornerAlert } from "@/utils/AlertUtils";
-import { useModal } from "@/utils/ModalUtils"; 
+import { useModal } from "@/utils/ModalUtils";
 import { Formik, Form, ErrorMessage } from "formik";
 import { useState } from "react";
 import * as yup from "yup";
@@ -33,6 +33,14 @@ export default function Announcement() {
   const [selectedData, setSelectedData] = useState<AnnouncementSchema | null>(
     null
   );
+
+  const [selectedInitialValues, setSelectedInitialValues] =
+    useState<AnnouncementSchema>({
+      id: selectedData?.id || "",
+      announcement: selectedData?.announcement || "",
+      status: selectedData?.status || 1,
+    });
+
   const { data, isLoading, refetch } = useFetchAnnouncements();
 
   const { isOpen: inputModal, toggleModal: toggleInputModal } = useModal();
@@ -65,7 +73,7 @@ export default function Announcement() {
   };
 
   const handleEdit = async (values: AnnouncementSchema) => {
-    await editMutate(values);
+    editMutate(values);
   };
 
   const handleDelete = async (id: string) => {
@@ -81,6 +89,11 @@ export default function Announcement() {
 
   const handleOpenModalInput = () => {
     toggleInputModal();
+    setSelectedInitialValues({
+      announcement: "",
+      id: "",
+      status: "" as unknown as number,
+    });
   };
 
   const handleOpenModalInfo = (data: AnnouncementSchema) => {
@@ -92,6 +105,11 @@ export default function Announcement() {
     setSelectedData(data);
     setStatus(data.status);
     toggleInputModal();
+    setSelectedInitialValues({
+      announcement: data.announcement,
+      id: data.id,
+      status: data.status,
+    });
   };
 
   return (
@@ -127,11 +145,7 @@ export default function Announcement() {
         }}
       >
         <Formik
-          initialValues={{
-            id: selectedData?.id || "",
-            announcement: selectedData?.announcement || "",
-            status: selectedData?.status || 1,
-          }}
+          initialValues={selectedInitialValues}
           enableReinitialize
           validationSchema={validationSchema}
           onSubmit={async (values) => {
@@ -226,9 +240,9 @@ export default function Announcement() {
               <td>Status</td>
               <td>
                 {selectedData?.status == 1 ? (
-                  <p className="px-2 py-1 bg-green-500 rounded">active</p>
+                  <p className="px-2 py-1 bg-green-500 rounded w-fit">active</p>
                 ) : (
-                  <p className="px-2 py-1 bg-red-600 rounded">non active</p>
+                  <p className="px-2 py-1 bg-red-600 rounded w-fit">non active</p>
                 )}
               </td>
             </tr>

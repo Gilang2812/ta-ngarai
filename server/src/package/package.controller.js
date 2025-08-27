@@ -307,9 +307,9 @@ router.put(
       const images = req?.files?.images?.map((file) => ({
         package_id: id,
         url: formatImageUrl(file.path),
-      }));
+      }))||[];
 
-      if (images.length > 0) {
+      if (images?.length > 0) {
         for (const image of images) {
           await createGalleryPackage(image);
         }

@@ -143,7 +143,7 @@ export const CartItemComponent = ({
         >
           <Form>
             <AutoSubmitOnChange />
-            <QuantitySelector />
+            <QuantitySelector stock={item?.detailCraft?.stock} />
           </Form>
         </Formik>
       </td>

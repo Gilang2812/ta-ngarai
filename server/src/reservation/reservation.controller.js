@@ -235,6 +235,7 @@ router.patch("/:id", imageUpload().single("images"), async (req, res, next) => {
   try {
     const { id } = req.params;
     const updatedData = req.body;
+    const io = req.app.get("io");
 
     const { review_rating: rating, ...rest } = updatedData;
     const result = await editReservation({ id }, { ...rest, rating });

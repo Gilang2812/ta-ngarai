@@ -51,7 +51,6 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({
   data,
 }) => {
   const [isFavorite, setIsFavorite] = useState(false);
-
   const toggleFavorite = () => {
     setIsFavorite(!isFavorite);
   };
@@ -102,7 +101,7 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({
       </div>
       <Formik onSubmit={handleSubmit} initialValues={initialValues}>
         <Form className="flex gap-3">
-          <QuantitySelector />
+          <QuantitySelector stock={data.stock} />
           <ButtonTooltip
             label={"KERANJANG"}
             type="submit"

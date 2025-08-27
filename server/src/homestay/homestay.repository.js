@@ -188,6 +188,7 @@ const findUnitHomestays = async (newCheckIn) => {
         },
         include: [
           {
+            required:false,
             model: Reservation,
             as: "reservation",
             attributes: ["id", "check_in", "package_id"],
@@ -242,6 +243,7 @@ const findAllUnitHomestays = async ({ homestay_id }) => {
         include: [detailFacilityHomestayInclude, galleryHomestayInclude],
       },
       {
+        required: false,
         model: FacilityUnitDetail,
         as: "facilityDetails",
         attributes: ["description"],
@@ -269,6 +271,7 @@ const findAllUnitHomestays = async ({ homestay_id }) => {
         attributes: ["name_type"],
       },
       {
+        required: false,
         model: GalleryUnit,
         as: "unitGalleries",
         where: Sequelize.and(
@@ -283,6 +286,7 @@ const findAllUnitHomestays = async ({ homestay_id }) => {
         ),
       },
       {
+        required: false,
         model: DetailReservation,
         as: "detailReservations",
         where: and(
@@ -301,6 +305,7 @@ const findAllUnitHomestays = async ({ homestay_id }) => {
         ),
         include: [
           {
+            required:false,
             model: Reservation,
             as: "reservation",
             attributes: ["package_id", "check_in"],

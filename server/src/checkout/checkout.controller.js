@@ -28,6 +28,12 @@ const {
 } = require("./checkout.service");
 const fs = require("fs");
 const { updateStatusSchema } = require("./checout.validation");
+const {
+  updateDetailCraft,
+} = require("../detailMarketplaceCraft/detailCraft.service");
+const {
+  findDetailCraft,
+} = require("../detailMarketplaceCraft/detailCraft.repository");
 
 const router = require("express").Router();
 
@@ -82,19 +88,17 @@ router.patch("/:id", async (req, res, next) => {
     const { id } = req.params;
     const { items, item_details, shippings, sub_total, total_shipping_cost } =
       req.body;
+
     const transaction = await createPayment({
       order_id: id,
       gross_amount: sub_total + total_shipping_cost,
       item_details: item_details,
     });
-    console.log("body checkout", transaction);
     const shippingsResult = [];
     for (const [index, item] of shippings.entries()) {
       const data = await createDraftOrder(item);
       const prevIndex = item.items.slice(0, index).length ?? 0;
       const newShipping = await createShipping({
-        // shipping_id: data.order_id,  // belum bisa di gunakan
-        // shipping_no: data.order_no,
         draft_id: data.id,
         shipping_name: item.shipping,
         shipping_type: item.shipping_type,
@@ -116,7 +120,23 @@ router.patch("/:id", async (req, res, next) => {
         );
       }
     }
-    console.log("shippingsResult", shippingsResult);
+
+    await Promise.all(
+      items.map(async (item) => {
+        const currenCraftItem = await findDetailCraft(
+          {
+            craft_variant_id: item.craft_variant_id,
+            id_souvenir_place: item.id_souvenir_place,
+          },
+          []
+        );
+        console.log("item checkedout", currenCraftItem);
+        const stock = currenCraftItem.stock;
+        const newStock = stock - item.jumlah < 0 ? 0 : stock - item.jumlah;
+        currenCraftItem.stock = newStock;
+        await currenCraftItem.save();
+      })
+    );
     const response = { token: transaction.token, shippings: shippingsResult };
     res.status(200).json(response);
   } catch (error) {
@@ -131,7 +151,7 @@ router.patch(
     try {
       const { id } = req.params;
       const { status, isClose, draft_id } = req.body;
-      console.log("ini body nya", req.body)
+      console.log("ini body nya", req.body);
       const shippings = req.body.shippings || [];
       let paymentStatus = null;
       if (!Number(isClose)) {

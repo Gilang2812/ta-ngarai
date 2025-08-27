@@ -10,6 +10,7 @@ import {
 } from "next/server";
 const authPage = [ROUTES.LOGIN, ROUTES.REGISTER];
 const publicRoutes = [
+  ROUTES.HOME,
   ROUTES.EXPLORE_WITH_PACKAGE,
   ROUTES.TOURISM_PACKAGE,
   ROUTES.CRAFT,
@@ -40,26 +41,11 @@ export default function withAuth(middleware: NextMiddleware) {
       pathname.startsWith("/dashboard/") ||
       pathname.startsWith("/profile/")
     ) {
-      const token = await getToken({
-        req,
-        secret: process.env.NEXTAUTH_SECRET,
-      });
       if (!token) {
         if (!authPage.includes(pathname)) {
           const url = new URL("/login", req.url);
           url.searchParams.set("callbackUrl", encodeURI(req.url));
           return NextResponse.redirect(url);
-        }
-      } else {
-        if (!token.name || !token.username || !token.phone) {
-          if (
-            pathname !== ROUTES.UPDATE_PROFILE ||
-            pathname !== ROUTES.PROFILE
-          ) {
-            const url = new URL(ROUTES.UPDATE_PROFILE, req.url);
-            url.searchParams.set("callbackUrl", encodeURI(req.url));
-            return NextResponse.redirect(url);
-          }
         }
       }
     }

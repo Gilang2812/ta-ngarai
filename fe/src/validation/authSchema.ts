@@ -69,6 +69,10 @@ export const updateProfileSchema = yup.object().shape({
     }),
   phone: yup.string().required("Phone is required"),
 });
+export const updateProfileSchemaWithoutUsername = yup.object().shape({
+  fullname: yup.string().required("Fullname is required"),
+  phone: yup.string().required("Phone is required"),
+});
 
 export type UserLogin = {
   id: number | string;

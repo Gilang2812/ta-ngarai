@@ -63,5 +63,5 @@ module.exports = {
   updateDetailCraft,
   deleteDetailCraft,
   selectDetailCrafts,
-  getOrderDetailCraft
+  getOrderDetailCraft,
 };
