@@ -58,7 +58,7 @@ router.use("/craft-carts", verifyToken, cartCraftRouter);
 router.use("/crafts", verifyToken, craftRouter);
 router.use("/reservations", verifyToken, reservationRouter);
 router.use("/shipping", shippingRouter);
-router.use("/souvenirs", verifyToken, souvenirRouter);
+router.use("/souvenirs", souvenirRouter);
 router.use("/users", verifyToken, userRouter);
 
 // 404 handler

@@ -8,6 +8,7 @@ export const ROUTES = {
     `/dashboard/${role !== 2 ? "craft" : "managereservation"}`,
   RESERVATION: "/web/reservation",
   PROFILE: "/web/profile",
+  CHECKOUT:"/web/checkout",
   UPDATE_PROFILE: "/web/profile/update",
   CHANGE_PASSWORD: "/web/profile/changePassword",
   CART: "/web/cart",

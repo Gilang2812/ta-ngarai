@@ -1,4 +1,4 @@
-import { axiosServer } from "@/lib/axios";
+import { axiosServer } from "@/lib/axiosServer";
 import { CheckSUserResponse } from "@/type/schema/UsersSchema";
 import * as yup from "yup";
 

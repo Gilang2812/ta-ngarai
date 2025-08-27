@@ -14,7 +14,7 @@ type ItineraryProps = {
 export const Itinerary = ({ data }: ItineraryProps) => {
   const [activeDay, setActiveDay] = useState<string | null>(null);
   return (
-    data && (
+  data && (
       <section className="p-5 bg-white rounded-xl space-y-4">
         <MapLayout containerStyle={{ height: "500px" }} zoom={18}></MapLayout>
         <div className="flex flex-grow relative flex-wrap gap-y-2 py-2">

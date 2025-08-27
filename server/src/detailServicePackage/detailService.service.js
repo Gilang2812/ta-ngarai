@@ -66,11 +66,11 @@ const createDetailService = async ({
   service_package_id,
   ...rest
 }) => {
+  console.log("ini kondisi nya",package_id, service_package_id);
   let detailService = await getDetailService({
     package_id,
     service_package_id,
   });
-  console.log("detail service", detailService);
   detailService = await insertDetailService({
     package_id,
     service_package_id,

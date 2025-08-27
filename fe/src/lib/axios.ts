@@ -5,7 +5,7 @@ const baseURL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 export const useAxiosAuth = () => {
   const { data: session } = useSession();
   const axiosAuth = axios.create({
-    baseURL: process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000",
+    baseURL: baseURL || "http://localhost:5000",
   });
 
   axiosAuth.interceptors.request.use((config) => {
@@ -17,4 +17,3 @@ export const useAxiosAuth = () => {
 
   return axiosAuth;
 };
-export const axiosServer = axios.create({ baseURL });

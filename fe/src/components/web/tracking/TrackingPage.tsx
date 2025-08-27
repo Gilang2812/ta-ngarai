@@ -37,7 +37,7 @@ const TrackingPage = ({ id }: { id: string }) => {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 border md:grid-cols-2 gap-4 text-sm">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
           <dl className="flex items-center ">
             <Package className="w-4 h-4 mr-2" />
             <dt className="font-medium">Waybill ID:</dt>

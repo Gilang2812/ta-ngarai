@@ -1,8 +1,6 @@
 import React from "react";
 import Button from "../common/Button";
 import Link from "next/link";
-import { ROUTES } from "@/data/routes";
-import { FaTruck } from "react-icons/fa6";
 
 type Props = {
   status: number | string;
@@ -23,7 +21,6 @@ const ItemReservationButton = ({
   handleRateClick,
   paymentStatus,
   token,
-  tracking_id,
 }: Props) => {
   switch (status) {
     case 1:
@@ -54,18 +51,6 @@ const ItemReservationButton = ({
     case 3:
       return (
         <>
-          {tracking_id && (
-            <Button
-              onClick={(e) => {
-                e.stopPropagation();
-              }}
-              asChild
-            >
-              <Link href={ROUTES.TRACKING_ORDER(tracking_id)}>
-                <FaTruck /> Track
-              </Link>
-            </Button>
-          )}
           <Button
             onClick={(e) => {
               e.stopPropagation();

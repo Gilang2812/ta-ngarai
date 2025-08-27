@@ -1,4 +1,5 @@
 const { CustomError } = require("../../utils/CustomError");
+const { findObjects } = require("../object/object.repository");
 const {
   findAllPackage,
   findPackage,
@@ -135,13 +136,27 @@ const deletePackageDay = async (condition) => {
 };
 
 const createDetailPackage = async ({ activity, day, package_id, ...rest }) => {
+  const requestBody = { activity, day, package_id, ...rest };
+
   await getDetailPackage({ activity, day, package_id });
-  const newDetailPackage = await insertDetailPackage({
-    activity,
-    day,
-    package_id,
-    ...rest,
-  });
+  const newDetailPackage = await insertDetailPackage(requestBody);
+  const objectCode = newDetailPackage.activity_type;
+  console.log("objectCode", objectCode);
+  if (objectCode === "A" || objectCode === "FC") {
+    const object = await findObjects(objectCode, {
+      id: newDetailPackage.object_id,
+    });
+    console.log("object", object);
+    if (object.price) {
+      const package = await findPackage(package_id);
+      console.log("ini yang baru", package);
+      const currentPrice = Number(package.price) || 0;
+      const newPrice = Number(object.price) || 0;
+      package.price = currentPrice + newPrice;
+      await package.save();
+    }
+  }
+
   return newDetailPackage;
 };
 
@@ -150,17 +165,37 @@ const editDetailPackage = async (
   { activity, day, package_id, ...rest }
 ) => {
   await getDetailPackage({ activity, day, package_id });
-  const updatedDetailPackage = await updateDetailPackage(condition, {
-    activity,
-    day,
-    package_id,
-    ...rest,
-  });
+  const requestBody = { activity, day, package_id, ...rest };
+  const updatedDetailPackage = await updateDetailPackage(
+    condition,
+    requestBody
+  );
+
   return updatedDetailPackage;
 };
 
 const deleteDetailPackage = async (condition) => {
   const deletedDetailPackage = await destroyDetailPackage(condition);
+
+  if (deletedDetailPackage) {
+    const objectCode = deletedDetailPackage.activity_type;
+    if (objectCode === "A" || objectCode === "FC") {
+      const object = await findObjects(objectCode, {
+        id: deletedDetailPackage.object_id,
+      });
+
+      if (object?.price) {
+        const package = await findPackage(deletedDetailPackage.package_id);
+        const currentPrice = Number(package?.price) || 0;
+        const oldPrice = Number(object?.price) || 0;
+        const newPrice =
+          currentPrice - oldPrice < 0 ? 0 : currentPrice - oldPrice;
+        package.price = newPrice;
+        await package.save();
+      }
+    }
+  }
+
   return deletedDetailPackage;
 };
 

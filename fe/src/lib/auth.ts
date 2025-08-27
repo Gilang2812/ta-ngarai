@@ -3,7 +3,8 @@ import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 import { UserStore } from "@/validation/authSchema";
-import { axiosServer } from "./axios";
+import { axiosServer } from "./axiosServer";
+ 
 
 export const authOptions: NextAuthOptions = {
   providers: [

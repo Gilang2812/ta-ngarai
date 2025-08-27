@@ -133,7 +133,7 @@ const useManageCraftTransaction = () => {
     indexOfFirstItem,
     indexOfLastItem,
   } = useTableManagement<ShippingDataWithReviewGallery>(filteredData);
-  console.log(currentItems);
+  
 
   return {
     transaction,

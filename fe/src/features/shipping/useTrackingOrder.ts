@@ -1,4 +1,4 @@
-import { axiosServer } from "@/lib/axios";
+import { axiosServer } from "@/lib/axiosServer";
 import { TrackingResponse } from "@/type/schema/ShippingSchema";
 import { useQuery } from "@tanstack/react-query";
 

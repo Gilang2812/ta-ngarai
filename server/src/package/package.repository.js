@@ -19,13 +19,14 @@ const findAllPackage = async (condition, { package, gallery, service }) => {
   return packages;
 };
 
-const findPackage = async (
-  id,
-  { package = false, gallery = false, service = false, reservation = false }
-) => {
-  const includes = getPackageIncludes({ package, gallery, service });
+const findPackage = async (id, includeKeys) => {
+  const includes = getPackageIncludes({
+    package: includeKeys?.package,
+    gallery: includeKeys?.gallery,
+    service: includeKeys?.service,
+  });
 
-  if (reservation) {
+  if (includeKeys?.reservation) {
     includes.push({
       model: Reservation,
       as: "reservation",

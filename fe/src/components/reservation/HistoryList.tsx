@@ -11,6 +11,9 @@ import Button from "../common/Button";
 import ImgCraft from "../common/ImgCraft";
 import ItemReservationButton from "./ItemReservationButton";
 import { CraftCartForm } from "@/type/schema/CraftCartSchema";
+import Link from "next/link";
+import { FaTruck } from "react-icons/fa6";
+import { ROUTES } from "@/data/routes";
 
 type Props = {
   history: ShippingDataWithReviewGallery;
@@ -101,6 +104,18 @@ const HistoryList: FC<Props> = ({
         </div>
       </div>
       <div className="flex justify-end gap-2 items-center">
+        {history.tracking_id && (
+          <Button
+            onClick={(e) => {
+              e.stopPropagation();
+            }}
+            asChild
+          >
+            <Link href={ROUTES.TRACKING_ORDER(history.tracking_id)}>
+              <FaTruck /> Track
+            </Link>
+          </Button>
+        )}
         <ItemReservationButton
           order_id={history?.shippingItems?.[0]?.checkout_id}
           status={history?.status}

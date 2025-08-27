@@ -20,6 +20,9 @@ import { ModalDetail } from "../modal/ModalDetail";
 import { UserDetailPage } from "../reservation/UserDetailPage";
 import ReviewHistory from "../review/ReviewHistory";
 import EmptyTransactions from "../dashboard/transaction/EmptyTransactions";
+import Button from "../common/Button";
+import { FaTruck } from "react-icons/fa6";
+import { ROUTES } from "@/data/routes";
 
 const CraftTransaction = () => {
   const {
@@ -114,6 +117,18 @@ const CraftTransaction = () => {
         </td>
         <td>
           <div className="flex items-center gap-2 justify-center">
+            {item.tracking_id && (
+              <Button
+                onClick={(e) => {
+                  e.stopPropagation();
+                }}
+                asChild
+              >
+                <Link href={ROUTES.TRACKING_ORDER(item.tracking_id)}>
+                  <FaTruck /> Track
+                </Link>
+              </Button>
+            )}
             <TransactionButtons
               handleShipProducts={() =>
                 handleShipProducts({

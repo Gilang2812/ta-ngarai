@@ -25,6 +25,7 @@ const fs = require("fs");
 
 const { souvenirPlaceSchema } = require("./souvenir.validation");
 const { findUniqueUsernameOrEmail } = require("../user/user.repository");
+const { verifyToken } = require("../middlewares/authentication");
 const router = require("express").Router();
 
 router.get("/", async (req, res, next) => {
@@ -37,6 +38,8 @@ router.get("/", async (req, res, next) => {
     next(error);
   }
 });
+
+router.use(verifyToken);
 
 router.get("/user/index", async (req, res, next) => {
   try {

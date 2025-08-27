@@ -19,8 +19,13 @@ const objectList = {
   FC: Facility,
 };
 
-const findObjects = async (key, id) => {
-  const object = await objectList[key].findOne({ where: id });
+const findAllObjects = async (key) => {
+  const objects = await objectList[key].findAll();
+  return objects;
+};
+
+const findObjects = async (key, id) => { 
+  const object = await objectList[key]?.findOne({ where: id });
   return object;
 };
 
@@ -52,4 +57,4 @@ const findObjectAround = async (lat, long, radius, tableName, columns) => {
 
   return objects;
 };
-module.exports = { findObjects, findObjectAround };
+module.exports = { findObjects, findObjectAround, findAllObjects };

@@ -8,7 +8,7 @@ const combinePackageObject = async (packages) => {
           const enrichedDetails = await Promise.all(
             (day?.detailPackages || []).map(async (activity) => {
               const object = await getObjectById(
-                activity.activity_type  ,
+                activity.activity_type,
                 activity.object_id
               );
               return { ...activity?.toJSON(), object };
