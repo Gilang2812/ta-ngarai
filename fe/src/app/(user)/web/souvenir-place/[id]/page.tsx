@@ -1,9 +1,10 @@
+import SouvenirPage from "@/components/web/object/SouvenirPage";
 import { DynamicPageProps } from "@/type/props/DynamicPageProps";
 import React from "react";
 
 type Props = DynamicPageProps;
 
-export default async function Page({ params }: Props) {
+export default async function Souvenir({ params }: Props) {
   const { id } = await params;
-  return <div>page</div>;
+  return <SouvenirPage id={id} />;
 }

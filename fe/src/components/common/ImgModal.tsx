@@ -1,25 +1,29 @@
 "use client";
 import { useModal } from "@/utils/ModalUtils";
 import { AnimatePresence, motion } from "framer-motion";
-import { ComponentProps } from "react";
 import { FaXmark } from "react-icons/fa6";
-import ImgCraft from "./ImgCraft";
+import { ComponentProps } from "react";
+import { baseUrl } from "@/lib/baseUrl";
+import { cn } from "@/utils/common/cn";
 
 export const ImgModal = ({
   id = "1",
   src,
   alt,
   className,
-  ...props
-}: { id: number | string } & ComponentProps<typeof ImgCraft>) => {
+}: { id: number | string } & ComponentProps<"img">) => {
   const { isOpen, toggleModal } = useModal();
 
   return (
     <>
       {/* Thumbnail */}
-      <motion.div layoutId={`img-${id}`} onClick={toggleModal}>
-        <ImgCraft className={className} src={src} alt={alt} {...props} />
-      </motion.div>
+      <motion.img
+        layoutId={`img-${id}`}
+        src={`${baseUrl}/${src}`}
+        alt={alt ?? ""}
+        className={cn(`w-24 rounded`,className)}
+        onClick={toggleModal}
+      />
 
       {/* Modal */}
       <AnimatePresence>
@@ -32,7 +36,6 @@ export const ImgModal = ({
             onClick={toggleModal}
           >
             <motion.div
-              layoutId={`img-${id}`}
               className="relative max-w-2xl max-h-[90vh]"
               onClick={(e) => e.stopPropagation()}
             >
@@ -45,10 +48,10 @@ export const ImgModal = ({
               >
                 <FaXmark />
               </button>
-              <ImgCraft
-                src={src}
-                alt={alt}
-                {...props}
+              <motion.img
+                layoutId={`img-${id}`}
+                src={`${baseUrl}/${src}`}
+                alt={alt ?? ""}
                 className="object-contain w-full h-full"
               />
             </motion.div>

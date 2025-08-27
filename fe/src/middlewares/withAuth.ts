@@ -18,10 +18,7 @@ const publicRoutes = [
 // special routes yang punya parameter, perlu dicek dengan startsWith
 const dynamicPublicRoutes = [ROUTES.CRAFT, ROUTES.TOURISM_PACKAGE];
 
-export default function withAuth(
-  middleware: NextMiddleware,
-  requireAuth: string[]
-) {
+export default function withAuth(middleware: NextMiddleware) {
   return async (req: NextRequest, next: NextFetchEvent) => {
     const pathname = req.nextUrl.pathname;
 
@@ -39,7 +36,6 @@ export default function withAuth(
       return middleware(req, next);
     }
     if (
-      requireAuth.includes(pathname) ||
       pathname.startsWith("/web/") ||
       pathname.startsWith("/dashboard/") ||
       pathname.startsWith("/profile/")
@@ -48,10 +44,23 @@ export default function withAuth(
         req,
         secret: process.env.NEXTAUTH_SECRET,
       });
-      if (!token && !authPage.includes(pathname)) {
-        const url = new URL("/login", req.url);
-        url.searchParams.set("callbackUrl", encodeURI(req.url));
-        return NextResponse.redirect(url);
+      if (!token) {
+        if (!authPage.includes(pathname)) {
+          const url = new URL("/login", req.url);
+          url.searchParams.set("callbackUrl", encodeURI(req.url));
+          return NextResponse.redirect(url);
+        }
+      } else {
+        if (!token.name || !token.username || !token.phone) {
+          if (
+            pathname !== ROUTES.UPDATE_PROFILE ||
+            pathname !== ROUTES.PROFILE
+          ) {
+            const url = new URL(ROUTES.UPDATE_PROFILE, req.url);
+            url.searchParams.set("callbackUrl", encodeURI(req.url));
+            return NextResponse.redirect(url);
+          }
+        }
       }
     }
     if (token) {

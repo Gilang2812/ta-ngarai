@@ -31,9 +31,7 @@ const DetailHomestayReservation = ({ id }: { id: string }) => {
     handlePayment,
     item_details,
   } = useDetailHomestayReservation(id);
-  const centroid = getCentroid(geom);
-  console.log("centroid:", centroid);
-  console.log("geom:", geom);
+  const centroid = getCentroid(geom); 
   if (isLoading) return <DetailHomestayReservationLoader />;
   return (
     data &&

@@ -1,4 +1,6 @@
-export type ObjectDataType = typeof objectsData;
+export type ObjectDataType = typeof objectsData & {
+  [key: string]: boolean;
+};
 
 export const objectsData = {
   attraction: false,

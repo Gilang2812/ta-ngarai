@@ -11,6 +11,10 @@ const SouvenirPlace = sequelize.define(
       allowNull: true,
       primaryKey: true,
     },
+    destination_id: {
+      type: DataTypes.STRING(5),
+      allowNull: false,
+    },
     name: {
       type: DataTypes.STRING(255),
       allowNull: false,

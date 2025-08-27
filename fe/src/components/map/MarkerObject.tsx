@@ -2,13 +2,8 @@ import { LatLngLiteral } from "@/type/common/MapType";
 import MapMarker from "./MapMarker";
 import { InfoWindowF } from "@react-google-maps/api";
 import {
-  FaAddressBook,
   FaInfo,
-  FaMapPin,
-  FaMoneyBill,
-  FaPersonPraying,
   FaPlus,
-  FaSpa,
 } from "react-icons/fa6";
 import { DirectionToKotoGadangButton } from "./DirectionToKotoGadangButton";
 import { SimplifiedObject } from "@/type/schema/PackageSchema";
@@ -18,6 +13,7 @@ import useTravelRoute from "@/hooks/useTravelRoute";
 import ButtonTooltip from "../common/ButtonTooltip";
 import { ROUTES } from "@/data/routes";
 import useUserRole from "@/hooks/useUserRole";
+import { getIconAndTextSecondLine, getIconAndTextThirdLine } from "./ObjectInfoWindow";
 
 type MarkerProps = {
   position: LatLngLiteral;
@@ -35,31 +31,28 @@ export const MarkerObject = ({
   toggleInfoWindow,
   properties,
 }: MarkerProps) => {
-  const getIconAndTextSecondLine = () => {
-    if (properties.type !== undefined) {
-      return { icon: <FaSpa />, text: properties.type };
-    } else if (properties.contact_person !== undefined) {
-      return { icon: <FaAddressBook />, text: properties.contact_person };
-    } else if (properties.capacity !== undefined) {
-      return { icon: <FaPersonPraying />, text: properties.capacity };
-    } else {
-      return { icon: <FaSpa />, text: "object " };
-    }
-  };
-  const getIconAndTextThirdLine = () => {
-    if (properties.type !== undefined) {
-      return { icon: <FaMoneyBill />, text: properties.price };
-    } else if (properties.contact_person !== undefined) {
-      return { icon: <FaMapPin />, text: properties.address };
-    } else {
-      return { icon: <FaMoneyBill />, text: "free" };
-    }
-  };
 
-  const { icon, text } = getIconAndTextSecondLine();
-  const { icon: thirdIcon, text: thirdText } = getIconAndTextThirdLine();
+
+  const { icon, text } = getIconAndTextSecondLine(properties);
+  const { icon: thirdIcon, text: thirdText } =
+    getIconAndTextThirdLine(properties);
   const { routes, handleAddUniqueRoute } = useTravelRoute();
   const { isUserAuth } = useUserRole();
+  const {
+    DETAIL_ATTRACTION,
+    DETAIL_CULINARY,
+    DETAIL_HOMESTAY_OBJECT,
+    DETAIL_SOUVENIR,
+    DETAIL_WORSHIP,
+  } = ROUTES;
+  const linkObject = (id: string): string => {
+    if (id.startsWith("AT")) return DETAIL_ATTRACTION(id);
+    if (id.startsWith("CP")) return DETAIL_CULINARY(id);
+    if (id.startsWith("SP")) return DETAIL_SOUVENIR(id);
+    if (id.startsWith("HO")) return DETAIL_HOMESTAY_OBJECT(id);
+    if (id.startsWith("WO")) return DETAIL_WORSHIP(id);
+    return "/web";
+  };
 
   return (
     <MapMarker
@@ -89,7 +82,7 @@ export const MarkerObject = ({
             <section className="flex items-center justify-center gap-2">
               <DirectionToKotoGadangButton destination={position} />
               <Button className="p-2" variant={"primary"} asChild>
-                <Link href={"/web/explore"}>
+                <Link href={linkObject(properties.id)}>
                   <FaInfo />
                 </Link>
               </Button>

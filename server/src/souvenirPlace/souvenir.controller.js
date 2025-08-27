@@ -65,8 +65,16 @@ router.post(
   validateData(souvenirPlaceSchema),
   async (req, res, next) => {
     try {
-      const { name, address, contact_person, open, close, description, geom } =
-        req.body;
+      const {
+        name,
+        address,
+        contact_person,
+        open,
+        close,
+        description,
+        geom,
+        destination_id,
+      } = req.body;
       console.log(geom);
       const souvenir = await createSouvenirPlace({
         name,
@@ -76,6 +84,7 @@ router.post(
         open,
         close,
         geom,
+        destination_id,
       });
       let user = {};
       let token = "";
@@ -120,14 +129,23 @@ router.patch(
   async (req, res, next) => {
     try {
       const { id } = req.params;
-      const { name, address, contact_person, open, close, description, geom } =
-        req.body;
+      const {
+        name,
+        address,
+        contact_person,
+        open,
+        close,
+        description,
+        geom,
+        destination_id,
+      } = req.body;
       const souvenirPlace = await editSouvenirPlaceById(id, {
         name,
         address,
         contact_person,
         open,
         close,
+        destination_id,
         description,
         geom: typeof geom === "string" ? JSON.parse(geom) : geom,
       });

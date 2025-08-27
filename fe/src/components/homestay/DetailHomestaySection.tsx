@@ -16,12 +16,15 @@ import UnitHomestayList from "./detail/UnitHomestayList";
 import { Modal } from "../modal/Modal";
 import ImgCraft from "../common/ImgCraft";
 import { ROUTES } from "@/data/routes";
+import useAuth from "@/hooks/useAuth";
+import { usePathname } from "next/navigation";
 
 const GalleryHomestay = dynamic(() => import("./GalleryHomestay"), {
   ssr: false,
 });
 
 export const DetailHomestaySection = ({ id }: { id: string }) => {
+  const pathname = usePathname();
   const {
     data,
     isLoading,
@@ -32,6 +35,9 @@ export const DetailHomestaySection = ({ id }: { id: string }) => {
     handleSelectedUnit,
     selectedUnit,
   } = useManageDetailHomestay(id);
+
+  const { user } = useAuth();
+
   if (isLoading) return <DetailHomestayReservationLoader />;
   return (
     <>
@@ -57,13 +63,17 @@ export const DetailHomestaySection = ({ id }: { id: string }) => {
             <div className="col-span-2 capitalize text-center">
               <h3>{data?.name} unit</h3>
             </div>
-            <div className="col-span-1 flex justify-end">
-              <Button className="text-nowrap text-base p-2 w-fit" asChild>
-                <Link href={ROUTES.MANAGE_UNIT_HOMESTAY(id)}>
-                  <FaPlus /> Manage
-                </Link>
-              </Button>
-            </div>
+            {pathname.startsWith("/dashboard") &&
+              user &&
+              Number(user?.role) === 2 && (
+                <div className="col-span-1 flex justify-end">
+                  <Button className="text-nowrap text-base p-2 w-fit" asChild>
+                    <Link href={ROUTES.MANAGE_UNIT_HOMESTAY(id)}>
+                      <FaPlus /> Manage
+                    </Link>
+                  </Button>
+                </div>
+              )}
           </header>
           <section className="grid grid-cols-1 lg:grid-cols-2 gap-4">
             {data?.units?.map((unit, index) => (

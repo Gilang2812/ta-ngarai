@@ -1,10 +1,18 @@
 const sequelize = require("../../config/database");
-const { Attraction } = require("../../models/Attraction");
-const CulinaryPlace = require("../../models/CulinaryPlace");
-const { Facility } = require("../../models/Facility");
-const { SouvenirPlace } = require("../../models/SouvenirPlace");
+const {
+  Attraction,
+  CulinaryPlace,
+  Facility,
+  GalleryAttraction,
+  GalleryCulinary,
+  SouvenirPlace,
+  WorshipPlace,
+  Homestay,
+  GalleryWorship,
+  GallerySouvenir,
+} = require("../../models/relation");
 const { TraditionalHouse } = require("../../models/TraditionalHouse");
-const { WorshipPlace } = require("../../models/WorshipPlace");
+
 const {
   generateDistanceQuery,
   generateDistanceLessQuery,
@@ -24,7 +32,7 @@ const findAllObjects = async (key) => {
   return objects;
 };
 
-const findObjects = async (key, id) => { 
+const findObjects = async (key, id) => {
   const object = await objectList[key]?.findOne({ where: id });
   return object;
 };
@@ -57,4 +65,80 @@ const findObjectAround = async (lat, long, radius, tableName, columns) => {
 
   return objects;
 };
-module.exports = { findObjects, findObjectAround, findAllObjects };
+
+const findAttraction = async (id) => {
+  const attraction = await Attraction.findOne({
+    where: { id },
+    include: [
+      {
+        model: GalleryAttraction,
+        as: "galleries",
+      },
+    ],
+  });
+  return attraction;
+};
+
+const findCulinaryPlace = async (id) => {
+  const culinaryPlace = await CulinaryPlace.findOne({
+    where: { id },
+    include: [
+      {
+        model: GalleryCulinary,
+        as: "galleries",
+      },
+    ],
+  });
+  return culinaryPlace;
+};
+
+const findSouvenirPlace = async (id) => {
+  const souvenirPlace = await SouvenirPlace.findOne({
+    where: { id },
+    include: [
+      {
+        model: GallerySouvenir,
+        as: "galleries",
+      },
+    ],
+  });
+  return souvenirPlace;
+};
+
+const findHomestay = async (id) => {
+  const homestay = await Homestay.findOne({
+    where: { id },
+    include: [
+      {
+        model: GalleryHomestay,
+        as: "galleries",
+      },
+    ],
+  });
+  return homestay;
+};
+
+const findWorshipPlace = async (id) => {
+  const worshipPlace = await WorshipPlace.findOne({
+    where: { id },
+    include: [
+      {
+        model: GalleryWorship,
+        as: "galleries",
+      },
+    ],
+  });
+  return worshipPlace;
+};
+
+module.exports = {
+  findObjects,
+  findAttraction,
+  findObjectAround,
+  findCulinaryPlace,
+  findSouvenirPlace,
+  findAllObjects,
+  findAttraction,
+  findHomestay,
+  findWorshipPlace,
+};

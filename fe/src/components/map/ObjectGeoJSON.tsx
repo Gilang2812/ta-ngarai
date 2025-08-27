@@ -12,12 +12,12 @@ import { getIconUrl } from "@/utils/map/getIconUrl";
 type Props = GeoJsonLayerProps;
 
 const ObjectGeoJSON = ({ data }: Props) => {
-  const map = useGoogleMap(); 
+  const map = useGoogleMap();
   const hasFitBounds = useRef(false);
   const { radius, userPosition } = useUserPositionStore();
   const { open, toggleInfoWindow } = useInfoWindow();
   useEffect(() => {
-    if (!map || !data) return; 
+    if (!map || !data) return;
     const dataObject = new google.maps.Data();
     dataObject.addGeoJson(data);
     dataObject.setMap(map);

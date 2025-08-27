@@ -1,9 +1,10 @@
+import CulinaryPage from "@/components/web/object/CulinaryPage";
 import { DynamicPageProps } from "@/type/props/DynamicPageProps";
 import React from "react";
 
 type Props = DynamicPageProps;
 
-export default async function Page({ params }: Props) {
+export default async function CulinaryPlace({ params }: Props) {
   const { id } = await params;
-  return <div>page</div>;
+  return <CulinaryPage id={id} />;
 }

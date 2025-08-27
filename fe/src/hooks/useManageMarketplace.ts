@@ -47,6 +47,11 @@ export const useManageMarketplace = () => {
       latitude: 0,
       longitude: 0,
       images: [],
+      kecamatan: "",
+      kota: "",
+      negara: "",
+      provinsi: "",
+      destination_id: "",
     });
     toggleModal();
   };

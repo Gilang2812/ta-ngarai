@@ -1,4 +1,11 @@
 const { handleInput } = require("../../utils/handleInput");
+const {
+  findAttraction,
+  findCulinaryPlace,
+  findSouvenirPlace,
+  findHomestay,
+  findWorshipPlace,
+} = require("./object.repository");
 const { getObjectById, getObjectAround } = require("./object.service");
 const { objectSchema } = require("./object.validation");
 
@@ -10,6 +17,35 @@ router.get("/:object/:id", async (req, res, next) => {
     const objects = await getObjectById(object, id);
 
     res.status(200).json(objects);
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.get("/galleries/:object/:id", async (req, res, next) => {
+  try {
+    const { object, id } = req.params;
+
+    let data = null;
+    switch (object) {
+      case "attractions":
+        data = await findAttraction(id);
+        break;
+      case "culinary":
+        data = await findCulinaryPlace(id);
+        break;
+      case "souvenirs":
+        data = await findSouvenirPlace(id);
+        break;
+      case "homestay":
+        data = await findHomestay(id);
+        break;
+      case "worship":
+        data = await findWorshipPlace(id);
+        break;
+    }
+
+    res.status(200).json(data);
   } catch (error) {
     next(error);
   }

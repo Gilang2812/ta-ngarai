@@ -23,6 +23,11 @@ const useFormMarketplace = (existingMarketplace?: FormMarketplace) => {
     images: existingMarketplace?.images || [],
     latitude: 0,
     longitude: 0,
+    destination_id: "",
+    kecamatan: "",
+    kota: "",
+    negara: "",
+    provinsi: "",
   });
   const { mutate: createMarketplace, isPending: isPendingCreate } =
     useCreateMarketplace({

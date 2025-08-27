@@ -28,7 +28,12 @@ const EditMarketplacePage = ({ id }: Props) => {
     description: data?.description,
     geom: data?.geom ? JSON.stringify(data.geom) : "",
     id: data.id,
+    destination_id: data.destination_id,
     images,
+    kecamatan: "",
+    kota: "",
+    negara: "",
+    provinsi: "",
   };
   return <FormStoreSection existingMarketplace={existingSouvenir} />;
 };

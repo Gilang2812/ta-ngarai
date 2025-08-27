@@ -95,6 +95,7 @@ export type FacilityType = {
 
 export type SouvenirPlaceSchema = ObjectBase & {
   address: string;
+  destination_id: string;
   contact_person: string;
   open: Time;
   close: Time;
@@ -124,6 +125,9 @@ export type SimplifiedObject = ObjectBase & {
   contact_person?: string;
   address?: string;
   capacity?: number;
+  open?: string;
+  close?: string;
+  description?: string;
 };
 
 export type PackageReservationSchema = {

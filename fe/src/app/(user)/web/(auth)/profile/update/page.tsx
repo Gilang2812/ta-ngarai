@@ -11,7 +11,7 @@ export default function UpdateProfile() {
   return (
     <SingleContentWrapper className="relative mx-auto overflow-x-hidden">
       <header className="flex justify-between items-center mb-8">
-        <h1 className="text-2xl font-semibold text-gray-900">Update Profile</h1>
+        <h1 className="text-2xl font-semibold text-gray-900">Complite Yout Profile</h1>
         <Button aria-label="Edit profile information">Edit Profile</Button>
       </header>
       <Formik
