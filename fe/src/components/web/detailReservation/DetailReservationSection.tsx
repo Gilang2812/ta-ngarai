@@ -8,8 +8,14 @@ import { useDetailReservationPackage } from "@/hooks/useDetailReservationPackage
 import ManagementSkeletonLoader from "@/components/loading/ManagementSkeletonLoader";
 
 export const DetailReservationSection = ({ id }: { id: string }) => {
-  const { data, isLoading, handlePayment, item_details, refetch } =
-    useDetailReservationPackage(id);
+  const {
+    data,
+    isLoading,
+    handlePayment,
+    item_details,
+    refetch,
+    handleRecheck,
+  } = useDetailReservationPackage(id);
 
   if (isLoading) return <ManagementSkeletonLoader />;
   return (
@@ -41,6 +47,7 @@ export const DetailReservationSection = ({ id }: { id: string }) => {
         )}
         <section className="col-span-2 ">
           <PaymentSection
+            handleRecheck={handleRecheck}
             handlePayment={handlePayment}
             item_details={item_details}
             refetch={refetch}

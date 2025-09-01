@@ -29,19 +29,29 @@ const io = new Server(server, {
 app.set("io", io);
 
 io.on("connection", (socket) => {
+  console.log("User connected:", socket.id);
+
+  // kalau mau join pakai userId
   socket.on("join", (userId) => {
     socket.join(userId);
-    socket.on("join-room", (room) => {
-      socket.join(room);
-    });
-    socket.on("leave-room", (room) => socket.leave(room));
+    console.log(`Socket ${socket.id} joined user room: ${userId}`);
+  });
+
+  // join ke room detail reservation
+  socket.on("join-room", (room) => {
+    socket.join(room);
+    console.log(`Socket ${socket.id} joined room: ${room}`);
+  });
+
+  socket.on("leave-room", (room) => {
+    socket.leave(room);
+    console.log(`Socket ${socket.id} left room: ${room}`);
   });
 
   socket.on("disconnect", () => {
     console.log("User disconnected:", socket.id);
   });
 });
-
 /**
  * Listen on provided port, on all network interfaces.
  */

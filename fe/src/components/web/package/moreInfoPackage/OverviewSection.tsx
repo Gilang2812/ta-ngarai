@@ -98,6 +98,7 @@ export const OverviewSection = ({ data, isLoading }: Props) => {
               className="text-nowrap"
               type="button"
               variant={"primary"}
+              disabled={!isUserAuth}
               onClick={() => handleaddToCart()}
             >
               <FaCartPlus /> Add to Cart

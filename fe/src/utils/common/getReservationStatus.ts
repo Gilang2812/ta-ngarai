@@ -34,9 +34,21 @@ export const getReservationStatus = (
     status === 2 || (dayjs(reservation.check_in).isBefore(dayjs()) && !status); //rejected
   const accepted = status === 1; // awaiting payment
   const payDeposit =
-    accepted && !reservation.deposit_date && reservation.token_of_deposit; //pay deposit
+    accepted &&
+    !reservation.deposit_date &&
+    reservation.token_of_deposit &&
+    dayjs().isBefore(dayjs(reservation.confirmation_date).add(24, "hour")); //pay deposit
 
-  const payFull = !reservation.payment_date && reservation.token_of_payment; //pay full
+  const payFull =
+    !reservation.payment_date &&
+    reservation.token_of_payment &&
+    dayjs().isBefore(
+      dayjs(
+        reservation.deposit_date
+          ? reservation.deposit_date
+          : reservation.confirmation_date
+      ).add(24, "hour")
+    ); //pay full
   const unReviewed =
     reservation.payment_date &&
     !reservation.review &&

@@ -51,4 +51,3 @@ export const createShippingStoreBody = ({
   }));
   return data;
 };
-  

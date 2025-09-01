@@ -16,6 +16,7 @@ import { ReservationDetails } from "@/type/schema/ReservationSchema";
 import { ReservationStatus } from "@/utils/common/getReservationStatus";
 import ButtonConfirmation from "../reservation/ButtonConfirmation";
 import ButtonCancel from "../reservation/ButtonCancel";
+import { CheckStatus } from "../managereservation/payment/CheckStatusButton";
 
 const DetailHomestayReservation = ({ id }: { id: string }) => {
   const {
@@ -30,8 +31,9 @@ const DetailHomestayReservation = ({ id }: { id: string }) => {
     status,
     handlePayment,
     item_details,
+    handleRecheck,
   } = useDetailHomestayReservation(id);
-  const centroid = getCentroid(geom); 
+  const centroid = getCentroid(geom);
   if (isLoading) return <DetailHomestayReservationLoader />;
   return (
     data &&
@@ -117,7 +119,7 @@ const DetailHomestayReservation = ({ id }: { id: string }) => {
               Reservation Summary
             </h2>
           </header>
-          <section className="h-fit">
+          <section className="h-fit flex items-center gap-4">
             <ButtonConfirmation
               item_details={item_details}
               reservation_id={id}
@@ -125,6 +127,10 @@ const DetailHomestayReservation = ({ id }: { id: string }) => {
               status={status.replaceAll(" ", "-") as ReservationStatus}
               deposit={data.deposit}
               total_price={data.total_price}
+            />
+            <CheckStatus
+              handleRecheck={handleRecheck}
+              status={status.replaceAll(" ", "-") as ReservationStatus}
             />
           </section>
           <div className="[&_dt]:min-w-[12.5rem] border-b-2 p-4 space-y-4 ">

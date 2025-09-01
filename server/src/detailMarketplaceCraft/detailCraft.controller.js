@@ -17,6 +17,15 @@ const {
 } = require("./detailCraft.service");
 const { detailCraftSchema } = require("./detailCraft.validation");
 const fs = require("fs");
+router.get("/users", async (req, res, next) => {
+  try {
+    const includeKeys = req.query.include?.split(",") || [];
+    const detailCrafts = await getDetailCrafts({}, includeKeys);
+    res.status(200).json(detailCrafts);
+  } catch (error) {
+    next(error);
+  }
+});
 
 router.get("/order/:id_souvenir_place/:id_craft", async (req, res, next) => {
   try {
@@ -63,16 +72,6 @@ router.get("/:id_souvenir_place/index", async (req, res, next) => {
       { id_souvenir_place },
       includeKeys
     );
-    res.status(200).json(detailCrafts);
-  } catch (error) {
-    next(error);
-  }
-});
-
-router.get("/users", async (req, res, next) => {
-  try {
-    const includeKeys = req.query.include?.split(",") || [];
-    const detailCrafts = await getDetailCrafts({}, includeKeys);
     res.status(200).json(detailCrafts);
   } catch (error) {
     next(error);

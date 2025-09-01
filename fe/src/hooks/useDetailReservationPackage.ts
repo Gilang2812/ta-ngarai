@@ -5,7 +5,7 @@ import { getReservationStatus } from "@/utils/common/getReservationStatus";
 export const useDetailReservationPackage = (id: string) => {
   const { data, isLoading, refetch } = useFetchReservationByID(id);
 
-  const { handlePayment, isPending, item_details } = usePackagePayment({
+  const { handlePayment, item_details, handleRecheck } = usePackagePayment({
     refetchReservation: refetch,
     data,
     status: getReservationStatus(data),
@@ -14,8 +14,8 @@ export const useDetailReservationPackage = (id: string) => {
     data,
     isLoading,
     handlePayment,
-    isPending,
     item_details,
     refetch,
+    handleRecheck,
   };
 };

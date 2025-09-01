@@ -14,6 +14,8 @@ import { CraftCartForm } from "@/type/schema/CraftCartSchema";
 import Link from "next/link";
 import { FaTruck } from "react-icons/fa6";
 import { ROUTES } from "@/data/routes";
+import { Store } from "lucide-react";
+import { isExpired } from "@/lib/expiredChecker";
 
 type Props = {
   history: ShippingDataWithReviewGallery;
@@ -36,20 +38,21 @@ const HistoryList: FC<Props> = ({
       onClick={onClick}
     >
       <div className="flex justify-between items-center mb-4">
-        <h4 className="font-semibold ">
+        <h4 className="font-semibold flex items-center gap-4 bg-primary/10 text-primary p-2 rounded ">
+          <Store />{" "}
           {history?.shippingItems?.[0]?.detailCraft?.souvenirPlace?.name}
         </h4>
         <span
           className={`${getCraftTransactionStatusColor(
             history.status,
             history.shippingItems[0].checkout.transaction_token,
-            history.paymentStatus
+            isExpired(history.shippingItems[0].checkout.checkout_date)
           )} text-white px-3 py-1 rounded-full text-xs font-semibold uppercase`}
         >
           {getCraftTransactionStatus(
             history.status,
             history.shippingItems[0].checkout.transaction_token,
-            history.paymentStatus
+            isExpired(history.shippingItems[0].checkout.checkout_date)
           )}
         </span>
       </div>
@@ -123,7 +126,9 @@ const HistoryList: FC<Props> = ({
           shipping_id={history.shipping_id}
           handleRateClick={handleRateClick}
           token={history?.shippingItems?.[0]?.checkout?.transaction_token}
-          paymentStatus={history?.paymentStatus}
+          isExpired={isExpired(
+            history?.shippingItems?.[0]?.checkout?.checkout_date
+          )}
           tracking_id={history?.tracking_id}
         />
         <Button
@@ -143,7 +148,7 @@ const HistoryList: FC<Props> = ({
           Re-Order
         </Button>
       </div>
-      <div className="absolute bottom-3 right-3 text-gray-400 ">
+      <div className="absolute bottom-3 right-3 ">
         <GrBottomCorner className="text-sm absolute bottom-1 right-1" />
         <GrBottomCorner className="text-xl" />
       </div>

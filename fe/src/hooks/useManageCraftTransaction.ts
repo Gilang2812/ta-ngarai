@@ -9,6 +9,7 @@ import { ShippingDataWithReviewGallery } from "@/type/schema/CraftTransactionSch
 import { useUpdateStatus } from "@/features/web/checkout/useUpdateStatus";
 import { cornerAlert, showLoadingAlert } from "@/utils/AlertUtils";
 import { useModal } from "@/utils/ModalUtils";
+import { isExpired } from "@/lib/expiredChecker";
 
 const useManageCraftTransaction = () => {
   const [modalContent, setModalContent] = useState<"items" | "rate">("items");
@@ -88,7 +89,7 @@ const useManageCraftTransaction = () => {
           status: getCraftTransactionStatus(
             item.status,
             item.shippingItems[0].checkout.transaction_token,
-            item.paymentStatus
+            isExpired(item.shippingItems[0].checkout.checkout_date)
           ),
           craft_name: item?.shippingItems
             ?.map(
@@ -133,7 +134,6 @@ const useManageCraftTransaction = () => {
     indexOfFirstItem,
     indexOfLastItem,
   } = useTableManagement<ShippingDataWithReviewGallery>(filteredData);
-  
 
   return {
     transaction,

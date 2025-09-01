@@ -10,7 +10,7 @@ type Props = {
   handleRateClick: () => void;
   token?: string;
   tracking_id: string;
-  paymentStatus?: string;
+  isExpired?: boolean;
 };
 
 const ItemReservationButton = ({
@@ -19,7 +19,7 @@ const ItemReservationButton = ({
   handleCompleteOrder,
   shipping_id,
   handleRateClick,
-  paymentStatus,
+  isExpired,
   token,
 }: Props) => {
   switch (status) {
@@ -96,10 +96,10 @@ const ItemReservationButton = ({
             e.stopPropagation();
           }}
           type="button"
-          disabled={!token || paymentStatus === "failure"}
-          asChild={!!token && paymentStatus !== "failure"}
+          disabled={!token || isExpired}
+          asChild={!!token && !isExpired}
         >
-          {token && paymentStatus !== "failure" ? (
+          {token && !isExpired ? (
             <Link href={`/web/reservation/${order_id}/payment`}>Pay Now</Link>
           ) : (
             "Payment Failed"

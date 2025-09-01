@@ -1,7 +1,7 @@
 export const getCraftTransactionStatus = (
   status: number,
   token: string,
-  paymentStatus: string
+  isExpired: boolean
 ) => {
   switch (status) {
     case 0:
@@ -17,9 +17,7 @@ export const getCraftTransactionStatus = (
     case 5:
       return "Rated";
     case 6:
-      return !token || paymentStatus === "failure"
-        ? "cancel"
-        : "Awaiting payment";
+      return !token || isExpired ? "cancel" : "Awaiting payment";
     default:
       return "Unknown";
   }
@@ -28,7 +26,7 @@ export const getCraftTransactionStatus = (
 export const getCraftTransactionStatusColor = (
   status: number,
   token?: string,
-  paymentStatus?: string
+  isExpired?: boolean
 ) => {
   switch (status) {
     case 0:
@@ -44,9 +42,7 @@ export const getCraftTransactionStatusColor = (
     case 5:
       return "bg-purple-500";
     case 6:
-      return !token || paymentStatus === "failure"
-        ? "bg-red-600"
-        : "bg-yellow-400";
+      return !token || isExpired ? "bg-red-600" : "bg-yellow-400";
     default:
       return "bg-gray-500";
   }

@@ -47,7 +47,7 @@ export const Sidebar = ({ children }: { children: React.ReactNode }) => {
 
           <section className="text-center">
             <p>
-              <strong>Hello, {user?.name}</strong>
+              <strong>Hello, {user?.name??"Visitor"}</strong>
             </p>
             <p>
               <small>

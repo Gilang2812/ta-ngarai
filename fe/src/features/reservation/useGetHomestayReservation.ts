@@ -11,7 +11,7 @@ export const useGetHomestayReservation = (id: string) => {
     if (!socket || !id) return;
     joinRoom(`detailReservation:${id}`);
     const handler = () => {
-      queryClient.invalidateQueries({ queryKey: ["reservation", id] });
+      queryClient.invalidateQueries({ queryKey: ["homestay-reservation", id] });
     };
     socket.on("detailReservation", handler);
     return () => {
@@ -20,8 +20,8 @@ export const useGetHomestayReservation = (id: string) => {
     };
   }, [socket, joinRoom, leaveRoom, queryClient, id]);
 
-  const axiosInstance = useAxiosAuth()
- return useQuery<DetailHomestayReservation>({
+  const axiosInstance = useAxiosAuth();
+  return useQuery<DetailHomestayReservation>({
     queryKey: ["homestay-reservation", id],
     queryFn: async () => {
       const { data } = await axiosInstance.get(`/reservations/homestay/${id}`);

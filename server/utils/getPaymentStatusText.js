@@ -17,6 +17,8 @@ const getPaymentStatusText = (transactionStatus) => {
     paymentStatus = "failure";
   } else if (transactionStatus.transaction_status === "pending") {
     paymentStatus = "pending";
+  } else {
+    paymentStatus = null;
   }
 
   return paymentStatus;

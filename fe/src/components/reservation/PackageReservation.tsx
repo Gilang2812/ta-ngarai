@@ -16,26 +16,40 @@ import ManagementSkeletonLoader from "../loading/ManagementSkeletonLoader";
 import { ROUTES } from "@/data/routes";
 import usePackageReservation from "@/hooks/usePackageReservation";
 import ReservationStep from "./ReservationStep";
+import TableManagementHeader from "../admin/TableManagementHeader";
+import ManagementFooter from "../admin/ManagementFooter";
+import { Table } from "../common/Table";
 
 const PackageReservation = () => {
   const {
-    data,
-    isLoading,
-    handleHistoryClick,
-    isOpen,
     reservation,
     setReservation,
+    isOpen,
     toggleModal,
+    handleHistoryClick,
+    isLoading,
+    handleSearch,
     handleDeleteReservation,
+    handleNextPage,
+    handlePrevPage,
+    handleItemsPerPage,
+    currentItems,
+    currentPage,
+    itemsPerPage,
+    totalPages,
+    indexOfFirstItem,
+    indexOfLastItem,
+    totalItems,
+    searchTerm,
   } = usePackageReservation();
 
   const RenderReservation = () => {
-    return data?.map((r, index) => (
+    return currentItems?.map((r, index) => (
       <tr
         key={r.id + index}
         className="py-2 border-b [&_td]:px-2 hover:bg-stone-200/50 transition-ease-out"
       >
-        <td className="py-2">{index + 1}</td>
+        <td className="py-2">{indexOfFirstItem + index + 1}</td>
         <td className="py-2">{r.id}</td>
         <td className="py-2">{r?.package?.name ?? "Homestay Reservation"}</td>
         <td>{localeDate(r.request_date)}</td>
@@ -94,8 +108,14 @@ const PackageReservation = () => {
   }
   return (
     <>
-      <motion.section layoutId="reservation-list">
-        <table className="w-full ">
+      <motion.section layout="size" layoutId="reservation-list">
+        <TableManagementHeader
+          handleItemsPerPage={handleItemsPerPage}
+          handleSearch={handleSearch}
+          itemsPerPage={itemsPerPage}
+          searchTerm={searchTerm}
+        />
+        <Table className="w-full ">
           <thead>
             <tr className="border-b-2 ">
               <th scope="col" className="p-2">
@@ -125,7 +145,16 @@ const PackageReservation = () => {
           <tbody>
             <RenderReservation />
           </tbody>
-        </table>
+        </Table>
+        <ManagementFooter
+          currentPage={currentPage}
+          handleNextPage={handleNextPage}
+          handlePrevPage={handlePrevPage}
+          indexOfFirstItem={indexOfFirstItem}
+          indexOfLastItem={indexOfLastItem}
+          totalItems={totalItems}
+          totalPages={totalPages}
+        />
       </motion.section>
       <InfoModal
         isOpen={isOpen}

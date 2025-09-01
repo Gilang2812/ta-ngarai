@@ -14,7 +14,7 @@ import { useEffect } from "react";
 import { createShippingStoreBody } from "@/lib/createShippingStoreBody";
 import { useCompleteCheckout } from "@/features/web/checkout/useCompleteCheckout";
 import { useRouter } from "next/navigation";
-import { useUpdateStatus } from "@/features/web/checkout/useUpdateStatus";
+// import { useUpdateStatus } from "@/features/web/checkout/useUpdateStatus";
 
 export default function CheckoutPage() {
   const {
@@ -46,12 +46,12 @@ export default function CheckoutPage() {
   );
 
   const total = subTotal + (total_shipping_cost || 0);
-  const { mutateAsync: updateStatus, isPending: updatingStatus } =
-    useUpdateStatus({
-      onSuccess: () => {
-        cornerAlert("Checkout status updated successfully");
-      },
-    });
+  // const { mutateAsync: updateStatus, isPending: updatingStatus } =
+  //   useUpdateStatus({
+  //     onSuccess: () => {
+  //       cornerAlert("Checkout status updated successfully");
+  //     },
+  //   });
 
   const { mutate: checkoutOrder, isPending: checkoutPending } =
     useCompleteCheckout({
@@ -62,45 +62,21 @@ export default function CheckoutPage() {
         window.snap.pay(paymentData.token, {
           onSuccess: async (result) => {
             cornerAlert("Payment success:" + result.order_id);
-            await updateStatus({
-              id: result.order_id,
-              status: 2,
-              payment_date: result.transaction_time,
-              shippings: paymentData.shippings,
-            });
+
             router.push("./cart?tab=craft&status=success");
           },
           onPending: async (result) => {
             cornerAlert("Payment pending:" + result.order_id);
-            await updateStatus({
-              id: result.order_id,
-              status: 1,
-              shippings: paymentData.shippings,
-            });
+
             router.push("./reservation?tab=craft&status=pending");
           },
           onError: async (result) => {
             cornerError("Payment error:" + result.order_id);
-            const url = new URL(result.finish_redirect_url);
-            const order_id = url.searchParams.get("order_id");
-            await updateStatus({
-              id: order_id || "",
-              status: 6,
-              shippings: paymentData.shippings,
-            });
-            router.push("./reservation?tab=craft&status=error");
-
             cornerError("Payment failed, please try again");
+            router.push("./reservation?tab=craft&status=error");
           },
           onClose: async () => {
             cornerAlert("Payment closed");
-            if (checkout)
-              await updateStatus({
-                id: checkout.id,
-                status: 6,
-                shippings: paymentData.shippings,
-                isClose: 1,
-              });
             router.push("./reservation?tab=craft&status=closed");
           },
         });
@@ -108,10 +84,10 @@ export default function CheckoutPage() {
     });
 
   useEffect(() => {
-    if (checkoutPending || isPending || updatingStatus) {
+    if (checkoutPending || isPending) {
       showLoadingAlert();
     }
-  }, [isPending, checkoutPending, updatingStatus]);
+  }, [isPending, checkoutPending]);
 
   const formikOrder = useFormik({
     initialValues: {

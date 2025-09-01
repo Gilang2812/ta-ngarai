@@ -1,5 +1,6 @@
 import Button from "@/components/common/Button";
 import { Table } from "@/components/common/Table";
+import { CheckStatus } from "@/components/managereservation/payment/CheckStatusButton";
 import Payment from "@/components/managereservation/payment/Payment";
 import ButtonCancel from "@/components/reservation/ButtonCancel";
 import ButtonConfirmation from "@/components/reservation/ButtonConfirmation";
@@ -17,11 +18,13 @@ type Props = {
   handlePayment: () => void;
   item_details: ItemDetails[];
   refetch: () => void;
+  handleRecheck: () => void;
 };
 export const PaymentSection = ({
   data,
   handlePayment,
   item_details,
+  handleRecheck,
   refetch,
 }: Props) => {
   const { refetch: createInvoice } = useInvoice(data.id);
@@ -55,6 +58,7 @@ export const PaymentSection = ({
             </Button>
           </>
         )}
+        <CheckStatus handleRecheck={handleRecheck} status={status} />
         <ButtonRefundProof
           id={data.id}
           refund_check={data.refund_check}

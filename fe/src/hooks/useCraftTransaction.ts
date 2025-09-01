@@ -10,7 +10,10 @@ import {
 } from "@/utils/AlertUtils";
 import { useModal } from "@/utils/ModalUtils";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import useSearchTable from "./useSearchTable";
+import dayjs from "dayjs";
+import useTableManagement from "./useTableManagement";
 export const useCraftTransaction = () => {
   const { isOpen, toggleModal } = useModal();
   const router = useRouter();
@@ -36,6 +39,47 @@ export const useCraftTransaction = () => {
     },
   });
 
+  const { handleSearch, searchTerm } = useSearchTable();
+  const filteredData = useMemo(() => {
+    return (
+      userHistory?.filter((item) => {
+        const requestBody = {
+          tanggal: dayjs(
+            item.shippingItems?.[0]?.checkout?.checkout_date
+          ).format("DD MMMM YYYY"),
+          produk: item.shippingItems
+            ?.map(
+              (shippingItem) =>
+                `${shippingItem?.detailCraft?.variant?.craft?.name} ${shippingItem?.detailCraft?.variant?.name}`
+            )
+            .join(", "),
+          store:
+            item.shippingItems?.[0]?.detailCraft?.souvenirPlace?.name ?? "",
+          total: item.shippingItems?.[0]?.checkout?.total_price ?? 0,
+        };
+        return Object.values(requestBody).some((value) =>
+          value
+            .toString()
+            .toLowerCase()
+            .trim()
+            .includes(searchTerm.toLowerCase().trim())
+        );
+      }) || []
+    );
+  }, [userHistory, searchTerm]);
+
+  const {
+    handleNextPage,
+    handlePrevPage,
+    handleItemsPerPage,
+    currentItems,
+    currentPage,
+    itemsPerPage,
+    totalPages,
+    indexOfFirstItem,
+    indexOfLastItem,
+    totalItems,
+  } = useTableManagement(filteredData);
   const handleHistoryClick = (
     history: ShippingDataWithReviewGallery,
     content: "items" | "rate"
@@ -83,5 +127,17 @@ export const useCraftTransaction = () => {
     handleReOrder,
     handleCompleteOrder,
     modalContent,
+    handleSearch,
+    searchTerm,
+    handleNextPage,
+    handlePrevPage,
+    handleItemsPerPage,
+    currentItems,
+    currentPage,
+    itemsPerPage,
+    totalPages,
+    indexOfFirstItem,
+    indexOfLastItem,
+    totalItems,
   };
 };

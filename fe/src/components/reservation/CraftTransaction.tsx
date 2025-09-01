@@ -7,6 +7,8 @@ import { UserDetailPage } from "./UserDetailPage";
 import Link from "next/link";
 import Button from "../common/Button";
 import ReviewHistory from "../review/ReviewHistory";
+import TableManagementHeader from "../admin/TableManagementHeader";
+import ManagementFooter from "../admin/ManagementFooter";
 
 const CraftTransaction = () => {
   const {
@@ -19,6 +21,18 @@ const CraftTransaction = () => {
     handleReOrder,
     handleCompleteOrder,
     modalContent,
+    handleSearch,
+    searchTerm,
+    handleNextPage,
+    handlePrevPage,
+    handleItemsPerPage,
+    currentItems,
+    currentPage,
+    itemsPerPage,
+    totalPages,
+    indexOfFirstItem,
+    indexOfLastItem,
+    totalItems,
   } = useCraftTransaction();
   if (isLoading) return <ManagementSkeletonLoader />;
   if (!userHistory || userHistory.length === 0) {
@@ -40,7 +54,15 @@ const CraftTransaction = () => {
     userHistory && (
       <section className="min-h-screen bg-gray-50 rounded">
         <div className="max-w-7xl mx-auto p-5">
-          {userHistory.map((item) => (
+          <TableManagementHeader
+            handleItemsPerPage={handleItemsPerPage}
+            handleSearch={handleSearch}
+            itemsPerPage={itemsPerPage}
+            searchTerm={searchTerm}
+          />
+        </div>
+        <div className="max-w-7xl mx-auto p-5">
+          {currentItems.map((item) => (
             <HistoryList
               onClick={() => handleHistoryClick(item, "items")}
               history={item}
@@ -51,7 +73,17 @@ const CraftTransaction = () => {
             />
           ))}
         </div>
-
+        <div className="max-w-7xl mx-auto p-5">
+          <ManagementFooter
+            currentPage={currentPage}
+            handleNextPage={handleNextPage}
+            handlePrevPage={handlePrevPage}
+            indexOfFirstItem={indexOfFirstItem}
+            indexOfLastItem={indexOfLastItem}
+            totalItems={totalItems}
+            totalPages={totalPages}
+          />
+        </div>
         <ModalDetail
           isOpen={isOpen}
           onClose={handleHistoryClose}

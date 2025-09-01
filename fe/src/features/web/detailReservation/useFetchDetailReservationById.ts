@@ -19,8 +19,8 @@ export const useFetchDetailReservationByID = (id?: string) => {
     };
   }, [socket, joinRoom, leaveRoom, queryClient, id]);
 
-  const axiosInstance = useAxiosAuth()
- return useQuery({
+  const axiosInstance = useAxiosAuth();
+  return useQuery({
     queryKey: ["detailReservation", id],
     queryFn: async () => {
       const { data } = await axiosInstance.get(`/detail-reservations/${id}`);

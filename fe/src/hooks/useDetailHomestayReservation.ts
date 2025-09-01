@@ -26,7 +26,7 @@ const useDetailHomestayReservation = (id: string) => {
     status.replaceAll(" ", "-") as ReservationStatus
   );
 
-  const { handlePayment, isPending, item_details } = usePackagePayment({
+  const { handlePayment, item_details ,handleRecheck} = usePackagePayment({
     data,
     refetchReservation: refetchData,
     status: status.replaceAll(" ", "-") as ReservationStatus,
@@ -83,7 +83,7 @@ const useDetailHomestayReservation = (id: string) => {
     isFetching,
     refetch,
     refetchData,
-    isPending,
+    handleRecheck
   };
 };
 

@@ -1,5 +1,5 @@
 const { snap, core } = require("../../config/midtrans");
-const { updateCheckout } = require("../checkout/checkout.service");
+const { editCheckout } = require("../checkout/checkout.repository");
 
 const createTokenTransaction = async (body) => {
   const parameter = {
@@ -14,7 +14,7 @@ const createTokenTransaction = async (body) => {
       pending: `${process.env.FRONTEND_URL}/web/reservation?tab=craft`,
     },
   };
-
+  console.log(body);
   const transaction = await snap.createTransaction(parameter);
   return transaction;
 };
@@ -23,7 +23,8 @@ const createPayment = async (body) => {
   const transaction = await createTokenTransaction(body);
 
   console.log("transaction midtrans", transaction);
-  await updateCheckout(
+
+  await editCheckout(
     { id: body.order_id },
     {
       checkout_date: new Date(),

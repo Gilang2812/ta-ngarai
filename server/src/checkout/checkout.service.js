@@ -1,6 +1,6 @@
 const { Op } = require("sequelize");
 const { CustomError } = require("../../utils/CustomError");
-const { getOneAddress, getUserAddress } = require("../address/address.service");
+const {  getUserAddress } = require("../address/address.service");
 const {
   insertCheckout,
   destroyCheckout,
@@ -16,6 +16,7 @@ const {
 const {
   findDetailCraft,
 } = require("../detailMarketplaceCraft/detailCraft.repository");
+const { updateShipping } = require("../shipping/shipping.service");
 
 const getCheckout = async (key) => {
   const checkout = await findCheckout(key);
@@ -31,14 +32,17 @@ const takeCheckout = async (key) => {
 };
 
 const getCheckouts = async (key) => {
-  return findCheckouts(key);
+  const checkouts = await findCheckouts(key);
+  return checkouts;
 };
 const createCheckout = async (body) => {
-  return insertCheckout(body);
+  const checkout = await insertCheckout(body);
+  return checkout;
 };
 const updateCheckout = async (key, body) => {
-  await takeCheckout(key);
-  return editCheckout(key, body);
+  const checkout = await takeCheckout(key);
+  await editCheckout(key, body);
+  return checkout;
 };
 const deleteCheckout = async (condition) => {
   return destroyCheckout(condition);
@@ -149,11 +153,63 @@ const getUserHistory = async (condition) => {
   return checkout;
 };
 
+const updateCheckoutStatus = async ({
+  shippings,
+  id,
+  status,
+  payment_type,
+  settlement_time,
+}) => {
+  let checkout = null;
+
+  if (shippings.length > 0) {
+    if (!status || status === 6) {
+      shippings.forEach(async (shipping_id) => {
+        await updateShipping(
+          { shipping_id },
+          {
+            status: status || 6,
+          }
+        );
+      });
+    } else {
+      await Promise.all(
+        shippings.map(async (shipping_id) => {
+          let updatedBody = null;
+          if (status === 3) {
+            const data = await confirmDraftOrder(draft_id);
+            updatedBody = {
+              order_id: data.id,
+              tracking_id: data.courier.tracking_id,
+              awb: data.courier.waybill_id,
+            };
+          }
+          return updateShipping(
+            { shipping_id },
+            { status, ...(updatedBody ?? {}) }
+          );
+        })
+      );
+
+      checkout = await updateCheckout(
+        { id },
+        {
+          payment: payment_type ?? null,
+          payment_date: settlement_time ?? null,
+        }
+      );
+    }
+  }
+
+  return checkout;
+};
+
 module.exports = {
   getCheckout,
   getCheckouts,
   createCheckout,
   takeCheckout,
+  updateCheckoutStatus,
   updateCheckout,
   deleteCheckout,
   createItemCheckouts,

@@ -15,16 +15,16 @@ export const ProductCard = ({ product }: Props) => (
       src={product?.detailCraft?.craftGalleries?.[0]?.url}
     />
     <div className="flex-1">
-      <h4 className="font-medium text-gray-700">
+      <h4 className="font-medium ">
         {product?.detailCraft?.variant?.craft?.name}{" "}
         {product?.detailCraft?.variant?.name}
       </h4>
     </div>
     <div className="text-right">
-      <div className="font-medium text-gray-700">
+      <div className="font-medium ">
         {formatPrice(product?.detailCraft?.price)}
       </div>
-      <div className="text-sm text-gray-500">Qty: {product.jumlah}</div>
+      <div className="text-sm ">Qty: {product.jumlah}</div>
     </div>
   </div>
 );

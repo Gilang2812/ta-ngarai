@@ -80,7 +80,7 @@ const ManagePackageReservation = () => {
                         getReservationStatus(item)
                       )}
                     >
-                      {getReservationStatus(item)}
+                      {getReservationStatus(item).replaceAll("-", "")}
                     </span>
                   </div>
                 </td>

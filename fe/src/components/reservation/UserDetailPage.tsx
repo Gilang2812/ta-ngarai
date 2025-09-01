@@ -9,6 +9,7 @@ import {
 } from "@/utils/getCraftTransactionStatus";
 import dayjs from "dayjs";
 import { formatPrice } from "@/lib/priceFormatter";
+import { isExpired } from "@/lib/expiredChecker";
 
 type Props = {
   history: ShippingData;
@@ -19,18 +20,28 @@ export const UserDetailPage: FC<Props> = ({ history }) => {
       <div className="mb-4">
         <div className="flex items-center justify-between">
           <div>
-            <h2 className="text-xl font-bold mb-3 text-primary">
-              Shipping No.{history.shipping_no}
-            </h2>
+            {history.awb ? (
+              <h2 className="text-xl font-bold mb-3 text-primary">
+                Receipt No. {history.awb}
+              </h2>
+            ) : (
+              <h2 className="text-xl font-bold mb-3 italic">
+                await for delivery
+              </h2>
+            )}
             <p>OrderID. {history.shippingItems[0].checkout.id}</p>
           </div>
           <StatusBadge
             status={getCraftTransactionStatusColor(
               history.status,
               history.shippingItems[0].checkout.transaction_token,
-              history.paymentStatus
+              isExpired(history.shippingItems[0].checkout.checkout_date)
             )}
-            text={getCraftTransactionStatus(history.status, history.shippingItems[0].checkout.transaction_token, history.paymentStatus)}
+            text={getCraftTransactionStatus(
+              history.status,
+              history.shippingItems[0].checkout.transaction_token,
+              isExpired(history.shippingItems[0].checkout.checkout_date)
+            )}
           />
         </div>
 
@@ -48,7 +59,7 @@ export const UserDetailPage: FC<Props> = ({ history }) => {
             },
             {
               label: "Total Pembayaran",
-              value: formatPrice(history.grand_total),
+              value: formatPrice(history.grand_total || 0),
             },
           ]}
         />
@@ -70,13 +81,15 @@ export const UserDetailPage: FC<Props> = ({ history }) => {
           Informasi Pengiriman
         </h3>
         <div className="bg-gradient-to-r from-gray-50 to-gray-100 p-4 rounded-lg border-l-4 border-secondary">
-          <div className="font-semibold text-gray-900 mb-2">
+          <div className="font-semibold  mb-2">
             {`📦 Paket dari ${history?.shippingItems?.[0]?.detailCraft?.souvenirPlace?.name}`}
           </div>
-          <div className="text-sm text-gray-600 space-y-1">
+          <div className="text-sm  space-y-1">
             <div>
               <strong>Kurir:&nbsp;</strong>
-              {`${history?.shipping_name} (${history?.shipping_type})`}
+              {`${history?.shipping_name ?? ""} (${
+                history?.shipping_type ?? ""
+              })`}
             </div>
             <div>
               <strong>Ongkos Kirim:&nbsp;</strong>
@@ -119,7 +132,7 @@ export const UserDetailPage: FC<Props> = ({ history }) => {
           </div>
           <div className="flex justify-between pt-2 text-primary border-t border-gray-300 font-semibold">
             <span>Total:</span>
-            <span>{formatPrice(history.grand_total)}</span>
+            <span>{formatPrice(history.grand_total || 0)}</span>
           </div>
         </div>
       </div>

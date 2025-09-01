@@ -20,11 +20,11 @@ declare global {
     snap: {
       pay: (
         token: string,
-        options: {
-          onSuccess: (result: ResultProps) => void;
-          onPending: (result: ResultProps) => void;
-          onError: (result: ResultErrorProps) => void;
-          onClose: () => void;
+        options?: {
+          onSuccess?: (result: ResultProps) => void;
+          onPending?: (result: ResultProps) => void;
+          onError?: (result: ResultErrorProps) => void;
+          onClose?: () => void;
         }
       ) => void;
     };

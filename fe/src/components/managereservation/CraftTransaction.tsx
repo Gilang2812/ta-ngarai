@@ -23,6 +23,7 @@ import EmptyTransactions from "../dashboard/transaction/EmptyTransactions";
 import Button from "../common/Button";
 import { FaTruck } from "react-icons/fa6";
 import { ROUTES } from "@/data/routes";
+import { isExpired } from "@/lib/expiredChecker";
 
 const CraftTransaction = () => {
   const {
@@ -105,13 +106,13 @@ const CraftTransaction = () => {
             className={`px-3 py-1 ${getCraftTransactionStatusColor(
               item?.status,
               item.shippingItems[0].checkout.transaction_token,
-              item.paymentStatus
+              isExpired(item.shippingItems[0].checkout.checkout_date)
             )} text-white text-center text-nowrap rounded-full text-sm font-medium`}
           >
             {getCraftTransactionStatus(
               item.status,
               item.shippingItems[0].checkout.transaction_token,
-              item.paymentStatus
+              isExpired(item.shippingItems[0].checkout.checkout_date)
             )}
           </span>
         </td>

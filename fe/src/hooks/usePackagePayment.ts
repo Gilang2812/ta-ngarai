@@ -4,11 +4,9 @@ import {
   ReservationSchema,
 } from "@/type/schema/ReservationSchema";
 import { ReservationStatus } from "@/utils/common/getReservationStatus";
-import dayjs from "dayjs";
-import { useUpdateTokenReservation } from "@/features/reservation/useUpdateTokenReservation";
 import { cornerAlert, showLoadingAlert } from "@/utils/AlertUtils";
-import { useUpdateReservation } from "@/features/reservation/useUpdateReservation";
 import { getItemDetailsReservation } from "@/utils/common/getItemDetailsReservation";
+import { useRecheckReservation } from "@/features/reservation/useRecheckReservation";
 import { useEffect } from "react";
 
 type Props = {
@@ -22,44 +20,7 @@ type Props = {
 
 const usePackagePayment = ({ data, refetchReservation, status }: Props) => {
   const item_details = getItemDetailsReservation(data?.detail || []);
-  const { mutate: updateReservation, isPending: isUpdatingReservation } =
-    useUpdateReservation<{
-      id: string;
-      payment_date?: string;
-    }>({
-      onSuccess: () => {
-        refetchReservation();
-      },
-    });
 
-  const { mutate: updateTokenReservation, isPending: isUpdatingToken } =
-    useUpdateTokenReservation<
-      { id: string; feedback: string; status: number } & {
-        item_details?:
-          | []
-          | {
-              id: string;
-              name: string;
-              price: number;
-              quantity: number;
-            }[];
-        deposit: number;
-        total_price: number;
-        deposit_date?: string;
-        payment_date?: string;
-      }
-    >({
-      onSuccess: () => {
-        refetchReservation();
-        cornerAlert("Payment successful");
-      },
-    });
-
-  useEffect(() => {
-    if (isUpdatingToken) {
-      showLoadingAlert();
-    }
-  }, [isUpdatingToken]);
   const handlePayment = () => {
     const originalStatus = status;
     if (data && (data?.token_of_deposit || data?.token_of_payment)) {
@@ -72,43 +33,38 @@ const usePackagePayment = ({ data, refetchReservation, status }: Props) => {
 
       if (token) {
         window.snap.pay(token, {
-          onSuccess: function (result) {
-            if (originalStatus === "Payment-Required") {
-              cornerAlert("Payment success: " + result.order_id);
-              updateReservation({
-                id: data.id,
-                payment_date: dayjs().format("YYYY-MM-DD HH:mm:ss"),
-              });
-            } else if (originalStatus === "Deposit-Required") {
-              cornerAlert("Payment success: " + result.order_id);
-              updateTokenReservation({
-                id: data.id,
-                status: data.status,
-                feedback: data.feedback as string,
-                item_details,
-                deposit: data?.deposit ?? 0,
-                total_price: data?.total_price ?? 0,
-                deposit_date: dayjs().format("YYYY-MM-DD HH:mm:ss"),
-              });
-            }
-          },
-          onPending: function (result) {
-            console.log("Payment Pending:", result);
-          },
-          onError: function (result) {
-            console.error("Payment Error:", result);
-          },
-          onClose: function () {
-            console.log("Payment Closed");
+          onSuccess: () => {
+            refetchReservation();
+            cornerAlert("Payment successful");
           },
         });
       }
     }
   };
 
+  const { mutate: recheckReservation, isPending } = useRecheckReservation({
+    onSuccess: (data) => {
+      const response = data as { success: boolean; message: string };
+      refetchReservation();
+      cornerAlert(response?.message ?? "Recheck successful");
+    },
+  });
+
+  useEffect(() => {
+    if (isPending) {
+      showLoadingAlert("Rechecking reservation...");
+    }
+  }, [isPending]);
+
+  const handleRecheck = () => {
+    if (data) {
+      recheckReservation({ id: data.id });
+    }
+  };
+
   return {
     handlePayment,
-    isPending: isUpdatingReservation || isUpdatingToken,
+    handleRecheck,
     item_details,
   };
 };

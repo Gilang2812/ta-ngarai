@@ -50,7 +50,7 @@ const Shipping = sequelize.define(
     status: {
       type: DataTypes.INTEGER,
       allowNull: true,
-      defaultValue: 1,
+      defaultValue: 6,
     },
   },
   {

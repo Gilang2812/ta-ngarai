@@ -59,37 +59,14 @@ const createShipping = async (body) => {
 
 const getUserHistory = async (condition) => {
   const shipping = await userHistory(condition);
-  const checkoutWithPaymentStatus = await Promise.all(
-    shipping.map(async (item) => {
-      const plainItem = item.toJSON();
-      const status = await getPaymentStatus(item.shippingItems[0].checkout.id);
-      let paymentStatus = "";
-      if (!status) {
-        paymentStatus = "pending";
-      } else {
-        paymentStatus = getPaymentStatusText(status);
-      }
-      return { paymentStatus: paymentStatus, ...plainItem };
-    })
-  );
-  return checkoutWithPaymentStatus;
+
+  return shipping;
 };
 
 const getSouvenirTransaction = async (condition) => {
   const shipping = await findSouvenirTransaction(condition);
-  const shippingWithPaymentStatus = await Promise.all(
-    shipping.map(async (item) => {
-      const status = await getPaymentStatus(item.shippingItems[0].checkout.id);
-      let paymentStatus = "";
-      if (!status) {
-        paymentStatus = "pending";
-      } else {
-        paymentStatus = getPaymentStatusText(status);
-      }
-      return { paymentStatus: paymentStatus, ...item.toJSON() };
-    })
-  );
-  return shippingWithPaymentStatus;
+
+  return shipping;
 };
 
 const getUserHistoryById = async (id) => {

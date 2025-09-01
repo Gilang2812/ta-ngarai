@@ -100,10 +100,12 @@ router.patch("/:id", async (req, res, next) => {
       const prevIndex = item.items.slice(0, index).length ?? 0;
       const newShipping = await createShipping({
         draft_id: data.id,
-        shipping_name: item.shipping,
-        shipping_type: item.shipping_type,
+        shipping_name: item.courier_company,
+        shipping_type: item.courier_type,
         total_shipping_cost: item.shipping_cost,
-        grand_total: item.grand_total,
+        grand_total:
+          item.shipping_cost +
+          item.items.reduce((acc, curr) => acc + curr.value * curr.quantity, 0),
       });
       shippingsResult.push(newShipping.shipping_id);
       for (const [detailIndex, detail] of item.items.entries()) {
@@ -151,7 +153,6 @@ router.patch(
     try {
       const { id } = req.params;
       const { status, isClose, draft_id } = req.body;
-      console.log("ini body nya", req.body);
       const shippings = req.body.shippings || [];
       let paymentStatus = null;
       if (!Number(isClose)) {

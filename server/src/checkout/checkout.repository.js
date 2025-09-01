@@ -34,7 +34,6 @@ const findCheckouts = async (key) => {
 };
 
 const editCheckout = async (key, body) => {
-  console.log("body edit", body);
   return Checkout.update(body, {
     where: key,
   });
@@ -51,6 +50,26 @@ const findCheckout = async (key) => {
           {
             model: Shipping,
             as: "shipping",
+          },
+          {
+            model: DetailMarketplaceCraft,
+            as: "detailCraft",
+            on: literal(
+              "`items`.`craft_variant_id` = `items->detailCraft`.`craft_variant_id` AND " +
+                "`items`.`id_souvenir_place` = `items->detailCraft`.`id_souvenir_place`"
+            ),
+            include: [
+              {
+                model: CraftVariant,
+                as: "variant",
+                include: [
+                  {
+                    model: Craft,
+                    as: "craft",
+                  },
+                ],
+              },
+            ],
           },
         ],
       },
