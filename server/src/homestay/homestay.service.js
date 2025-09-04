@@ -43,7 +43,7 @@ const getUnitHomestays = async (newCheckIn) => {
 };
 
 const getAllUnitHomestays = async ({ homestay_id }) => {
-  const units = await findAllUniithtHomestays({ homestay_id });
+  const units = await findAllUnitHomestays({ homestay_id });
   return units;
 };
 

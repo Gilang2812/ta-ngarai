@@ -192,27 +192,7 @@ router.get("/:id", async (req, res, next) => {
 
     let status = await getPaymentStatus(checkout?.id);
     let token = checkout?.transaction_token;
-    if (!status) {
-      status = "pending";
-      if (!isExpired(checkout?.checkout_date)) {
-        const newToken = await createTokenTransaction({
-          order_id: `${checkout?.id}-${dayjs().format("YYYYMMDDHHmmss")}`,
-          gross_amount: checkout?.items?.reduce(
-            (acc, item) => acc + item.detailCraft.price * item.jumlah,
-            0
-          ),
-          item_details:
-            checkout?.items?.map((item) => ({
-              id: item?.id,
-              name: `${item?.detailCraft?.variant?.craft?.name} ${item?.detailCraft?.variant?.name}`,
-              price: item?.detailCraft?.price,
-              quantity: item?.jumlah,
-            })) || [],
-        });
 
-        token = newToken.token;
-      }
-    }
     const paymentStatus = getPaymentStatusText(status);
 
     if (

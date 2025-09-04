@@ -67,10 +67,13 @@ const HomestayReservationForm: React.FC<Props> = ({
           currentStep !== 1 && "hidden"
         )}
       >
+        <header className="text-secondary capitalize text-2xl">
+          <h2>Homestay Reservation</h2>
+          <p className="text-lg">{unitHomestay?.[0]?.homestay?.name}</p>
+        </header>
         <div className="md:col-span-2">
           <ReservationWeather
-            weathers={weathers}
-            homestayName={unitHomestay?.[0]?.homestay?.name}
+            weathers={weathers} 
           />
         </div>
         <HomestrayReservationList
@@ -253,10 +256,7 @@ const HomestayReservationForm: React.FC<Props> = ({
                 className="mr-2 focus:bg-primary  focus:!outline-none focus:ring-2   focus:ring-transparent checked:bg-primary"
                 aria-describedby="partial-desc"
               />
-              <span>
-                Partial ({deposit_percentage * 100}% of
-                Full Price)
-              </span>
+              <span>Partial ({deposit_percentage * 100}% of Full Price)</span>
             </label>
             <p id="partial-desc" className="sr-only">
               Pay {deposit_percentage * 100}% of the total amount now

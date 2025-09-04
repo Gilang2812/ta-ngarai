@@ -10,16 +10,24 @@ import Link from "next/link";
 import { Packages } from "@/type/schema/PackageSchema";
 import { ROUTES } from "@/data/routes";
 import useUserRole from "@/hooks/useUserRole";
+import { useToggleStore } from "@/stores/ToggleStore";
 
 // Main component
 export const Package = ({ title }: { title: string }) => {
   const { data, isLoading } = useFetchPackages<Packages>({ package: true });
   const [buttonActive, setButtonActive] = useState<string | null>(null);
   const { isUserAuth } = useUserRole();
+  const { object_id } = useToggleStore();
+  const filteredData = object_id
+    ? data?.filter((item) =>
+        item.packageDays.some((day) =>
+          day.detailPackages.some((pkg) => pkg.object_id === object_id)
+        )
+      ) ?? []
+    : data;
   if (isLoading) return <Loading />;
-
   const RenderPackage = () => {
-    return data?.map((item, index) => (
+    return filteredData?.map((item, index) => (
       <React.Fragment key={index}>
         <tr>
           <td className="flex items-center gap-4 p-4   capitalize border-b">

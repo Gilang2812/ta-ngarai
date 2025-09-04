@@ -3,7 +3,7 @@ import { useCreateModifyPackage } from "@/features/web/extend/useCreateModifyPac
 import { useFetchPackages } from "@/features/web/package/useFetchPackage";
 import { useModifyPackage } from "@/features/web/package/useModifyPackage";
 import { PackageGallery, PackageSchema } from "@/type/schema/PackageSchema";
-import { showLoadingAlert } from "@/utils/AlertUtils";
+import { cornerAlert, showLoadingAlert } from "@/utils/AlertUtils";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
@@ -16,6 +16,7 @@ export const usePackageList = () => {
   const { mutate: createPackage, isPending: isCreating } = useModifyPackage({
     onSuccess: (data) => {
       const response = data as PackageSchema;
+      cornerAlert("ready to custom");
       router.push(ROUTES["CUSTOM_PACKAGE"](response.id));
     },
   });
@@ -26,7 +27,7 @@ export const usePackageList = () => {
         newPackage: PackageSchema;
         type: "custom" | "extend";
       };
-
+      cornerAlert("ready to custom/extend");
       const route =
         response.type === "custom"
           ? ROUTES["CUSTOM_PACKAGE"](response.newPackage.id)

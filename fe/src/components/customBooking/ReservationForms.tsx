@@ -2,12 +2,19 @@ import { Form, useFormikContext } from "formik";
 import React, { FC, useEffect, useState } from "react";
 import { FormStep } from "./FormStep";
 import { SecondStep } from "./SecondStep";
-import { cornerError } from "@/utils/AlertUtils";
+import { cornerAlert, cornerError, showLoadingAlert } from "@/utils/AlertUtils";
 import { FormReservationSchema } from "@/app/(user)/web/(auth)/reservation/custombooking/[id]/page";
 import { useFetchUnitHomestayReservation } from "@/features/reservation/useFetchUnitHomestayReservation";
 import Loading from "@/app/loading";
 import { PackageServiceGallery } from "@/type/schema/PackageSchema";
 import dayjs from "dayjs";
+import ReservationWeather from "../homestay/ReservationWeather";
+import {
+  OpenMeteoDaily,
+  OpenMeteoDailyResponse,
+} from "@/type/schema/OpenMeteoSchema";
+import useFetchWeatherPrediction from "@/features/weater/useFetchWeatherPrediction";
+import { SingleContentWrapper } from "../common/SingleContentWrapper";
 
 type Props = {
   currentStep: number;
@@ -15,7 +22,7 @@ type Props = {
   nextStep: () => void;
   prevStep: () => void;
   packageItem: PackageServiceGallery;
-  isPending:boolean;
+  isPending: boolean;
   isWithHomestay?: boolean;
 };
 export const ReservationForms: FC<Props> = ({
@@ -25,7 +32,7 @@ export const ReservationForms: FC<Props> = ({
   steps,
   packageItem,
   isWithHomestay,
-  isPending
+  isPending,
 }) => {
   const [total, setTotal] = useState<number | null>(null);
   const { values, setFieldValue } = useFormikContext<FormReservationSchema>();
@@ -34,6 +41,52 @@ export const ReservationForms: FC<Props> = ({
     total: values.total_people,
     date: "",
   });
+  const {
+    data: weathers,
+    isLoading: weatherLoading,
+    isSuccess,
+  } = useFetchWeatherPrediction();
+
+  useEffect(() => {
+    if (weatherLoading) {
+      showLoadingAlert("Loading weather data...");
+    }
+  }, [weatherLoading]);
+
+  useEffect(() => {
+    if (isSuccess) {
+      cornerAlert("weather is Ready");
+    }
+  }, [isSuccess]);
+
+  const filteredWeather: OpenMeteoDailyResponse | null | undefined =
+    weathers && values.check_in
+      ? (() => {
+          const indices = weathers?.daily.time
+            .map((day, i) =>
+              dayjs(day).isAfter(dayjs(values.check_in), "day") ||
+              dayjs(day).isSame(dayjs(values.check_in), "day")
+                ? i
+                : -1
+            )
+            .filter((i) => i !== -1);
+
+          if (!indices?.length) return null;
+
+          // Ambil seluruh isi daily berdasarkan indeks
+          const filteredDaily = Object.fromEntries(
+            Object.entries(weathers.daily).map(([key, values]) => [
+              key,
+              indices.map((i) => values[i]),
+            ])
+          ) as OpenMeteoDaily;
+
+          return {
+            ...weathers,
+            daily: filteredDaily,
+          };
+        })()
+      : weathers;
 
   const isValid = reqValid.guide && Number(reqValid.total) > 0 && reqValid.date;
 
@@ -91,6 +144,9 @@ export const ReservationForms: FC<Props> = ({
 
   return (
     <Form>
+      <SingleContentWrapper className="mb-8">
+        <ReservationWeather weathers={filteredWeather} />
+      </SingleContentWrapper>
       <FormStep
         steps={steps}
         currentStep={currentStep}
@@ -113,7 +169,7 @@ export const ReservationForms: FC<Props> = ({
           nextStep={nextStep}
           prevStep={prevStep}
           packageTotal={total}
-          unitHomestayReservation={unitHomestay} 
+          unitHomestayReservation={unitHomestay}
         />
       )}
     </Form>

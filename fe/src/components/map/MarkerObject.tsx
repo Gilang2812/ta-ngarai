@@ -1,10 +1,7 @@
 import { LatLngLiteral } from "@/type/common/MapType";
 import MapMarker from "./MapMarker";
 import { InfoWindowF } from "@react-google-maps/api";
-import {
-  FaInfo,
-  FaPlus,
-} from "react-icons/fa6";
+import { FaInfo, FaPlus } from "react-icons/fa6";
 import { DirectionToKotoGadangButton } from "./DirectionToKotoGadangButton";
 import { SimplifiedObject } from "@/type/schema/PackageSchema";
 import Button from "../common/Button";
@@ -13,7 +10,13 @@ import useTravelRoute from "@/hooks/useTravelRoute";
 import ButtonTooltip from "../common/ButtonTooltip";
 import { ROUTES } from "@/data/routes";
 import useUserRole from "@/hooks/useUserRole";
-import { getIconAndTextSecondLine, getIconAndTextThirdLine } from "./ObjectInfoWindow";
+import {
+  getIconAndTextSecondLine,
+  getIconAndTextThirdLine,
+} from "./ObjectInfoWindow";
+import { usePathname } from "next/navigation";
+import { useEffect } from "react";
+import { useTools } from "@/hooks/useTools";
 
 type MarkerProps = {
   position: LatLngLiteral;
@@ -31,8 +34,16 @@ export const MarkerObject = ({
   toggleInfoWindow,
   properties,
 }: MarkerProps) => {
+  const pathName = usePathname();
+  const { setObjectId, togglePackage, packageOpen } = useTools();
 
-
+  const handleClickMarker = (index: number, object_id: string) => {
+    toggleInfoWindow(index);
+    setObjectId(object_id);
+    if (!packageOpen || !object_id) {
+      togglePackage();
+    }
+  };
   const { icon, text } = getIconAndTextSecondLine(properties);
   const { icon: thirdIcon, text: thirdText } =
     getIconAndTextThirdLine(properties);
@@ -45,6 +56,7 @@ export const MarkerObject = ({
     DETAIL_SOUVENIR,
     DETAIL_WORSHIP,
   } = ROUTES;
+
   const linkObject = (id: string): string => {
     if (id.startsWith("AT")) return DETAIL_ATTRACTION(id);
     if (id.startsWith("CP")) return DETAIL_CULINARY(id);
@@ -54,19 +66,23 @@ export const MarkerObject = ({
     return "/web";
   };
 
+  useEffect(() => {
+    setObjectId("");
+  }, [pathName, setObjectId]);
+
   return (
     <MapMarker
       icon={{
         url: iconUrl,
         scaledSize: new google.maps.Size(25.5, 34.5),
       }}
-      onClick={() => toggleInfoWindow(index)}
+      onClick={() => handleClickMarker(index, properties.id)}
       position={position}
     >
       {open === index && (
         <InfoWindowF
           options={{ maxWidth: 300 }}
-          onCloseClick={() => toggleInfoWindow(index)}
+          onCloseClick={() => handleClickMarker(index, "")}
         >
           <article className="space-y-2 p-2   rounded text-center [&_h3]:font-bold">
             <h3>{properties.name}</h3>

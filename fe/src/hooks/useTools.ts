@@ -2,7 +2,7 @@ import { useToggleStore } from "@/stores/ToggleStore";
 import { useCallback } from "react";
 
 export const useTools = () => {
-  const { open, toggleOpen } = useToggleStore();
+  const { open, toggleOpen, object_id, setObjectId } = useToggleStore();
   const packageOpen = open === "package";
   const aroundOpen = open === "around";
   const marketplaceOpen = open === "marketplace";
@@ -33,5 +33,7 @@ export const useTools = () => {
     toggleOpen,
     togglePackage,
     toggleClose,
+    object_id,
+    setObjectId,
   };
 };

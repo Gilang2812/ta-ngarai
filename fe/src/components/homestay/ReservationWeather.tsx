@@ -5,18 +5,12 @@ import { getWeatherCode } from "@/lib/getWeactherCode";
 import dayjs from "dayjs";
 
 type Props = {
-  weathers?: OpenMeteoDailyResponse | null;
-  homestayName ?: string;
+  weathers?: OpenMeteoDailyResponse | null; 
 };
 
-const ReservationWeather: React.FC<Props> = ({ weathers, homestayName }) => {
+const ReservationWeather: React.FC<Props> = ({ weathers }) => {
   return (
-    <header className="mb-8 space-y-4 ">
-      <header className="text-secondary capitalize text-2xl">
-        <h2>Homestay Reservation</h2>
-        <p className="text-lg">{homestayName}</p>
-      </header>
-
+    <section className="mb-8  space-y-4 ">
       <p className="font-medium">Weather prediction for the Next 14 days</p>
       <div
         style={{ maxHeight: "calc(140px + 1rem)" }}
@@ -52,7 +46,7 @@ const ReservationWeather: React.FC<Props> = ({ weathers, homestayName }) => {
           </div>
         )}
       </div>
-    </header>
+    </section>
   );
 };
 

@@ -2,7 +2,7 @@
 import { OrderDetailSkeleton } from "@/components/loading/OrderDetailSkeleton";
 import usePayment from "@/hooks/usePayment";
 import { formatPrice } from "@/lib/priceFormatter";
-import React from "react"; 
+import React from "react";
 import dayjs from "dayjs";
 
 type Props = {
@@ -39,7 +39,6 @@ const PaymentPage = ({ id }: Props) => {
               <label className="text-sm font-medium text-gray-500">
                 Status
               </label>
-      
             </div>
           </div>
           <div className="space-y-3">

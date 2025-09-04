@@ -4,13 +4,14 @@ import { Accordion } from "../web/detailReservation/Accordion";
 import { NextStepButton } from "./NextStepButton";
 import { Guide } from "./Guide";
 import { StepFooter } from "./StepFooter";
-import { PrevStepButton } from "./PrevStepButton"; 
+import { PrevStepButton } from "./PrevStepButton";
 import { useFormikContext } from "formik";
 import { ReservationFormSchema } from "./SecondStep";
 import { useService } from "@/utils/ServiceCategory";
 import { DetailServiceSchema } from "@/type/schema/ServiceSchema";
 import { PackageServiceGallery } from "@/type/schema/PackageSchema";
 import Button from "../common/Button";
+import { SingleContentWrapper } from "../common/SingleContentWrapper";
 type Props = {
   nextStep: () => void;
   prevStep: () => void;
@@ -125,8 +126,8 @@ export const FormStep: FC<Props> = ({
     );
   };
   return (
-    <section
-      className={`bg-white rounded-xl  ${
+    <SingleContentWrapper
+      className={`  ${
         isVisibile ? "block" : "hidden"
       } transition-ease-in-out p-5  [&_h2]:text-xl [&_header]:col-span-2  [&_h2]:text-center `}
     >
@@ -260,6 +261,6 @@ export const FormStep: FC<Props> = ({
           )}
         </StepFooter>
       </section>
-    </section>
+    </SingleContentWrapper>
   );
 };

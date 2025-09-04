@@ -13,8 +13,8 @@ const useAuth = () => {
     url.searchParams.set("callbackUrl", encodeURI(pathName));
   }
   const logout = () => {
-    router.push(url?.toString() ?? "");
     signOut();
+    router.push(url?.toString() ?? "");
   };
   const handleLogout = () => {
     confirmAlert(
