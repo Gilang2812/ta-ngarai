@@ -5,7 +5,11 @@ import { useFetchDetailUserSouvenirPlace } from "@/features/dashboard/marketplac
 import { useUpdateDetailSouvenir } from "@/features/dashboard/marketplace/useUpdateDetailSouvenir";
 import useClickOutside from "@/hooks/useOutsideClick";
 import useToggleOpen from "@/hooks/useToggleOpen";
-import { confirmDeleteAlert, cornerAlert } from "@/utils/AlertUtils";
+import {
+  confirmAlert,
+  confirmDeleteAlert,
+  cornerAlert,
+} from "@/utils/AlertUtils";
 import { Spinner } from "flowbite-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Bell, Store } from "lucide-react";
@@ -32,6 +36,16 @@ const NotifInvitations = () => {
         refetch();
       },
     });
+  const handleAccept = (id_souvenir_place: string, user_id: string) => {
+    confirmAlert(
+      "Accept Request",
+      "Are you sure you want to accept this request?",
+      async () => {
+        mutate({ id_souvenir_place, user_id, status: 2 });
+      }
+    );
+  };
+  
   const handleDelete = ({
     id_souvenir_place,
     user_id,
@@ -98,11 +112,7 @@ const NotifInvitations = () => {
                     <div className="flex gap-2 flex-shrink-0">
                       <Button
                         onClick={() =>
-                          mutate({
-                            id_souvenir_place: item.id_souvenir_place,
-                            user_id: item.user_id,
-                            status: 2,
-                          })
+                          handleAccept(item.id_souvenir_place, item.user_id)
                         }
                         isLoading={isPending}
                         disabled={isPending}

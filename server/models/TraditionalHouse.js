@@ -1,5 +1,6 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../config/database");
+const { generateCustomId } = require("../utils/generateId");
 
 const TraditionalHouse = sequelize.define(
   "TraditionalHouse",
@@ -7,6 +8,7 @@ const TraditionalHouse = sequelize.define(
     id: {
       type: DataTypes.STRING,
       primaryKey: true,
+      allowNull:true
     },
     name: DataTypes.STRING(255),
     address: DataTypes.STRING(255),
@@ -17,7 +19,7 @@ const TraditionalHouse = sequelize.define(
     open: DataTypes.TIME,
     close: DataTypes.TIME,
     description: DataTypes.TEXT,
-    status: DataTypes.TINYINT,
+    status: { type: DataTypes.BOOLEAN, defaultValue: 0 },
     video_url: DataTypes.TEXT,
     geom: DataTypes.GEOMETRY,
   },
@@ -26,5 +28,9 @@ const TraditionalHouse = sequelize.define(
     timestamps: false,
   }
 );
+
+TraditionalHouse.beforeCreate(async (instance) => {
+  instance.id = await generateCustomId("TH", TraditionalHouse, 5);
+});
 
 module.exports = { TraditionalHouse };

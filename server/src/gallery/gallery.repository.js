@@ -4,12 +4,12 @@ const { GalleryPackage } = require("../../models/GalleryPackage");
 const { GalleryTourism } = require("../../models/GalleryTourismModel");
 const { GalleryWorship } = require("../../models/GalleryWorship");
 const {
-  TourismVillage,
   Package,
   PackageType,
   GalleryHomestay,
   GalleryUnit,
   GallerySouvenir,
+  GalleryTraditional,
 } = require("../../models/relation");
 
 const findGalleryTourisms = async () => {
@@ -96,8 +96,20 @@ const destroyGalleryWorship = async (key) => {
   return deleted;
 };
 
+const insertGalleryTraditional = async (data) => {
+  const created = await GalleryTraditional.create(data);
+  return created;
+};
+
+const destroyGalleryTraditional = async (key) => {
+  const deleted = await GalleryTraditional.destroy({ where: key });
+  return deleted;
+};
+
 module.exports = {
   findGalleryTourisms,
+  destroyGalleryTraditional,
+  insertGalleryTraditional,
   findGalleryPackages,
   insertGallerySouvenir,
   destroyGalleryPackage,

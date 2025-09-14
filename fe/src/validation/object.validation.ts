@@ -35,3 +35,18 @@ export const worshipSchema = yup.object().shape({
   description: yup.string().required("Please provide a description"),
   geom: yup.string().required("Please draw the location on the map"),
 });
+export const traditionalSchema = yup.object().shape({
+  name: yup.string().required("Please enter the traditional house name"),
+  address: yup.string().required("Please enter the address"),
+  contact_person: yup.string().required("Please enter the contact person"),
+  ticket_price: yup
+    .number()
+    .min(1000, "Ticket price must be at least 1000")
+    .required("Please enter the ticket price"),
+  category: yup.number().oneOf([1, 2]).required("Please select a category"),
+  min_capacity: yup.number().required("Please enter the minimum capacity"),
+  open: yup.string().required("Please enter the opening time"),
+  close: yup.string().required("Please enter the closing time"),
+  description: yup.string().required("Please provide a description"),  
+  geom: yup.string().required("Please draw the location on the map"),
+});

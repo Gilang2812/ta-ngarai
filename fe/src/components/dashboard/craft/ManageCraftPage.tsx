@@ -33,6 +33,8 @@ import { ViewToggleButtons } from "@/components/craft/ViewToggleButtons";
 import VariantManagementList from "@/components/craft/VariantManagementList";
 import { ROUTES } from "@/data/routes";
 import { craftSchema, craftVariantSchema } from "@/type/schema/CraftSchema";
+import TableManagementHeader from "@/components/admin/TableManagementHeader";
+import ManagementFooter from "@/components/admin/ManagementFooter";
 registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview);
 
 const ManageCraftPage = ({
@@ -70,6 +72,18 @@ const ManageCraftPage = ({
     handleEditVariant,
     updateVariantPending,
     handleDeleteDetailCraft,
+    handleNextPage,
+    handlePrevPage,
+    handleItemsPerPage,
+    currentItems,
+    currentPage,
+    itemsPerPage,
+    totalPages,
+    indexOfFirstItem,
+    indexOfLastItem,
+    totalItems,
+    handleSearch,
+    searchTerm,
   } = useCraftManagement(id_souvenir_place);
 
   const tableHeaders = ["name", "price", "weight", "stock", "modal", "images"];
@@ -82,9 +96,9 @@ const ManageCraftPage = ({
       <table className="[&_td]:text-wrap [&_tbody]:font-normal [&_td]:p-2 text-sm w-full">
         <TableHeaderManagement headers={tableHeaders} />
         <tbody>
-          {detailCrafts?.map((detail, index) => (
+          {currentItems?.map((detail, index) => (
             <tr className="hover:bg-gray-100 transition-colors" key={index}>
-              <td>{index + 1}</td>
+              <td>{index + indexOfFirstItem + 1}</td>
               <td> {` ${detail.variant.craft.name} ${detail.variant.name}`}</td>
               <td className="text-right">{formatPrice(detail.price || 0)}</td>
               <td className="text-right">{detail.weight} gram</td>
@@ -164,7 +178,22 @@ const ManageCraftPage = ({
           </Button>
         </div>
         <section>
+          <TableManagementHeader
+            handleItemsPerPage={handleItemsPerPage}
+            handleSearch={handleSearch}
+            itemsPerPage={itemsPerPage}
+            searchTerm={searchTerm}
+          />
           <RenderCraft />
+          <ManagementFooter
+            currentPage={currentPage}
+            handleNextPage={handleNextPage}
+            handlePrevPage={handlePrevPage}
+            indexOfFirstItem={indexOfFirstItem}
+            indexOfLastItem={indexOfLastItem}
+            totalItems={totalItems}
+            totalPages={totalPages}
+          />
         </section>
 
         <Modal

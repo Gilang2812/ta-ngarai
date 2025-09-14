@@ -188,7 +188,7 @@ const Marketplace = () => {
         <Modal
           isOpen={isOpen}
           onClose={toggleModal}
-          title={`Detail marketplace`}
+          title={modalType === "detail" ? `Detail marketplace` : modalType === "form" ? `Recruit Staff` : `Recruit Info`}
         >
           {modalType === "detail" ? (
             <DetailMarketplaceSection souvenirPlace={selectedSouvenir} />

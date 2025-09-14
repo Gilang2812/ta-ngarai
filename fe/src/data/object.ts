@@ -8,6 +8,7 @@ export const objectsData = {
   homestay: false,
   souvenir: false,
   worship: false,
+  tranditional:false
 };
 
 export const objectRoutes = [
@@ -17,4 +18,5 @@ export const objectRoutes = [
   "homestays",
   "souvenirs",
   "worship",
+  "traditional",
 ];

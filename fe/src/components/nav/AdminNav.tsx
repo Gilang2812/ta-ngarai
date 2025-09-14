@@ -3,6 +3,7 @@ import {
   FaBed,
   FaBullhorn,
   FaHouse,
+  FaLandmark,
   FaPagelines,
   FaPuzzlePiece,
   FaScroll,
@@ -14,6 +15,7 @@ import { DropDownItem } from "@/components/nav/DropDownItem";
 import { DropDownChildrenItem } from "./DropDownChildren";
 import { ROUTES } from "@/data/routes";
 import useUserRole from "@/hooks/useUserRole";
+import { MdLocalConvenienceStore } from "react-icons/md";
 
 export const AdminNav = () => {
   const { isAdmin } = useUserRole();
@@ -102,14 +104,29 @@ export const AdminNav = () => {
               />
             </li>
             <li>
-              <SideNavItem
-                icon={FaStore}
+              <DropDownItem
+                icon={MdLocalConvenienceStore}
                 label="Manage Marketplace"
-                link={ROUTES.MANAGE_MARKETPLACE}
-              />
+              >
+                <DropDownChildrenItem
+                  icon={FaStore}
+                  label="Marketplace"
+                  link={ROUTES.MANAGE_MARKETPLACE}
+                />
+                <DropDownChildrenItem
+                  icon={FaPuzzlePiece}
+                  label="Craft"
+                  link={ROUTES.MANAGE_CRAFT_ADMIN}
+                />
+              </DropDownItem>
             </li>
             <li>
               <DropDownItem icon={FaSquarePollHorizontal} label="Manage Object">
+                <DropDownChildrenItem
+                  icon={FaLandmark}
+                  label="Manage Unique Attraction"
+                  link={ROUTES.MANAGE_UNIQUE}
+                />
                 <DropDownChildrenItem
                   icon={FaSquarePollHorizontal}
                   label="Manage Attraction"

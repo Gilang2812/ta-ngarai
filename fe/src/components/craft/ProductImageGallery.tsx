@@ -25,15 +25,7 @@ export const ProductImageGallery: React.FC<ProductImageGalleryProps> = ({
 }) => {
   return (
     <div className="w-full">
-      <div className="relative h-96 w-full mb-4 rounded-lg overflow-hidden">
-        {/* <ImgCraft
-          src={selectedImage ? selectedImage : ""}
-          alt={selectedDetailCraft.variant.name}
-          fill
-          className="object-contain"
-          sizes="(max-width: 768px) 100vw, 500px"
-          priority
-        /> */}
+      <section className="relative  min-h-fit w-full mb-4 rounded-lg overflow-hidden">
         <AnimatePresence mode="wait">
           <motion.img
             layoutId="selectedImage"
@@ -46,8 +38,8 @@ export const ProductImageGallery: React.FC<ProductImageGalleryProps> = ({
             transition={{ duration: 0.8 }}
           />
         </AnimatePresence>
-      </div>
-      <div className="relative border p-4 rounded-xl">
+      </section>
+      <section className="relative border p-4 rounded-xl">
         <Button
           className="absolute left-4 top-1/2 -translate-y-1/2  rounded-full shadow p-1 z-10"
           onClick={handlePrevImageButton}
@@ -86,7 +78,7 @@ export const ProductImageGallery: React.FC<ProductImageGalleryProps> = ({
         >
           <MdArrowForwardIos />
         </Button>
-      </div>
+      </section>
     </div>
   );
 };

@@ -8,14 +8,14 @@ const getPaymentStatusText = (transactionStatus) => {
     }
   } else if (transactionStatus?.transaction_status === "settlement") {
     paymentStatus = "success";
-  } else if (transactionStatus.transaction_status === "deny") {
+  } else if (transactionStatus?.transaction_status === "deny") {
     paymentStatus = "deny";
   } else if (
-    transactionStatus.transaction_status === "cancel" ||
-    transactionStatus.transaction_status === "expire"
+    transactionStatus?.transaction_status === "cancel" ||
+    transactionStatus?.transaction_status === "expire"
   ) {
     paymentStatus = "failure";
-  } else if (transactionStatus.transaction_status === "pending") {
+  } else if (transactionStatus?.transaction_status === "pending") {
     paymentStatus = "pending";
   } else {
     paymentStatus = null;

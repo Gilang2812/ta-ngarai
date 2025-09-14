@@ -1,13 +1,18 @@
 "use client";
+import ManagementFooter from "@/components/admin/ManagementFooter";
 import ManagementHeader from "@/components/admin/ManagementHeader";
 import TableHeaderManagement from "@/components/admin/TableHeaderManagement";
+import TableManagementHeader from "@/components/admin/TableManagementHeader";
 import Button from "@/components/common/Button";
 import { SingleContentWrapper } from "@/components/common/SingleContentWrapper";
 import DetailMarketplaceSection from "@/components/dashboard/marketplace/DetailMarketplaceSection";
 import { TableRawSkeleton } from "@/components/loading/TableRawSkeleton";
 import { Modal } from "@/components/modal/Modal";
 import { useManageMarketplace } from "@/hooks/useManageMarketplace";
+import useSearchTable from "@/hooks/useSearchTable";
+import useTableManagement from "@/hooks/useTableManagement";
 import { timeFormatter } from "@/lib/timeFormatter";
+import { useMemo } from "react";
 import { FaCircleInfo } from "react-icons/fa6";
 
 const ManageMarketplace = () => {
@@ -15,7 +20,7 @@ const ManageMarketplace = () => {
     "id",
     "name",
     "address",
-    "contact_person",
+    "contact person",
     "open",
     "close",
     "description",
@@ -23,6 +28,39 @@ const ManageMarketplace = () => {
 
   const { isOpen, toggleModal, data, isLoading, selectedItem, handleSelect } =
     useManageMarketplace();
+  const { handleSearch, searchTerm } = useSearchTable();
+  const filteredData = useMemo(() => {
+    return (
+      data?.filter((item) => {
+        const request = {
+          id: item.id,
+          name: item.name,
+          address: item.address,
+          contact_person: item.contact_person,
+          open: item.open,
+          close: item.close,
+          description: item.description,
+        };
+        return Object.values(request)
+          .join(" ")
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase());
+      }) ?? []
+    );
+  }, [data, searchTerm]);
+
+  const {
+    handleNextPage,
+    handlePrevPage,
+    handleItemsPerPage,
+    currentItems,
+    currentPage,
+    itemsPerPage,
+    totalPages,
+    indexOfFirstItem,
+    indexOfLastItem,
+    totalItems,
+  } = useTableManagement(filteredData);
 
   const RenderSouvenirPlace = () => {
     if (isLoading) return <TableRawSkeleton tableHead={tableHeaders} />;
@@ -30,9 +68,9 @@ const ManageMarketplace = () => {
       <table className="w-full [&_td]:text-wrap [&_td]:p-2 text-sm">
         <TableHeaderManagement headers={tableHeaders} />
         <tbody>
-          {data?.map((sp, index) => (
+          {currentItems?.map((sp, index) => (
             <tr className="border-b" key={index}>
-              <td>{index + 1}</td>
+              <td>{index + indexOfFirstItem + 1}</td>
               <td>{sp.id}</td>
               <td>{sp.name}</td>
               <td>{sp.address}</td>
@@ -59,7 +97,22 @@ const ManageMarketplace = () => {
       <SingleContentWrapper>
         <ManagementHeader title="manage marketplace" />
         <section>
+          <TableManagementHeader
+            handleItemsPerPage={handleItemsPerPage}
+            handleSearch={handleSearch}
+            itemsPerPage={itemsPerPage}
+            searchTerm={searchTerm}
+          />
           <RenderSouvenirPlace />
+          <ManagementFooter
+            currentPage={currentPage}
+            handleNextPage={handleNextPage}
+            handlePrevPage={handlePrevPage}
+            indexOfFirstItem={indexOfFirstItem}
+            indexOfLastItem={indexOfLastItem}
+            totalItems={totalItems}
+            totalPages={totalPages}
+          />
         </section>
 
         <Modal

@@ -45,6 +45,8 @@ const CulinaryPlace = require("./CulinaryPlace.js");
 const { GalleryCulinary } = require("./GalleryCulinary.js");
 const { WorshipPlace } = require("./WorshipPlace.js");
 const { GalleryWorship } = require("./GalleryWorship.js");
+const { TraditionalHouse } = require("./TraditionalHouse.js");
+const { GalleryTraditional } = require("./GalleryTraditional.js");
 
 User.hasMany(AuthGroupUsers, { foreignKey: "user_id", as: "user" });
 AuthGroup.hasMany(AuthGroupUsers, { foreignKey: "group_id", as: "group" });
@@ -495,6 +497,11 @@ GalleryWorship.belongsTo(WorshipPlace, {
   as: "worshipPlace",
 });
 
+TraditionalHouse.hasMany(GalleryTraditional, {
+  foreignKey: "traditional_house_id",
+  as: "galleries",
+});
+
 module.exports = {
   AuthGroup,
   AuthGroupUsers,
@@ -541,4 +548,6 @@ module.exports = {
   GalleryCulinary,
   WorshipPlace,
   GalleryWorship,
+  TraditionalHouse,
+  GalleryTraditional,
 };

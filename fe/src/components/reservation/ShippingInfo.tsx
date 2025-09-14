@@ -18,7 +18,7 @@ export const ShippingInfo = ({ shipping }: Props) => (
     {shipping.multiple ? (
       <div>
         <div className="font-semibold text-gray-900 mb-2">
-          🚚 Pengiriman Terpisah
+          🚚 Separate Shipping
         </div>
         {shipping.details?.map((detail, idx) => (
           <div key={idx} className="text-sm text-gray-600">
@@ -29,10 +29,10 @@ export const ShippingInfo = ({ shipping }: Props) => (
     ) : (
       <div>
         <div className="font-semibold text-gray-900 mb-1">
-          🚚 Pengiriman dari {shipping.store || "Toko"}
+          🚚 Shipping from {shipping.store || "Store"}
         </div>
         <div className="text-sm text-gray-600">
-          {shipping.courier} • Estimasi: {shipping.estimate} • {shipping.cost}
+          {shipping.courier} • Estimate: {shipping.estimate} • {shipping.cost}
         </div>
       </div>
     )}

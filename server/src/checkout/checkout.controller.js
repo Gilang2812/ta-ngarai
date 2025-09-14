@@ -131,8 +131,7 @@ router.patch("/:id", async (req, res, next) => {
             id_souvenir_place: item.id_souvenir_place,
           },
           []
-        );
-        console.log("item checkedout", currenCraftItem);
+        ); 
         const stock = currenCraftItem.stock;
         const newStock = stock - item.jumlah < 0 ? 0 : stock - item.jumlah;
         currenCraftItem.stock = newStock;

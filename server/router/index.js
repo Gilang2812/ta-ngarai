@@ -30,6 +30,7 @@ const souvenirRouter = require("../src/souvenirPlace/souvenir.controller");
 const tourismRouter = require("../src/tourismVillage/tourism.controller");
 const userRouter = require("../src/user/user.controller");
 const worship = require("../src/worship/worship.controller");
+const traditional = require("../src/traditional/traditional.controller");
 
 router.use("/", authRouter);
 router.use("/announcement", announcementRouter);
@@ -51,6 +52,7 @@ router.use("/services", detailServiceRouter);
 router.use("/tourism", tourismRouter);
 router.use("/variants", craftVariantRouter);
 router.use("/worship", worship);
+router.use("/traditionals", traditional);
 
 router.use("/addresses", verifyToken, addressRouter);
 router.use("/checkouts", verifyToken, checkout);

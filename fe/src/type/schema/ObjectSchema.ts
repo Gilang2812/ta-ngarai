@@ -38,16 +38,41 @@ export type GalleryWorship = {
   url: string;
 };
 
+export type GalleryTraditional = {
+  id: string;
+  traditional_house_id: string;
+  url: string;
+};
+
 export type CulinaryPlace = {
   id: string;
   name: string;
   address: string;
   contact_person: string;
+  ticket_price: number;
+  category: number;
+  min_capacity: number;
   open: string;
   close: string;
-  capacity: number;
   description: string;
   status: number;
+  video_url?: string;
+  geom?: MultiPolygon | string;
+};
+
+export type TraditionalHouse = {
+  id: string;
+  name: string;
+  address: string;
+  contact_person: string;
+  ticket_price: number;
+  category: 1|2;
+  min_capacity: number;
+  open: string;
+  close: string;
+  description: string;
+  status?: number;
+  video_url?: string;
   geom?: MultiPolygon | string;
 };
 
@@ -74,5 +99,13 @@ export type WorshipSchema = WorshipPlace & {
 };
 
 export type WorshipForm = WorshipPlace & {
+  images: FilepondType;
+};
+
+export type TraditionalSchema = TraditionalHouse & {
+  galleries: GalleryTraditional[];
+};
+
+export type TraditionalForm = TraditionalHouse & {
   images: FilepondType;
 };

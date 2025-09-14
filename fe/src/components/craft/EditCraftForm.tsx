@@ -48,10 +48,11 @@ export const EditCraftForm = ({ id_craft, id_souvenir_place }: Props) => {
                       label="Craft ID"
                       type="text"
                       name="craft_variant_id"
+                      readonly
                     />
                   </div>
                   <div>
-                    <FormInput label="Name" type="text" name="name" />
+                    <FormInput label="Name" type="text" name="name" readonly />
                   </div>
                   <div>
                     <FormInput

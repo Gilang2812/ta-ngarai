@@ -62,6 +62,7 @@ export const ROUTES = {
   NEW_MARKETPLACE: "/dashboard/marketplace/new",
   EDIT_MARKETPLACE: (id: string) => `/dashboard/marketplace/${id}/edit`,
   MANAGE_MARKETPLACE: "/dashboard/manage-marketplace",
+  MANAGE_CRAFT_ADMIN: "/dashboard/craft",
   MANAGE_CRAFT: (id_souvenir_place: string) =>
     `/dashboard/craft/${id_souvenir_place}`,
   EDIT_CRAFT: ({
@@ -82,6 +83,7 @@ export const ROUTES = {
   MANAGE_ATTRACTION: `/dashboard/attraction`,
   MANAGE_WORSHIP_PLACE: `/dashboard/worship`,
   MANAGE_CULINARY: `/dashboard/culinary`,
+  MANAGE_UNIQUE: `/dashboard/unique`,
 };
 
 export const requireAuth = [

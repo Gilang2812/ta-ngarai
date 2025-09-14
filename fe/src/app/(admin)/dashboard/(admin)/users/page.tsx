@@ -136,6 +136,7 @@ export default function ManageUsers() {
         />
       )}
       <motion.div
+        layout="size"
         key={activeTab}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}

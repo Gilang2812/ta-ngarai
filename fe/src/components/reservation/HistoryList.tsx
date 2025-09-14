@@ -71,7 +71,7 @@ const HistoryList: FC<Props> = ({
         <div className="flex-1">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
-              <p className="">Tanggal</p>
+              <p className="">Date</p>
               <p className="font-medium ">
                 {dayjs(
                   history?.shippingItems?.[0]?.checkout?.checkout_date
