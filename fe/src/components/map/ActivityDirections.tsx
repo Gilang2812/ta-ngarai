@@ -2,6 +2,7 @@ import { DirectionsRenderer, DirectionsService } from "@react-google-maps/api";
 import DirectionsPair from "./DirectionPair";
 import { useDirectionStore } from "@/stores/DirectionStore";
 import { getCentroid } from "@/utils/common/getCentroid";
+import { LANDMARK_POSITION } from "@/lib/objectLandmark";
 
 export const ActivityDirections = ({
   hideAllLayer,
@@ -10,17 +11,21 @@ export const ActivityDirections = ({
 }) => {
   const { objects, direction, origin, destination, setDirection, clearOption } =
     useDirectionStore();
+  const { setResponse: setResponseDirection } = useDirectionStore();
 
   const handleCallback = (
     result: google.maps.DirectionsResult | null,
     status: string
   ) => {
+    clearOption();
     if (status === "OK" && result) {
       setDirection(result);
+      console.log(result);
+      setResponseDirection(result);
       hideAllLayer?.();
     }
-    clearOption();
   };
+
   const wayPoints = objects.map((ob) => getCentroid(ob.geom));
   return (
     <>
@@ -37,18 +42,14 @@ export const ActivityDirections = ({
       )}
 
       {direction && <DirectionsRenderer directions={direction} />}
-      {wayPoints.length > 0 &&
-        wayPoints.map((_, index) => {
-          if (index === 0) return;
-          return (
-            <DirectionsPair
-              key={index}
-              hideAllLayer={hideAllLayer}
-              destination={wayPoints[index]}
-              origin={wayPoints[index - 1]}
-            />
-          );
-        })}
+      {wayPoints.length > 0 && (
+        <DirectionsPair
+          hideAllLayer={hideAllLayer}
+          destination={LANDMARK_POSITION}
+          origin={wayPoints[wayPoints.length - 1]}
+          waypoints={wayPoints.slice(0, wayPoints.length - 1)}
+        />
+      )}
     </>
   );
 };

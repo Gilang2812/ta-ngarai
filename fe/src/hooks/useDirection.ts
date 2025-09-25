@@ -1,3 +1,4 @@
+import { useDirectionStore } from "@/stores/DirectionStore";
 import {
   DirectionsResult,
   DirectionsWaypoint,
@@ -33,7 +34,7 @@ export const useDirections = () => {
     error: null,
     isSuccess: false,
   });
-
+  const { setResponse } = useDirectionStore();
   const directionServiceRef = useRef<google.maps.DirectionsService | null>(
     null
   );
@@ -72,7 +73,7 @@ export const useDirections = () => {
           avoidTolls: request.avoidTolls,
           unitSystem: request.unitSystem,
         });
-
+        setResponse(result);
         const leg = result?.routes[0].legs[0];
 
         setState({
@@ -98,6 +99,7 @@ export const useDirections = () => {
         return null;
       }
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   );
   const resetDirections = useCallback(() => {

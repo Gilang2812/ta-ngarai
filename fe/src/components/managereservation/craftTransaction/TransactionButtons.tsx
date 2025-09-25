@@ -1,5 +1,5 @@
- 
-import ButtonTooltip from "@/components/common/ButtonTooltip"; 
+import ButtonTooltip from "@/components/common/ButtonTooltip";
+import useUserRole from "@/hooks/useUserRole";
 import { HiOutlineCube } from "react-icons/hi2";
 //1
 //export const getCraftTransactionStatus = (status: number) => {
@@ -29,11 +29,13 @@ type Props = {
   rated: boolean;
 };
 const TransactionButtons = ({ handleShipProducts, status }: Props) => {
+  const { isAdmin } = useUserRole();
+
   switch (status) {
     case 1:
       return;
     case 2:
-      return (
+      return !isAdmin ? (
         <>
           <ButtonTooltip
             onClick={() => handleShipProducts()}
@@ -43,7 +45,7 @@ const TransactionButtons = ({ handleShipProducts, status }: Props) => {
             <HiOutlineCube />
           </ButtonTooltip>
         </>
-      );
+      ) : null;
     case 3:
       return <></>;
     case 4:

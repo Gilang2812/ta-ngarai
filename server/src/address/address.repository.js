@@ -28,7 +28,7 @@ const editAddress = async (condition, body) => {
 
 const destroyAddress = async (id) => {
     const address = await ShippingAddress.destroy({
-        where: { id },
+        where: { address_id:id },
     });
     return address;
 };

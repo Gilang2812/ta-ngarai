@@ -34,6 +34,7 @@ import { useTools } from "@/hooks/useTools";
 import CustomRoute from "../map/CustomRoute";
 import useTravelRoute from "@/hooks/useTravelRoute";
 import MapWeather from "../weather/MapWeather";
+import DirectionInstruction from "../common/DirectionInstruction";
 
 function MapWeb({
   zoom,

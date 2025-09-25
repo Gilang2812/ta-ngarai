@@ -59,7 +59,7 @@ const updateAddress = async (condition, body) => {
 };
 
 const deleteAddress = async (id) => {
-  await getAddressById({ id });
+  await getAddressById({ address_id: id });
 
   const deletedAddress = await destroyAddress(id);
   return deletedAddress;

@@ -1,11 +1,18 @@
+import ButtonTooltip from "@/components/common/ButtonTooltip";
 import ImgCraft from "@/components/common/ImgCraft";
 import { UserMarketplaceSchema } from "@/type/schema/SouvenirSchema";
-import { UserCheck, UserX, Clock, Store, Users } from "lucide-react";
-import React from "react";
+import { 
+  UserX,
+  Clock,
+  Store,
+  Users, 
+  UserMinus, 
+} from "lucide-react";
+import React from "react"; 
 
 type Props = {
   data: UserMarketplaceSchema[];
-  onUpdateStatus?: (userId: string, status: number, souvenirId: string) => void;
+  onUpdateStatus: (userId: number, status: number, souvenirId: string) => void;
 };
 
 const RecruitInfo = ({ data, onUpdateStatus }: Props) => {
@@ -98,36 +105,41 @@ const RecruitInfo = ({ data, onUpdateStatus }: Props) => {
                     <div className="flex items-center gap-2 flex-shrink-0">
                       {getStatusBadge(detail.status)}
 
-                      {detail.status === 0 && onUpdateStatus && (
-                        <div className="flex gap-1">
-                          <button
+                      <div className="flex gap-1">
+                        {detail.status === 0 && onUpdateStatus && (
+                          <ButtonTooltip
+                            label="Cancel Recruit"
+                            variant={"warning"}
                             onClick={() =>
                               onUpdateStatus(
-                                detail.user_id.toString(),
-                                1,
+                                Number(detail.user_id),
+                                detail.status,
                                 detail.id_souvenir_place.toString()
                               )
                             }
-                            className="p-1.5 bg-green-600 text-white rounded hover:bg-green-700 transition-colors"
-                            title="Accept"
-                          >
-                            <UserCheck size={14} />
-                          </button>
-                          <button
-                            onClick={() =>
-                              onUpdateStatus(
-                                detail.user_id.toString(),
-                                2,
-                                detail.id_souvenir_place.toString()
-                              )
-                            }
-                            className="p-1.5 bg-red-600 text-white rounded hover:bg-red-700 transition-colors"
-                            title="Reject"
+                          title="Accept"
                           >
                             <UserX size={14} />
-                          </button>
-                        </div>
-                      )}
+                          </ButtonTooltip>
+                        )}
+
+                        {detail.status === 2 && (
+                          <ButtonTooltip
+                            label="Fire"
+                            variant={"danger"}
+                            onClick={() =>
+                              onUpdateStatus(
+                                Number(detail.user_id),
+                                detail.status,
+                                detail.id_souvenir_place.toString()
+                              )
+                            }
+                           title="Reject"
+                          >
+                            <UserMinus size={14} />
+                          </ButtonTooltip>
+                        )}
+                      </div>
                     </div>
                   </div>
                 ))}

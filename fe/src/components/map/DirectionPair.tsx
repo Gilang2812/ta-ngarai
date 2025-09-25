@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { DirectionsRenderer, DirectionsService } from "@react-google-maps/api";
+import { useDirectionStore } from "@/stores/DirectionStore";
 
 type Props = {
   origin: google.maps.LatLngLiteral;
@@ -8,6 +9,7 @@ type Props = {
   options?: google.maps.DirectionsRendererOptions;
   hideAllLayer?: () => void;
   suppressMarkers?: boolean;
+  waypoints: google.maps.LatLngLiteral[];
 };
 
 const DirectionsPair: React.FC<Props> = ({
@@ -17,11 +19,18 @@ const DirectionsPair: React.FC<Props> = ({
   options,
   hideAllLayer,
   suppressMarkers = true,
+  waypoints,
 }) => {
   const [response, setResponse] = useState<google.maps.DirectionsResult | null>(
     null
   );
-
+  const { setResponse: setResponseDirection } = useDirectionStore();
+  const formatWaypoints: google.maps.DirectionsWaypoint[] = waypoints.map(
+    (point) => ({
+      location: { lat: point.lat, lng: point.lng },
+      stopover: true,
+    })
+  );
   return (
     <>
       {!response && (
@@ -30,6 +39,7 @@ const DirectionsPair: React.FC<Props> = ({
             origin,
             destination,
             travelMode,
+            waypoints: formatWaypoints,
             avoidTolls: true,
             avoidHighways: false,
           }}
@@ -37,6 +47,7 @@ const DirectionsPair: React.FC<Props> = ({
             if (status === "OK" && res) {
               hideAllLayer?.();
               setResponse(res);
+              setResponseDirection(res);
             } else {
               console.error("Directions request failed:", status);
             }

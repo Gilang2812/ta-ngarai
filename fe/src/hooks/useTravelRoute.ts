@@ -3,11 +3,13 @@ import { useUserPositionStore } from "@/stores/UserPositionStore";
 import { confirmAlert, cornerAlert, cornerError } from "@/utils/AlertUtils";
 import { useCallback } from "react";
 import { useTools } from "./useTools";
+import { useDirectionStore } from "@/stores/DirectionStore";
 const useTravelRoute = () => {
   const { addRoute, removeRoute, routes, removeAllRoutes } =
     useTravelRouteStore();
   const { toggleAround, aroundOpen } = useTools();
   const { userPosition } = useUserPositionStore();
+  const { setResponse } = useDirectionStore();
 
   const handleRemoveRoute = useCallback(
     (index: number) => {
@@ -41,7 +43,11 @@ const useTravelRoute = () => {
       return;
     }
     const lastRoute = routes[routes.length - 1];
-    if (lastRoute && lastRoute.lat === userPosition.lat && lastRoute.lng === userPosition.lng) {
+    if (
+      lastRoute &&
+      lastRoute.lat === userPosition.lat &&
+      lastRoute.lng === userPosition.lng
+    ) {
       cornerError("You are already at your location.");
       return;
     }
@@ -72,7 +78,7 @@ const useTravelRoute = () => {
       });
       console.log(routes);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userPosition, routes]);
 
   return {
@@ -81,7 +87,10 @@ const useTravelRoute = () => {
     routes,
     handleRemoveRoute,
     handleAddUniqueRoute,
-    removeAllRoutes,
+    removeAllRoutes:()=>{
+      removeAllRoutes();
+      setResponse(null);
+    },
     handleReturnToUserLocation,
     handleCreateRoute,
   };

@@ -45,13 +45,13 @@ const NotifInvitations = () => {
       }
     );
   };
-  
+
   const handleDelete = ({
     id_souvenir_place,
     user_id,
   }: {
     id_souvenir_place: string;
-    user_id: string;
+    user_id: number;
   }) => {
     confirmDeleteAlert(
       "Request",
@@ -124,7 +124,7 @@ const NotifInvitations = () => {
                         onClick={() =>
                           handleDelete({
                             id_souvenir_place: item.id_souvenir_place,
-                            user_id: item.user_id,
+                            user_id: Number(item.user_id),
                           })
                         }
                         isLoading={isDeletePending}

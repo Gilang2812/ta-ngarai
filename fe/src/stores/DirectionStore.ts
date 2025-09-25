@@ -8,31 +8,29 @@ import { create } from "zustand";
 type DirectionStore = {
   direction: DirectionsResult | null;
   objects: SimplifiedObject[];
-  directions: DirectionsResult[];
   origin: LatLngLiteral | null;
   destination: LatLngLiteral | null;
   setObject: (objects: SimplifiedObject[]) => void;
   clearObject: () => void;
-  setDirection: (dir: DirectionsResult) => void;
-  addDirections: (dir: DirectionsResult) => void;
+  setDirection: (dir: DirectionsResult | null) => void;
   setOption: (origin: LatLngLiteral, direction: LatLngLiteral) => void;
   clearDirection: () => void;
   clearOption: () => void;
+  response: DirectionsResult | null;
+  setResponse: (res: DirectionsResult | null) => void;
 };
 
 export const useDirectionStore = create<DirectionStore>((set) => ({
   direction: null,
-  directions: [],
   objects: [],
-
+  response: null,
   origin: null,
   destination: null,
   setObject: (object) => set({ objects: object }),
   setDirection: (dir) => set({ direction: dir }),
-  addDirections: (dir) =>
-    set((state) => ({ directions: [...state.directions, dir] })),
   clearDirection: () => set({ direction: null }),
   setOption: (origin, destination) => set({ origin, destination }),
-  clearOption: () => set({ origin: null, destination: null }),
-  clearObject: () => set({ objects: [] }),
+  clearOption: () => set({ origin: null, destination: null, direction: null }),
+  clearObject: () => set({ objects: [], response: null }),
+  setResponse: (res) => set({ response: res }),
 }));

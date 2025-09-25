@@ -83,21 +83,18 @@ const getIncompleteCheckout = async ({
     transaction_token: null,
   });
 
-  if (!existingCheckout) {
-    console.log("dont exist");
+  if (!existingCheckout) { 
     const address = await getUserAddress({ customer_id });
     if (!address) {
       throw new CustomError("complete your address first ", 400);
     }
-    console.log("address checkout", address);
-    console.log("customer_id checkout", customer_id);
+    
     existingCheckout = await createCheckout({
       address_id: address?.address_id ?? null,
       customer_id,
       checkout_date: isCheckout ? new Date() : null,
     });
-  }
-  console.log("new existing checkout", existingCheckout);
+  } 
   return existingCheckout;
 };
 
@@ -142,8 +139,7 @@ const checkoutOrder = async (body, customer_id) => {
         },
       ]);
     })
-  );
-  console.log("newItems", newItems);
+  ); 
   return newItems;
 };
 

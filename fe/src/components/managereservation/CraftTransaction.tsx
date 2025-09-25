@@ -24,8 +24,10 @@ import Button from "../common/Button";
 import { FaTruck } from "react-icons/fa6";
 import { ROUTES } from "@/data/routes";
 import { isExpired } from "@/lib/expiredChecker";
+import useUserRole from "@/hooks/useUserRole";
 
 const CraftTransaction = () => {
+  const { isAdmin } = useUserRole();
   const {
     transactionLoading,
     handleShipProducts,
@@ -156,28 +158,28 @@ const CraftTransaction = () => {
             </ButtonTooltip>
             {item.shippingItems.some(
               (craft) => craft.review_text && !craft.seller_response
-            ) ? (
-              <ButtonTooltip label="Reply" variant="edit" asChild>
-                <Link
-                  href={`/web/reservation/${item.shipping_id}/rating-items`}
-                >
-                  <FaReply />
-                </Link>
-              </ButtonTooltip>
-            ) : (
-              item.shippingItems.every(
-                (craft) => craft.review_text && craft.seller_response
-              ) && (
-                <ButtonTooltip
-                  label="Responded"
-                  variant="edit"
-                  className="p-2"
-                  onClick={() => handleTransactionClick(item, "rate")}
-                >
-                  <FaCheckCircle />
-                </ButtonTooltip>
-              )
-            )}
+            )
+              ? !isAdmin && (
+                  <ButtonTooltip label="Reply" variant="edit" asChild>
+                    <Link
+                      href={`/web/reservation/${item.shipping_id}/rating-items`}
+                    >
+                      <FaReply />
+                    </Link>
+                  </ButtonTooltip>
+                )
+              : item.shippingItems.every(
+                  (craft) => craft.review_text && craft.seller_response
+                ) && (
+                  <ButtonTooltip
+                    label="Responded"
+                    variant="edit"
+                    className="p-2"
+                    onClick={() => handleTransactionClick(item, "rate")}
+                  >
+                    <FaCheckCircle />
+                  </ButtonTooltip>
+                )}
           </div>
         </td>
       </tr>

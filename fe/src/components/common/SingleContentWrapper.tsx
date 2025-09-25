@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import React, { FC } from "react";
 
 type Props = {
-  children: React.ReactNode;
+  children?: React.ReactNode;
   className?: string;
 };
 

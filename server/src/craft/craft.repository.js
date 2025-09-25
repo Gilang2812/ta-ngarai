@@ -1,7 +1,7 @@
 const { CraftVariant, Craft, SouvenirPlace } = require("../../models/relation");
 const { buildIncludeModels } = require("../craftVariant/variant.utils");
 
-const findCrafts = async (key) => {
+const findCrafts = async () => {
   const craft = await Craft.findAll({
     include: [
       {

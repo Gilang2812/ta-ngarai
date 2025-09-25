@@ -1,6 +1,7 @@
 "use client";
 
 import { ContentDiffSplitted } from "@/components/common/ContentDiffSplitted";
+import DirectionInstruction from "@/components/common/DirectionInstruction";
 import Announcement from "@/components/web/Announcement";
 import { Around } from "@/components/web/explore/Around";
 import MapSection from "@/components/web/MapSection";
@@ -14,7 +15,12 @@ function Home() {
     <section className="space-y-8 font-bold">
       <Announcement />
       <ContentDiffSplitted
-        left={<MapSection />}
+        left={
+          <>
+            <MapSection />
+            <DirectionInstruction className="mt-8" />
+          </>
+        }
         right={
           <div className="bg-white overflow-hidden p-5 rounded-xl">
             {packageOpen ? (

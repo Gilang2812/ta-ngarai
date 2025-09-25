@@ -83,7 +83,7 @@ router.patch("/:id", async (req, res, next) => {
         { is_primary: 0 }
       );
     const updatedAddress = await updateAddress(
-      { id },
+      { address_id: id },
       {
         destination_id,
         label,

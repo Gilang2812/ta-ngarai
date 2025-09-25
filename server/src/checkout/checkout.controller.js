@@ -131,7 +131,7 @@ router.patch("/:id", async (req, res, next) => {
             id_souvenir_place: item.id_souvenir_place,
           },
           []
-        ); 
+        );
         const stock = currenCraftItem.stock;
         const newStock = stock - item.jumlah < 0 ? 0 : stock - item.jumlah;
         currenCraftItem.stock = newStock;
@@ -220,13 +220,20 @@ router.get("/history", async (req, res, next) => {
 router.get("/transactions", async (req, res, next) => {
   try {
     const stores = req?.user?.store ?? [];
+    console.log("stores", stores);
     const id_stores = stores?.map((detail) => detail.id_souvenir_place);
     let checkouts = [];
+    if (req.user.role === 2) {
+      checkouts = await getSouvenirTransaction({ id_souvenir_place: null });
+    }
     if (id_stores.length > 0) {
       checkouts = await Promise.all(
-        id_stores.map((id_souvenir_place) =>
-          getSouvenirTransaction({ id_souvenir_place })
-        )
+        id_stores.map((id_souvenir_place) => {
+          const key = {
+            id_souvenir_place,
+          };
+          return getSouvenirTransaction(key);
+        })
       );
       checkouts = checkouts.flat();
     }

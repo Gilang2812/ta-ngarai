@@ -1,5 +1,6 @@
 import { useDeleteMarketplace } from "@/features/dashboard/marketplace/useDeleteMarketplace";
 import {
+  confirmAlert,
   confirmDeleteAlert,
   cornerAlert,
   showLoadingAlert,
@@ -11,14 +12,19 @@ import { useFetchUserSouvenirPlace } from "@/features/dashboard/marketplace/useF
 import { UserMarketplaceSchema } from "@/type/schema/SouvenirSchema";
 import { useCreateDetailUserSouvenir } from "@/features/dashboard/marketplace/useCreateDetailUserSouvenir";
 import { useSession } from "next-auth/react";
+import { useDeleteDetailSouvenir } from "@/features/dashboard/marketplace/useDeleteDetailSouvenir";
 
 export const useManageUserMarketplace = () => {
   const { data: session } = useSession();
+
   const { data, isLoading, refetch } = useFetchUserSouvenirPlace();
+
   const [modalType, setModalType] = useState<"form" | "detail" | "info">(
     "form"
   );
+
   const { isOpen, toggleModal } = useModal();
+
   const [selectedSouvenir, setSelectedSouvenir] =
     useState<UserMarketplaceSchema | null>(null);
 
@@ -26,6 +32,7 @@ export const useManageUserMarketplace = () => {
     id_souvenir_place: "",
     user: "",
   };
+
   const { mutateAsync: deleteMarketplace, isPending: deletingMarketplace } =
     useDeleteMarketplace({
       onSuccess: () => {
@@ -39,6 +46,15 @@ export const useManageUserMarketplace = () => {
       onSuccess: () => {
         cornerAlert("recruiting has been send wait for user to confirm");
         toggleModal();
+        refetch();
+      },
+    });
+
+  const { mutate: deleteDetailSouvenir, isPending: deletingDetail } =
+    useDeleteDetailSouvenir({
+      onSuccess: () => {
+        cornerAlert("success delete detail souvenir");
+        refetch();
       },
     });
 
@@ -53,6 +69,12 @@ export const useManageUserMarketplace = () => {
       showLoadingAlert();
     }
   }, [deletingMarketplace]);
+
+  useEffect(() => {
+    if (deletingDetail) {
+      showLoadingAlert();
+    }
+  }, [deletingDetail]);
 
   const handleDetailSouvenir = (souvenir: UserMarketplaceSchema) => {
     setSelectedSouvenir(souvenir);
@@ -69,10 +91,11 @@ export const useManageUserMarketplace = () => {
     toggleModal();
     setModalType("info");
   };
+
   const handleSubmit = ({ id_souvenir_place, user }: typeof initialValues) => {
-    console.log("Submitting form with values:", { id_souvenir_place, user });
     recruitStaff({ id_souvenir_place, user });
   };
+
   const marketplace = data?.filter((item) =>
     item.detailSouvenir.some(
       (ds) =>
@@ -100,6 +123,29 @@ export const useManageUserMarketplace = () => {
     );
   };
 
+  const handleUpdateStatus = (
+    user_id: number,
+    status: number,
+    souvenirPlaceId: string
+  ) => {
+    const deleteTitle =
+      status === 2
+        ? "fire this staff"
+        : status === 0
+        ? "cancel to recruit this staff"
+        : "";
+    const deleteMessage =
+      status === 2
+        ? "Are you sure want to fire this staff?"
+        : status === 0
+        ? "Are you sure want to cancel to recruit this staff?"
+        : "";
+        console.log(status)
+    confirmAlert(deleteTitle, deleteMessage, () => {
+      deleteDetailSouvenir({ id_souvenir_place: souvenirPlaceId, user_id });
+    });
+  };
+
   return {
     isOpen,
     handleDelete,
@@ -116,5 +162,6 @@ export const useManageUserMarketplace = () => {
     handleInfoRecruit,
     souvenirPlace,
     isOwner,
+    handleUpdateStatus,
   };
 };

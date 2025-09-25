@@ -31,11 +31,12 @@ const tourismRouter = require("../src/tourismVillage/tourism.controller");
 const userRouter = require("../src/user/user.controller");
 const worship = require("../src/worship/worship.controller");
 const traditional = require("../src/traditional/traditional.controller");
+const sequelize = require("../config/database");
 
 router.use("/", authRouter);
 router.use("/announcement", announcementRouter);
 router.use("/attractions", attractionRouter);
-router.use("/carts", cartRouter);
+router.use("/cartsn", cartRouter);
 router.use("/culinary", culinaryRouter);
 router.use("/detail-crafts", detailCraftRouter);
 router.use("/detail-package", detailPackageRouter);
@@ -63,6 +64,36 @@ router.use("/shipping", shippingRouter);
 router.use("/souvenirs", souvenirRouter);
 router.use("/users", verifyToken, userRouter);
 
+router.get("/db-check", async (req, res) => {
+  try {
+    // cek versi MySQL
+    const [versionResult] = await sequelize.query("SELECT VERSION() AS version");
+    const version = versionResult[0].version;
+
+    // cek database aktif
+    const [dbResult] = await sequelize.query("SELECT DATABASE() AS db");
+    const activeDb = dbResult[0].db;
+
+    const content = {
+      Platform: process.env.DB+" (Sequelize)",
+      Version: version,
+      Database: activeDb || process.env.DB_DATABASE || null,
+    };
+
+    return res.status(200).json({
+      data: content,
+      message: "Successfully Connected to Database",
+    });
+  } catch (error) {
+    console.error("Failed to connect to the database:", error);
+    return res.status(500).json({
+      data: null,
+      status: 500,
+      message: ["Failed to connect to the database"],
+      error: error.message,
+    });
+  }
+});
 // 404 handler
 router.use("*", (req, res, next) => {
   res.status(404).json({ message: "URl Server Not Found" });

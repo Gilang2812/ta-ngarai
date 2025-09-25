@@ -1,7 +1,7 @@
 const { DataTypes } = require("sequelize");
 const sequlize = require("../config/database");
 const { CustomError } = require("../utils/CustomError");
-
+const fs = require("fs");
 const DetailMarketplaceCraft = sequlize.define(
   "DetailMarketplaceCraft",
   {

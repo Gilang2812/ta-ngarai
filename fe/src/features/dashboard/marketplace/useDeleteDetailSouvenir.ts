@@ -15,7 +15,7 @@ export const useDeleteDetailSouvenir = ({ onSuccess }: ActionProps) => {
       user_id,
     }: {
       id_souvenir_place: string;
-      user_id: string;
+      user_id: number;
     }) => {
       const { data } = await axiosInstance.delete(
         `/souvenirs/detail/${id_souvenir_place}/${user_id}/delete`

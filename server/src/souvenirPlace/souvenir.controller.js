@@ -74,8 +74,7 @@ router.post(
         description,
         geom,
         destination_id,
-      } = req.body;
-      console.log(geom);
+      } = req.body; 
       const souvenir = await createSouvenirPlace({
         name,
         contact_person,
@@ -253,5 +252,6 @@ router.delete(
     }
   }
 );
+
 
 module.exports = router;

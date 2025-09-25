@@ -8,7 +8,7 @@ export const objectsData = {
   homestay: false,
   souvenir: false,
   worship: false,
-  tranditional:false
+  traditional:false
 };
 
 export const objectRoutes = [

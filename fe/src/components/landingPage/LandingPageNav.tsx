@@ -1,5 +1,4 @@
 import React from "react";
-import Button from "../common/Button";
 import Link from "next/link";
 import Image from "next/image";
 import { NavItem } from "../common/NavItem";
@@ -8,8 +7,9 @@ import useAuth from "@/hooks/useAuth";
 import useClickOutside from "@/hooks/useOutsideClick";
 import { AnimatePresence, motion } from "framer-motion";
 import { cn } from "@/utils/common/cn";
-import { signIn, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import { ROUTES } from "@/data/routes";
+import Button from "../common/Button";
 type Props = {
   isNavOpen?: boolean;
   onAwardClick: () => void;
@@ -90,8 +90,10 @@ const LandingPageNav = ({ isNavOpen, onAwardClick }: Props) => {
             </AnimatePresence>
           </div>
         ) : (
-          <Button onClick={() => signIn()} className=" w-fit">
-            Login
+          <Button asChild>
+            <Link href={ROUTES.LOGIN} className=" w-fit">
+              Login
+            </Link>
           </Button>
         )}
       </div>

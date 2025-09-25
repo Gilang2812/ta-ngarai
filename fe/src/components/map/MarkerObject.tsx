@@ -35,17 +35,17 @@ export const MarkerObject = ({
   properties,
 }: MarkerProps) => {
   const pathName = usePathname();
-  const { setObjectId, togglePackage, packageOpen } = useTools();
+  const { setObjectId, togglePackage, packageOpen, aroundOpen } = useTools();
 
   const handleClickMarker = (index: number, object_id: string) => {
     toggleInfoWindow(index);
     setObjectId(object_id);
-    if (!packageOpen || !object_id) {
+    if ((!packageOpen || !object_id) && !aroundOpen) {
       togglePackage();
     }
   };
   const { icon, text } = getIconAndTextSecondLine(properties);
-  const { icon: thirdIcon, text: thirdText } =
+  const { icon: thirdIcon, text: thirdText } =  
     getIconAndTextThirdLine(properties);
   const { routes, handleAddUniqueRoute } = useTravelRoute();
   const { isUserAuth } = useUserRole();

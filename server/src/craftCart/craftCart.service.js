@@ -44,8 +44,7 @@ const createCraftCart = async ({
     },
     []
   );
-  if (!currenCraftItem.stock || currenCraftItem.stock === 0) {
-    console.log("stok saat ini ", currenCraftItem);
+  if (!currenCraftItem.stock || currenCraftItem.stock === 0) { 
     throw new CustomError("Out of Stocks", 400);
   }
   if (Number(jumlah) > Number(currenCraftItem.stock || 0)) {

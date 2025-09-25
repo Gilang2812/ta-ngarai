@@ -31,8 +31,7 @@ router.get("/:craft_variant_id", async (req, res, next) => {
 });
 
 router.post("/", async (req, res, next) => {
-  try {
-    console.log("Request body:", req.body);
+  try { 
     const { craft_variant_id, id_souvenir_place, jumlah } = req.body;
     const craftCart = await createCraftCart({
       customer_id: req.user.id,

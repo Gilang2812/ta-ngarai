@@ -45,6 +45,7 @@ const Marketplace = () => {
     handleInfoRecruit,
     souvenirPlace,
     isOwner,
+    handleUpdateStatus
   } = useManageUserMarketplace();
   const router = useRouter();
 
@@ -188,7 +189,13 @@ const Marketplace = () => {
         <Modal
           isOpen={isOpen}
           onClose={toggleModal}
-          title={modalType === "detail" ? `Detail marketplace` : modalType === "form" ? `Recruit Staff` : `Recruit Info`}
+          title={
+            modalType === "detail"
+              ? `Detail marketplace`
+              : modalType === "form"
+              ? `Recruit Staff`
+              : `Recruit Info`
+          }
         >
           {modalType === "detail" ? (
             <DetailMarketplaceSection souvenirPlace={selectedSouvenir} />
@@ -212,7 +219,7 @@ const Marketplace = () => {
               </>
             )
           ) : (
-            <RecruitInfo data={data} />
+            <RecruitInfo data={data} onUpdateStatus={handleUpdateStatus} />
           )}
         </Modal>
       </SingleContentWrapper>
