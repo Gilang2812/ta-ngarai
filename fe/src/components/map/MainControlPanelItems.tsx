@@ -14,14 +14,21 @@ type Props = {
   isShowLegend: boolean;
 };
 
-function MainControlPanelItems({tracking,handleLocateUser,isClickMapActivce,toggleManualLocation,toggleLegend,isShowLegend}: Props) {
+function MainControlPanelItems({
+  tracking,
+  handleLocateUser,
+  isClickMapActivce,
+  toggleManualLocation,
+  toggleLegend,
+  isShowLegend,
+}: Props) {
   return (
     <>
       <ButtonMapNavigation
         label={tracking ? "cancel navigate" : "navigate from current"}
         onClick={handleLocateUser}
         Icon={PiCrosshairLight}
-        active={tracking}
+        active={!!tracking}
       />
       <ButtonMapNavigation
         onClick={() => {

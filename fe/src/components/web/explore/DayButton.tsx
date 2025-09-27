@@ -111,7 +111,9 @@ export const DayButton = ({
             Icon={FaCaretDown}
             active={
               !!(direction || objects?.length > 0) &&
-              buttonActive?.startsWith(`${day?.day}${day?.package_id}`)
+              (buttonActive?.startsWith(`${day?.day}${day?.package_id}`) ||
+                buttonActive ===
+                  `first${day?.day}${day?.package_id}${day?.detailPackages?.[0]?.activity}`)
             }
           />
         )}
@@ -131,9 +133,7 @@ export const DayButton = ({
                   LANDMARK_POSITION,
                   getCentroid(day?.detailPackages?.[0]?.object?.geom)
                 );
-                setButtonActive?.(
-                  `first${day?.day}${day?.package_id}${day?.detailPackages?.[0]?.activity}`
-                );
+                setButtonActive?.(active);
               }
             }}
             variant={"primary"}
@@ -143,7 +143,7 @@ export const DayButton = ({
                 `first${day?.day}${day?.package_id}${day?.detailPackages?.[0]?.activity}`
             }
           >
-            <FaRoad /> Titik 0 ke 1
+            <FaRoad /> visit {day?.detailPackages?.[0]?.description}
           </Button>
         )}
         {day?.detailPackages?.map((ac, index) => {
@@ -176,7 +176,7 @@ export const DayButton = ({
               }
               variant={"primary"}
             >
-              <FaRoad /> activity {ac?.activity} ke {parseInt(ac?.activity) + 1}
+              <FaRoad /> then, {ac.description}
             </Button>
           );
         })}

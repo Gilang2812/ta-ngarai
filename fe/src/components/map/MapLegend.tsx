@@ -1,3 +1,4 @@
+import Image from "next/image";
 import React from "react";
 
 type Props = {
@@ -28,19 +29,27 @@ export default function MapLegend({ isOpen = false }: Props) {
           <p>Brunei</p>
         </div>
         <div>
-          <span></span>
-          <p>Actraction</p>
+          <span><Image width={50} height={50} alt="icon" src="/icons/attraction.png" /></span>
+          <p>Attraction</p>
         </div>
         <div>
-          <span></span>
+          <span><Image width={50} height={50} alt="icon" src="/icons/culinary.png" /></span>
           <p>Culinary Place</p>
         </div>
         <div>
-          <span></span>
+          <span><Image width={50} height={50} alt="icon" src="/icons/homestay.png" /></span>
+          <p>Homestay</p>
+        </div>
+        <div>
+          <span><Image width={50} height={50} alt="icon" src="/icons/souvenir.png" /></span>
           <p>Souvenir Place</p>
         </div>
         <div>
-          <span></span>
+          <span><Image width={50} height={50} alt="icon" src="/icons/marker_rg.png" /></span>
+          <p>Traditional House</p>
+        </div>
+        <div>
+          <span><Image width={50} height={50} alt="icon" src="/icons/worship.png" /></span>
           <p>Worship Place</p>
         </div>
       </div>

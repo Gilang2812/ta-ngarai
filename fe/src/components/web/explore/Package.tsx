@@ -27,47 +27,60 @@ export const Package = ({ title }: { title: string }) => {
     : data;
   if (isLoading) return <Loading />;
   const RenderPackage = () => {
-    return filteredData?.map((item, index) => (
-      <React.Fragment key={index}>
-        <tr>
-          <td className="flex items-center gap-4 p-4   capitalize border-b">
-            <Image
-              src="/images/bg-header.jpg"
-              alt="gambar"
-              width={1000}
-              height={1000}
-              className="w-12 h-12"
-            />
-            {item.name.split("extend")[0]}
-          </td>
-        </tr>
-        <tr className="border-b ">
-          <td className="flex gap-1 items-center relative flex-wrap gap-y-2 p-2">
-            <ButtonTooltip
-              label="Book Now"
-              className="rounded-none"
-              variant="success"
-              disabled={!isUserAuth}
-              asChild={isUserAuth}
-            >
-              {isUserAuth ? (
-                <Link href={ROUTES.PACKAGE_RESERVATION(item.id)}>
+    return filteredData && filteredData.length > 0 ? (
+      filteredData?.map((item, index) => (
+        <React.Fragment key={index}>
+          <tr>
+            <td>
+              <Link
+                className="flex items-center gap-4 p-4 capitalize border-b"
+                href={ROUTES.DETAIL_PACKAGE(item.id)}
+              >
+                <Image
+                  src="/images/bg-header.jpg"
+                  alt="gambar"
+                  width={1000}
+                  height={1000}
+                  className="w-12 h-12"
+                />
+                {item.name.split("extend")[0]}
+              </Link>
+            </td>
+          </tr>
+          <tr className="border-b ">
+            <td className="flex gap-1 items-center relative flex-wrap gap-y-2 p-2">
+              <ButtonTooltip
+                label={`${isUserAuth ? "Book Now" : "Login As Customer First"}`}
+                className="rounded-none"
+                variant="success"
+                disabled={!isUserAuth}
+                asChild={isUserAuth}
+              >
+                {isUserAuth ? (
+                  <Link href={ROUTES.PACKAGE_RESERVATION(item.id)}>
+                    <FaRegCalendarAlt />
+                  </Link>
+                ) : (
                   <FaRegCalendarAlt />
-                </Link>
-              ) : (
-                <FaRegCalendarAlt />
-              )}
-            </ButtonTooltip>
+                )}
+              </ButtonTooltip>
 
-            <DayButton
-              buttonActive={buttonActive}
-              setButtonActive={setButtonActive}
-              packageDays={item.packageDays}
-            />
-          </td>
-        </tr>
-      </React.Fragment>
-    ));
+              <DayButton
+                buttonActive={buttonActive}
+                setButtonActive={setButtonActive}
+                packageDays={item.packageDays}
+              />
+            </td>
+          </tr>
+        </React.Fragment>
+      ))
+    ) : (
+      <tr>
+        <td className="text-center p-4" colSpan={1}>
+          No packages available.
+        </td>
+      </tr>
+    );
   };
 
   return (

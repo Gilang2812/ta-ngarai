@@ -48,6 +48,10 @@ export default function MapControlPanel({
         setObjects={setObjects}
         showAirPlane={showAirPlane}
         withPackage={withPackage}
+        handleLocateUser={handleLocateUser}
+        isClickMapActivce={isClickMapActivce}
+        toggleManualLocation={toggleManualLocation}
+        tracking={tracking}
       />
     </MapControlPanelLayout>
   );

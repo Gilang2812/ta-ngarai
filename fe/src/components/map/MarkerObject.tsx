@@ -1,22 +1,10 @@
-import { LatLngLiteral } from "@/type/common/MapType";
+import { type LatLngLiteral } from "@/type/common/MapType";
 import MapMarker from "./MapMarker";
-import { InfoWindowF } from "@react-google-maps/api";
-import { FaInfo, FaPlus } from "react-icons/fa6";
-import { DirectionToKotoGadangButton } from "./DirectionToKotoGadangButton";
-import { SimplifiedObject } from "@/type/schema/PackageSchema";
-import Button from "../common/Button";
-import Link from "next/link";
-import useTravelRoute from "@/hooks/useTravelRoute";
-import ButtonTooltip from "../common/ButtonTooltip";
-import { ROUTES } from "@/data/routes";
-import useUserRole from "@/hooks/useUserRole";
-import {
-  getIconAndTextSecondLine,
-  getIconAndTextThirdLine,
-} from "./ObjectInfoWindow";
+import { type SimplifiedObject } from "@/type/schema/PackageSchema";
 import { usePathname } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useTools } from "@/hooks/useTools";
+import InfoWindowObject from "./InfoWindowObject";
 
 type MarkerProps = {
   position: LatLngLiteral;
@@ -35,35 +23,24 @@ export const MarkerObject = ({
   properties,
 }: MarkerProps) => {
   const pathName = usePathname();
-  const { setObjectId, togglePackage, packageOpen, aroundOpen } = useTools();
+  const markersRef = useRef<(google.maps.Marker | null)[]>([]);
+
+  const {
+    setObjectId,
+    togglePackage,
+    packageOpen,
+    aroundOpen,
+    object_id: selectedObject,
+  } = useTools();
 
   const handleClickMarker = (index: number, object_id: string) => {
     toggleInfoWindow(index);
     setObjectId(object_id);
     if ((!packageOpen || !object_id) && !aroundOpen) {
-      togglePackage();
+      if (!!selectedObject || !!object_id) {
+        togglePackage();
+      }
     }
-  };
-  const { icon, text } = getIconAndTextSecondLine(properties);
-  const { icon: thirdIcon, text: thirdText } =  
-    getIconAndTextThirdLine(properties);
-  const { routes, handleAddUniqueRoute } = useTravelRoute();
-  const { isUserAuth } = useUserRole();
-  const {
-    DETAIL_ATTRACTION,
-    DETAIL_CULINARY,
-    DETAIL_HOMESTAY_OBJECT,
-    DETAIL_SOUVENIR,
-    DETAIL_WORSHIP,
-  } = ROUTES;
-
-  const linkObject = (id: string): string => {
-    if (id.startsWith("AT")) return DETAIL_ATTRACTION(id);
-    if (id.startsWith("CP")) return DETAIL_CULINARY(id);
-    if (id.startsWith("SP")) return DETAIL_SOUVENIR(id);
-    if (id.startsWith("HO")) return DETAIL_HOMESTAY_OBJECT(id);
-    if (id.startsWith("WO")) return DETAIL_WORSHIP(id);
-    return "/web";
   };
 
   useEffect(() => {
@@ -78,62 +55,19 @@ export const MarkerObject = ({
       }}
       onClick={() => handleClickMarker(index, properties.id)}
       position={position}
+      onLoad={(marker) => {
+        markersRef.current[index] = marker;
+      }}
     >
       {open === index && (
-        <InfoWindowF
-          options={{ maxWidth: 300 }}
-          onCloseClick={() => handleClickMarker(index, "")}
-        >
-          <article className="space-y-2 p-2   rounded text-center [&_h3]:font-bold">
-            <h3>{properties.name}</h3>
-            {properties.id}
-            <section className="text-sm flex gap-2 items-center justify-center">
-              {icon}
-              <p>{text}</p>
-            </section>
-            <section className="text-sm gap-2 flex items-start justify-center ">
-              {thirdIcon}
-              <p>{thirdText}</p>
-            </section>
-            <section className="flex items-center justify-center gap-2">
-              <DirectionToKotoGadangButton destination={position} />
-              <Button className="p-2" variant={"primary"} asChild>
-                <Link href={linkObject(properties.id)}>
-                  <FaInfo />
-                </Link>
-              </Button>
-              {routes.length > 0 && (
-                <ButtonTooltip
-                  onClick={() =>
-                    handleAddUniqueRoute({
-                      id: properties.id,
-                      name: properties.name,
-                      lat: position.lat,
-                      lng: position.lng,
-                    })
-                  }
-                  variant={"regSuccess"}
-                  label="Add to Route"
-                >
-                  <FaPlus /> Add
-                </ButtonTooltip>
-              )}
-            </section>
-            {properties.id.startsWith("HO") && (
-              <section className="w-full flex items-center justify-center">
-                <Button disabled={!isUserAuth} variant={"success"} asChild>
-                  {isUserAuth ? (
-                    <Link href={ROUTES.HOMESTAY_RESERVATION(properties.id)}>
-                      Book Now
-                    </Link>
-                  ) : (
-                    "Book Now"
-                  )}
-                </Button>
-              </section>
-            )}
-          </article>
-        </InfoWindowF>
+        <InfoWindowObject
+          object={properties}
+          onCloseClick={() => {
+            handleClickMarker(index, "");
+          }}
+          position={position}
+          anchor={markersRef.current[index]}
+        />
       )}
     </MapMarker>
   );

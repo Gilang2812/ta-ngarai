@@ -1,12 +1,15 @@
 import { useDirectionStore } from "@/stores/DirectionStore";
 import { useGoogleMap } from "@react-google-maps/api";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import MapMarker from "./MapMarker";
 import { getCentroid } from "@/utils/common/getCentroid";
+import InfoWindowObject from "./InfoWindowObject";
+import { useInfoWindow } from "@/hooks/useInfoWindow";
 
 export const ObjectArea = () => {
   const map = useGoogleMap();
   const { objects } = useDirectionStore();
+  const markersRef = useRef<(google.maps.Marker | null)[]>([]);
 
   useEffect(() => {
     if (!map || !(objects.length > 0)) return;
@@ -34,6 +37,9 @@ export const ObjectArea = () => {
     });
     return () => data.setMap(null);
   }, [map, objects]);
+
+  const { open, toggleInfoWindow } = useInfoWindow();
+
   return (
     objects.length > 0 &&
     objects.map((ob, index) => (
@@ -41,7 +47,23 @@ export const ObjectArea = () => {
         key={index}
         label={{ text: (index + 1).toString(), color: "white" }}
         position={getCentroid(ob.geom)}
-      />
+        onClick={() => toggleInfoWindow(index)}
+        onLoad={(marker) => {
+          markersRef.current[index] = marker;
+        }}
+      >
+        {open === index && (
+          <InfoWindowObject
+            object={ob}
+            onCloseClick={() => {
+              toggleInfoWindow(index);
+            }}
+            position={getCentroid(ob.geom)}
+            book_homestay={false}
+            anchor={markersRef.current[index]}
+          />
+        )}
+      </MapMarker>
     ))
   );
 };

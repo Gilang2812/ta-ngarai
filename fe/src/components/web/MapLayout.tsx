@@ -12,12 +12,14 @@ import { DirectionToKotoGadangButton } from "../map/DirectionToKotoGadangButton"
 import { ObjectArea } from "../map/ObjectArea";
 import { ObjectAround } from "../map/ObjectAround";
 import { useMapLoad } from "@/hooks/useMapLoad";
+import { useDirectionStore } from "@/stores/DirectionStore";
+import useTravelRoute from "@/hooks/useTravelRoute";
 
 type Props = React.ComponentProps<typeof GoogleMap> & {
   children?: React.ReactNode;
   origin?: LatLngLiteral | null;
   hideAllLayer?: () => void;
-  containerStyle?: React.CSSProperties; 
+  containerStyle?: React.CSSProperties;
 };
 
 function MapLayout({
@@ -33,7 +35,8 @@ function MapLayout({
   const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
   const { isLoaded } = useMapLoad();
   const [isOpen, setIsOpen] = useState(false);
-
+  const { setResponse } = useDirectionStore();
+  const { routes } = useTravelRoute();
   const toggleInfoWindow = useCallback(() => setIsOpen((prev) => !prev), []);
 
   if (!isLoaded) return <MapSkeleton />;
@@ -67,7 +70,14 @@ function MapLayout({
         onClick={toggleInfoWindow}
       >
         {isOpen && (
-          <InfoWindow onCloseClick={toggleInfoWindow}>
+          <InfoWindow
+            onCloseClick={() => {
+              toggleInfoWindow();
+              if (routes.length > 1) {
+                setResponse(null);
+              }
+            }}
+          >
             <article className="space-y-2 p-2 rounded text-center [&_h3]:font-bold">
               <h3>Koto Gadang Tourism Village</h3>
               <section className="text-sm flex items-center justify-center">

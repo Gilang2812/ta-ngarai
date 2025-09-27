@@ -15,6 +15,8 @@ import { formatPrice } from "@/lib/priceFormatter";
 import { DetailCraftManagementResponse } from "@/type/schema/DetailCraftSchema";
 import { ROUTES } from "@/data/routes";
 import useUserRole from "@/hooks/useUserRole";
+import { useDirectionStore } from "@/stores/DirectionStore";
+import useTravelRoute from "@/hooks/useTravelRoute";
 
 type Props = {
   data: (SouvenirPlaceSchema & { crafts: DetailCraftManagementResponse[] })[];
@@ -25,6 +27,14 @@ type Props = {
 
 const SouvenirGeoJSON = ({ data, handleSelectStore }: Props) => {
   const { open, toggleInfoWindow } = useInfoWindow();
+  const { setResponse } = useDirectionStore();
+  const { routes } = useTravelRoute();
+  const handleClose = (index: number) => {
+    toggleInfoWindow(index);
+    if (!(routes.length > 1)) {
+      setResponse(null);
+    }
+  };
   const souvenirFeatureCollection: FeatureCollection = useMemo(() => {
     return {
       type: "FeatureCollection",
@@ -72,7 +82,7 @@ const SouvenirGeoJSON = ({ data, handleSelectStore }: Props) => {
           {open === index && (
             <InfoWindow
               options={{ maxWidth: 300 }}
-              onCloseClick={() => toggleInfoWindow(index)}
+              onCloseClick={() => handleClose(index)}
             >
               <article className="space-y-2 p-2   rounded text-center [&_h3]:font-bold">
                 <h3>{sp.name}</h3>

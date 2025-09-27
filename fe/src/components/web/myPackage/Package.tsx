@@ -1,11 +1,11 @@
 import Image from "next/image";
 import React, { useState } from "react";
 import { DayButton } from "@/components/web/explore/DayButton";
-import { 
-  useFetchPackages,
-} from "@/features/web/package/useFetchPackage";
+import { useFetchPackages } from "@/features/web/package/useFetchPackage";
 import { Spinner } from "flowbite-react";
 import { Packages } from "@/type/schema/PackageSchema";
+import Link from "next/link";
+import { ROUTES } from "@/data/routes";
 
 // Main component
 export const Package = () => {
@@ -18,15 +18,20 @@ export const Package = () => {
       data?.map((item, index) => (
         <React.Fragment key={index}>
           <tr>
-            <td className="flex items-center gap-4 p-4 capitalize border-b">
-              <Image
-                src="/images/bg-header.jpg"
-                alt="gambar"
-                width={1000}
-                height={1000}
-                className="w-12 h-12"
-              />
-              {item.name}
+            <td>
+              <Link
+                className="flex items-center gap-4 p-4 capitalize border-b"
+                href={ROUTES.DETAIL_PACKAGE(item.id)}
+              >
+                <Image
+                  src="/images/bg-header.jpg"
+                  alt="gambar"
+                  width={1000}
+                  height={1000}
+                  className="w-12 h-12"
+                />
+                {item.name.split("extend")[0]}
+              </Link>
             </td>
           </tr>
           <tr className="border-b ">

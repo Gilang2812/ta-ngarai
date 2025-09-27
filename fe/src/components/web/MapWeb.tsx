@@ -8,7 +8,6 @@ import {
   GeoJsonLayer,
   MapControlPanel,
   MapLegend,
-  MapMarker,
   MapToolbar,
   MarkerManualLocation,
   RegionLabel,
@@ -34,7 +33,7 @@ import { useTools } from "@/hooks/useTools";
 import CustomRoute from "../map/CustomRoute";
 import useTravelRoute from "@/hooks/useTravelRoute";
 import MapWeather from "../weather/MapWeather";
-import DirectionInstruction from "../common/DirectionInstruction";
+import MarkerInfoWindow from "../map/MarkerInfoWindow";
 
 function MapWeb({
   zoom,
@@ -164,11 +163,13 @@ function MapWeb({
           {mergedRegions && <GeoJsonLayer data={mergedRegions} />}
 
           {routes.length < 2 && userLocation && (
-            <MapMarker position={userLocation} />
+            <MarkerInfoWindow position={userLocation}>
+              <p className="text-sm">You are here</p>
+            </MarkerInfoWindow>
           )}
           <RegionLabel regions={labeledRegionLocations} showLabel={showLabel} />
           <AirplaneOverlays airplanes={airplanes} showAirPlane={showAirPlane} />
-          {routes.length < 2 && (
+          {routes.length < 2 && clickedPosition && (
             <MarkerManualLocation position={clickedPosition} />
           )}
           {objectGeom && <ObjectGeoJSON data={objectGeom} />}

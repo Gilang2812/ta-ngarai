@@ -9,10 +9,14 @@ export type AdvancedControlPanelProps = {
   layers: LayerType;
   setLayers: Dispatch<SetStateAction<LayerType>>;
   handleShowAllLayers: () => void;
-  objects:ObjectDataType;
+  objects: ObjectDataType;
   setObjects: Dispatch<SetStateAction<ObjectDataType>>;
   handleShowAllObject: () => void;
   isAllCheckedLayers: boolean;
   isAllCheckedObjects: boolean;
   withPackage?: boolean;
+  tracking: boolean;
+  handleLocateUser: () => void;
+  isClickMapActivce: boolean;
+  toggleManualLocation: () => void;
 };

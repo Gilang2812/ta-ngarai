@@ -30,7 +30,7 @@ export const useUserNavigation = (
         };
         if (!userLocation || userPos.lat !== userLocation?.lat) {
           setUserLocation(userPos);
-          smoothTransition(mapRef, userPos, 12);
+          smoothTransition(mapRef, userPos, 18);
         } else {
           setUserLocation(null);
         }

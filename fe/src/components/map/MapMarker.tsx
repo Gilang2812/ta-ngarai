@@ -6,7 +6,7 @@ const MapMarker = ({
   ...props
 }: React.ComponentProps<typeof Marker>) => {
   return (
-    <Marker {...props} animation={google.maps.Animation.DROP}>
+    <Marker {...props}  animation={google.maps.Animation.DROP}>
       {children}
     </Marker>
   );

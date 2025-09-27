@@ -1,13 +1,14 @@
-
-import { useTools } from "./useTools"; 
+import { useTools } from "./useTools";
 
 export const useWebRightSection = () => {
-  const { aroundOpen, packageOpen, toggleAround, togglePackage, } = useTools(); 
+  const { aroundOpen, packageOpen, toggleAround, togglePackage, setObjectId } =
+    useTools();
 
   return {
     togglePackage,
     toggleAround,
     packageOpen,
-    aroundOpen, 
+    setObjectId,
+    aroundOpen,
   };
 };

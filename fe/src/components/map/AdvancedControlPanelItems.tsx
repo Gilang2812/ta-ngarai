@@ -14,6 +14,7 @@ import { useDirectionStore } from "@/stores/DirectionStore";
 import { useWebRightSection } from "@/hooks/useWebRightSection";
 import { useTools } from "@/hooks/useTools";
 import { useUserPositionStore } from "@/stores/UserPositionStore";
+import Swal from "sweetalert2";
 type Props = AdvancedControlPanelProps;
 
 const AdvancedControlPanelItems = ({
@@ -29,8 +30,12 @@ const AdvancedControlPanelItems = ({
   isAllCheckedObjects,
   withPackage = true,
   showAirPlane,
+  handleLocateUser,
+  isClickMapActivce,
+  toggleManualLocation,
+  tracking,
 }: Props) => {
-  const { packageOpen, togglePackage } = useWebRightSection();
+  const { packageOpen, togglePackage, setObjectId } = useWebRightSection();
   const {
     direction,
     clearDirection,
@@ -38,7 +43,7 @@ const AdvancedControlPanelItems = ({
     clearObject,
   } = useDirectionStore();
   const { toggleOpen } = useTools();
-  const { setRadius } = useUserPositionStore();
+  const { setRadius, userPosition, setUserPosition } = useUserPositionStore();
   return (
     <>
       <ButtonMapNavigation
@@ -77,13 +82,16 @@ const AdvancedControlPanelItems = ({
 
       {withPackage && (
         <ButtonMapNavigation
-          onClick={togglePackage}
+          onClick={() => {
+            togglePackage();
+            setObjectId(null);
+          }}
           Icon={FaSquarePollHorizontal}
           label={`${packageOpen ? "close" : "open"} package`}
           active={packageOpen}
         />
       )}
-      {!open && (direction || PackageObject.length > 0) && (
+      {!packageOpen && (direction || PackageObject.length > 0) && (
         <ButtonMapNavigation
           label="Close Direction"
           variant={"regDanger"}
@@ -91,6 +99,30 @@ const AdvancedControlPanelItems = ({
           onClick={() => {
             clearDirection();
             clearObject();
+          }}
+        />
+      )}
+      {userPosition && (
+        <ButtonMapNavigation
+          label="Remove User Marker"
+          variant={"regDanger"}
+          Icon={TbMapCancel}
+          onClick={() => {
+            Swal.fire({
+              title: "Are you sure?",
+              text: "Your manual location will be removed!",
+              icon: "question",
+            }).then((result) => {
+              if (result.isConfirmed) {
+                setUserPosition(null);
+                if (isClickMapActivce) {
+                  toggleManualLocation();
+                }
+                if (tracking) {
+                  handleLocateUser();
+                }
+              }
+            });
           }}
         />
       )}

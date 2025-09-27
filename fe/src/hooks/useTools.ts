@@ -8,7 +8,7 @@ export const useTools = () => {
   const marketplaceOpen = open === "marketplace";
 
   const togglePackage = useCallback(() => {
-    toggleOpen(packageOpen ? "default" : "package");
+    toggleOpen(packageOpen ? "default" : "package"); 
   }, [packageOpen, toggleOpen]);
 
   const toggleAround = useCallback(() => {

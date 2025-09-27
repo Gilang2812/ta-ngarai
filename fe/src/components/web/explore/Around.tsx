@@ -4,7 +4,7 @@ import { ButtonSearchArround } from "@/components/common/ButtonSearchArround";
 import { CheckBoxLabel } from "@/components/common/CheckBoxLabel";
 import { ObjectDataType } from "@/data/object";
 import { useMpaNearbyFilter } from "@/hooks/arround/useMapNearbyFilter";
-import useTravelRoute from "@/hooks/useTravelRoute"; 
+import useTravelRoute from "@/hooks/useTravelRoute";
 import { fadeMotion } from "@/utils/common/motionVariants";
 import { motion } from "framer-motion";
 import { FaRoute, FaX } from "react-icons/fa6";
@@ -68,6 +68,7 @@ export const Around = ({ handleCloseAround, isAroundOpen }: AroundProps) => {
               className="border"
               onClick={() => {
                 removeAllRoutes();
+                
               }}
               type="button"
               variant="regDanger"

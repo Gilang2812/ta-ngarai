@@ -12,7 +12,7 @@ const GalleryObjectSection = ({ galleries }: Props) => {
       <header className="mb-8 text-lg capitalize">
         <h2>Our Gallery</h2>
       </header>
-      <div>
+      <div className="flex flex-wrap gap-4 items-center">
         {galleries.map((gallery) => (
           <ImgModal
             alt="gallery object"

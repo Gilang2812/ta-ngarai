@@ -116,7 +116,7 @@ const PackageCart = () => {
                         Book Now
                       </Link>
                     ) : (
-                      "Book Now"
+                      "Login First"
                     )}
                   </Button>
                   <Tooltip content="delete" placement="bottom">

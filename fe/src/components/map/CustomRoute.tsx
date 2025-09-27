@@ -4,7 +4,7 @@ import useTravelRoute from "@/hooks/useTravelRoute";
 import { useDirectionStore } from "@/stores/DirectionStore";
 
 type Props = {
-  hideAllLayers?: () => void;
+  hideAllLayers: () => void;
 };
 
 const CustomRoute = ({ hideAllLayers }: Props) => {
@@ -18,6 +18,7 @@ const CustomRoute = ({ hideAllLayers }: Props) => {
     if (routes.length >= 2) {
       setResponse(null); // trigger re-request
     }
+    console.log(routes);
   }, [routes]);
 
   if (routes.length < 2) return null;
@@ -43,11 +44,11 @@ const CustomRoute = ({ hideAllLayers }: Props) => {
           }}
           callback={(res, status) => {
             if (status === "OK" && res) {
-              hideAllLayers?.();
+              hideAllLayers();
               setResponse(res);
               setResponseDirection(res);
             } else {
-              console.error("Directions request failed:", status);
+              console.log("Directions request failed:", status);
             }
           }}
         />

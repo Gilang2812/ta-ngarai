@@ -4,10 +4,13 @@ import { confirmAlert, cornerAlert, cornerError } from "@/utils/AlertUtils";
 import { useCallback } from "react";
 import { useTools } from "./useTools";
 import { useDirectionStore } from "@/stores/DirectionStore";
+import Swal from "sweetalert2";
+import { LANDMARK_POSITION } from "@/lib/objectLandmark";
 const useTravelRoute = () => {
   const { addRoute, removeRoute, routes, removeAllRoutes } =
     useTravelRouteStore();
   const { toggleAround, aroundOpen } = useTools();
+  const { setUserPosition } = useUserPositionStore();
   const { userPosition } = useUserPositionStore();
   const { setResponse } = useDirectionStore();
 
@@ -59,27 +62,58 @@ const useTravelRoute = () => {
     });
   }, [userPosition, routes, addRoute]);
 
-  const handleCreateRoute = useCallback(() => {
-    console.log("routes", routes);
-    if (!userPosition) {
-      cornerError("Please set your location.");
-      return;
-    }
-    if (!aroundOpen) {
-      toggleAround();
-    }
+  const addUserLocationRoute = useCallback(() => {
     const existingRoute = routes.find((route) => route.id === "1");
     if (!existingRoute) {
       addRoute({
         id: "1",
         name: "MyLocation",
-        lat: userPosition?.lat || 0,
-        lng: userPosition?.lng || 0,
+        lat: userPosition?.lat || LANDMARK_POSITION.lat,
+        lng: userPosition?.lng || LANDMARK_POSITION.lng,
       });
-      console.log(routes);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [userPosition, routes]);
+  }, [routes, userPosition, addRoute]);
+
+  const handleCreateRoute = useCallback(() => {
+    if (!userPosition) {
+      Swal.fire({
+        icon: "question",
+        title: "Set Location",
+        showCancelButton: true,
+        color: "black",
+        text: "Set Your Location Using 'Manual Location' or 'Current Location' First or Would you like to Use Central of Village as you Position?",
+        confirmButtonText: "Yes, Use It",
+        cancelButtonText: "No, I want to Set My Location",
+        cancelButtonColor: "black",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          setUserPosition(LANDMARK_POSITION);
+          if (!aroundOpen) {
+            toggleAround();
+          }
+          addRoute({
+            id: "1",
+            name: "Central of Koto Gadang",
+            lat: LANDMARK_POSITION.lat,
+            lng: LANDMARK_POSITION.lng,
+          });
+        }
+      });
+      return;
+    }
+
+    if (!aroundOpen) {
+      toggleAround();
+    }
+    addUserLocationRoute();
+  }, [
+    userPosition,
+    aroundOpen,
+    toggleAround,
+    setUserPosition,
+    addUserLocationRoute,
+    addRoute,
+  ]);
 
   return {
     addRoute,
@@ -87,7 +121,7 @@ const useTravelRoute = () => {
     routes,
     handleRemoveRoute,
     handleAddUniqueRoute,
-    removeAllRoutes:()=>{
+    removeAllRoutes: () => {
       removeAllRoutes();
       setResponse(null);
     },

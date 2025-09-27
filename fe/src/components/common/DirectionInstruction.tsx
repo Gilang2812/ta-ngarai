@@ -1,15 +1,13 @@
 "use client";
 
-import React, { Fragment, useEffect } from "react";
+import React, { Fragment } from "react";
 import { SingleContentWrapper } from "./SingleContentWrapper";
 import { Table } from "./Table";
 import { useDirectionStore } from "@/stores/DirectionStore";
 
 const DirectionInstruction = ({ className }: { className?: string }) => {
   const { response } = useDirectionStore();
-  useEffect(() => {
-    console.log(response);
-  }, [response]);
+ 
   return (
     response && (
       <SingleContentWrapper className={className}>
