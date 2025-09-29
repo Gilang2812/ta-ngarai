@@ -20,6 +20,19 @@ export const useMapLayer = (layers: LayerType) => {
   const { data: village, isLoading: isVillageLoading } = useFetchVillage(
     layers.village
   );
+
+  const tourismVillage = village
+    ? {
+        ...village,
+        features: village.features
+          .filter(
+            (feature) =>
+              String(feature.properties?.name).toLowerCase() === "koto gadang"
+          )
+          .map((f) => ({ ...f, properties: { ...f.properties, type: "tourism" } })),
+      }
+    : null;
+
   const isLoading =
     isCountryLoading ||
     isProvinceLoading ||
@@ -27,6 +40,7 @@ export const useMapLayer = (layers: LayerType) => {
     isKecamatanLoading ||
     isVillageLoading;
   const mergedRegions = useMergeGeoJSON([
+    layers.tourism ? tourismVillage : null,
     layers.country ? country : null,
     layers.province ? province : null,
     layers.city ? kabKota : null,

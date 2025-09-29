@@ -110,7 +110,7 @@ const AdvancedControlPanelItems = ({
           onClick={() => {
             Swal.fire({
               title: "Are you sure?",
-              text: "Your manual location will be removed!",
+              text: "Your location marker will be removed!",
               icon: "question",
             }).then((result) => {
               if (result.isConfirmed) {

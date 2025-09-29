@@ -54,7 +54,7 @@ const TourismVillage = sequelize.define(
       allowNull: true,
     },
     geom: {
-      type: DataTypes.GEOMETRY("POINT"),
+      type: DataTypes.GEOMETRY(),
       allowNull: true,
     },
     lat: {

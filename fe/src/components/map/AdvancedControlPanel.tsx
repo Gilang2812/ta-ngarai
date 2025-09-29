@@ -1,9 +1,9 @@
 import MapControlPanelLayout from "@/layouts/MapControlPanelLayout";
 import { AdvancedControlPanelProps } from "@/type/props";
 import React from "react";
-import AdvancedControlPanelItems from "./AdvancedControlPanelItems"; 
+import AdvancedControlPanelItems from "./AdvancedControlPanelItems";
 
-type Props = AdvancedControlPanelProps 
+type Props = AdvancedControlPanelProps;
 
 const AdvancedControlPanel = ({
   handleGoToVillage,
@@ -14,9 +14,14 @@ const AdvancedControlPanel = ({
   objects,
   setLayers,
   setObjects,
-  showAirPlane, 
+  showAirPlane,
   isAllCheckedLayers,
-  isAllCheckedObjects,withPackage
+  isAllCheckedObjects,
+  withPackage,
+  handleLocateUser,
+  isClickMapActivce,
+  toggleManualLocation,
+  tracking,
 }: Props) => {
   return (
     <MapControlPanelLayout>
@@ -29,10 +34,14 @@ const AdvancedControlPanel = ({
         objects={objects}
         setLayers={setLayers}
         setObjects={setObjects}
-        showAirPlane={showAirPlane} 
+        showAirPlane={showAirPlane}
         isAllCheckedLayers={isAllCheckedLayers}
-        isAllCheckedObjects={isAllCheckedObjects} 
+        isAllCheckedObjects={isAllCheckedObjects}
         withPackage={withPackage}
+        handleLocateUser={handleLocateUser}
+        isClickMapActivce={isClickMapActivce}
+        toggleManualLocation={toggleManualLocation}
+        tracking={tracking}
       />
     </MapControlPanelLayout>
   );

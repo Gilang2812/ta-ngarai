@@ -1,5 +1,12 @@
 const express = require("express");
-const { getAllGeoJSONData, getAllCountry, getAllProvinces, getAllKabKota, getAllKecamatan, getAllVillages } = require("./geo.service");
+const {
+  getAllGeoJSONData,
+  getAllCountry,
+  getAllProvinces,
+  getAllKabKota,
+  getAllKecamatan,
+  getAllVillages,
+} = require("./geo.service");
 
 const router = express.Router();
 
