@@ -123,7 +123,7 @@ const SouvenirGeoJSON = ({ data, handleSelectStore }: Props) => {
                               id_craft_variant: cr.craft_variant_id,
                             })}
                           >
-                            Order Nows
+                            Order Now
                           </Link>
                         ) : (
                           "Order Now"

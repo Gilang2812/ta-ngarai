@@ -1,6 +1,5 @@
-
 import { SearchBar } from "./SearchBar";
-import {  DetailCraftUserResponse } from "@/type/schema/DetailCraftSchema";
+import { DetailCraftUserResponse } from "@/type/schema/DetailCraftSchema";
 
 interface HeaderProps {
   onSearch?: (query: string) => void;
@@ -9,9 +8,9 @@ interface HeaderProps {
 
 export const Header: React.FC<HeaderProps> = ({ onSearch, crafts }) => {
   return (
-    <header className="flex sticky gap-4  items-center justify-between mb-6">
+    <header className="flex z-50 sticky gap-4  items-center justify-between mb-6">
       <h1 className="text-2xl font-bold">Souvenir</h1>
-      <div className="flex items-center space-x-4">
+      <div className="relative z-50 flex items-center space-x-4">
         <SearchBar crafts={crafts} onSearch={onSearch} />
         <button className="p-2 text-gray-600 hover:text-gray-900">
           <svg

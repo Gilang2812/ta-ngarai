@@ -1,6 +1,5 @@
 import React from "react";
-import Image from "next/image";
-import { HotBadge } from "./HotBadge";
+import Image from "next/image"; 
 import { Rating } from "./Rating";
 import { formatPrice } from "@/lib/priceFormatter";
 import Link from "next/link";
@@ -15,11 +14,11 @@ interface ProductCardProps {
 }
 
 export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
-  const { isUserAuth } = useUserRole();
+  const { isAdmin } = useUserRole();
   return (
     <Link
       href={
-        isUserAuth
+        !isAdmin
           ? ROUTES.DETAIL_CRAFT({
               id_craft: product?.variant?.id_craft,
               id_souvenir_place: product.id_souvenir_place,
@@ -30,9 +29,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     >
       <div
         aria-label={`Go to ${product?.variant?.name} details`}
-        className="relative border p-2 hover:cursor-pointer bg-white  hover:shadow-primary/30 shadow-sm overflow-hidden hover:shadow-md transition-shadow duration-300"
-      >
-        {<HotBadge />}
+        className="relative z-0 border p-2 hover:cursor-pointer bg-white  hover:shadow-primary/30 shadow-sm overflow-hidden hover:shadow-md transition-shadow duration-300"
+      > 
         <div className="relative h-48 w-full">
           <Image
             src={`${baseUrl}/${product?.craftGalleries?.[0]?.url}`}
@@ -54,7 +52,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
               product?.items?.filter((item) => item.review_rating).length
             }
           />
-          <p className="bg-purple-800/70 text-white flex rounded gap-2 text-nowrap p-1">
+          <p className="bg-secondary text-white flex rounded gap-2 text-nowrap p-1">
             <Store />
             {product.souvenirPlace.name}
           </p>

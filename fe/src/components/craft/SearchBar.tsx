@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from "react";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
 import { DetailCraftUserResponse } from "@/type/schema/DetailCraftSchema";
 
@@ -31,8 +31,8 @@ export const SearchBar: React.FC<SearchBarProps> = ({ onSearch, crafts }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="relative">
-      <div className="relative font-normal">
+    <form onSubmit={handleSubmit} className="relative z-50">
+      <div className="relative z-50 font-normal">
         <input
           value={query}
           onChange={(e) => setQuery(e.target.value)}
@@ -67,34 +67,38 @@ export const SearchBar: React.FC<SearchBarProps> = ({ onSearch, crafts }) => {
           </svg>
         </button>
 
-        {query && (
-          <motion.div
-            layout
-            initial={{ height: 0 }}
-            animate={{ height: "auto" }}
-            exit={{ height: 0 }}
-            transition={{ duration: 0.2 }}
-            className="absolute bg-white w-full border rounded-xl z-30 max-h-[464px] overflow-x-hidden"
-          >
-            <motion.div layout className="p-3">
-              {result && result.length === 0 ? (
-                <p>nothings found</p>
-              ) : (
-                result?.map((rs, index) => (
-                  <Link
-                    aria-label={`Lihat detail produk ${rs.variant.name}`}
-                    href={`/web/craft/${rs.variant.id_craft}/${rs.id_souvenir_place}?idvr=${rs.craft_variant_id}`}
-                    key={index}
-                    onMouseDown={(e) => e.stopPropagation()}
-                    className="block px-4 py-2 hover:bg-gray-100 text-sm text-black"
-                  >
-                    {rs.variant.craft.name} {rs.variant.name}
-                  </Link>
-                ))
-              )}
-            </motion.div>
-          </motion.div>
-        )}
+        <AnimatePresence>
+          {query && (
+            <div className="relative z-50">
+              <motion.div
+                layout
+                initial={{ height: 0 }}
+                animate={{ height: "auto" }}
+                exit={{ height: 0 }}
+                transition={{ duration: 0.2 }}
+                className="absolute bg-white w-full border rounded-xl z-50 max-h-[464px] overflow-x-hidden"
+              >
+                <motion.div layout className="p-3">
+                  {result && result.length === 0 ? (
+                    <p>nothings found</p>
+                  ) : (
+                    result?.map((rs, index) => (
+                      <Link
+                        aria-label={`Lihat detail produk ${rs.variant.name}`}
+                        href={`/web/craft/${rs.variant.id_craft}/${rs.id_souvenir_place}?idvr=${rs.craft_variant_id}`}
+                        key={index}
+                        onMouseDown={(e) => e.stopPropagation()}
+                        className="block px-4 py-2 hover:bg-gray-100 text-sm text-black"
+                      >
+                        {rs.variant.craft.name} {rs.variant.name}
+                      </Link>
+                    ))
+                  )}
+                </motion.div>
+              </motion.div>
+            </div>
+          )}
+        </AnimatePresence>
       </div>
     </form>
   );
