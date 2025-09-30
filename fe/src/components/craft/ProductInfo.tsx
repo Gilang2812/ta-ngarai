@@ -16,6 +16,7 @@ import {
   DetailCraftManagementResponse,
   DetailCraftOrderResponse,
 } from "@/type/schema/DetailCraftSchema";
+import useUserRole from "@/hooks/useUserRole";
 
 type DataProdukInfo = {
   rating: number;
@@ -27,6 +28,7 @@ type DataProdukInfo = {
   storeName: string;
   craftId: string;
   craftVariantId: string;
+  idSouvenirPlace: string;
 };
 
 interface ProductInfoProps {
@@ -54,6 +56,7 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({
   const toggleFavorite = () => {
     setIsFavorite(!isFavorite);
   };
+  const { isOwner } = useUserRole();
 
   return (
     <div className="space-y-4 font-normal">
@@ -103,20 +106,22 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({
         <Form className="flex gap-3">
           <QuantitySelector stock={data.stock} />
           <ButtonTooltip
-            label={"KERANJANG"}
+            label={"Add to Cart"}
             type="submit"
             className="w-full"
             Icon={BsCart}
             onClick={handleCart}
+            disabled={isOwner(data.idSouvenirPlace)}
           />
 
           <ButtonTooltip
-            label=" BELI SEKARANG"
+            label="Checkout Now"
             Icon={BsBagCheck}
             type="submit"
             variant="primary"
             className="w-full"
             onClick={handleBuy}
+            disabled={isOwner(data.idSouvenirPlace)}
           />
         </Form>
       </Formik>

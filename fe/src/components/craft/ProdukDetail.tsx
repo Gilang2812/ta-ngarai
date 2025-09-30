@@ -103,6 +103,7 @@ function ProductDetail({
                   0
                 ) || 0,
               storeName: selectedDetailCraft.souvenirPlace.name,
+              idSouvenirPlace: selectedDetailCraft.souvenirPlace.id,
             }}
           />
         </div>

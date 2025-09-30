@@ -1,16 +1,19 @@
 import { useCreateCheckout } from "@/features/web/checkout/useCreateCheckout";
 import { useCreateCraftCart } from "@/features/web/craftCart/useCreateCraftCart";
 import { CraftCartForm } from "@/type/schema/CraftCartSchema";
-import { cornerAlert } from "@/utils/AlertUtils";
-import { useRouter, useSearchParams } from "next/navigation";
+import { cornerAlert, cornerError } from "@/utils/AlertUtils";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useRef } from "react";
 import Swal from "sweetalert2";
+import useUserRole from "./useUserRole";
+import { handleRequestLogin } from "@/utils/RequestLogin";
 
 export const useOrderCraft = () => {
   const router = useRouter();
+  const pathname = usePathname();
   const searchParms = useSearchParams();
   const actionRef = useRef<"cart" | "buy">("cart");
-
+  const { isAuth, isOwner } = useUserRole();
   const { mutateAsync: createCraftCart, isPending: isCraftPending } =
     useCreateCraftCart({
       onSuccess: () => {
@@ -25,6 +28,14 @@ export const useOrderCraft = () => {
     },
   });
   const handleSubmit = async (values: CraftCartForm) => {
+    if (isOwner(values.id_souvenir_place)) {
+      cornerError("You cannot order from your own craft store");
+    }
+
+    if (!isAuth) {
+      handleRequestLogin(pathname);
+      return;
+    }
     const { id_souvenir_place, craft_variant_id, jumlah } = values;
     if (actionRef.current === "cart") {
       await createCraftCart({

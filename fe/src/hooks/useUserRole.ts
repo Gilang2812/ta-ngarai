@@ -6,10 +6,14 @@ import { ROUTES } from "@/data/routes";
 const useUserRole = () => {
   const pathName = usePathname();
   const { data, status } = useSession();
-  const user = data?.user;
   const router = useRouter();
+  const user = data?.user;
+  const store = user?.store;
   const isAdmin = !!(user?.role && Number(user?.role) === 2);
-  const isSeller = user?.store && user?.store?.length > 0;
+  const isSeller = store && store?.length > 0;
+  const isOwner = (id_souvenir_place: string) =>
+    isSeller &&
+    store.some((s) => s.id_souvenir_place.includes(id_souvenir_place));
   const isAuth = status === "authenticated";
   const isUserAuth = !isAdmin && isAuth;
   let url: URL | null = null;
@@ -29,7 +33,7 @@ const useUserRole = () => {
       });
     }
   };
-  return { isAdmin, isSeller, isAuth, isUserAuth, handleUnAuth };
+  return { isAdmin, isSeller, isAuth, isUserAuth, handleUnAuth, isOwner };
 };
 
 export default useUserRole;

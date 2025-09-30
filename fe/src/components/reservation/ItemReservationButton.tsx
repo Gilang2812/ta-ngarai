@@ -102,7 +102,7 @@ const ItemReservationButton = ({
           {token && !isExpired ? (
             <Link href={`/web/reservation/${order_id}/payment`}>Pay Now</Link>
           ) : (
-            "Payment Failed"
+            "Order Failed"
           )}
         </Button>
       );

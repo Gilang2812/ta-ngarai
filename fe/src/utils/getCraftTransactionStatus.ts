@@ -17,7 +17,7 @@ export const getCraftTransactionStatus = (
     case 5:
       return "Rated";
     case 6:
-      return !token || isExpired ? "cancel" : "Awaiting payment";
+      return !token || isExpired ? "Order Failed" : "Awaiting payment";
     default:
       return "Unknown";
   }

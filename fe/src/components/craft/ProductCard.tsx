@@ -1,12 +1,11 @@
 import React from "react";
-import Image from "next/image"; 
+import Image from "next/image";
 import { Rating } from "./Rating";
 import { formatPrice } from "@/lib/priceFormatter";
 import Link from "next/link";
 import { baseUrl } from "@/lib/baseUrl";
 import { DetailCraftOrderResponse } from "@/type/schema/DetailCraftSchema";
 import { ROUTES } from "@/data/routes";
-import useUserRole from "@/hooks/useUserRole";
 import { Store } from "lucide-react";
 
 interface ProductCardProps {
@@ -14,23 +13,18 @@ interface ProductCardProps {
 }
 
 export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
-  const { isAdmin } = useUserRole();
   return (
     <Link
-      href={
-        !isAdmin
-          ? ROUTES.DETAIL_CRAFT({
-              id_craft: product?.variant?.id_craft,
-              id_souvenir_place: product.id_souvenir_place,
-              id_craft_variant: product?.craft_variant_id,
-            })
-          : "#"
-      }
+      href={ROUTES.DETAIL_CRAFT({
+        id_craft: product?.variant?.id_craft,
+        id_souvenir_place: product.id_souvenir_place,
+        id_craft_variant: product?.craft_variant_id,
+      })}
     >
       <div
         aria-label={`Go to ${product?.variant?.name} details`}
         className="relative z-0 border p-2 hover:cursor-pointer bg-white  hover:shadow-primary/30 shadow-sm overflow-hidden hover:shadow-md transition-shadow duration-300"
-      > 
+      >
         <div className="relative h-48 w-full">
           <Image
             src={`${baseUrl}/${product?.craftGalleries?.[0]?.url}`}
