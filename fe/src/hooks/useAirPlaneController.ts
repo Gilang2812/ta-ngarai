@@ -13,6 +13,7 @@ export const useAirPlaneController = (
       id: number;
       origin: google.maps.LatLngLiteral;
       isActive: boolean;
+      type: "bus" | "plane";
     }>
   >([]);
   const { launchAirplanes } = useLaunchAirplaness(mapRef, cities, setAirplanes);

@@ -257,7 +257,7 @@ const userHistory = async ({ shipping_id = null, customer_id = null }) => {
 };
 const findSouvenirTransaction = async ({ id_souvenir_place = null } = {}) => {
   const shipping = await Shipping.findAll({
-    order: [["shippingItems", "checkout", "checkout_date", "DESC"]],
+    order: [["shippingItems", "checkout", "id", "DESC"]],
     include: [
       {
         model: ItemCheckout,

@@ -34,6 +34,7 @@ import CustomRoute from "../map/CustomRoute";
 import useTravelRoute from "@/hooks/useTravelRoute";
 import MapWeather from "../weather/MapWeather";
 import MarkerInfoWindow from "../map/MarkerInfoWindow";
+import DirectionGuide from "../map/DirectionGuide";
 
 function MapWeb({
   zoom,
@@ -168,6 +169,8 @@ function MapWeb({
             </MarkerInfoWindow>
           )}
           <RegionLabel regions={labeledRegionLocations} showLabel={showLabel} />
+          <DirectionGuide showAirPlane={showAirPlane} />
+
           <AirplaneOverlays airplanes={airplanes} showAirPlane={showAirPlane} />
           {routes.length < 2 && clickedPosition && (
             <MarkerManualLocation position={clickedPosition} />

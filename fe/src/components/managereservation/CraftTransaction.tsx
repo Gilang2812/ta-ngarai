@@ -48,9 +48,10 @@ const CraftTransaction = () => {
     handleTransactionClick,
     handleTransactionClose,
     refetch,
+    transaction,
   } = useManageCraftTransaction();
   if (transactionLoading) return <ManagementSkeletonLoader />;
-  if (currentItems.length === 0)
+  if (transaction?.length === 0)
     return <EmptyTransactions onRefresh={refetch} />;
 
   const RenderTransaction = () => {

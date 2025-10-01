@@ -220,7 +220,6 @@ router.get("/history", async (req, res, next) => {
 router.get("/transactions", async (req, res, next) => {
   try {
     const stores = req?.user?.store ?? [];
-    console.log("stores", stores);
     const id_stores = stores?.map((detail) => detail.id_souvenir_place);
     let checkouts = [];
     if (req.user.role === 2) {
@@ -237,8 +236,14 @@ router.get("/transactions", async (req, res, next) => {
       );
       checkouts = checkouts.flat();
     }
-
-    res.status(200).json(checkouts);
+ 
+    const data = checkouts.sort((a, b) => {
+      const maxA = a.shippingItems[0]?.checkout.checkout_date;
+      const maxB = b.shippingItems[0]?.checkout.checkout_date;
+      return maxB - maxA; 
+    });
+    console.log("stores", stores);
+    res.status(200).json(data);
   } catch (error) {
     next(error);
   }

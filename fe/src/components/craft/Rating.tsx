@@ -4,14 +4,20 @@ interface RatingProps {
   showText?: boolean;
 }
 
-export const Rating: React.FC<RatingProps> = ({ rating=0, reviewCount, showText = false }) => {
+export const Rating: React.FC<RatingProps> = ({
+  rating = 0,
+  reviewCount,
+  showText = false,
+}) => {
   return (
     <div className="flex items-center">
       <div className="flex">
         {[...Array(5)].map((_, i) => (
           <svg
             key={i}
-            className={`size-4 ${i < Math.floor(rating) ? 'text-yellow-400' : 'text-gray-300'}`}
+            className={`size-4 ${
+              i < Math.floor(rating) ? "text-yellow-400" : "text-gray-300"
+            }`}
             aria-hidden="true"
             xmlns="http://www.w3.org/2000/svg"
             fill="currentColor"
@@ -21,8 +27,14 @@ export const Rating: React.FC<RatingProps> = ({ rating=0, reviewCount, showText 
           </svg>
         ))}
       </div>
-      {showText && <p className="ml-2 text-sm text-yellow-500 font-medium">{rating} Bintang</p>}
-      {reviewCount != null && <p className="ml-2 text-xs text-gray-500">({reviewCount})</p>}
+      {showText && (
+        <p className="ml-2 text-sm text-yellow-500 font-medium">
+          {rating.toFixed(2)} Stars
+        </p>
+      )}
+      {reviewCount != null && (
+        <p className="ml-2 text-xs text-gray-500">({reviewCount})</p>
+      )}
     </div>
   );
 };

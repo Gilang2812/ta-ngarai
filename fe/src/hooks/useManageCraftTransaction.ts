@@ -10,6 +10,8 @@ import { useUpdateStatus } from "@/features/web/checkout/useUpdateStatus";
 import { cornerAlert, showLoadingAlert } from "@/utils/AlertUtils";
 import { useModal } from "@/utils/ModalUtils";
 import { isExpired } from "@/lib/expiredChecker";
+import dayjs from "dayjs";
+import { formatPrice } from "@/lib/priceFormatter";
 
 const useManageCraftTransaction = () => {
   const [modalContent, setModalContent] = useState<"items" | "rate">("items");
@@ -85,7 +87,11 @@ const useManageCraftTransaction = () => {
           fullname:
             item?.shippingItems?.[0]?.checkout?.shippingAddress?.addressCustomer
               ?.fullname,
-          date: item?.shippingItems?.[0]?.checkout?.checkout_date,
+          date: `${dayjs(
+            item.shippingItems?.[0]?.checkout?.checkout_date
+          ).format("DD MMMM YYYY")} ${dayjs(
+            item.shippingItems?.[0]?.checkout?.checkout_date
+          ).format("HH:mm WIB")}`,
           status: getCraftTransactionStatus(
             item.status,
             item.shippingItems[0].checkout.transaction_token,
@@ -97,6 +103,15 @@ const useManageCraftTransaction = () => {
                 `${item.detailCraft.variant.craft.name} ${item.detailCraft.variant.name}`
             )
             .join(", "),
+          price: `${formatPrice(
+            item.shippingItems.reduce(
+              (acc, item) => acc + item?.detailCraft?.price * item?.jumlah,
+              0
+            )
+          )} Rp ${item.shippingItems.reduce(
+            (acc, item) => acc + item?.detailCraft?.price * item?.jumlah,
+            0
+          )}`,
         };
 
         return Object.keys(searchable).some((key) =>
@@ -104,7 +119,7 @@ const useManageCraftTransaction = () => {
             ?.toString()
             .trim() // hapus spasi di awal/akhir value
             .toLowerCase()
-            .includes(searchTerm)
+            .includes(searchTerm.toLowerCase().trim())
         );
       }) || []
     );

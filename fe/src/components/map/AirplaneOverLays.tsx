@@ -7,6 +7,7 @@ type Props = {
     id: number;
     origin: google.maps.LatLngLiteral;
     isActive: boolean;
+    type: "bus" | "plane";
   }>;
   showAirPlane: boolean;
 };
@@ -25,6 +26,7 @@ const AirplaneOverlays = ({ airplanes, showAirPlane }: Props) => {
               duration={5000}
               delay={1000}
               showAirPlane={showAirPlane}
+              type={plane.type}
             />
           )
       )}
