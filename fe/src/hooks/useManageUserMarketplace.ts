@@ -139,8 +139,7 @@ export const useManageUserMarketplace = () => {
         ? "Are you sure want to fire this staff?"
         : status === 0
         ? "Are you sure want to cancel to recruit this staff?"
-        : "";
-        console.log(status)
+        : ""; 
     confirmAlert(deleteTitle, deleteMessage, () => {
       deleteDetailSouvenir({ id_souvenir_place: souvenirPlaceId, user_id });
     });

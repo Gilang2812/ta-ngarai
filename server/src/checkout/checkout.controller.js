@@ -236,11 +236,11 @@ router.get("/transactions", async (req, res, next) => {
       );
       checkouts = checkouts.flat();
     }
- 
+
     const data = checkouts.sort((a, b) => {
       const maxA = a.shippingItems[0]?.checkout.checkout_date;
       const maxB = b.shippingItems[0]?.checkout.checkout_date;
-      return maxB - maxA; 
+      return maxB - maxA;
     });
     console.log("stores", stores);
     res.status(200).json(data);

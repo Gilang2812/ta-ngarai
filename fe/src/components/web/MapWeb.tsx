@@ -170,7 +170,6 @@ function MapWeb({
           )}
           <RegionLabel regions={labeledRegionLocations} showLabel={showLabel} />
           <DirectionGuide showAirPlane={showAirPlane} />
-
           <AirplaneOverlays airplanes={airplanes} showAirPlane={showAirPlane} />
           {routes.length < 2 && clickedPosition && (
             <MarkerManualLocation position={clickedPosition} />
@@ -178,7 +177,6 @@ function MapWeb({
           {objectGeom && <ObjectGeoJSON data={objectGeom} />}
           {allObjectGeom && <ObjectGeoJSON data={allObjectGeom} />}
           {children}
-
           <CustomRoute hideAllLayers={hideAllLayers} />
         </MapLayout>
       </div>

@@ -58,11 +58,11 @@ export const AddressForm = ({
           <div>
             <FormInput
               type="number"
-              name="kode_post"
+              name="kode_pos"
               label="Postal Code"
               autoFocus
             />
-            {areaData && values.kode_post && countryName.length === 0 && (
+            {areaData && values.kode_pos && countryName.length === 0 && (
               <p className="text-red-600 text-sm font-bold">
                 postal code not found
               </p>

@@ -6,7 +6,7 @@ const ItemCheckout = sequelize.define(
   "ItemCheckout",
   {
     checkout_id: {
-      type: DataTypes.STRING(5),
+      type: DataTypes.STRING(10),
       primaryKey: true,
       allowNull: false,
     },

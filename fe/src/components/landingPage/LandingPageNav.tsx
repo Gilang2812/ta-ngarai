@@ -55,8 +55,7 @@ const LandingPageNav = ({ isNavOpen, onAwardClick }: Props) => {
               type="button"
               className="flex items-center justify-center min-w-fit p-4 bg-white rounded-lg cursor-pointer"
               onClick={() => {
-                toggle();
-                console.log("click");
+                toggle(); 
               }}
             >
               <Image

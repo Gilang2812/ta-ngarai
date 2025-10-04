@@ -36,7 +36,7 @@ const sequelize = require("../config/database");
 router.use("/", authRouter);
 router.use("/announcement", announcementRouter);
 router.use("/attractions", attractionRouter);
-router.use("/cartsn", cartRouter);
+router.use("/carts", cartRouter);
 router.use("/culinary", culinaryRouter);
 router.use("/detail-crafts", detailCraftRouter);
 router.use("/detail-package", detailPackageRouter);

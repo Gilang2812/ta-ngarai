@@ -19,8 +19,7 @@ export const ActivityDirections = ({
   ) => {
     clearOption();
     if (status === "OK" && result) {
-      setDirection(result);
-      console.log(result);
+      setDirection(result); 
       setResponseDirection(result);
       hideAllLayer?.();
     }

@@ -122,8 +122,7 @@ const useManageTraditional = () => {
     }));
   };
 
-  const handleEditTraditional = (traditional: TraditionalSchema) => {
-    console.log("Editing traditional house:", traditional);
+  const handleEditTraditional = (traditional: TraditionalSchema) => { 
     toggleModal();
     const images = formatImageUrls(
       traditional?.galleries?.map((gallery) => gallery.url) || []
@@ -156,10 +155,8 @@ const useManageTraditional = () => {
   const handleSubmit = (values: typeof initialValues) => {
     const formData = createFormData(values);
     if (initialValues.id) {
-      updateTraditional(formData);
-      console.log("edit");
-    } else {
-      console.log("create");
+      updateTraditional(formData); 
+    } else { 
 
       createTraditional(formData);
     }

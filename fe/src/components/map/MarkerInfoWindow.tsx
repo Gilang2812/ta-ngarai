@@ -10,8 +10,7 @@ const MarkerInfoWindow = ({
 }: ComponentProps<typeof MapMarker>) => {
   const { isOpen, toggle } = useToggleOpen();
   const handleClick = () => {
-    toggle()
-    console.log("test ini infow window")
+    toggle() 
   };
   return (
     <MapMarker onClick={handleClick} {...props}>

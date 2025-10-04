@@ -56,8 +56,7 @@ export default function CheckoutPage() {
   const { mutate: checkoutOrder, isPending: checkoutPending } =
     useCompleteCheckout({
       onSuccess: async (data) => {
-        cornerAlert("Order placed successfully");
-        console.log(data);
+        cornerAlert("Order placed successfully"); 
         const paymentData = data as { token: string; shippings: number[] };
         window.snap.pay(paymentData.token, {
           onSuccess: async (result) => {

@@ -98,7 +98,7 @@ export type ShippingAddress = {
   kota: string;
   provinsi: string;
   negara: string;
-  kode_post: string;
+  kode_pos: string;
   addressCustomer: AddressCustomer;
 };
 

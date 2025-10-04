@@ -22,7 +22,9 @@ export const createShippingStoreBody = ({
     origin_note: items[0]?.note ?? "",
     origin_area_id: checkout?.shippingAddress?.destination_id ?? "",
     destination_contact_name:
-      checkout?.shippingAddress?.addressCustomer?.fullname ?? "",
+      checkout?.shippingAddress?.addressCustomer?.fullname ??
+      checkout?.shippingAddress?.addressCustomer?.username ??
+      "",
     destination_contact_phone:
       checkout?.shippingAddress?.addressCustomer?.phone ?? "085274953252",
     destination_contact_email:

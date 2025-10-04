@@ -17,7 +17,7 @@ export const useUserCraftCart = () => {
   const [isDirty, setIsDirty] = useState(false);
   const [selectedCraft, setSelectedCraft] = useState<CraftCartSchema[]>([]);
   const { createCheckout } = useCheckoutCart();
-
+ 
   const { mutate: updateCraftCart, isPending: isUpdating } = useUpdateCraftCart(
     {
       onSuccess: () => {
@@ -73,6 +73,7 @@ export const useUserCraftCart = () => {
         return filteredCarts.map((item) => ({
           craft_variant_id: item.craft_variant_id,
           id_souvenir_place: item.id_souvenir_place,
+          checkout_id: item.checkout_id,
           jumlah: item.jumlah,
           price: item.detailCraft.price,
         }));
@@ -91,8 +92,7 @@ export const useUserCraftCart = () => {
           item.craft_variant_id === craft.craft_variant_id &&
           item.id_souvenir_place === craft.id_souvenir_place &&
           item.checkout_id === craft.checkout_id
-      );
-      console.log(index);
+      ); 
       if (index > -1) {
         return prev.filter(
           (item) =>

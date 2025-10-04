@@ -59,8 +59,7 @@ export const useDetailReservationReview = (id: string) => {
       id: id,
       review: values.review,
       review_rating: values.review_rating,
-    };
-    console.log(values);
+    }; 
     updateReservation(body);
   };
   const handleSubmitHomestay = (values: HomestayReviewFormSchema) => {

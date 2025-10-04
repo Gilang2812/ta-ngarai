@@ -53,8 +53,7 @@ export const useRatingItems = (id: string) => {
     checkout_id: string,
     id_souvenir_place: string,
     item: ShippingItem & { reviewGalleries: ReviewGallerySchema[] }
-  ) => {
-    console.log("Opening modal for item:", item);
+  ) => { 
     actionRef.current = "review";
     const url = item?.reviewGalleries?.map((gallery) => gallery?.url || "");
     const images = formatImageUrls(url);
@@ -86,8 +85,7 @@ export const useRatingItems = (id: string) => {
 
   const handleSubmitRating = async (
     values: ReviewFormSchema | { seller_response: string }
-  ) => {
-    console.log("values", values);
+  ) => { 
     if (isPending) return;
     if (!selectedItemId && actionRef.current !== "response") {
       cornerAlert("Please select an item to rate.");

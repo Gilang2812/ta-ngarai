@@ -18,7 +18,7 @@ export const useAddressForm = () => {
   const areas = useMemo(() => areaData?.areas || [], [areaData]);
 
   const countryName = [...new Set(areas.map((item) => item.country_name))];
-  console.log(areaData);
+ 
   const provinceName = [
     ...new Set(
       areas
@@ -72,12 +72,12 @@ export const useAddressForm = () => {
   const destination_id = destination?.id || "";
 
   useEffect(() => {
-    if (String(values.kode_post)?.length === 5) {
+    if (String(values.kode_pos)?.length === 5) {
       debounce(() => {
-        setInput(values.kode_post || "");
+        setInput(values.kode_pos || "");
       }, 500)();
     }
-  }, [values.kode_post]);
+  }, [values.kode_pos]);
 
   useEffect(() => {
     if (destination_id) {

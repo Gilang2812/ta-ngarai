@@ -89,8 +89,7 @@ const ButtonCancel = ({
         ? total_price - (deposit || 0)
         : (depositRefundPercentage / 100) * (deposit || 0);
     }
-    updateReservation(requestBody);
-    console.log("test");
+    updateReservation(requestBody); 
   };
 
   return (

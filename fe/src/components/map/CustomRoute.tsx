@@ -16,9 +16,8 @@ const CustomRoute = ({ hideAllLayers }: Props) => {
 
   useEffect(() => {
     if (routes.length >= 2) {
-      setResponse(null); // trigger re-request
-    }
-    console.log(routes);
+      setResponse(null);  
+    } 
   }, [routes]);
 
   if (routes.length < 2) return null;
@@ -47,9 +46,7 @@ const CustomRoute = ({ hideAllLayers }: Props) => {
               hideAllLayers();
               setResponse(res);
               setResponseDirection(res);
-            } else {
-              console.log("Directions request failed:", status);
-            }
+            }  
           }}
         />
       )}

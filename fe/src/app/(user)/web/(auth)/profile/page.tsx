@@ -31,8 +31,7 @@ export default function Profile() {
     handleAddNewAddress,
     handleEditAddress,
     isPending,
-  } = useProfile();
-  console.log(addresses);
+  } = useProfile(); 
   if (isLoading) return <ProfileSkeleton />;
   return (
     <SingleContentWrapper className="relative mx-auto overflow-x-hidden">

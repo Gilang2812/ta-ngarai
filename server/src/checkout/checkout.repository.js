@@ -93,7 +93,7 @@ const findUserCheckouts = async (condition) => {
         include: {
           model: User,
           as: "addressCustomer",
-          attributes: ["id", "fullname", "email", "phone"],
+          attributes: ["id", "fullname", "email", "username", "phone"],
           include: [
             {
               model: ShippingAddress,

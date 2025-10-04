@@ -51,7 +51,7 @@ const ShippingAddress = sequelize.define(
       type: DataTypes.STRING(50),
       allowNull: true,
     },
-    kode_post: {
+    kode_pos: {
       type: DataTypes.STRING(50),
       allowNull: true,
     },

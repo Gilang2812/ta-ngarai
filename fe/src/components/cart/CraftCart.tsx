@@ -24,7 +24,10 @@ const CraftCart = () => {
   }
 
   return (
-    <motion.div layoutId="cartPage" className="py-4 grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <motion.div
+      layoutId="cartPage"
+      className="py-4 grid grid-cols-1 lg:grid-cols-3 gap-8"
+    >
       <div className="lg:col-span-2">
         <div className="p-6 border rounded-lg ">
           <table className="w-full [&_th]:p-4  [&_td]:p-2  ">
@@ -39,13 +42,13 @@ const CraftCart = () => {
             </thead>
 
             <tbody className="space-y-4">
-              {carts?.map((item, index) => (
+              {carts?.map((item) => (
                 <CartItemComponent
                   setDirty={setIsDirty}
                   selectedCraft={selectedCraft}
                   isUpdating={isUpdating}
                   updateCart={updateCraftCart}
-                  key={index}
+                  key={`${item.checkout_id}-${item.craft_variant_id}-${item.id_souvenir_place}`}
                   item={item}
                   handleDeleteCart={handleDeleteCraftCart}
                   handleCheckedCraft={handleCheckedCraft}

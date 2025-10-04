@@ -30,12 +30,8 @@ const HomestayReservationFinish: React.FC<ReservationSuccessProps> = ({
       return () => clearTimeout(timer);
     } else {
       setIsRedirecting(true);
-      console.log(
-        `Redirecting to: /${ROUTES.HOMESTAY_RESERVATION_DETAIL("1")}`
-      );
-      console.log("reservationId", reservationId);
-      if (reservationId) {
-        console.log("its working");
+      
+      if (reservationId) { 
         router.push(ROUTES.HOMESTAY_RESERVATION_DETAIL(reservationId));
       }
     }

@@ -165,8 +165,7 @@ export const useManageUnitHomestay = (id: string) => {
   }: UnitHomestay) => {
     const images = formatImageUrls(
       unitGalleries?.map((item) => item.url) || []
-    );
-    console.log(unit_number);
+    ); 
     setFormType("edit");
     setUnitInitialValues({
       homestay_id,
@@ -241,13 +240,12 @@ export const useManageUnitHomestay = (id: string) => {
       createUnit(formData);
     } else if (formType === "facility") {
       createFacilityUnit(values as CreateFacilityFormSchema);
-      console.log(values);
+
     } else if (formType === "detail") {
       createFacilityUnitDetail(values as CreateFacilityUnitFormSchema);
-      console.log(values);
+
     } else if (formType === "edit") {
-      updateUnit(formData);
-      console.log(values);
+      updateUnit(formData); 
     } else {
       cornerError("Missing form type");
     }

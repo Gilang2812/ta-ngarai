@@ -67,11 +67,9 @@ export const useManageUpdateCraft = ({
       currentImages ?? [],
       initialImages ?? []
     );
-
-    console.log(isSameImageList);
+ 
     if (!isSameData || !isSameImageList) {
-      const formData = createFormData(values);
-      console.log(values);
+      const formData = createFormData(values); 
       if (!isSameImageList) {
         formData.set("isNewImage", "1");
       }

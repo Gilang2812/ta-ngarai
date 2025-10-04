@@ -53,8 +53,7 @@ const useManageCraftTransaction = () => {
     checkout_id: string;
     shipping_id: string;
     draft_id: string;
-  }) => {
-    console.log("draft_id", draft_id);
+  }) => { 
     MySwal.fire({
       title: "Ship Products?",
       text: "Are you sure you want to ship these products?",

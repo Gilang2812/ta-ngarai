@@ -6,7 +6,7 @@ import { useFormikContext } from "formik";
 import { useEffect, useMemo } from "react";
 
 const useModifyPackageForm = () => {
-  const { values, errors } = useFormikContext<PackageActivityFormSchema>();
+  const { values } = useFormikContext<PackageActivityFormSchema>();
   const {
     data: attractionsData,
     isLoading: isLoadingAttractions,
@@ -47,13 +47,6 @@ const useModifyPackageForm = () => {
       cornerAlert("Data loaded successfully!");
     }
   }, [isSuccess]);
-
-  useEffect(() => {
-    if (errors) {
-      console.log(errors);
-      console.log(values);
-    }
-  }, [errors, values]);
 
   const data = useMemo(() => {
     switch (values.activity_type) {

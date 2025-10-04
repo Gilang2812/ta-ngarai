@@ -6,8 +6,7 @@ import { useMutation } from "@tanstack/react-query";
 export const useCreateFacilityUnitDetail = ({ onSuccess }: ActionProps) => {
   const axiosInstance = useAxiosAuth()
  return useMutation({
-    mutationFn: async (body: CreateFacilityUnitFormSchema) => {
-      console.log("body", { ...JSON.parse(body.unitHomestay) });
+    mutationFn: async (body: CreateFacilityUnitFormSchema) => { 
       const unitHomestay = { ...JSON.parse(body.unitHomestay) };
       const { data } = await axiosInstance.post("/homestays/units/detail", {
         ...body,

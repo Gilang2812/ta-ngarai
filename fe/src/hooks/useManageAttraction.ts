@@ -110,8 +110,7 @@ const useManageAttraction = () => {
     }));
   };
 
-  const handleEditAttraction = (attraction: AttractionSchema) => {
-    console.log("Editing attraction:", attraction);
+  const handleEditAttraction = (attraction: AttractionSchema) => { 
     toggleModal();
     const images = formatImageUrls(
       attraction?.galleries?.map((gallery) => gallery.url) || []
@@ -134,10 +133,8 @@ const useManageAttraction = () => {
   const handleSubmit = (values: typeof initialValues) => {
     const formData = createFormData(values);
     if (initialValues.id) {
-      updateAttraction(formData);
-      console.log("edit");
-    } else {
-      console.log("create");
+      updateAttraction(formData); 
+    } else { 
 
       createAttraction(formData);
     }

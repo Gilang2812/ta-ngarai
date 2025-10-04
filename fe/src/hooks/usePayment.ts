@@ -18,8 +18,7 @@ const usePayment = (id: string) => {
           cornerAlert("Payment pending:" + result.order_id);
           router.push("/web/reservation?tab=craft");
         },
-        onError: async (result) => {
-          console.log("Payment error:", result);
+        onError: async (result) => { 
           cornerError("Payment error:" + result.order_id);
           cornerError("Payment failed, please try again");
           router.push("/web/reservation?tab=craft");

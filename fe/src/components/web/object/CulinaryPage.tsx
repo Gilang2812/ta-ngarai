@@ -13,8 +13,7 @@ type Props = {
 };
 
 const CulinaryPage = ({ id }: Props) => {
-  const { data, isLoading } = useCulinary(id);
-  console.log(data);
+  const { data, isLoading } = useCulinary(id); 
   if (!data || isLoading) return <DetailHomestayReservationLoader />;
   return (
     <ContentWrapper>

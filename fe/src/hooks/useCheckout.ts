@@ -72,7 +72,7 @@ export const useCheckout = () => {
     kota: editingAddress?.kota || "",
     kecamatan: editingAddress?.kecamatan || "",
     kelurahan: editingAddress?.kelurahan || "",
-    kode_post: editingAddress?.kode_post || "",
+    kode_pos: editingAddress?.kode_pos || "",
     details:
       editingAddress?.details ||
       Object.values(editingAddress || {})

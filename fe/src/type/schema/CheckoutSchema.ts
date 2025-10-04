@@ -40,7 +40,7 @@ export const addressFormSchema = yup.object({
     .string()
     .max(50, "Sub-district must be at most 50 characters")
     .nullable(),
-  kode_post: yup
+  kode_pos: yup
     .string()
     .required("Postal code is required")
     .matches(/^\d{5}$/, "Postal code must be exactly 5 digits"),
@@ -165,6 +165,7 @@ export type ShippingAddress = Address & {
 export interface AddressCustomer {
   id: number;
   fullname: string;
+  username: string;
   email: string;
   phone: string;
   addresses: Address[];

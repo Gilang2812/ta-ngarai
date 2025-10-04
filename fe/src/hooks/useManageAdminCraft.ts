@@ -147,15 +147,13 @@ const useManageAdminCraft = () => {
     id: string;
     id_craft: string;
     variant_name: string;
-  }) => {
-    console.log(values);
+  }) => { 
     const currentCraft = crafts?.find((v) =>
       v.variants.find((variant) => variant.id === values.id)
     );
     const currentVariant = currentCraft?.variants.find(
       (variant) => variant.id === values.id
-    );
-    console.log("currentVariant", currentVariant);
+    ); 
     if (currentVariant?.name === values.variant_name) {
       toggleEditCraft(null);
       return cornerAlert("nothing change");
@@ -177,8 +175,7 @@ const useManageAdminCraft = () => {
       }
     }, [formType]);
 
-  const handleSubmit = (values: CraftVariant | Craft) => {
-    console.log(values);
+  const handleSubmit = (values: CraftVariant | Craft) => { 
     if (formType === "variant") {
       return createVariant(values as CraftVariant);
     } else if (formType === "craft") {
