@@ -7,13 +7,14 @@ import { useRef } from "react";
 import Swal from "sweetalert2";
 import useUserRole from "./useUserRole";
 import { handleRequestLogin } from "@/utils/RequestLogin";
+import { validateUser } from "@/utils/common/validateUser";
 
 export const useOrderCraft = () => {
   const router = useRouter();
   const pathname = usePathname();
   const searchParms = useSearchParams();
   const actionRef = useRef<"cart" | "buy">("cart");
-  const { isAuth, isOwner } = useUserRole();
+  const { isAuth, isOwner, user } = useUserRole();
   const { mutateAsync: createCraftCart, isPending: isCraftPending } =
     useCreateCraftCart({
       onSuccess: () => {
@@ -31,7 +32,6 @@ export const useOrderCraft = () => {
     if (isOwner(values.id_souvenir_place)) {
       cornerError("You cannot order from your own craft store");
     }
-
     if (!isAuth) {
       handleRequestLogin(pathname);
       return;
@@ -44,6 +44,10 @@ export const useOrderCraft = () => {
         craft_variant_id: searchParms.get("idvr") || craft_variant_id,
       });
     } else if (actionRef.current === "buy") {
+      if (!user?.phone || !user?.address) {
+        return validateUser(user, pathname);
+      }
+      console.log("coba coba");
       Swal.fire({
         title: "checking out",
         allowOutsideClick: false,

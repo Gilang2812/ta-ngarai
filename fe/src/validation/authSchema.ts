@@ -74,15 +74,27 @@ export const updateProfileSchemaWithoutUsername = yup.object().shape({
   phone: yup.string().required("Phone is required"),
 });
 
+export const changePasswordSchema = yup.object().shape({
+  newPassword: yup.string().min(8).max(20).required("New Password is required"),
+  confirmNewPassword: yup
+    .string()
+    .oneOf(
+      [yup.ref("newPassword")],
+      "Confirm Passwords must match New Password"
+    )
+    .required("Confirm Password is required"),
+});
+
 export type UserLogin = {
-  id: number | string;
-  email: string;
-  username: string;
-  role: number | string;
-  name: string;
-  phone: string;
-  address: string;
-  store: UserStore[];
+  id: string;
+  name?: string | null;
+  email?: string | null;
+  image?: string | null;
+  role?: string;
+  username?: string;
+  phone?: string;
+  address?: string;
+  store?: UserStore[];
 };
 
 export type UserStore = {
@@ -103,3 +115,5 @@ export type UpdateProfileForm = {
 };
 
 export type RegisterSchema = yup.InferType<typeof registerSchema>;
+
+export type ChangePasswordSchema = yup.InferType<typeof changePasswordSchema>;

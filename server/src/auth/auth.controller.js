@@ -1,4 +1,5 @@
 const router = require("express").Router();
+const bcrypt = require("bcrypt");
 const {
   userLogin,
   userRegister,
@@ -73,6 +74,25 @@ router.patch("/user/update", verifyToken, async (req, res, next) => {
     const updatedUser = await editUser(
       { id: req.user.id },
       { fullname, phone, address, username }
+    );
+
+    res.json(updatedUser);
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.patch("/user/change-password", verifyToken, async (req, res, next) => {
+  try {
+    const { newPassword, confirmNewPassword } = req.body;
+
+    if (newPassword !== confirmNewPassword) {
+      return res.status(400).json({ message: "Passwords do not match" });
+    }
+
+    const updatedUser = await editUser(
+      { id: req.user.id },
+      { password: bcrypt.hashSync(newPassword, 10) }
     );
 
     res.json(updatedUser);

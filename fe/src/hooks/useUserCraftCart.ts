@@ -11,13 +11,18 @@ import {
 
 import { useEffect, useState } from "react";
 import useCheckoutCart from "./useCheckoutCart";
+import { validateUser } from "@/utils/common/validateUser";
+import { useSession } from "next-auth/react";
+import { usePathname } from "next/navigation";
 
 export const useUserCraftCart = () => {
+  const pathname = usePathname();
   const { data: carts, isLoading, refetch } = useFetchCraftCart();
+  const { data } = useSession();
   const [isDirty, setIsDirty] = useState(false);
   const [selectedCraft, setSelectedCraft] = useState<CraftCartSchema[]>([]);
   const { createCheckout } = useCheckoutCart();
- 
+
   const { mutate: updateCraftCart, isPending: isUpdating } = useUpdateCraftCart(
     {
       onSuccess: () => {
@@ -57,6 +62,7 @@ export const useUserCraftCart = () => {
   };
 
   const handleCheckout = () => {
+    validateUser(data?.user || null, pathname);
     if (selectedCraft.length === 0) {
       cornerError("Silakan pilih craft yang ingin dibeli!");
       return;
@@ -92,7 +98,7 @@ export const useUserCraftCart = () => {
           item.craft_variant_id === craft.craft_variant_id &&
           item.id_souvenir_place === craft.id_souvenir_place &&
           item.checkout_id === craft.checkout_id
-      ); 
+      );
       if (index > -1) {
         return prev.filter(
           (item) =>

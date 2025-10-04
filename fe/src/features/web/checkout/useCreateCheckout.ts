@@ -11,7 +11,7 @@ export const useCreateCheckout = ({ onSuccess }: ActionProps) => {
       const { data } = await axiosInstance.post("/checkouts", body);
       return data;
     },
-  onSuccess,
+    onSuccess,
     onError,
   });
 };

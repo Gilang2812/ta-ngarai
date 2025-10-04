@@ -7,7 +7,7 @@ const useUserRole = () => {
   const pathName = usePathname();
   const { data, status } = useSession();
   const router = useRouter();
-  const user = data?.user;
+  const user = data?.user ||null;
   const store = user?.store;
   const isAdmin = !!(user?.role && Number(user?.role) === 2);
   const isSeller = store && store?.length > 0;
@@ -33,7 +33,7 @@ const useUserRole = () => {
       });
     }
   };
-  return { isAdmin, isSeller, isAuth, isUserAuth, handleUnAuth, isOwner };
+  return { isAdmin, isSeller, isAuth, isUserAuth, handleUnAuth, isOwner, user };
 };
 
 export default useUserRole;

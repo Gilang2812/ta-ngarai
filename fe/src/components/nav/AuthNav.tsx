@@ -17,6 +17,9 @@ const AuthNav = () => {
             icon={FaHouse}
             label="Manage Profile"
             link={ROUTES.PROFILE}
+            isActive={
+              pathName === ROUTES.PROFILE || pathName === ROUTES.UPDATE_PROFILE
+            }
           />
         </li>
         <li>

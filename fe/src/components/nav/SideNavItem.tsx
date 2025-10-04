@@ -20,7 +20,7 @@ export const SideNavItem = ({
   icon: Icon,
   label,
   link,
-  isActive,
+isActive,
 }: NavProps) => {
   const pathName = usePathname();
   const splittedPathName = pathName.split("/");
