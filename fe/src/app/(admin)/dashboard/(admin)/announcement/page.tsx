@@ -242,7 +242,9 @@ export default function Announcement() {
                 {selectedData?.status == 1 ? (
                   <p className="px-2 py-1 bg-green-500 rounded w-fit">active</p>
                 ) : (
-                  <p className="px-2 py-1 bg-red-600 rounded w-fit">non active</p>
+                  <p className="px-2 py-1 bg-red-600 rounded w-fit">
+                    non active
+                  </p>
                 )}
               </td>
             </tr>
