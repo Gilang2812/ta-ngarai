@@ -9,9 +9,6 @@ const ReactGoogleOAuthProvider = ({
 }) => {
   const clientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID; 
   if (!clientId) {
-    alert(
-      "Google Client ID is not set. Please set NEXT_PUBLIC_GOOGLE_CLIENT_ID in your environment variables."
-    );
     return null;
   }
 

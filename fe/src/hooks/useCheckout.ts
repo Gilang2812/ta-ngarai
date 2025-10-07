@@ -131,14 +131,11 @@ export const useCheckout = () => {
     setEditingAddress(undefined);
   };
 
-  const handleSubmitOrder = () => {
-    alert("Order placed successfully!");
-  };
+  
 
   return {
     checkout,
-    checkoutLoading,
-    handleSubmitOrder,
+    checkoutLoading, 
     addressList,
     selectedAddress,
     showAddressForm,
@@ -151,8 +148,7 @@ export const useCheckout = () => {
     paymentMethod,
     setPaymentMethod,
     orderNotes,
-    setOrderNotes,
-    mutate: handleSubmitOrder,
+    setOrderNotes, 
     addressInitialValues,
     isPending: creating || updating,
     shippingMethods,
