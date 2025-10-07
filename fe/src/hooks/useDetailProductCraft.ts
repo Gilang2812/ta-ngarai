@@ -1,4 +1,4 @@
-import { CraftCartForm } from "@/type/schema/CraftCartSchema";
+import { CraftCartForm } from "@/types/schema/CraftCartSchema";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect } from "react";
 import { useOrderCraft } from "./useOrderCraft";
@@ -6,7 +6,7 @@ import { useFetchOrderDetailCraft } from "@/features/detailCraft/useFetchOrderDe
 import {
   DetailCraftManagementResponse,
   DetailCraftOrderResponse,
-} from "@/type/schema/DetailCraftSchema";
+} from "@/types/schema/DetailCraftSchema";
 import useProdukGallery from "./useProdukGallery";
 
 export const useDetailProductCraft = ({

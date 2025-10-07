@@ -1,5 +1,5 @@
 import { SearchBar } from "./SearchBar";
-import { DetailCraftUserResponse } from "@/type/schema/DetailCraftSchema";
+import { DetailCraftUserResponse } from "@/types/schema/DetailCraftSchema";
 
 interface HeaderProps {
   onSearch?: (query: string) => void;

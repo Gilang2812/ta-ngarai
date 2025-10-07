@@ -1,5 +1,5 @@
-import { Address, Checkout, CheckoutItem } from "@/type/schema/CheckoutSchema";
-import { CourierPricing, DraftRequestForm } from "@/type/schema/ShippingSchema";
+import { Address, Checkout, CheckoutItem } from "@/types/schema/CheckoutSchema";
+import { CourierPricing, DraftRequestForm } from "@/types/schema/ShippingSchema";
 
 export const createShippingStoreBody = ({
   checkout,

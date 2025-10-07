@@ -1,5 +1,5 @@
 import { useAxiosAuth } from "@/lib/axios";
-import { ActionProps } from "@/type/props/ActionProps";
+import { ActionProps } from "@/types/props/ActionProps";
 import { LoginResponse, LoginSchema } from "@/validation/authSchema";
 import { useMutation } from "@tanstack/react-query";
 

@@ -1,7 +1,7 @@
 "use client";
 
 import { X } from "lucide-react";
-import { Address } from "@/type/schema/CheckoutSchema";
+import { Address } from "@/types/schema/CheckoutSchema";
 import Button from "../common/Button";
 import { motion } from "framer-motion";
 import { Form } from "formik";

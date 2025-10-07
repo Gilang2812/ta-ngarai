@@ -8,9 +8,9 @@ import { Modal } from "../modal/Modal";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import { confirmationSchema } from "@/validation/reservation";
 import { FormInput } from "../inputs/FormInput";
-import { ConfirmationFormSchema } from "@/type/schema/ReservationSchema";
+import { ConfirmationFormSchema } from "@/types/schema/ReservationSchema";
 import { useUpdateTokenReservation } from "@/features/reservation/useUpdateTokenReservation";
-import { ItemDetails } from "@/type/common/paymentItemDetails";
+import { ItemDetails } from "@/types/common/paymentItemDetails";
 type Props = {
   status: ReservationStatus;
   refetchData: () => void;

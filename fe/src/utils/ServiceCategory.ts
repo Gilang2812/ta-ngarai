@@ -1,7 +1,7 @@
 import {
   PackageService,
   PackageServiceGallery,
-} from "@/type/schema/PackageSchema";
+} from "@/types/schema/PackageSchema";
 
 export const useService = (
   category: 0 | 1,

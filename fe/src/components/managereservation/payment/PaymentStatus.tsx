@@ -1,4 +1,4 @@
-import { type PaymentStatusProps } from "@/type/props/Payment";
+import { type PaymentStatusProps } from "@/types/props/Payment";
 import React from "react";
 
 interface PaymentStatusBadgeProps {

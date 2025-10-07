@@ -1,4 +1,4 @@
-import { type ReviewFormSchema } from "@/type/schema/ReviewSchema";
+import { type ReviewFormSchema } from "@/types/schema/ReviewSchema";
 import { useFormikContext } from "formik";
 import React from "react";
 

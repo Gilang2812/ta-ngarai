@@ -1,6 +1,6 @@
 import { useAxiosAuth } from "@/lib/axios";
 import { useSocketStore } from "@/stores/socketStore";
-import { UserMarketplaceSchema } from "@/type/schema/SouvenirSchema";
+import { UserMarketplaceSchema } from "@/types/schema/SouvenirSchema";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
 

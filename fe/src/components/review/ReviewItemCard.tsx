@@ -8,7 +8,7 @@ import { FormInput } from "../inputs/FormInput";
 import ReviewRatingInput from "../craft/ReviewRatingInput";
 import FilePondComponent from "../common/Filepond";
 import ReviewTransactionSkeleton from "../loading/ReviewTransactionSkeleton";
-import { reviewFormSchema } from "@/type/schema/ReviewSchema";
+import { reviewFormSchema } from "@/types/schema/ReviewSchema";
 import ReviewItem from "./ReviewItem";
 import ReviewContent from "./ReviewContent";
 import { useSession } from "next-auth/react";

@@ -3,17 +3,17 @@ import useFetchWeatherPrediction from "@/features/weater/useFetchWeatherPredicti
 import {
   HomestayReservationFormSchemaType,
   ReservationDetails,
-} from "@/type/schema/ReservationSchema";
+} from "@/types/schema/ReservationSchema";
 import { confirmAlert, cornerError } from "@/utils/AlertUtils";
 import { useState } from "react";
 import useFormStep from "./useFormStep";
 import dayjs from "dayjs";
-import { AllUnitHomestayResponseSchema } from "@/type/schema/HomestaySchema";
+import { AllUnitHomestayResponseSchema } from "@/types/schema/HomestaySchema";
 import { useCreateReservation } from "@/features/reservation/useCreateReservation";
 import {
   OpenMeteoDaily,
   OpenMeteoDailyResponse,
-} from "@/type/schema/OpenMeteoSchema";
+} from "@/types/schema/OpenMeteoSchema";
 import { useGetDepositPercentage } from "@/features/web/tourism/useGetDepositPercentage";
 import useAuth from "./useAuth";
 

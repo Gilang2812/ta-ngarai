@@ -1,5 +1,5 @@
 import { useAxiosAuth } from "@/lib/axios";
-import { Packages } from "@/type/schema/PackageSchema";
+import { Packages } from "@/types/schema/PackageSchema";
 import { useQuery } from "@tanstack/react-query"; 
 
 const useFetchUserPackage = () => {

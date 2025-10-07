@@ -1,4 +1,4 @@
-import { HomestayFacilityDetailSchema } from "@/type/schema/FacilitySchema";
+import { HomestayFacilityDetailSchema } from "@/types/schema/FacilitySchema";
 import { DeleteDetailFacilitySchema } from "@/validation/facilitySchema";
 
 import { FaTimes } from "react-icons/fa";

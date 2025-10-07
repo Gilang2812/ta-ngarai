@@ -1,5 +1,5 @@
 import { useAxiosAuth } from "@/lib/axios";
-import { DetailCraftOrderResponse } from "@/type/schema/DetailCraftSchema";
+import { DetailCraftOrderResponse } from "@/types/schema/DetailCraftSchema";
 import { useQuery } from "@tanstack/react-query";
 
 export const useFetchOrderDetailCraft = ({

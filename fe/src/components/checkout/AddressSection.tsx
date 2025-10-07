@@ -1,4 +1,4 @@
-import { Address, addressFormSchema } from "@/type/schema/CheckoutSchema";
+import { Address, addressFormSchema } from "@/types/schema/CheckoutSchema";
 import Button from "../common/Button";
 import { FaEdit } from "react-icons/fa";
 import AddressSelector from "./AddressSelector";

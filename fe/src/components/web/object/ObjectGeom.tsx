@@ -6,7 +6,7 @@ import {
 } from "@/components/map/ObjectInfoWindow";
 import useDigitasi from "@/hooks/useDigitasi";
 import useToggleOpen from "@/hooks/useToggleOpen";
-import { SimplifiedObject } from "@/type/schema/PackageSchema";
+import { SimplifiedObject } from "@/types/schema/PackageSchema";
 import { getCentroid } from "@/utils/common/getCentroid";
 import { getIconUrl } from "@/utils/map/getIconUrl";
 import { InfoWindowF } from "@react-google-maps/api";

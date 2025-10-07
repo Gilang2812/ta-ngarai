@@ -1,7 +1,7 @@
 import {
   DetailCraftManagementResponse,
   DetailCraftOrderResponse,
-} from "@/type/schema/DetailCraftSchema";
+} from "@/types/schema/DetailCraftSchema";
 import { motion } from "framer-motion";
 import React from "react";
 

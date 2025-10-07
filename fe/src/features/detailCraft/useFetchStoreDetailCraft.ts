@@ -1,5 +1,5 @@
 import { useAxiosAuth } from "@/lib/axios";
-import { DetailCraftInclude } from "@/type/schema/DetailCraftSchema";
+import { DetailCraftInclude } from "@/types/schema/DetailCraftSchema";
 import { useQuery } from "@tanstack/react-query";
 
 export const useFetchStoreDetailCrafts = <T>(

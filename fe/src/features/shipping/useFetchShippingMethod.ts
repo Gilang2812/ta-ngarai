@@ -1,5 +1,5 @@
 import { useAxiosAuth } from "@/lib/axios"; 
-import { ShippingData } from "@/type/schema/ShippingSchema";
+import { ShippingData } from "@/types/schema/ShippingSchema";
 import { useQuery } from "@tanstack/react-query";
 
 type ShippingMethodParams = {

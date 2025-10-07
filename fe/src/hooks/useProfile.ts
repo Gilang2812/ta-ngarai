@@ -5,7 +5,7 @@ import { useFetchAddress } from "@/features/web/address/useFetchAddress";
 import { useCreateAddress } from "@/features/web/address/useCreateAddress";
 import { useUpdateAddress } from "@/features/web/address/useUpdateAddress";
 import { cornerAlert } from "@/utils/AlertUtils";
-import { Address } from "@/type/schema/CheckoutSchema";
+import { Address } from "@/types/schema/CheckoutSchema";
 import { formatAddress } from "@/lib/formatAddress";
 
 const useProfile = () => {

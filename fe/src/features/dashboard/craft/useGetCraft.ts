@@ -1,5 +1,5 @@
 import { useAxiosAuth } from "@/lib/axios";
-import { CraftDetailSchema } from "@/type/schema/CraftSchema";
+import { CraftDetailSchema } from "@/types/schema/CraftSchema";
 import { useQuery } from "@tanstack/react-query";
 
 export const useGetCraft = (id: string) => {

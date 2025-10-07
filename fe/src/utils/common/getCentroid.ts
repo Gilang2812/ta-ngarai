@@ -1,4 +1,4 @@
-import { LatLngLiteral } from "@/type/common/MapType";
+import { LatLngLiteral } from "@/types/common/MapType";
 import { Geometry, MultiPolygon } from "geojson";
 import {centroid} from '@turf/turf'
 

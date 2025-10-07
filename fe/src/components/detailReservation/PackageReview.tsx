@@ -1,7 +1,7 @@
 import { Formik } from "formik";
 import React from "react";
 import PackageReviewForm from "./PackageReviewForm";
-import { PackageReviewFormSchema } from "@/type/schema/ReservationSchema";
+import { PackageReviewFormSchema } from "@/types/schema/ReservationSchema";
 import { packageSchema } from "@/validation/reservation";
 import { Rating } from "../craft/Rating";
 

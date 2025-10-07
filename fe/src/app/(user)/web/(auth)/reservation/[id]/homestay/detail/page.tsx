@@ -1,5 +1,5 @@
 import DetailHomestayReservation from "@/components/homestay/DetailHomestayReservation";
-import { DynamicPageProps } from "@/type/props/DynamicPageProps";
+import { DynamicPageProps } from "@/types/props/DynamicPageProps";
 
 export default async function Page({ params }: DynamicPageProps) {
   const { id } = await params;

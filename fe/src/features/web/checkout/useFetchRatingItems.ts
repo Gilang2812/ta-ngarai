@@ -1,7 +1,7 @@
 import { useAxiosAuth } from "@/lib/axios";
 import {
   ShippingDataWithReviewGallery,
-} from "@/type/schema/CraftTransactionSchema";
+} from "@/types/schema/CraftTransactionSchema";
 import { useQuery } from "@tanstack/react-query";
 
 export const useFetchRatingItems = (id: string) => {

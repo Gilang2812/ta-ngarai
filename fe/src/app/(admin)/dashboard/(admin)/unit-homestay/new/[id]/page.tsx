@@ -1,5 +1,5 @@
 import ManageUnitHomestay from "@/components/homestay/detail/ManageUnitHomestay";
-import { DynamicPageProps } from "@/type/props/DynamicPageProps";
+import { DynamicPageProps } from "@/types/props/DynamicPageProps";
 import React from "react";
 
 const ManageDetailHomestay = async ({ params }: DynamicPageProps) => {

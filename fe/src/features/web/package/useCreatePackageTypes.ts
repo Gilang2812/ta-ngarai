@@ -1,8 +1,8 @@
 import { useAxiosAuth } from "@/lib/axios";
-import { ActionProps } from "@/type/props/ActionProps";
+import { ActionProps } from "@/types/props/ActionProps";
 import { useMutation } from "@tanstack/react-query";
 import { onError } from "@/utils/ErrorHandler";
-import { PackageTypeFormSchema } from "@/type/schema/PackageSchema";
+import { PackageTypeFormSchema } from "@/types/schema/PackageSchema";
 
 export const useCreatePackageType = ({ onSuccess }: ActionProps) => {
   const axiosInstance = useAxiosAuth()

@@ -1,5 +1,5 @@
 import { formatPrice } from "@/lib/priceFormatter";
-import { ShippingDataWithReviewGallery } from "@/type/schema/CraftTransactionSchema";
+import { ShippingDataWithReviewGallery } from "@/types/schema/CraftTransactionSchema";
 import {
   getCraftTransactionStatus,
   getCraftTransactionStatusColor,
@@ -10,7 +10,7 @@ import dayjs from "dayjs";
 import Button from "../common/Button";
 import ImgCraft from "../common/ImgCraft";
 import ItemReservationButton from "./ItemReservationButton";
-import { CraftCartForm } from "@/type/schema/CraftCartSchema";
+import { CraftCartForm } from "@/types/schema/CraftCartSchema";
 import Link from "next/link";
 import { FaTruck } from "react-icons/fa6";
 import { ROUTES } from "@/data/routes";

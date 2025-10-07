@@ -1,6 +1,6 @@
 import { useAxiosAuth } from "@/lib/axios";
-import { ActionProps } from "@/type/props/ActionProps";
-import { CheckoutPayload } from "@/type/schema/CheckoutSchema";
+import { ActionProps } from "@/types/props/ActionProps";
+import { CheckoutPayload } from "@/types/schema/CheckoutSchema";
 import { onError } from "@/utils/ErrorHandler";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 

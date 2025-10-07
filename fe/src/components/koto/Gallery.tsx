@@ -1,6 +1,6 @@
 "use client";
 import { useFetchGalleries } from "@/features/web/useFetchGalleries";
-import { GallerySchema } from "@/type/schema/GallerySchema";
+import { GallerySchema } from "@/types/schema/GallerySchema";
 import { ImageSkeleton } from "@/components/loading/ImageSkeleton"; 
 import ImgCraft from "../common/ImgCraft";
 

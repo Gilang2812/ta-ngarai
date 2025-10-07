@@ -1,5 +1,5 @@
 import { useAxiosAuth } from "@/lib/axios"
-import { ActionProps } from "@/type/props/ActionProps"
+import { ActionProps } from "@/types/props/ActionProps"
 import { useMutation } from "@tanstack/react-query"
 
 export const useDeleteUser = ({onSuccess,onError}:ActionProps)=>{

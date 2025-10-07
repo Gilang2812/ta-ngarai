@@ -3,7 +3,7 @@ import {
   CartProps,
   useFetchUserCarts,
 } from "@/features/web/cart/useFetchUserCarts";
-import { CartSchema } from "@/type/schema/CartSchema";
+import { CartSchema } from "@/types/schema/CartSchema";
 import { confirmDeleteAlert, showDeleteAlert } from "@/utils/AlertUtils";
 import React, { useMemo } from "react";
 import { EmptyCart } from "../craft/EmptyCart";

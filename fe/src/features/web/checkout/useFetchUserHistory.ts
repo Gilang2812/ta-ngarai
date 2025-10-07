@@ -1,6 +1,6 @@
 import { useAxiosAuth } from "@/lib/axios";
 import { useSocketStore } from "@/stores/socketStore";
-import { ShippingDataWithReviewGallery } from "@/type/schema/CraftTransactionSchema";
+import { ShippingDataWithReviewGallery } from "@/types/schema/CraftTransactionSchema";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
 

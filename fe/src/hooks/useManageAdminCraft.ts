@@ -5,11 +5,11 @@ import { useUpdateCraft } from "@/features/dashboard/craft/useUpdateCraft";
 import { useCreateCraftVariant } from "@/features/dashboard/craftVariant/useCreateCraftVariant";
 import { useDeleteCraftVariant } from "@/features/dashboard/craftVariant/useDeleteCraftVariant";
 import { useUpdateCraftVariant } from "@/features/dashboard/craftVariant/useUpdateCraftVariant";
-import { type CraftVariant, type Craft } from "@/type/schema/CraftSchema";
+import { type CraftVariant, type Craft } from "@/types/schema/CraftSchema";
 import {
   DetailCraftOrderResponse,
   DetailCraftSchema,
-} from "@/type/schema/DetailCraftSchema";
+} from "@/types/schema/DetailCraftSchema";
 import {
   confirmDeleteAlert,
   cornerAlert,

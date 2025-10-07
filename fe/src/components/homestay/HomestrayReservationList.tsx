@@ -6,8 +6,8 @@ import { formatPrice } from "@/lib/priceFormatter";
 import { AnimatePresence, motion } from "framer-motion";
 import { containerVariants, itemVariants } from "@/lib/motionVariant";
 import { useFormikContext } from "formik";
-import { HomestayReservationFormSchemaType } from "@/type/schema/ReservationSchema";
-import { AllUnitHomestayResponseSchema } from "@/type/schema/HomestaySchema";
+import { HomestayReservationFormSchemaType } from "@/types/schema/ReservationSchema";
+import { AllUnitHomestayResponseSchema } from "@/types/schema/HomestaySchema";
 type Props = {
   filteredUnitHomestay: AllUnitHomestayResponseSchema[];
   handleSelectedUnit: (unit: AllUnitHomestayResponseSchema) => void;

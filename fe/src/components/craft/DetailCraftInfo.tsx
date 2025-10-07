@@ -1,5 +1,5 @@
 import { formatPrice } from "@/lib/priceFormatter";
-import { DetailCraftManagementResponse } from "@/type/schema/DetailCraftSchema";
+import { DetailCraftManagementResponse } from "@/types/schema/DetailCraftSchema";
 import React from "react";
 
 type Props = {

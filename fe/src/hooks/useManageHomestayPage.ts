@@ -4,7 +4,7 @@ import { useEffect, useMemo } from "react";
 import useTableManagement from "./useTableManagement";
 import { useDeleteHomestay } from "@/features/dashboard/homestay/useDeleteHomestay";
 import { confirmDeleteAlert, cornerAlert, showLoadingAlert } from "@/utils/AlertUtils";
-import { HomestaySchema } from "@/type/schema/HomestaySchema";
+import { HomestaySchema } from "@/types/schema/HomestaySchema";
 
 const useManageHomestayPage = () => {
   const { data, isLoading, refetch } = useFetchHomestay();

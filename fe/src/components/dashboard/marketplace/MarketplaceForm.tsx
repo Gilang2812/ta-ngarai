@@ -2,7 +2,7 @@ import useFormMarketplace from "@/hooks/useFormMarketplace";
 import {
   FormMarketplace,
   marketplaceSchema,
-} from "@/type/schema/MarketplaceSchema";
+} from "@/types/schema/MarketplaceSchema";
 import { Formik } from "formik";
 import React from "react";
 import MarketPlaceFormSection from "./MarketPlaceFormSection";

@@ -1,5 +1,5 @@
 import { useAxiosAuth } from "@/lib/axios";
-import { AnnouncementSchema } from "@/type/schema/AnnouncementSchema";
+import { AnnouncementSchema } from "@/types/schema/AnnouncementSchema";
 import { useQuery } from "@tanstack/react-query";
 
 export const useFetchAnnouncements = () => {

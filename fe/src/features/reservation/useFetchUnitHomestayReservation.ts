@@ -1,7 +1,7 @@
-import { DetailReservationSchema } from "./../../type/schema/ReservationSchema";
+import { DetailReservationSchema } from "../../types/schema/ReservationSchema";
 import { useAxiosAuth } from "@/lib/axios";
-import { UnitGallerySchema } from "@/type/schema/GalleryHomestaySchema";
-import { HomestayDetails } from "@/type/schema/HomestaySchema";
+import { UnitGallerySchema } from "@/types/schema/GalleryHomestaySchema";
+import { HomestayDetails } from "@/types/schema/HomestaySchema";
 import { useQuery } from "@tanstack/react-query";
 
 export type UnitHomestayReservation = HomestayDetails & {

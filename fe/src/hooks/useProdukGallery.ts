@@ -1,7 +1,7 @@
 import {
   DetailCraftManagementResponse,
   DetailCraftOrderResponse,
-} from "@/type/schema/DetailCraftSchema";
+} from "@/types/schema/DetailCraftSchema";
 import { useEffect, useState } from "react";
 
 const useProdukGallery = () => {

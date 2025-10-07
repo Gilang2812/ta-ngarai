@@ -3,7 +3,7 @@ import React, { useMemo } from "react";
 import { FormStoreSection } from "./FormSection";
 import useGetSouvenirPlace from "@/features/dashboard/marketplace/useGetSouvenirPlace";
 import ManagementSkeletonLoader from "@/components/loading/ManagementSkeletonLoader";
-import { FormMarketplace } from "@/type/schema/MarketplaceSchema";
+import { FormMarketplace } from "@/types/schema/MarketplaceSchema";
 import { formatImageUrls } from "@/lib/imgUrlFormatter";
 
 type Props = {

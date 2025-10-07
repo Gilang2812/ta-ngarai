@@ -1,9 +1,9 @@
-import { ShippingItem } from "@/type/schema/CraftTransactionSchema";
+import { ShippingItem } from "@/types/schema/CraftTransactionSchema";
 import React from "react";
 import Link from "next/link";
 import ReviewItem from "./ReviewItem";
 import ReviewContent from "./ReviewContent";
-import { ReviewGallerySchema } from "@/type/schema/ReviewSchema";
+import { ReviewGallerySchema } from "@/types/schema/ReviewSchema";
 
 type Props = {
   shippingItems: (ShippingItem & {

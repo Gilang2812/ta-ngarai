@@ -1,4 +1,4 @@
-import { CraftResponse } from "@/type/schema/CraftSchema";
+import { CraftResponse } from "@/types/schema/CraftSchema";
 import React from "react";
 import Button from "../common/Button";
 import { FaCheck, FaPencil, FaPlus, FaTrash, FaXmark } from "react-icons/fa6";

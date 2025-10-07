@@ -3,7 +3,7 @@ import { ErrorMessage, Form } from "formik";
 import { FormInput } from "@/components/inputs/FormInput";
 import { FaSave } from "react-icons/fa";
 import Button from "@/components/common/Button";
-import { PackageDay } from "@/type/schema/PackageSchema";
+import { PackageDay } from "@/types/schema/PackageSchema";
 import { FaPlus } from "react-icons/fa6";
 import useModifyPackageForm from "@/hooks/useModifyPackageForm";
 import { activityTypes } from "@/data/activity";

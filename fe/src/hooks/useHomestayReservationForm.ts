@@ -1,8 +1,8 @@
 import { useFormikContext } from "formik";
-import { HomestayReservationFormSchemaType } from "@/type/schema/ReservationSchema";
+import { HomestayReservationFormSchemaType } from "@/types/schema/ReservationSchema";
 import { useEffect, useMemo } from "react";
 import dayjs from "dayjs";
-import { AllUnitHomestayResponseSchema } from "@/type/schema/HomestaySchema";
+import { AllUnitHomestayResponseSchema } from "@/types/schema/HomestaySchema";
 import { cornerError } from "@/utils/AlertUtils";
 
 type Props = {

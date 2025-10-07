@@ -2,7 +2,7 @@ import { ROUTES } from "@/data/routes";
 import { useFetchObjectAround } from "@/features/web/common/useFetchObjectAround";
 import useObjectAroundStore from "@/stores/ObjectAroundStore";
 
-import { SimplifiedObject } from "@/type/schema/PackageSchema";
+import { SimplifiedObject } from "@/types/schema/PackageSchema";
 import { FeatureCollection } from "geojson";
 import { useReformatObject } from "@/utils/map/objectUtils";
 import { usePathname } from "next/navigation";

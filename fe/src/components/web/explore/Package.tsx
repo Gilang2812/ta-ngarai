@@ -7,7 +7,7 @@ import ButtonTooltip from "@/components/common/ButtonTooltip";
 import { FaRegCalendarAlt } from "react-icons/fa";
 import Loading from "@/app/loading";
 import Link from "next/link";
-import { Packages } from "@/type/schema/PackageSchema";
+import { Packages } from "@/types/schema/PackageSchema";
 import { ROUTES } from "@/data/routes";
 import useUserRole from "@/hooks/useUserRole";
 import { useToggleStore } from "@/stores/ToggleStore";

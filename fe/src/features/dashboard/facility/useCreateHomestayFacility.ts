@@ -1,5 +1,5 @@
 import { useAxiosAuth } from "@/lib/axios"
-import { ActionProps } from "@/type/props/ActionProps"
+import { ActionProps } from "@/types/props/ActionProps"
 import { onError } from "@/utils/ErrorHandler"
 import { CreateFacilityHomestaySchema } from "@/validation/facilitySchema"
 import { useMutation } from "@tanstack/react-query"

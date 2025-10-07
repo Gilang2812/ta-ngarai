@@ -1,6 +1,6 @@
 import { useAxiosAuth } from "@/lib/axios";
-import { ActionProps } from "@/type/props/ActionProps";
-import { PackageActivityFormSchema } from "@/type/schema/PackageSchema";
+import { ActionProps } from "@/types/props/ActionProps";
+import { PackageActivityFormSchema } from "@/types/schema/PackageSchema";
 import { useMutation } from "@tanstack/react-query";
 import { onError } from "@/utils/ErrorHandler";
 

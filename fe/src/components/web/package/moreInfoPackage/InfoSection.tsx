@@ -10,7 +10,7 @@ import { SingleContentWrapper } from "@/components/common/SingleContentWrapper";
 import {
   PackageReservationSchema,
   PackageServiceGallery,
-} from "@/type/schema/PackageSchema";
+} from "@/types/schema/PackageSchema";
 
 export const InfoSection = ({ id }: { id: string }) => {
   const { data, isLoading } = useGetPackage<

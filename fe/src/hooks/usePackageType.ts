@@ -13,7 +13,7 @@ import { useDeletePackageType } from "@/features/web/package/useDeletePackageTyp
 import {
   PackageTypeFormSchema,
   PackageTypeSchema,
-} from "@/type/schema/PackageSchema";
+} from "@/types/schema/PackageSchema";
 import { useModal } from "@/utils/ModalUtils";
 
 export const usePackageType = () => {

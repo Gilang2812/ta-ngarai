@@ -1,4 +1,4 @@
-import { ShippingItem } from "@/type/schema/CraftTransactionSchema";
+import { ShippingItem } from "@/types/schema/CraftTransactionSchema";
 import ImgCraft from "../common/ImgCraft";
 import { formatPrice } from "@/lib/priceFormatter";
 

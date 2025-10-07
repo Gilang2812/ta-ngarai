@@ -2,7 +2,7 @@ import { ROUTES } from "@/data/routes";
 import { useCreateModifyPackage } from "@/features/web/extend/useCreateModifyPackage";
 import { useFetchPackages } from "@/features/web/package/useFetchPackage";
 import { useModifyPackage } from "@/features/web/package/useModifyPackage";
-import { PackageGallery, PackageSchema } from "@/type/schema/PackageSchema";
+import { PackageGallery, PackageSchema } from "@/types/schema/PackageSchema";
 import { cornerAlert, showLoadingAlert } from "@/utils/AlertUtils";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";

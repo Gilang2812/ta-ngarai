@@ -1,5 +1,5 @@
 import CulinaryPage from "@/components/web/object/CulinaryPage";
-import { DynamicPageProps } from "@/type/props/DynamicPageProps";
+import { DynamicPageProps } from "@/types/props/DynamicPageProps";
 import React from "react";
 
 type Props = DynamicPageProps;

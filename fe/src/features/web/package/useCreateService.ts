@@ -1,8 +1,8 @@
 import { useAxiosAuth } from "@/lib/axios";
-import { ActionProps } from "@/type/props/ActionProps";
+import { ActionProps } from "@/types/props/ActionProps";
 import { useMutation } from "@tanstack/react-query";
 import { onError } from "@/utils/ErrorHandler"; 
-import { ServiceFormSchema } from "@/type/schema/ServiceSchema";
+import { ServiceFormSchema } from "@/types/schema/ServiceSchema";
 
 export const useCreateService = ({ onSuccess }: ActionProps) => {
   const axiosInstance = useAxiosAuth()

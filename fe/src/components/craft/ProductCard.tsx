@@ -4,7 +4,7 @@ import { Rating } from "./Rating";
 import { formatPrice } from "@/lib/priceFormatter";
 import Link from "next/link";
 import { baseUrl } from "@/lib/baseUrl";
-import { DetailCraftOrderResponse } from "@/type/schema/DetailCraftSchema";
+import { DetailCraftOrderResponse } from "@/types/schema/DetailCraftSchema";
 import { ROUTES } from "@/data/routes";
 import { Store } from "lucide-react";
 

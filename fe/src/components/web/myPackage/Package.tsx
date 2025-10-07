@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { DayButton } from "@/components/web/explore/DayButton";
 import { useFetchPackages } from "@/features/web/package/useFetchPackage";
 import { Spinner } from "flowbite-react";
-import { Packages } from "@/type/schema/PackageSchema";
+import { Packages } from "@/types/schema/PackageSchema";
 import Link from "next/link";
 import { ROUTES } from "@/data/routes";
 

@@ -1,6 +1,6 @@
 import React from "react";
 import { ProductCard } from "./ProductCard";
-import { DetailCraftOrderResponse } from "@/type/schema/DetailCraftSchema";
+import { DetailCraftOrderResponse } from "@/types/schema/DetailCraftSchema";
 
 interface ProductGridProps {
   crafts: DetailCraftOrderResponse[];

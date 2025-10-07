@@ -6,7 +6,7 @@ import { cn } from "@/utils/common/cn";
 import {
   PackageService,
   PackageServiceGallery,
-} from "@/type/schema/PackageSchema";
+} from "@/types/schema/PackageSchema";
 
 type ItineraryProps = {
   data?: PackageService | PackageServiceGallery;

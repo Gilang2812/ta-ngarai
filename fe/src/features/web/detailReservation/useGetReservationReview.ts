@@ -1,5 +1,5 @@
 import { useAxiosAuth } from "@/lib/axios";
-import { DetailReservationReview } from "@/type/schema/ReservationSchema";
+import { DetailReservationReview } from "@/types/schema/ReservationSchema";
 import { useQuery } from "@tanstack/react-query";
 
 export const useGetReservationReview = (id: string) => {

@@ -1,5 +1,5 @@
 import ImgCraft from "@/components/common/ImgCraft";
-import { ShippingItem } from "@/type/schema/CraftTransactionSchema";
+import { ShippingItem } from "@/types/schema/CraftTransactionSchema";
 
 export const ProductContent = ({ craft }: { craft: ShippingItem[] }) => {
   return (

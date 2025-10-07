@@ -2,7 +2,7 @@
 import React, { useMemo, useState } from "react";
 import { useEffect } from "react";
 import { useFormikContext } from "formik";
-import { Address } from "@/type/schema/CheckoutSchema";
+import { Address } from "@/types/schema/CheckoutSchema";
 import useGetArea from "@/features/shipping/useGetArea";
 import { hideLoadingAlert, showLoadingAlert } from "@/utils/AlertUtils";
 import { debounce } from "lodash";

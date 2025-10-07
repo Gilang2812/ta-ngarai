@@ -1,5 +1,5 @@
 
-import { CraftVariantGallery } from "@/type/schema/CraftSchema";
+import { CraftVariantGallery } from "@/types/schema/CraftSchema";
 import React from "react";
 import ImgCraft from "../common/ImgCraft";
 import { motion } from "framer-motion";

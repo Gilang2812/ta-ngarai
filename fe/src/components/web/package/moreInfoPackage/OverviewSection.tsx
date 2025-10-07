@@ -11,7 +11,7 @@ import { formatPrice } from "@/lib/priceFormatter";
 import {
   PackageReservationSchema,
   PackageServiceGallery,
-} from "@/type/schema/PackageSchema";
+} from "@/types/schema/PackageSchema";
 import { showSuccessAlert } from "@/utils/AlertUtils";
 import { Carousel } from "flowbite-react";
 import { useFormik } from "formik";

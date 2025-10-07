@@ -1,7 +1,7 @@
 import { ROUTES } from "@/data/routes";
 import { useCreatePackage } from "@/features/web/package/useCreatePackage";
 import { useFetchPackageTypes } from "@/features/web/package/useFetchPackageTypes";
-import { EditPackageSchema } from "@/type/schema/PackageSchema";
+import { EditPackageSchema } from "@/types/schema/PackageSchema";
 import { cornerAlert } from "@/utils/AlertUtils";
 import { createFormData } from "@/utils/common/createFormData";
 import { useRouter } from "next/navigation";

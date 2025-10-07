@@ -1,11 +1,11 @@
 import { useFetchRatingItems } from "@/features/web/checkout/useFetchRatingItems";
 import { useUpdateItemReview } from "@/features/web/checkout/useUpdateItemReview";
 import { formatImageUrls } from "@/lib/imgUrlFormatter";
-import { ShippingItem } from "@/type/schema/CraftTransactionSchema";
+import { ShippingItem } from "@/types/schema/CraftTransactionSchema";
 import {
   ReviewFormSchema,
   ReviewGallerySchema,
-} from "@/type/schema/ReviewSchema";
+} from "@/types/schema/ReviewSchema";
 import { cornerAlert } from "@/utils/AlertUtils";
 import { createFormData } from "@/utils/common/createFormData";
 import { useModal } from "@/utils/ModalUtils";

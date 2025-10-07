@@ -1,5 +1,5 @@
 import { useAxiosAuth } from "@/lib/axios"
-import { HomestayFacilityDetailSchema } from "@/type/schema/FacilitySchema"
+import { HomestayFacilityDetailSchema } from "@/types/schema/FacilitySchema"
 import { useQuery } from "@tanstack/react-query"
 
 export const useFetchDetailHomestayFacilities = ()=>{

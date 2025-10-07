@@ -4,7 +4,7 @@ import { SingleContentWrapper } from "@/components/common/SingleContentWrapper";
 import useToggleOpen from "@/hooks/useToggleOpen";
 import { averageRating } from "@/lib/averageRating";
 import { formatPrice } from "@/lib/priceFormatter";
-import { UnitHomestay } from "@/type/schema/HomestaySchema";
+import { UnitHomestay } from "@/types/schema/HomestaySchema";
 import React from "react";
 import { FaComment, FaPhotoFilm } from "react-icons/fa6";
 

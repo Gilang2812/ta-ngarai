@@ -1,4 +1,4 @@
-import { OpenMeteoDailyResponse } from "@/type/schema/OpenMeteoSchema";
+import { OpenMeteoDailyResponse } from "@/types/schema/OpenMeteoSchema";
 import React from "react";
 import ImgWeather from "../common/ImgWeather";
 import { getWeatherCode } from "@/lib/getWeactherCode";

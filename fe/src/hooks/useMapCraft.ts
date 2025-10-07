@@ -2,9 +2,9 @@ import { useFetchSouvenirPlace } from "@/features/dashboard/marketplace/useFetch
 import { showLoadingAlert } from "@/utils/AlertUtils";
 import { useCallback, useEffect, useState } from "react";
 import { useOrderCraft } from "./useOrderCraft";
-import { DetailCraftManagementResponse } from "@/type/schema/DetailCraftSchema";
+import { DetailCraftManagementResponse } from "@/types/schema/DetailCraftSchema";
 import { useTools } from "./useTools";
-import { SouvenirPlaceSchema } from "@/type/schema/PackageSchema";
+import { SouvenirPlaceSchema } from "@/types/schema/PackageSchema";
 
 export const useMapCraft = () => {
   const { toggleMarketplace, marketplaceOpen } = useTools();

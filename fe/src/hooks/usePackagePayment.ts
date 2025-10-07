@@ -2,7 +2,7 @@ import {
   DetailHomestayReservation,
   DetailReservationPackage,
   ReservationSchema,
-} from "@/type/schema/ReservationSchema";
+} from "@/types/schema/ReservationSchema";
 import { ReservationStatus } from "@/utils/common/getReservationStatus";
 import { cornerAlert, showLoadingAlert } from "@/utils/AlertUtils";
 import { getItemDetailsReservation } from "@/utils/common/getItemDetailsReservation";

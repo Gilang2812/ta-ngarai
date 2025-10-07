@@ -1,4 +1,4 @@
-import { GalleryHomestaySchema } from "@/type/schema/GalleryHomestaySchema";
+import { GalleryHomestaySchema } from "@/types/schema/GalleryHomestaySchema";
 
 import { ImgModal } from "../common/ImgModal";
 

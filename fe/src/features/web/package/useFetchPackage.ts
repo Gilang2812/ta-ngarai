@@ -1,11 +1,11 @@
 import { useAxiosAuth } from "@/lib/axios";
-import { GalleryPackageSchema } from "@/type/schema/GallerySchema";
+import { GalleryPackageSchema } from "@/types/schema/GallerySchema";
 import {
   DetailPackageSchema,
   PackageDay,
   PackageSchema,
-} from "@/type/schema/PackageSchema";
-import { DetailServiceSchema } from "@/type/schema/ServiceSchema";
+} from "@/types/schema/PackageSchema";
+import { DetailServiceSchema } from "@/types/schema/ServiceSchema";
 import { useQuery } from "@tanstack/react-query";
 type FetchProps = {
   package?: boolean | string;

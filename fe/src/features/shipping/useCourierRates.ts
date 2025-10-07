@@ -3,7 +3,7 @@ import { axiosServer } from "@/lib/axiosServer";
 import {
   CourierPricing,
   CourierRatesRequestBody,
-} from "@/type/schema/ShippingSchema";
+} from "@/types/schema/ShippingSchema";
 import { useQuery } from "@tanstack/react-query";
 
 const useCourierRates = ({

@@ -13,8 +13,7 @@ import { useCreateAnnouncement } from "@/features/dashboard/announcement/useCrea
 import { useDeleteAnnouncement } from "@/features/dashboard/announcement/useDeleteAnnouncement";
 import { useEditAnnouncement } from "@/features/dashboard/announcement/useEditAnnouncement";
 import { useFetchAnnouncements } from "@/features/web/useFetchAnnouncement";
-
-import { AnnouncementSchema } from "@/type/schema/AnnouncementSchema";
+import { AnnouncementSchema } from "@/types/schema/AnnouncementSchema";
 import { confirmDeleteAlert, cornerAlert } from "@/utils/AlertUtils";
 import { useModal } from "@/utils/ModalUtils";
 import { Formik, Form, ErrorMessage } from "formik";

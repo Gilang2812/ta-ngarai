@@ -1,5 +1,5 @@
 import { useAxiosAuth } from "@/lib/axios";
-import { WorshipSchema } from "@/type/schema/ObjectSchema";
+import { WorshipSchema } from "@/types/schema/ObjectSchema";
 import { useQuery } from "@tanstack/react-query";
 
 export const useFetchWorship = () => {

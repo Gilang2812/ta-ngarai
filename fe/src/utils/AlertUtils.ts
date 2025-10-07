@@ -1,4 +1,4 @@
-import { DataError, Message } from "@/type/props/ErrorProps";
+import { DataError, Message } from "@/types/props/ErrorProps";
 import { AxiosError } from "axios";
 import Swal from "sweetalert2";
 

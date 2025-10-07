@@ -1,4 +1,4 @@
-import { FilepondType } from "@/type/common/FilepondType";
+import { FilepondType } from "@/types/common/FilepondType";
 import { baseUrl } from "./baseUrl";
 
 export const formatImageUrls = (

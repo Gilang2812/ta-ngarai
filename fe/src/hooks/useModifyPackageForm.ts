@@ -1,6 +1,6 @@
 import { useFetchObjects } from "@/features/web/common/useFetchObjects";
 import { useFetchService } from "@/features/web/package/useFetchService";
-import { PackageActivityFormSchema } from "@/type/schema/PackageSchema";
+import { PackageActivityFormSchema } from "@/types/schema/PackageSchema";
 import { cornerAlert, showLoadingAlert } from "@/utils/AlertUtils";
 import { useFormikContext } from "formik";
 import { useEffect, useMemo } from "react";

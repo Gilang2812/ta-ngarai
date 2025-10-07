@@ -8,7 +8,7 @@ import {
 
 import ButtonMapNavigation from "../common/ButtonTooltip";
 import { MapSettingDropdown } from "./MapSettingDropdown";
-import { AdvancedControlPanelProps } from "@/type/props";
+import { AdvancedControlPanelProps } from "@/types/props";
 import { TbMapCancel } from "react-icons/tb";
 import { useDirectionStore } from "@/stores/DirectionStore";
 import { useWebRightSection } from "@/hooks/useWebRightSection";

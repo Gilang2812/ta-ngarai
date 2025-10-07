@@ -8,8 +8,8 @@ import { PrevStepButton } from "./PrevStepButton";
 import { useFormikContext } from "formik";
 import { ReservationFormSchema } from "./SecondStep";
 import { useService } from "@/utils/ServiceCategory";
-import { DetailServiceSchema } from "@/type/schema/ServiceSchema";
-import { PackageServiceGallery } from "@/type/schema/PackageSchema";
+import { DetailServiceSchema } from "@/types/schema/ServiceSchema";
+import { PackageServiceGallery } from "@/types/schema/PackageSchema";
 import Button from "../common/Button";
 import { SingleContentWrapper } from "../common/SingleContentWrapper";
 type Props = {

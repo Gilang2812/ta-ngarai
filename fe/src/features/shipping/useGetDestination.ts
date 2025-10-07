@@ -1,5 +1,5 @@
 import { useAxiosAuth } from '@/lib/axios' 
-import { DestinationResponse } from '@/type/schema/ShippingSchema'
+import { DestinationResponse } from '@/types/schema/ShippingSchema'
 import { useQuery } from '@tanstack/react-query'
 
 const useGetDestination = (keyword?:string) => {

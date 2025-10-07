@@ -1,6 +1,6 @@
 import { useAxiosAuth } from "@/lib/axios"
-import { ActionProps } from "@/type/props/ActionProps"
-import { AnnouncementSchema } from "@/type/schema/AnnouncementSchema"
+import { ActionProps } from "@/types/props/ActionProps"
+import { AnnouncementSchema } from "@/types/schema/AnnouncementSchema"
 import { onError } from "@/utils/ErrorHandler"
 import { useMutation } from "@tanstack/react-query"
 

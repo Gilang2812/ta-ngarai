@@ -1,5 +1,5 @@
 import { useAxiosAuth } from "@/lib/axios";
-import { PaymentDetails } from "@/type/schema/PaymentSchema";
+import { PaymentDetails } from "@/types/schema/PaymentSchema";
 import { useQuery } from "@tanstack/react-query";
 
 export const useGetPaymentById = (id: string) => {

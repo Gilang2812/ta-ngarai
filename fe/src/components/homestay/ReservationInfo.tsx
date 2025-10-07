@@ -1,5 +1,5 @@
 import React from "react";
-import { DetailHomestayReservation } from "@/type/schema/ReservationSchema";
+import { DetailHomestayReservation } from "@/types/schema/ReservationSchema";
 import ImgCraft from "../common/ImgCraft";
 import { SingleContentWrapper } from "../common/SingleContentWrapper";
 import { ReservationStatus } from "@/utils/common/getReservationStatus";

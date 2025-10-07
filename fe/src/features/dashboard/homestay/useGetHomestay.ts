@@ -1,5 +1,5 @@
 import { useAxiosAuth } from "@/lib/axios";
-import { FetchHomestayProps } from "@/type/schema/HomestaySchema";
+import { FetchHomestayProps } from "@/types/schema/HomestaySchema";
  
 import { useQuery } from "@tanstack/react-query";
 

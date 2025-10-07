@@ -4,7 +4,7 @@ import { GoogleMap, InfoWindow } from "@react-google-maps/api";
 import MapSkeleton from "../loading/MapSkeleton";
 import { LANDMARK_POSITION } from "@/lib/objectLandmark";
 import { MapMarker } from "../map";
-import { LatLngLiteral } from "@/type/common/MapType";
+import { LatLngLiteral } from "@/types/common/MapType";
 import { ActivityDirections } from "../map/ActivityDirections";
 import { useCallback, useState } from "react";
 import { FaSpa } from "react-icons/fa6";

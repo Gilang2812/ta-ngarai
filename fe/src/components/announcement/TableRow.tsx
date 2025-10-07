@@ -1,6 +1,6 @@
 // TableRow.js
 
-import { AnnouncementSchema } from "@/type/schema/AnnouncementSchema";
+import { AnnouncementSchema } from "@/types/schema/AnnouncementSchema";
 import { DeleteButton } from "../common/DeleteButton";
 import { EditButton } from "../common/EditButton";
 import { InfoButton } from "../common/InfoButton";

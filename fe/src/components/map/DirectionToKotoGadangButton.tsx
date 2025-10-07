@@ -1,6 +1,6 @@
 import { useDirections } from "@/hooks/useDirection";
 import { LANDMARK_POSITION } from "@/lib/objectLandmark";
-import { LatLngLiteral } from "@/type/common/MapType";
+import { LatLngLiteral } from "@/types/common/MapType";
 import { cornerAlert } from "@/utils/AlertUtils"; 
 import { FaRoad } from "react-icons/fa6";
 import { DirectionsRenderer } from "@react-google-maps/api";

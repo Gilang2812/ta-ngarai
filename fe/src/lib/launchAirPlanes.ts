@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 import { LANDMARK_POSITION } from "./objectLandmark";
 import { smoothTransition } from "@/utils/map/SmoothTransition";
-import { City } from "@/type/common/Cities";
+import { City } from "@/types/common/Cities";
 
 type AirPlane = {
   id: number;

@@ -1,4 +1,4 @@
-import { ReservationDetails } from "@/type/schema/ReservationSchema";
+import { ReservationDetails } from "@/types/schema/ReservationSchema";
 import dayjs from "dayjs";
 /**
  * Function to determine the reservation status for a homestay.

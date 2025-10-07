@@ -9,7 +9,7 @@ import { useModal } from "@/utils/ModalUtils";
 import { useEffect, useState } from "react";
 import { useFetchUserSouvenirPlace } from "@/features/dashboard/marketplace/useFetchUserSouvenirPlace";
 
-import { UserMarketplaceSchema } from "@/type/schema/SouvenirSchema";
+import { UserMarketplaceSchema } from "@/types/schema/SouvenirSchema";
 import { useCreateDetailUserSouvenir } from "@/features/dashboard/marketplace/useCreateDetailUserSouvenir";
 import { useSession } from "next-auth/react";
 import { useDeleteDetailSouvenir } from "@/features/dashboard/marketplace/useDeleteDetailSouvenir";

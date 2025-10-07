@@ -1,5 +1,5 @@
-import { DetailCraftManagementResponse } from "@/type/schema/DetailCraftSchema";
-import { SouvenirPlaceSchema } from "@/type/schema/PackageSchema";
+import { DetailCraftManagementResponse } from "@/types/schema/DetailCraftSchema";
+import { SouvenirPlaceSchema } from "@/types/schema/PackageSchema";
 import { ProductImageGallery } from "./ProductImageGallery";
 import useProdukGallery from "@/hooks/useProdukGallery";
 import { useEffect } from "react";

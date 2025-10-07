@@ -1,5 +1,5 @@
 import { useAxiosAuth } from "@/lib/axios";
-import { TraditionalSchema } from "@/type/schema/ObjectSchema";
+import { TraditionalSchema } from "@/types/schema/ObjectSchema";
 import { useQuery } from "@tanstack/react-query";
 
 export const useFetchTraditional = () => {

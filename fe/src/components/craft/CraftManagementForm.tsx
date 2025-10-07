@@ -1,9 +1,9 @@
 import React from "react";
 import { FormInput } from "../inputs/FormInput";
 import FilePondComponent from "../common/Filepond";
-import { CraftResponse } from "@/type/schema/CraftSchema";
+import { CraftResponse } from "@/types/schema/CraftSchema";
 import { useFormikContext } from "formik";
-import { DetailCraftSchema } from "@/type/schema/DetailCraftSchema";
+import { DetailCraftSchema } from "@/types/schema/DetailCraftSchema";
 
 type Props = {
   formType: "craft" | "variant" | "detail";

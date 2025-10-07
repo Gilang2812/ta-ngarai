@@ -4,7 +4,7 @@ import {
   DirectionsWaypoint,
   LatLngLiteral,
   TravelMode,
-} from "@/type/common/MapType";
+} from "@/types/common/MapType";
 import { cornerError } from "@/utils/AlertUtils";
 import { useCallback, useEffect, useRef, useState } from "react";
 

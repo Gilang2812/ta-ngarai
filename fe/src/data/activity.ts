@@ -1,4 +1,4 @@
-import { objectRoutesType } from "@/type/common/ObjectRouteType";
+import { objectRoutesType } from "@/types/common/ObjectRouteType";
 
 export const activityTypes: {
   id: "A" | "CP" | "FC" | "SP" | "TH" | "WO";

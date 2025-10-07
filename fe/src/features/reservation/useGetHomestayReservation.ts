@@ -1,6 +1,6 @@
 import { useAxiosAuth } from "@/lib/axios";
 import { useSocketStore } from "@/stores/socketStore";
-import { DetailHomestayReservation } from "@/type/schema/ReservationSchema";
+import { DetailHomestayReservation } from "@/types/schema/ReservationSchema";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
 

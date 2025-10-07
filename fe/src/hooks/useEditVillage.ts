@@ -2,7 +2,7 @@ import { ROUTES } from "@/data/routes";
 import { useEditTourism } from "@/features/web/useEditTourism";
 import { useFetchTourism } from "@/features/web/useFetchTourism";
 import { formatImageUrls } from "@/lib/imgUrlFormatter";
-import { FilepondType } from "@/type/common/FilepondType";
+import { FilepondType } from "@/types/common/FilepondType";
 import { cornerAlert } from "@/utils/AlertUtils";
 import { createFormData } from "@/utils/common/createFormData";
 import { useRouter } from "next/navigation";

@@ -1,6 +1,6 @@
 import { useFetchObjects } from "@/features/web/common/useFetchObjects";
 
-import { type SimplifiedObject } from "@/type/schema/PackageSchema";
+import { type SimplifiedObject } from "@/types/schema/PackageSchema";
 import { FeatureCollection } from "geojson";
 import { ObjectDataType } from "@/data/object";
 import { useReformatObject } from "@/utils/map/objectUtils";

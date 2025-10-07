@@ -1,4 +1,4 @@
-import { SimplifiedObject } from "@/type/schema/PackageSchema";
+import { SimplifiedObject } from "@/types/schema/PackageSchema";
 import {
   FaAddressBook,
   FaMapPin,

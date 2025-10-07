@@ -12,8 +12,8 @@ import {
   PackageActivityFormSchema,
   PackageDay,
   PackageDayFormSchema,
-} from "@/type/schema/PackageSchema";
-import { DetailServiceFormSchema } from "@/type/schema/ServiceSchema";
+} from "@/types/schema/PackageSchema";
+import { DetailServiceFormSchema } from "@/types/schema/ServiceSchema";
 
 type Props = {
   isOpen: boolean;

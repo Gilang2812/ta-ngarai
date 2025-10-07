@@ -1,8 +1,8 @@
 import { ROUTES } from "@/data/routes";
 import { useCreateMarketplace } from "@/features/dashboard/marketplace/useCreateMarketplace";
 import { useUpdateMarketplace } from "@/features/dashboard/marketplace/useUpdateMarketplace";
-import { LatLngType } from "@/type/props/mapProps";
-import { FormMarketplace } from "@/type/schema/MarketplaceSchema";
+import { LatLngType } from "@/types/props/mapProps";
+import { FormMarketplace } from "@/types/schema/MarketplaceSchema";
 import { cornerAlert } from "@/utils/AlertUtils";
 import { createFormData } from "@/utils/common/createFormData";
 import { useRouter } from "next/navigation";

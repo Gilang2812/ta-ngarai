@@ -12,11 +12,11 @@ import {
   PackageActivityFormSchema,
   PackageDay,
   PackageDayFormSchema,
-} from "@/type/schema/PackageSchema";
+} from "@/types/schema/PackageSchema";
 import {
   DetailServiceFormSchema,
   ServicePackage,
-} from "@/type/schema/ServiceSchema";
+} from "@/types/schema/ServiceSchema";
 import { useEffect, useMemo, useState } from "react";
 
 const usePackageHandler = (

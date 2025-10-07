@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query"; 
 import { useAxiosAuth } from "@/lib/axios";
-import { AllUnitHomestayResponseSchema } from "@/type/schema/HomestaySchema";
+import { AllUnitHomestayResponseSchema } from "@/types/schema/HomestaySchema";
 
 export const useFetchAllUnitHomestay = (homestay_id: string) => {
   const axiosInstance = useAxiosAuth()

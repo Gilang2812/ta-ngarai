@@ -1,4 +1,4 @@
-import { LatLngLiteral } from "@/type/common/MapType";
+import { LatLngLiteral } from "@/types/common/MapType";
 import { create } from "zustand";
 
 type UserPositionStore = {

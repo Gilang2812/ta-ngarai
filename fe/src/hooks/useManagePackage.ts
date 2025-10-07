@@ -1,5 +1,5 @@
 import { useFetchPackages } from "@/features/web/package/useFetchPackage";
-import { PackageSchema } from "@/type/schema/PackageSchema";
+import { PackageSchema } from "@/types/schema/PackageSchema";
 import useSearchTable from "./useSearchTable";
 import { useEffect, useMemo } from "react";
 import useTableManagement from "./useTableManagement";

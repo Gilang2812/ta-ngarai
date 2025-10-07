@@ -2,7 +2,7 @@ import { FC } from "react";
 import { InfoGrid } from "./InfoGrid";
 import { ProductCard } from "./ProductCard";
 import { StatusBadge } from "./StatusBadge";
-import { ShippingData } from "@/type/schema/CraftTransactionSchema";
+import { ShippingData } from "@/types/schema/CraftTransactionSchema";
 import {
   getCraftTransactionStatus,
   getCraftTransactionStatusColor,

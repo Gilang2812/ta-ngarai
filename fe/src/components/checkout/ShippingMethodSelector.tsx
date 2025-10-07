@@ -3,8 +3,8 @@
 import { CheckCircle, Clock, CreditCard, Truck } from "lucide-react";
 import { formatPrice } from "@/lib/priceFormatter";
 import { useModal } from "@/utils/ModalUtils";
-import { CheckoutItem } from "@/type/schema/CheckoutSchema";
-import { CourierPricing } from "@/type/schema/ShippingSchema";
+import { CheckoutItem } from "@/types/schema/CheckoutSchema";
+import { CourierPricing } from "@/types/schema/ShippingSchema";
 import { Dispatch, SetStateAction, useState } from "react";
 import { InfoModal } from "../modal/InfoModal";
 import ShippingMethodItems from "./ShippingMethodItems";

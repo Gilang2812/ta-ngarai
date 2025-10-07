@@ -7,7 +7,7 @@ import {
   cornerError,
   showLoadingAlert,
 } from "@/utils/AlertUtils";
-import { PackageService } from "../type/schema/PackageSchema";
+import { PackageService } from "../types/schema/PackageSchema";
 import { useDeletePackage } from "@/features/web/package/useDeletePackage";
 import { useRouter } from "next/navigation";
 import { ROUTES } from "@/data/routes";

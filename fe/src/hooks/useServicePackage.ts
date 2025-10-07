@@ -12,7 +12,7 @@ import {
 } from "@/utils/AlertUtils";
 import { useUpdateService } from "@/features/web/package/useUpdateService";
 import { useDeleteService } from "@/features/web/package/useDeleteService";
-import { ServiceFormSchema } from "@/type/schema/ServiceSchema";
+import { ServiceFormSchema } from "@/types/schema/ServiceSchema";
 
 export const useServicePackage = () => {
   const [initialValues, setInitialValues] = useState<ServiceFormSchema>({

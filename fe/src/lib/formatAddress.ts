@@ -1,4 +1,4 @@
-import { Address } from "@/type/schema/CheckoutSchema";
+import { Address } from "@/types/schema/CheckoutSchema";
 
 export const formatAddress = (address: Address): string => {
   if (!address) return "test";

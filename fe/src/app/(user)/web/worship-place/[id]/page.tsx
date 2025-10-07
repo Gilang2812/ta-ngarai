@@ -1,5 +1,5 @@
 import WorshipPage from "@/components/web/object/WorshipPage";
-import { DynamicPageProps } from "@/type/props/DynamicPageProps";
+import { DynamicPageProps } from "@/types/props/DynamicPageProps";
 import React from "react";
 
 type Props = DynamicPageProps;

@@ -1,6 +1,6 @@
 "use client";
 import { Field, useFormikContext } from "formik";
-import { CraftCartForm } from "@/type/schema/CraftCartSchema";
+import { CraftCartForm } from "@/types/schema/CraftCartSchema";
 import { FaMinus, FaPlus } from "react-icons/fa6";
 import { useEffect } from "react";
 

@@ -1,5 +1,5 @@
 import ImgCraft from "@/components/common/ImgCraft";
-import { UserMarketplaceSchema } from "@/type/schema/SouvenirSchema";
+import { UserMarketplaceSchema } from "@/types/schema/SouvenirSchema";
 import { Clock, Crown, MapPin, Phone, Users } from "lucide-react";
 import React from "react";
 import { FaImage } from "react-icons/fa6";

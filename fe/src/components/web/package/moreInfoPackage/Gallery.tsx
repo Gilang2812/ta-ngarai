@@ -1,6 +1,6 @@
 import { ImgModal } from "@/components/common/ImgModal";
 import { ImageSkeleton } from "@/components/loading/ImageSkeleton";
-import { GalleryPackageSchema } from "@/type/schema/GallerySchema";
+import { GalleryPackageSchema } from "@/types/schema/GallerySchema";
 
 type GalleryProps = {
   gallery: GalleryPackageSchema[] | undefined;

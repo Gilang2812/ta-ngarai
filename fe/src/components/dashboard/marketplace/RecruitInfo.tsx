@@ -1,6 +1,6 @@
 import ButtonTooltip from "@/components/common/ButtonTooltip";
 import ImgCraft from "@/components/common/ImgCraft";
-import { UserMarketplaceSchema } from "@/type/schema/SouvenirSchema";
+import { UserMarketplaceSchema } from "@/types/schema/SouvenirSchema";
 import { 
   UserX,
   Clock,

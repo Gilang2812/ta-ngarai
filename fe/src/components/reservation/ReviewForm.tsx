@@ -1,4 +1,4 @@
-import { ShippingData } from "@/type/schema/CraftTransactionSchema";
+import { ShippingData } from "@/types/schema/CraftTransactionSchema";
 import React from "react";
 
 type Props = {

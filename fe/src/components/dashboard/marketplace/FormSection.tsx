@@ -3,7 +3,7 @@ import Button from "@/components/common/Button";
 import { SingleContentWrapper } from "@/components/common/SingleContentWrapper";
 import React from "react";
 import MarketplaceForm from "./MarketplaceForm";
-import { FormMarketplace } from "@/type/schema/MarketplaceSchema";
+import { FormMarketplace } from "@/types/schema/MarketplaceSchema";
 import Link from "next/link";
 import { ROUTES } from "@/data/routes";
 

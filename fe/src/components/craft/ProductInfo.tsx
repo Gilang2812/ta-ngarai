@@ -10,12 +10,12 @@ import ButtonTooltip from "../common/ButtonTooltip";
 import { FaFacebook, FaPinterest, FaStore, FaTiktok } from "react-icons/fa6";
 import { MdFavorite } from "react-icons/md";
 import { Form, Formik } from "formik";
-import { CraftCartForm } from "@/type/schema/CraftCartSchema";
+import { CraftCartForm } from "@/types/schema/CraftCartSchema";
 import { motion } from "framer-motion";
 import {
   DetailCraftManagementResponse,
   DetailCraftOrderResponse,
-} from "@/type/schema/DetailCraftSchema";
+} from "@/types/schema/DetailCraftSchema";
 import useUserRole from "@/hooks/useUserRole";
 
 type DataProdukInfo = {

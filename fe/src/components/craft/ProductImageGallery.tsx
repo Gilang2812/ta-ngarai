@@ -4,7 +4,7 @@ import ImgCraft from "../common/ImgCraft";
 import Button from "../common/Button";
 import { MdArrowForwardIos, MdOutlineArrowBackIosNew } from "react-icons/md";
 import { AnimatePresence, motion } from "framer-motion";
-import { DetailCraftManagementResponse } from "@/type/schema/DetailCraftSchema";
+import { DetailCraftManagementResponse } from "@/types/schema/DetailCraftSchema";
 import { baseUrl } from "@/lib/baseUrl";
 
 interface ProductImageGalleryProps {

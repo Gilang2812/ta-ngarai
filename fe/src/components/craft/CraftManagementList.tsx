@@ -2,7 +2,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import React from "react";
 import { FaCheck, FaPencil, FaPlus, FaTrash, FaXmark } from "react-icons/fa6";
 import Button from "../common/Button";
-import { type CraftResponse } from "@/type/schema/CraftSchema";
+import { type CraftResponse } from "@/types/schema/CraftSchema";
 import { Form, Formik } from "formik";
 import { FormInput } from "../inputs/FormInput";
 import ButtonTooltip from "../common/ButtonTooltip";

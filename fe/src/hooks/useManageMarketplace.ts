@@ -1,6 +1,6 @@
 import { useDeleteMarketplace } from "@/features/dashboard/marketplace/useDeleteMarketplace";
 import { useFetchSouvenirPlace } from "@/features/dashboard/marketplace/useFetchSouvenirPlace";
-import { SouvenirPlaceSchema } from "@/type/schema/PackageSchema";
+import { SouvenirPlaceSchema } from "@/types/schema/PackageSchema";
 import {
   confirmDeleteAlert,
   cornerAlert,
@@ -9,7 +9,7 @@ import {
 import { useModal } from "@/utils/ModalUtils";
 import { useEffect, useState } from "react";
 import useFormMarketplace from "./useFormMarketplace";
-import { UserMarketplaceSchema } from "@/type/schema/SouvenirSchema";
+import { UserMarketplaceSchema } from "@/types/schema/SouvenirSchema";
 
 export const useManageMarketplace = () => {
   const { data, isLoading, refetch } = useFetchSouvenirPlace();

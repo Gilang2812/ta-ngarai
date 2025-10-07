@@ -6,7 +6,7 @@ import { useUserPositionStore } from "@/stores/UserPositionStore";
 import { useInfoWindow } from "@/hooks/useInfoWindow";
 import { MarkerObject } from "./MarkerObject";
 import { useGoogleMap } from "@react-google-maps/api";
-import { SimplifiedObject } from "@/type/schema/PackageSchema";
+import { SimplifiedObject } from "@/types/schema/PackageSchema";
 import { getIconUrl } from "@/utils/map/getIconUrl";
 
 type Props = GeoJsonLayerProps;

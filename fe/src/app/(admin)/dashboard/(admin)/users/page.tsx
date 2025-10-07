@@ -21,7 +21,7 @@ import { Modal } from "@/components/modal/Modal";
 import { FormInput } from "@/components/inputs/FormInput";
 import { TableRawSkeleton } from "@/components/loading/TableRawSkeleton";
 import { InfoModal } from "@/components/modal/InfoModal";
-import { AuthGroupUser } from "@/type/schema/UsersSchema";
+import { AuthGroupUser } from "@/types/schema/UsersSchema";
 
 export default function ManageUsers() {
   // const [errorInput, setErrorInput] = useState<{ [key: string]: string }>({});

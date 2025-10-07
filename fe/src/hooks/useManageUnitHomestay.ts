@@ -8,8 +8,8 @@ import { useFetchUnitTypes } from "@/features/dashboard/homestay/useFetchUnitTyp
 import { useGetHomestay } from "@/features/dashboard/homestay/useGetHomestay";
 import { useUpdateUnitHomestay } from "@/features/dashboard/homestay/useUpdateUnitHomestay";
 import { formatImageUrls } from "@/lib/imgUrlFormatter";
-import { UnitGallerySchema } from "@/type/schema/GalleryHomestaySchema";
-import { UnitHomestay } from "@/type/schema/HomestaySchema";
+import { UnitGallerySchema } from "@/types/schema/GalleryHomestaySchema";
+import { UnitHomestay } from "@/types/schema/HomestaySchema";
 import {
   confirmDeleteAlert,
   cornerAlert,

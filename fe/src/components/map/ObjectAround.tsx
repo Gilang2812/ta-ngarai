@@ -1,5 +1,5 @@
 import { useUserPositionStore } from "@/stores/UserPositionStore";
-import { LatLngLiteral } from "@/type/common/MapType";
+import { LatLngLiteral } from "@/types/common/MapType";
 import { useGoogleMap } from "@react-google-maps/api";
 import { useEffect, useRef } from "react";
 type ObjectAround = {

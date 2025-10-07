@@ -1,6 +1,6 @@
 import React from "react";
 import { Tooltip } from "flowbite-react";
-import { ButtonTooltipType } from "@/type/common/ButtonType";
+import { ButtonTooltipType } from "@/types/common/ButtonType";
 import Button from "./Button";
 
 type Props = ButtonTooltipType;

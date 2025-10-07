@@ -1,5 +1,5 @@
 import { useAxiosAuth } from "@/lib/axios";
-import { CraftResponse } from "@/type/schema/CraftSchema";
+import { CraftResponse } from "@/types/schema/CraftSchema";
 import { useQuery } from "@tanstack/react-query";
 
 export const useFetchCraft = () => {

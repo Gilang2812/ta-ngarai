@@ -1,5 +1,5 @@
 import { useGetHomestay } from "@/features/dashboard/homestay/useGetHomestay";
-import { UnitHomestay } from "@/type/schema/HomestaySchema";
+import { UnitHomestay } from "@/types/schema/HomestaySchema";
 
 import { getCentroid } from "@/utils/common/getCentroid";
 import { useModal } from "@/utils/ModalUtils";

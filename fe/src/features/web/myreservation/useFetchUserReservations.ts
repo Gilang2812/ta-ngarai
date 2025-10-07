@@ -1,5 +1,5 @@
 import { useAxiosAuth } from "@/lib/axios";
-import { ReservationSchema } from "@/type/schema/ReservationSchema";
+import { ReservationSchema } from "@/types/schema/ReservationSchema";
 import { useQuery } from "@tanstack/react-query";
 
 export const useFetchUserReservations = () => {

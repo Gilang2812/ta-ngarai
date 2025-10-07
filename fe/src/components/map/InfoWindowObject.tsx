@@ -4,7 +4,7 @@ import { DirectionToKotoGadangButton } from "./DirectionToKotoGadangButton";
 import Button from "../common/Button";
 import Link from "next/link";
 import { FaInfo } from "react-icons/fa";
-import { SimplifiedObject } from "@/type/schema/PackageSchema";
+import { SimplifiedObject } from "@/types/schema/PackageSchema";
 import { useDirectionStore } from "@/stores/DirectionStore";
 import useTravelRoute from "@/hooks/useTravelRoute";
 import ButtonTooltip from "../common/ButtonTooltip";

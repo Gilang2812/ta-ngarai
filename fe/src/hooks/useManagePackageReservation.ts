@@ -3,7 +3,7 @@ import { useMemo, useState } from "react";
 import useSearchTable from "./useSearchTable";
 import dayjs from "dayjs";
 import useTableManagement from "./useTableManagement";
-import { ReservationSchema } from "@/type/schema/ReservationSchema";
+import { ReservationSchema } from "@/types/schema/ReservationSchema";
 import { useModal } from "@/utils/ModalUtils";
 
 export const useManagePackageReservation = () => {

@@ -1,7 +1,7 @@
 import {
   ReservationDetails,
   ReservationSchema,
-} from "@/type/schema/ReservationSchema";
+} from "@/types/schema/ReservationSchema";
 import {
   getReservationStatus,
   getReservationStatusClass,

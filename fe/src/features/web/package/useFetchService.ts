@@ -1,5 +1,5 @@
 import { useAxiosAuth } from "@/lib/axios";
-import { ServicePackage } from "@/type/schema/ServiceSchema";
+import { ServicePackage } from "@/types/schema/ServiceSchema";
 import { useQuery } from "@tanstack/react-query";
 
 export const useFetchService = () => {

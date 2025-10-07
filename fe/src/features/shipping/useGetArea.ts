@@ -1,5 +1,5 @@
 import { axiosServer } from "@/lib/axiosServer";
-import { AreaResponse } from "@/type/schema/ShippingSchema";
+import { AreaResponse } from "@/types/schema/ShippingSchema";
 import { useQuery } from "@tanstack/react-query";
 
 const useGetArea = (input: string | number) => {

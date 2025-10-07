@@ -1,6 +1,6 @@
 import { useAxiosAuth } from "@/lib/axios";
-import { ActionProps } from "@/type/props/ActionProps";
-import { ServiceFormSchema } from "@/type/schema/ServiceSchema";
+import { ActionProps } from "@/types/props/ActionProps";
+import { ServiceFormSchema } from "@/types/schema/ServiceSchema";
 import { onError } from "@/utils/ErrorHandler";
 import { useMutation } from "@tanstack/react-query";
 

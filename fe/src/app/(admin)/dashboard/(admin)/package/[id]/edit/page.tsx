@@ -1,6 +1,6 @@
 import { ContentWrapper } from "@/components/common/ContentWrapper";
 import EditPackagePage from "@/components/dashboard/DetailPackage/EditPackagePage";
-import { DynamicPageProps } from "@/type/props/DynamicPageProps";
+import { DynamicPageProps } from "@/types/props/DynamicPageProps";
 import React from "react";
 
 const EditPackage = async ({ params }: DynamicPageProps) => {

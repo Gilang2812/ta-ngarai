@@ -1,5 +1,5 @@
 import EditMarketplacePage from "@/components/dashboard/marketplace/EditMarketplacePage";
-import { DynamicPageProps } from "@/type/props/DynamicPageProps";
+import { DynamicPageProps } from "@/types/props/DynamicPageProps";
 import React from "react";
 
 export default async function EditMarketplace({ params }: DynamicPageProps) {

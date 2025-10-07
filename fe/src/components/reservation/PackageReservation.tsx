@@ -1,7 +1,7 @@
 import React from "react";
 import { DeleteButton } from "@/components/common/DeleteButton";
 import { InfoModal } from "@/components/modal/InfoModal";
-import { ReservationDetails } from "@/type/schema/ReservationSchema";
+import { ReservationDetails } from "@/types/schema/ReservationSchema";
 import { localeDate } from "@/utils/localeDate";
 import Link from "next/link";
 import { FaHistory } from "react-icons/fa";

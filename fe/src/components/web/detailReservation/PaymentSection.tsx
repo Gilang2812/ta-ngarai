@@ -8,8 +8,8 @@ import ButtonRefundProof from "@/components/reservation/ButtonRefundProof";
 import ReservationStep from "@/components/reservation/ReservationStep";
 import useInvoice from "@/hooks/useInvoice";
 import { formatPrice } from "@/lib/priceFormatter";
-import { ItemDetails } from "@/type/common/paymentItemDetails";
-import { DetailReservationPackage } from "@/type/schema/ReservationSchema";
+import { ItemDetails } from "@/types/common/paymentItemDetails";
+import { DetailReservationPackage } from "@/types/schema/ReservationSchema";
 import { getReservationStatus } from "@/utils/common/getReservationStatus";
 import { FaDownload } from "react-icons/fa6";
 

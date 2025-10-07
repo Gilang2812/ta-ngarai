@@ -1,6 +1,6 @@
 import { useAxiosAuth } from "@/lib/axios";
-import { ActionProps } from "@/type/props/ActionProps";
-import { CraftCartForm } from "@/type/schema/CraftCartSchema";
+import { ActionProps } from "@/types/props/ActionProps";
+import { CraftCartForm } from "@/types/schema/CraftCartSchema";
 import { onError } from "@/utils/ErrorHandler";
 import { useMutation } from "@tanstack/react-query";
 

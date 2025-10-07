@@ -3,7 +3,7 @@
 import MapControlPanelLayout from "@/layouts/MapControlPanelLayout";
 import MainControlPanelItems from "./MainControlPanelItems";
 import AdvancedControlPanelItems from "./AdvancedControlPanelItems";
-import { AdvancedControlPanelProps, MainControlPanelProps } from "@/type/props";
+import { AdvancedControlPanelProps, MainControlPanelProps } from "@/types/props";
 type Props = MainControlPanelProps & AdvancedControlPanelProps;
 export default function MapControlPanel({
   tracking,

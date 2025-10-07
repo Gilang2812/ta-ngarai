@@ -1,5 +1,5 @@
 import MapControlPanelLayout from "@/layouts/MapControlPanelLayout";
-import { AdvancedControlPanelProps } from "@/type/props";
+import { AdvancedControlPanelProps } from "@/types/props";
 import React from "react";
 import AdvancedControlPanelItems from "./AdvancedControlPanelItems";
 

@@ -8,7 +8,7 @@ import ManagementSkeletonLoader from "../loading/ManagementSkeletonLoader";
 import FilePondComponent from "../common/Filepond";
 import Link from "next/link";
 import { Spinner } from "flowbite-react";
-import { detailCraftSchema } from "@/type/schema/DetailCraftSchema";
+import { detailCraftSchema } from "@/types/schema/DetailCraftSchema";
 import { ROUTES } from "@/data/routes";
 
 type Props = { id_souvenir_place: string; id_craft: string };

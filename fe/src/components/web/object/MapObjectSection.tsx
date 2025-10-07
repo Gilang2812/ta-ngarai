@@ -1,6 +1,6 @@
 "use client";
 import { SingleContentWrapper } from "@/components/common/SingleContentWrapper";
-import { SimplifiedObject } from "@/type/schema/PackageSchema";
+import { SimplifiedObject } from "@/types/schema/PackageSchema";
 import React from "react";
 import MapLayout from "../MapLayout";
 import ObjectGeom from "./ObjectGeom";

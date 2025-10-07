@@ -1,5 +1,5 @@
 import AttractionPage from "@/components/web/object/AttractionPage";
-import { DynamicPageProps } from "@/type/props/DynamicPageProps";
+import { DynamicPageProps } from "@/types/props/DynamicPageProps";
 import React from "react";
 
 type Props = DynamicPageProps;

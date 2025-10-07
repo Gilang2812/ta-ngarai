@@ -1,5 +1,5 @@
 import { axiosServer } from "@/lib/axiosServer";
-import { TrackingResponse } from "@/type/schema/ShippingSchema";
+import { TrackingResponse } from "@/types/schema/ShippingSchema";
 import { useQuery } from "@tanstack/react-query";
 
 const useTrackingOrder = (tracking_id: string | null) => {

@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
-import { DetailCraftUserResponse } from "@/type/schema/DetailCraftSchema";
+import { DetailCraftUserResponse } from "@/types/schema/DetailCraftSchema";
 
 interface SearchBarProps {
   onSearch?: (query: string) => void;

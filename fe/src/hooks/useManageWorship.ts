@@ -2,7 +2,7 @@ import { useFetchWorship } from "@/features/dashboard/worship/useFetchWorship";
 import { useMemo, useState, useEffect } from "react";
 import useSearchTable from "./useSearchTable";
 import useTableManagement from "./useTableManagement";
-import { WorshipForm, WorshipSchema } from "@/type/schema/ObjectSchema";
+import { WorshipForm, WorshipSchema } from "@/types/schema/ObjectSchema";
 import { useModal } from "@/utils/ModalUtils";
 import { createFormData } from "@/utils/common/createFormData";
 import { formatImageUrls } from "@/lib/imgUrlFormatter";
@@ -14,7 +14,7 @@ import {
   cornerAlert,
   showLoadingAlert,
 } from "@/utils/AlertUtils";
-import { LatLngType } from "@/type/props/mapProps";
+import { LatLngType } from "@/types/props/mapProps";
 
 const useManageWorship = () => {
   const { data, isLoading, refetch } = useFetchWorship();

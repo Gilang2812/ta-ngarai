@@ -2,7 +2,7 @@
 import { useGetHomestayReservation } from "@/features/reservation/useGetHomestayReservation";
 import useAuth from "@/hooks/useAuth";
 import { formatPrice } from "@/lib/priceFormatter";
-import { ReservationDetails } from "@/type/schema/ReservationSchema";
+import { ReservationDetails } from "@/types/schema/ReservationSchema";
 import {
   getReservationStatus,
   getReservationStatusClass,

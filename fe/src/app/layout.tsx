@@ -4,7 +4,7 @@ import "./globals.css";
 import "swiper/css/bundle";
 import "swiper/css";
 import Script from "next/script";
-import { ResultErrorProps, ResultProps } from "@/type/props/ResultProps";
+import { ResultErrorProps, ResultProps } from "@/types/props/ResultProps";
 import ReactGoogleOAuthProvider from "@/layout/ReactGoogleOAuthProvider";
 import SocketLayout from "@/layout/SocketLayout";
 import SessionProvider from "@/layout/SessionPriver";

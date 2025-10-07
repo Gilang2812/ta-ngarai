@@ -1,4 +1,4 @@
-import { homestayReservationFormSchema } from "./../../validation/homestayReservationFormSchema";
+import { homestayReservationFormSchema } from "../../validation/homestayReservationFormSchema";
 import {
   DetailPackageSchema,
   PackageDay,

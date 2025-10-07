@@ -1,4 +1,4 @@
-import { PackageDay } from "@/type/schema/PackageSchema";
+import { PackageDay } from "@/types/schema/PackageSchema";
 
 export function findMissingDays(packageDays: PackageDay[]) {
   const dayNumbers = packageDays

@@ -1,4 +1,4 @@
-import { PackageReservationSchema } from "@/type/schema/PackageSchema";
+import { PackageReservationSchema } from "@/types/schema/PackageSchema";
 import { FC } from "react";
 import { FaRegStar, FaStar } from "react-icons/fa6";
 

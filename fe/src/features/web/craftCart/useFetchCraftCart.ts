@@ -1,5 +1,5 @@
 import { useAxiosAuth } from "@/lib/axios";
-import { CartItemProps } from "@/type/schema/CraftCartSchema";
+import { CartItemProps } from "@/types/schema/CraftCartSchema";
 import { useQuery } from "@tanstack/react-query";
 export const useFetchCraftCart = () => {
   const axiosInstance = useAxiosAuth()

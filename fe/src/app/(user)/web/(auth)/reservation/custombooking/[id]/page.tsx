@@ -8,7 +8,7 @@ import { useCreateReservation } from "@/features/reservation/useCreateReservatio
 // import { useFetchUnitHomestayReservation } from "@/features/reservation/useFetchUnitHomestayReservation";
 import { useGetPackage } from "@/features/web/package/useGetPackage";
 import useFormStep from "@/hooks/useFormStep";
-import { PackageServiceGallery } from "@/type/schema/PackageSchema";
+import { PackageServiceGallery } from "@/types/schema/PackageSchema";
 import { cornerAlert, showLoadingAlert } from "@/utils/AlertUtils";
 import { Formik } from "formik";
 

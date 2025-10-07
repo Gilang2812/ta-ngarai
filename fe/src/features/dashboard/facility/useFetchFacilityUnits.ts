@@ -1,7 +1,7 @@
 import { useAxiosAuth } from "@/lib/axios";
 import {
   HomestayFacilitySchema,
-} from "@/type/schema/FacilitySchema";
+} from "@/types/schema/FacilitySchema";
 import { useQuery } from "@tanstack/react-query";
 
 export const useFetchFacilityUnits = () => {

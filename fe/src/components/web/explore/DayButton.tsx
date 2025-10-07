@@ -11,7 +11,7 @@ import {
   SouvenirPlaceSchema,
   TraditionalHouse,
   WorshipPlaceSchema,
-} from "@/type/schema/PackageSchema";
+} from "@/types/schema/PackageSchema";
 import { getCentroid } from "@/utils/common/getCentroid";
 import { Dispatch, SetStateAction } from "react";
 import { Dropdown } from "flowbite-react";

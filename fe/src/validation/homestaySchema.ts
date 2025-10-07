@@ -1,4 +1,4 @@
-import { FilepondType } from "@/type/common/FilepondType";
+import { FilepondType } from "@/types/common/FilepondType";
 import * as yup from "yup";
 
 export const createHomestaySchema = yup.object({

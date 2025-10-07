@@ -1,6 +1,6 @@
-import { ItemDetails } from "@/type/common/paymentItemDetails";
-import { PackageSchema } from "@/type/schema/PackageSchema";
-import { DetailReservation } from "@/type/schema/ReservationSchema";
+import { ItemDetails } from "@/types/common/paymentItemDetails";
+import { PackageSchema } from "@/types/schema/PackageSchema";
+import { DetailReservation } from "@/types/schema/ReservationSchema";
 
 export const getItemDetailsReservation = (
   item_details: DetailReservation[],

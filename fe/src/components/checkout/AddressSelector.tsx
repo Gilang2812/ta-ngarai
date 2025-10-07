@@ -1,4 +1,4 @@
-import { Address } from "@/type/schema/CheckoutSchema";
+import { Address } from "@/types/schema/CheckoutSchema";
 import { motion } from "framer-motion";
 import { Check, Edit, MapPin, Plus } from "lucide-react";
 import React from "react";

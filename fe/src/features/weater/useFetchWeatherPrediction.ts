@@ -1,5 +1,5 @@
 import { LANDMARK_POSITION } from "@/lib/objectLandmark";
-import { OpenMeteoDailyResponse } from "@/type/schema/OpenMeteoSchema";
+import { OpenMeteoDailyResponse } from "@/types/schema/OpenMeteoSchema";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 

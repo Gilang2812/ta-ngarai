@@ -1,5 +1,5 @@
 import { useAxiosAuth } from "@/lib/axios";
-import { Address } from "@/type/schema/CheckoutSchema";
+import { Address } from "@/types/schema/CheckoutSchema";
 import { useQuery } from "@tanstack/react-query";
 
 export const useFetchAddress = () => {

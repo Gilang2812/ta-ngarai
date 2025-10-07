@@ -1,5 +1,5 @@
 import { useAxiosAuth } from "@/lib/axios";
-import { PackageTypeSchema } from "@/type/schema/PackageSchema";
+import { PackageTypeSchema } from "@/types/schema/PackageSchema";
  
 import { useQuery } from "@tanstack/react-query";
 

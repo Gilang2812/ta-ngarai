@@ -1,8 +1,8 @@
 import { useCreateAddress } from "@/features/web/address/useCreateAddress";
 import { useUpdateAddress } from "@/features/web/address/useUpdateAddress";
 import { useGetUserCheckout } from "@/features/web/checkout/useGetUserCheckout";
-import { CheckoutItem, type Address } from "@/type/schema/CheckoutSchema";
-import { CourierPricing } from "@/type/schema/ShippingSchema";
+import { CheckoutItem, type Address } from "@/types/schema/CheckoutSchema";
+import { CourierPricing } from "@/types/schema/ShippingSchema";
 import { cornerAlert } from "@/utils/AlertUtils";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";

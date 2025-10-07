@@ -1,5 +1,5 @@
 import { useAxiosAuth } from "@/lib/axios";
-import { DataEditHomestay } from "@/type/schema/HomestaySchema";
+import { DataEditHomestay } from "@/types/schema/HomestaySchema";
 
 import { useQuery } from "@tanstack/react-query";
 

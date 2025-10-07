@@ -8,11 +8,11 @@ import { useUpdateCraftVariant } from "@/features/dashboard/craftVariant/useUpda
 import { useCreateDetailCraft } from "@/features/detailCraft/useCreateDetailCraft";
 import { useDeleteDetailCraft } from "@/features/detailCraft/useDeleteDetailCraft";
 import { useFetchStoreDetailCrafts } from "@/features/detailCraft/useFetchStoreDetailCraft";
-import { type CraftVariant, type Craft } from "@/type/schema/CraftSchema";
+import { type CraftVariant, type Craft } from "@/types/schema/CraftSchema";
 import {
   DetailCraftManagementResponse,
   DetailCraftSchema,
-} from "@/type/schema/DetailCraftSchema";
+} from "@/types/schema/DetailCraftSchema";
 import {
   confirmDeleteAlert,
   cornerAlert,

@@ -1,5 +1,5 @@
 import { useFetchUserDetailCrafts } from "@/features/detailCraft/useFetchUserDetailCraft";
-import { DetailCraftOrderResponse, } from "@/type/schema/DetailCraftSchema";
+import { DetailCraftOrderResponse, } from "@/types/schema/DetailCraftSchema";
 
 export const useProductCraft = () => {
   const { data: crafts, isLoading } =

@@ -10,7 +10,7 @@ import { useGetDetailCraft } from "@/features/detailCraft/useGetDetailCraft";
 import {
   DetailCraftManagementResponse,
   DetailCraftSchema,
-} from "@/type/schema/DetailCraftSchema";
+} from "@/types/schema/DetailCraftSchema";
 
 export const useManageUpdateCraft = ({
   id_craft,

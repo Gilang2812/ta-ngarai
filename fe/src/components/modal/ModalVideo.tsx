@@ -6,7 +6,7 @@ import {
   Transition,
   TransitionChild,
 } from "@headlessui/react";
-import { ModalProps } from "@/type/props/ModalProps";
+import { ModalProps } from "@/types/props/ModalProps";
 import { FaXmark } from "react-icons/fa6";
 
 const Modal: React.FC<ModalProps> = ({ isOpen, closeModal }) => {

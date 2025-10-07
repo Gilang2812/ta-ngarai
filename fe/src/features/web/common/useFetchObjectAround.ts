@@ -1,7 +1,7 @@
 import { useAxiosAuth } from "@/lib/axios";
 import { useUserPositionStore } from "@/stores/UserPositionStore";
-import { objectRoutesType } from "@/type/common/ObjectRouteType";
-import { SimplifiedObject } from "@/type/schema/PackageSchema";
+import { objectRoutesType } from "@/types/common/ObjectRouteType";
+import { SimplifiedObject } from "@/types/schema/PackageSchema";
 import { useQuery } from "@tanstack/react-query";
 
 export const useFetchObjectAround = (object: objectRoutesType) => {

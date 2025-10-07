@@ -11,7 +11,7 @@ import { formatPrice } from "@/lib/priceFormatter";
 import Button from "../common/Button";
 import { FaPrint } from "react-icons/fa6";
 import ReservationStep from "../reservation/ReservationStep";
-import { ReservationDetails } from "@/type/schema/ReservationSchema";
+import { ReservationDetails } from "@/types/schema/ReservationSchema";
 
 import { ReservationStatus } from "@/utils/common/getReservationStatus";
 import ButtonConfirmation from "../reservation/ButtonConfirmation";

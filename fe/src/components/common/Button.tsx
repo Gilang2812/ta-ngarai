@@ -1,4 +1,4 @@
-import { type Button } from "@/type/common/ButtonType";
+import { type Button } from "@/types/common/ButtonType";
 import { cn } from "@/utils/common/cn";
 import React from "react";
 import { cva } from "class-variance-authority";

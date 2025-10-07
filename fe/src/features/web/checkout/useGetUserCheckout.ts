@@ -1,5 +1,5 @@
 import { useAxiosAuth } from "@/lib/axios"
-import { Checkout } from "@/type/schema/CheckoutSchema"
+import { Checkout } from "@/types/schema/CheckoutSchema"
 import { useQuery } from "@tanstack/react-query"
 import { AxiosError } from "axios"
 

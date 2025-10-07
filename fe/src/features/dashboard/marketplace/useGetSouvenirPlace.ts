@@ -1,5 +1,5 @@
 import { useAxiosAuth } from "@/lib/axios";
-import { SouvenirPlaceSchema } from "@/type/schema/PackageSchema";
+import { SouvenirPlaceSchema } from "@/types/schema/PackageSchema";
 import { useQuery } from "@tanstack/react-query";
 
 const useGetSouvenirPlace = (id: string) => {

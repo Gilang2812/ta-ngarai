@@ -8,7 +8,7 @@ import {
   CraftCartSchema,
   UpdateCraftCartForm,
   type CartItemProps,
-} from "@/type/schema/CraftCartSchema";
+} from "@/types/schema/CraftCartSchema";
 import ImgCraft from "../common/ImgCraft";
 import { CheckBoxInput } from "../common/CheckBoxInput";
 

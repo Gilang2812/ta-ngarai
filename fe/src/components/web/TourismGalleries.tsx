@@ -3,7 +3,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Autoplay } from "swiper/modules"; 
 import { useFetchGalleries } from "@/features/web/useFetchGalleries"; 
 import { ImageSkeleton } from "@/components/loading/ImageSkeleton";
-import { GallerySchema } from "@/type/schema/GallerySchema";
+import { GallerySchema } from "@/types/schema/GallerySchema";
 import ImgCraft from "../common/ImgCraft";
 
 export const TourismGalleries = ({ id }: { id?: string }) => {

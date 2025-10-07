@@ -1,5 +1,5 @@
 import { useAxiosAuth } from "@/lib/axios";
-import { FetchCraftVariant } from "@/type/schema/CraftSchema";
+import { FetchCraftVariant } from "@/types/schema/CraftSchema";
 import { useQuery } from "@tanstack/react-query";
 
 export const useFetchCraftVariant = () => {

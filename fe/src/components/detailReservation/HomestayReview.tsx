@@ -4,7 +4,7 @@ import { Formik } from "formik";
 import {
   DetailReservationReviewSchema,
   HomestayReviewFormSchema,
-} from "@/type/schema/ReservationSchema";
+} from "@/types/schema/ReservationSchema";
 import { formatPrice } from "@/lib/priceFormatter";
 import { homestaySchema } from "@/validation/reservation";
 import { Rating } from "../craft/Rating";

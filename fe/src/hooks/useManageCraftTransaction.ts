@@ -5,7 +5,7 @@ import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import useSearchTable from "./useSearchTable";
 import useTableManagement from "./useTableManagement";
-import { ShippingDataWithReviewGallery } from "@/type/schema/CraftTransactionSchema";
+import { ShippingDataWithReviewGallery } from "@/types/schema/CraftTransactionSchema";
 import { useUpdateStatus } from "@/features/web/checkout/useUpdateStatus";
 import { cornerAlert, showLoadingAlert } from "@/utils/AlertUtils";
 import { useModal } from "@/utils/ModalUtils";

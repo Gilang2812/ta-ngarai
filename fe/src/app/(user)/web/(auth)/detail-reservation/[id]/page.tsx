@@ -1,5 +1,5 @@
 import { DetailReservationSection } from "@/components/web/detailReservation/DetailReservationSection";
-import { DynamicPageProps } from "@/type/props/DynamicPageProps";
+import { DynamicPageProps } from "@/types/props/DynamicPageProps";
 
 const DetailReservation = async ({ params }: DynamicPageProps) => {
   const { id } = await params;

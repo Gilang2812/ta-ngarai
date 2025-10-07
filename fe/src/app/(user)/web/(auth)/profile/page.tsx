@@ -8,7 +8,7 @@ import { ProfileSkeleton } from "@/components/loading/ProfileSkeleton";
 import { InfoModal } from "@/components/modal/InfoModal";
 import { ROUTES } from "@/data/routes";
 import useProfile from "@/hooks/useProfile";
-import { addressFormSchema } from "@/type/schema/CheckoutSchema";
+import { addressFormSchema } from "@/types/schema/CheckoutSchema";
 import { cn } from "@/utils/common/cn";
 import { Formik } from "formik";
 import Image from "next/image";

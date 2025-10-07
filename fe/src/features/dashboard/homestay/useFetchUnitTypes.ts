@@ -1,5 +1,5 @@
 import { useAxiosAuth } from "@/lib/axios";
-import {  HomestayUnitType } from "@/type/schema/HomestaySchema";
+import {  HomestayUnitType } from "@/types/schema/HomestaySchema";
 import { useQuery } from "@tanstack/react-query";
 
 export const useFetchUnitTypes = () => {

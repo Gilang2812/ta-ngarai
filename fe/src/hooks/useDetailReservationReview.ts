@@ -5,7 +5,7 @@ import { useUpdateDetailReservation } from "@/features/web/detailReservation/use
 import {
   HomestayReviewFormSchema,
   PackageReviewFormSchema,
-} from "@/type/schema/ReservationSchema";
+} from "@/types/schema/ReservationSchema";
 import { cornerAlert } from "@/utils/AlertUtils";
 
 export const useDetailReservationReview = (id: string) => {

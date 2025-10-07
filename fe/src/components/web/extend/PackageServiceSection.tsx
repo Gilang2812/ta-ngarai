@@ -4,7 +4,7 @@ import { formatPrice } from "@/lib/priceFormatter";
 import {
   DetailServiceSchema,
   ServicePackage,
-} from "@/type/schema/ServiceSchema";
+} from "@/types/schema/ServiceSchema";
 import React from "react";
 import { FaTimes } from "react-icons/fa";
 import { FaPlus } from "react-icons/fa6";

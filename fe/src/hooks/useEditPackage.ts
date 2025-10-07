@@ -2,7 +2,7 @@ import { useGetPackage } from "@/features/web/package/useGetPackage";
 import {
   EditPackageSchema,
   PackageServiceGallery,
-} from "@/type/schema/PackageSchema";
+} from "@/types/schema/PackageSchema";
 import { cornerAlert } from "@/utils/AlertUtils";
 import { createFormData } from "@/utils/common/createFormData";
 import { useUpdateAllPackage } from "@/features/web/package/useUpdateAllPackage";

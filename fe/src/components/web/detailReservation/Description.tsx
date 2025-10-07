@@ -1,4 +1,4 @@
-import { DetailReservationPackage } from "@/type/schema/ReservationSchema";
+import { DetailReservationPackage } from "@/types/schema/ReservationSchema";
 import { Accordion } from "./Accordion";
 import { useService } from "@/utils/ServiceCategory";
 

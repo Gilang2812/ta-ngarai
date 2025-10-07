@@ -1,5 +1,5 @@
 import { useAxiosAuth } from "@/lib/axios";
-import { DetailUserSouvenirPlace } from "@/type/schema/SouvenirSchema";
+import { DetailUserSouvenirPlace } from "@/types/schema/SouvenirSchema";
 import { useQuery } from "@tanstack/react-query";
 
 export const useFetchDetailUserSouvenirPlace = (status?: number) => {

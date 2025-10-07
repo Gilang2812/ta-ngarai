@@ -2,7 +2,7 @@ import Button from "@/components/common/Button";
 import { SingleContentWrapper } from "@/components/common/SingleContentWrapper";
 import { ROUTES } from "@/data/routes";
 import useUserRole from "@/hooks/useUserRole";
-import { PackageServiceGallery } from "@/type/schema/PackageSchema";
+import { PackageServiceGallery } from "@/types/schema/PackageSchema";
 import { useService } from "@/utils/ServiceCategory";
 import Link from "next/link";
 import { FaCirclePlay, FaPencil } from "react-icons/fa6";

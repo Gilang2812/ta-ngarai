@@ -1,7 +1,7 @@
 import { getReservationStatus } from "./../utils/common/getReservationStatus";
 import { useDeleteReservation } from "@/features/reservation/useDeleteReservation";
 import { useFetchUserReservations } from "@/features/web/myreservation/useFetchUserReservations";
-import { ReservationSchema } from "@/type/schema/ReservationSchema";
+import { ReservationSchema } from "@/types/schema/ReservationSchema";
 import {
   confirmAlert,
   cornerAlert,

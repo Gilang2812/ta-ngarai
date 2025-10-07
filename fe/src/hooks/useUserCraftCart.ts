@@ -1,7 +1,7 @@
 import { useDeleteCraftCart } from "@/features/web/craftCart/useDeleteCraftCart";
 import { useFetchCraftCart } from "@/features/web/craftCart/useFetchCraftCart";
 import { useUpdateCraftCart } from "@/features/web/craftCart/useUpdateCraftCart";
-import { CraftCartSchema } from "@/type/schema/CraftCartSchema";
+import { CraftCartSchema } from "@/types/schema/CraftCartSchema";
 import {
   confirmDeleteAlert,
   cornerAlert,

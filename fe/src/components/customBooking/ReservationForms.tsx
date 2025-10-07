@@ -6,13 +6,13 @@ import { cornerAlert, cornerError, showLoadingAlert } from "@/utils/AlertUtils";
 import { FormReservationSchema } from "@/app/(user)/web/(auth)/reservation/custombooking/[id]/page";
 import { useFetchUnitHomestayReservation } from "@/features/reservation/useFetchUnitHomestayReservation";
 import Loading from "@/app/loading";
-import { PackageServiceGallery } from "@/type/schema/PackageSchema";
+import { PackageServiceGallery } from "@/types/schema/PackageSchema";
 import dayjs from "dayjs";
 import ReservationWeather from "../homestay/ReservationWeather";
 import {
   OpenMeteoDaily,
   OpenMeteoDailyResponse,
-} from "@/type/schema/OpenMeteoSchema";
+} from "@/types/schema/OpenMeteoSchema";
 import useFetchWeatherPrediction from "@/features/weater/useFetchWeatherPrediction";
 import { SingleContentWrapper } from "../common/SingleContentWrapper";
 

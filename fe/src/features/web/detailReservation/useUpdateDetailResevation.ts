@@ -1,6 +1,6 @@
 import { useAxiosAuth } from "@/lib/axios";
-import { ActionProps } from "@/type/props/ActionProps";
-import { HomestayReviewFormSchema } from "@/type/schema/ReservationSchema";
+import { ActionProps } from "@/types/props/ActionProps";
+import { HomestayReviewFormSchema } from "@/types/schema/ReservationSchema";
 import { onError } from "@/utils/ErrorHandler";
 import { useMutation } from "@tanstack/react-query";
 

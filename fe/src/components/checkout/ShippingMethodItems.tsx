@@ -1,6 +1,6 @@
 import { formatPrice } from "@/lib/priceFormatter";
-import { CheckoutItem } from "@/type/schema/CheckoutSchema";
-import { CourierPricing, ItemRatesType } from "@/type/schema/ShippingSchema";
+import { CheckoutItem } from "@/types/schema/CheckoutSchema";
+import { CourierPricing, ItemRatesType } from "@/types/schema/ShippingSchema";
 import { Clock, CreditCard } from "lucide-react";
 import React, { useEffect } from "react";
 import ImgCraft from "../common/ImgCraft"; 

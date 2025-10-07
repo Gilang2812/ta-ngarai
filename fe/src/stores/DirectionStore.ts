@@ -1,8 +1,8 @@
 import {
   type DirectionsResult,
   type LatLngLiteral,
-} from "@/type/common/MapType";
-import { SimplifiedObject } from "@/type/schema/PackageSchema";
+} from "@/types/common/MapType";
+import { SimplifiedObject } from "@/types/schema/PackageSchema";
 import { create } from "zustand";
 
 type DirectionStore = {

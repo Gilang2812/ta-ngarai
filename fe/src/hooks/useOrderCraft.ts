@@ -1,6 +1,6 @@
 import { useCreateCheckout } from "@/features/web/checkout/useCreateCheckout";
 import { useCreateCraftCart } from "@/features/web/craftCart/useCreateCraftCart";
-import { CraftCartForm } from "@/type/schema/CraftCartSchema";
+import { CraftCartForm } from "@/types/schema/CraftCartSchema";
 import { cornerAlert, cornerError } from "@/utils/AlertUtils";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useRef } from "react";

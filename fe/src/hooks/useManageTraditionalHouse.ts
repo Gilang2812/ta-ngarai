@@ -3,7 +3,7 @@ import { useFetchTraditional } from "@/features/dashboard/traditional/useFetchTr
 import { useEffect, useMemo, useState } from "react";
 import useSearchTable from "./useSearchTable";
 import useTableManagement from "./useTableManagement";
-import { TraditionalForm, TraditionalSchema } from "@/type/schema/ObjectSchema";
+import { TraditionalForm, TraditionalSchema } from "@/types/schema/ObjectSchema";
 import useCreateTraditional from "@/features/dashboard/traditional/useCreateTraditional";
 import { useModal } from "@/utils/ModalUtils";
 import { createFormData } from "@/utils/common/createFormData";
@@ -15,7 +15,7 @@ import {
   cornerAlert,
   showLoadingAlert,
 } from "@/utils/AlertUtils";
-import { LatLngType } from "@/type/props/mapProps";
+import { LatLngType } from "@/types/props/mapProps";
 
 const useManageTraditional = () => {
   const { data, isLoading, refetch } = useFetchTraditional();

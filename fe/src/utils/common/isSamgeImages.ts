@@ -1,4 +1,4 @@
-import { FilepondType } from "@/type/common/FilepondType";
+import { FilepondType } from "@/types/common/FilepondType";
 
 export const isSameImages = (
   currentImages: FilepondType,

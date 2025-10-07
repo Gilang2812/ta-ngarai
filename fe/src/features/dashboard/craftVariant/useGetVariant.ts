@@ -1,7 +1,7 @@
 import { useAxiosAuth } from "@/lib/axios";
 import {
   CraftVariantInclude,
-} from "@/type/schema/CraftSchema";
+} from "@/types/schema/CraftSchema";
 import { useQuery } from "@tanstack/react-query";
 
 export const useGetVariant = <T>(id: string, option: CraftVariantInclude) => {

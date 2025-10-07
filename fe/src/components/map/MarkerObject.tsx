@@ -1,6 +1,6 @@
-import { type LatLngLiteral } from "@/type/common/MapType";
+import { type LatLngLiteral } from "@/types/common/MapType";
 import MapMarker from "./MapMarker";
-import { type SimplifiedObject } from "@/type/schema/PackageSchema";
+import { type SimplifiedObject } from "@/types/schema/PackageSchema";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef } from "react";
 import { useTools } from "@/hooks/useTools";

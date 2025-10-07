@@ -1,8 +1,8 @@
 import { useFetchUserHistory } from "@/features/web/checkout/useFetchUserHistory";
 import { useUpdateStatus } from "@/features/web/checkout/useUpdateStatus";
 import { useBulkCreateCraftCart } from "@/features/web/craftCart/useBulkCreateCraftCart";
-import { CraftCartForm } from "@/type/schema/CraftCartSchema";
-import { ShippingDataWithReviewGallery } from "@/type/schema/CraftTransactionSchema";
+import { CraftCartForm } from "@/types/schema/CraftCartSchema";
+import { ShippingDataWithReviewGallery } from "@/types/schema/CraftTransactionSchema";
 import {
   confirmAlert,
   cornerAlert,

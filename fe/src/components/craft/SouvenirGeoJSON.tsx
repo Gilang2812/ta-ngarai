@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo } from "react";
 import { InfoWindow, useGoogleMap } from "@react-google-maps/api";
-import { SouvenirPlaceSchema } from "@/type/schema/PackageSchema";
+import { SouvenirPlaceSchema } from "@/types/schema/PackageSchema";
 import { getCentroid } from "@/utils/common/getCentroid";
 import { MapMarker } from "../map";
 import { getIconUrl } from "@/utils/map/getIconUrl";
@@ -12,7 +12,7 @@ import Link from "next/link";
 import { FeatureCollection } from "geojson";
 import ImgCraft from "../common/ImgCraft";
 import { formatPrice } from "@/lib/priceFormatter";
-import { DetailCraftManagementResponse } from "@/type/schema/DetailCraftSchema";
+import { DetailCraftManagementResponse } from "@/types/schema/DetailCraftSchema";
 import { ROUTES } from "@/data/routes";
 import useUserRole from "@/hooks/useUserRole";
 import { useDirectionStore } from "@/stores/DirectionStore";

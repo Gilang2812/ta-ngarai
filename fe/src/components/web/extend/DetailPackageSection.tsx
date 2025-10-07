@@ -1,6 +1,6 @@
 import Button from "@/components/common/Button";
 import { SingleContentWrapper } from "@/components/common/SingleContentWrapper";
-import { DetailPackageSchema, PackageDay } from "@/type/schema/PackageSchema";
+import { DetailPackageSchema, PackageDay } from "@/types/schema/PackageSchema";
 import React from "react";
 import { FaTimes } from "react-icons/fa";
 import { FaPencil, FaPlus } from "react-icons/fa6";

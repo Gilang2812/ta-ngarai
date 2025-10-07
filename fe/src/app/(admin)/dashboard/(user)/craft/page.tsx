@@ -19,7 +19,7 @@ import { InfoModal } from "@/components/modal/InfoModal";
 import { Modal } from "@/components/modal/Modal";
 import useManageAdminCraft from "@/hooks/useManageAdminCraft";
 import { formatPrice } from "@/lib/priceFormatter";
-import { craftSchema, craftVariantSchema } from "@/type/schema/CraftSchema";
+import { craftSchema, craftVariantSchema } from "@/types/schema/CraftSchema";
 import { Form, Formik } from "formik";
 import React from "react";
 import { FaCircleInfo, FaPlus } from "react-icons/fa6";

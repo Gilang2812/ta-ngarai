@@ -3,7 +3,7 @@ import { useFetchAttraction } from "@/features/dashboard/attraction/useFetchAttr
 import { useEffect, useMemo, useState } from "react";
 import useSearchTable from "./useSearchTable";
 import useTableManagement from "./useTableManagement";
-import { AttractionForm, AttractionSchema } from "@/type/schema/ObjectSchema";
+import { AttractionForm, AttractionSchema } from "@/types/schema/ObjectSchema";
 import useCreateAttraction from "@/features/dashboard/attraction/useCreateAttraction";
 import { useModal } from "@/utils/ModalUtils";
 import { createFormData } from "@/utils/common/createFormData";
@@ -15,7 +15,7 @@ import {
   cornerAlert,
   showLoadingAlert,
 } from "@/utils/AlertUtils";
-import { LatLngType } from "@/type/props/mapProps";
+import { LatLngType } from "@/types/props/mapProps";
 
 const useManageAttraction = () => {
   const { data, isLoading, refetch } = useFetchAttraction();

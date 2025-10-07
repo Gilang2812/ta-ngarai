@@ -1,5 +1,5 @@
 import { formatPrice } from "@/lib/priceFormatter";
-import { DetailReservationPackage } from "@/type/schema/ReservationSchema";
+import { DetailReservationPackage } from "@/types/schema/ReservationSchema";
 import dayjs from "dayjs";
 
 export const ReservationHomestay = ({
