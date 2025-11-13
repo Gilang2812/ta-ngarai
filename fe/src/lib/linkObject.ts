@@ -6,6 +6,7 @@ const {
   DETAIL_HOMESTAY_OBJECT,
   DETAIL_SOUVENIR,
   DETAIL_WORSHIP,
+  DETAIL_TRADITIONAL_HOUSE,
 } = ROUTES;
 
 export const linkObject = (id: string): string => {
@@ -14,5 +15,6 @@ export const linkObject = (id: string): string => {
   if (id?.startsWith("SP")) return DETAIL_SOUVENIR(id);
   if (id?.startsWith("HO")) return DETAIL_HOMESTAY_OBJECT(id);
   if (id?.startsWith("WO")) return DETAIL_WORSHIP(id);
+  if (id?.startsWith("TH")) return DETAIL_TRADITIONAL_HOUSE(id);
   return "/web";
 };

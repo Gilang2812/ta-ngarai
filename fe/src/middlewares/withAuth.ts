@@ -1,6 +1,4 @@
 import { ROUTES } from "@/data/routes";
-import { axiosServer } from "@/lib/axiosServer";
-import { AxiosError } from "axios";
 import { getToken } from "next-auth/jwt";
 import {
   NextFetchEvent,
@@ -55,15 +53,19 @@ export default function withAuth(middleware: NextMiddleware) {
         return NextResponse.redirect(url);
       }
       if (pathname === ROUTES.CHECKOUT) {
-        try {
-          await axiosServer.get("/checkouts", {
-            headers: { Authorization: `Bearer ${token.accessToken}` },
-          });
-        } catch (error: unknown) {
-          const err = error as AxiosError;
-          if (err.response?.status === 404) {
-            return NextResponse.redirect(new URL(ROUTES.CRAFT, req.url));
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/checkouts`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${token.accessToken}`,
+              "Content-Type": "application/json",
+            },
           }
+        );
+
+        if (!response.ok && response.status === 404) {
+          return NextResponse.redirect(new URL(ROUTES.CRAFT, req.url));
         }
       }
     }

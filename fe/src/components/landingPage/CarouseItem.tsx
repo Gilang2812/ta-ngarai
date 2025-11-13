@@ -1,5 +1,5 @@
 import useToggleOpen from "@/hooks/useToggleOpen";
-import Image from "next/image"; 
+import Image from "next/image";
 import { FaInfo, FaX } from "react-icons/fa6";
 import { AnimatePresence, motion } from "framer-motion";
 
@@ -21,6 +21,7 @@ export const CarouselItem = ({
         alt={title}
         width={500}
         height={500}
+        loading="lazy"
         className="h-full w-full object-cover"
       />
       <motion.button

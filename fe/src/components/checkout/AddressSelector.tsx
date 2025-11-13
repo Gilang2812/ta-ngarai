@@ -53,7 +53,7 @@ const AddressSelector = ({
                 )}
               </div>
               <div>
-                <div className="text-xs capitalize text-justify pr-2">
+                <div className="text-base capitalize text-justify pr-2">
                   <p>
                     {Object.values(address)
                       .slice(3, -1)

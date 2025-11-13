@@ -111,7 +111,8 @@ const checkoutOrder = async (body, customer_id) => {
         { craft_variant_id, id_souvenir_place },
         []
       );
-      if (!currenCraftItem.stock || currenCraftItem.stock === 0) {
+      console.log(currenCraftItem)
+      if (!currenCraftItem?.stock || currenCraftItem.stock === 0) {
         throw new CustomError("Out of Stocks", 400);
       }
       if (Number(item.jumlah) > Number(currenCraftItem.stock || 0)) {

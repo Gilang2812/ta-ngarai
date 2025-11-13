@@ -15,6 +15,7 @@ export const ROUTES = {
   DETAIL_HOMESTAY_OBJECT: (id: string) => `/web/homestay/${id}`,
   DETAIL_SOUVENIR: (id: string) => `/web/souvenir-place/${id}`,
   DETAIL_WORSHIP: (id: string) => `/web/worship-place/${id}`,
+  DETAIL_TRADITIONAL_HOUSE: (id: string) => `/web/traditional-house/${id}`,
   CHANGE_PASSWORD: "/web/profile/changePassword",
   CART: "/web/cart",
   TRACKING_ORDER: (id: string) => `/web/reservation/${id}/tracking`,

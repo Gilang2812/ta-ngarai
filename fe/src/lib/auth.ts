@@ -135,10 +135,10 @@ export const authOptions: NextAuthOptions = {
       return session;
     },
   },
-  // pages: {
-  //   signIn: "/login",
-  //   signOut: "/login",
-  // },
+  pages: {
+    signIn: "/login",
+    signOut: "/login",
+  },
   session: {
     strategy: "jwt",
   },

@@ -165,30 +165,14 @@ export default function CheckoutPage() {
     checkout && (
       <SingleContentWrapper>
         <h1 className="text-2xl font-bold mb-8">Checkout</h1>
-
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2">
-            <div className="bg-white rounded-lg border border-gray-200 p-6 mb-6">
+            <div className="bg-white rounded-lg border space-y-4 border-gray-200 p-6 mb-6">
+
+
               <h2 className="text-xl font-semibold mb-6">
                 Billing Information
               </h2>
-
-              {selectedAddress && (
-                <ShippingMethodSelector
-                  shippingMethods={shippingMethods}
-                  groupedItems={groupedItems}
-                  selectedAddressId={selectedAddress.destination_id}
-                  itemShipping={itemShipping}
-                  setItemShipping={setItemShipping}
-                  setShippingMethods={setShippingMethods}
-                  handleNoteChange={handleNoteChange}
-                />
-              )}
-            </div>
-          </div>
-
-          <div className="lg:col-span-1">
-            <div className="bg-white rounded-lg border border-gray-200 p-6 sticky top-6 space-y-6">
               {selectedAddress && (
                 <AddressSection
                   editingAddress={editingAddress}
@@ -206,6 +190,23 @@ export default function CheckoutPage() {
                   showAddressForm={showAddressForm}
                 />
               )}
+              {selectedAddress && (
+                <ShippingMethodSelector
+                  shippingMethods={shippingMethods}
+                  groupedItems={groupedItems}
+                  selectedAddressId={selectedAddress.destination_id}
+                  itemShipping={itemShipping}
+                  setItemShipping={setItemShipping}
+                  setShippingMethods={setShippingMethods}
+                  handleNoteChange={handleNoteChange}
+                />
+              )}
+            </div>
+          </div>
+
+          <div className="lg:col-span-1">
+            <div className="bg-white rounded-lg border border-gray-200 p-6 sticky top-6 space-y-6">
+
               <form onSubmit={formikOrder.handleSubmit}>
                 <h2 className="text-lg font-semibold  py-4 border-t">
                   Order Summary

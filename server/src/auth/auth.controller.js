@@ -42,7 +42,7 @@ router.get("/auth/me", verifyToken, async (req, res, next) => {
   try {
     let user = await getUser({ id: req.user.id });
 
-    user = getLoginResponse(user);
+    user = await getLoginResponse(user);
     const token = generateToken(user);
 
     res.json({ user, token });

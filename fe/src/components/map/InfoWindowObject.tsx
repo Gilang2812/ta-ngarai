@@ -63,7 +63,7 @@ const InfoWindowObject = ({
         <section className="flex items-center justify-center gap-2">
           <DirectionToKotoGadangButton destination={position} />
           <Button className="p-2" variant={"primary"} asChild>
-            <Link href={linkObject(object.id)}>
+            <Link target="_blank"  href={linkObject(object.id)}>
               <FaInfo />
             </Link>
           </Button>

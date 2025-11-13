@@ -9,6 +9,7 @@ import { Around } from "../web/explore/Around";
 import { useTools } from "@/hooks/useTools";
 import CraftRightSection from "./CraftRightSection";
 import MapSkeletonLoader from "../loading/MapSkeleton";
+import DirectionInstruction from "../common/DirectionInstruction";
 
 const MapCraft = () => {
   const { data, selectedStore, handleSelectStore, isLoading } = useMapCraft();
@@ -32,7 +33,7 @@ const MapCraft = () => {
 
   if (isLoading || !data) return <MapSkeletonLoader />;
 
-  return (
+  return (<>
     <ContentDiffSplitted
       left={
         <MapWeb zoom={17}>
@@ -46,6 +47,9 @@ const MapCraft = () => {
       }
       right={<MapCraftRightGrid />}
     />
+    <DirectionInstruction className="mt-8" />
+
+  </>
   );
 };
 

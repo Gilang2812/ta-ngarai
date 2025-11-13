@@ -18,7 +18,6 @@ function Home() {
         left={
           <>
             <MapSection />
-            <DirectionInstruction className="mt-8" />
           </>
         }
         right={
@@ -36,6 +35,7 @@ function Home() {
           </div>
         }
       />
+      <DirectionInstruction className="mt-8" />
     </section>
   );
 }

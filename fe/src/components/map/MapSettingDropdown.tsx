@@ -4,6 +4,7 @@ import { Dropdown, DropdownItem } from "flowbite-react";
 import { MdArrowDropDown } from "react-icons/md";
 import { IconType } from "react-icons";
 import { CheckBoxLabel } from "../common/CheckBoxLabel";
+import { formatObjectLabel } from "@/lib/formatObjectLabel";
 
 type Props<T> = { 
   Icon?: IconType;
@@ -46,7 +47,7 @@ export const MapSettingDropdown = <T,>({
           <DropdownItem key={index}>
             <CheckBoxLabel
               id={`item${index}`}
-              label={item}
+              label={formatObjectLabel(item)}
               onChange={(e) =>
                 onDropDownItemClick((prev) => ({
                   ...prev,

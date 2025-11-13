@@ -56,7 +56,7 @@ export const AddressSection = ({
         >
           <FaEdit />
         </Button>
-        <p className="text-sm capitalize text-justify">
+        <p className="text-lg capitalize text-justify">
           {userAddress.toLowerCase()}{" "}
         </p>
       </div>

@@ -94,7 +94,7 @@ router.post(
           id_souvenir_place: souvenir.id,
           status: 1,
         });
-        user = getLoginResponse(user);
+        user = await getLoginResponse(user);
         token = generateToken(user);
 
         const images = req?.files?.map((file) => ({

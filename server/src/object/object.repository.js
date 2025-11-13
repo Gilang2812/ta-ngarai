@@ -10,6 +10,7 @@ const {
   Homestay,
   GalleryWorship,
   GallerySouvenir,
+  GalleryTraditional,
 } = require("../../models/relation");
 const { TraditionalHouse } = require("../../models/TraditionalHouse");
 
@@ -131,6 +132,18 @@ const findWorshipPlace = async (id) => {
   return worshipPlace;
 };
 
+const findTraditionalHouse = async (id) => {
+  const traditionalHouse = await TraditionalHouse.findOne({
+    where: { id },
+    include: [
+      {
+        model: GalleryTraditional,
+        as: "galleries",
+      }
+    ]
+  });
+  return traditionalHouse;
+}
 module.exports = {
   findObjects,
   findAttraction,
@@ -141,4 +154,5 @@ module.exports = {
   findAttraction,
   findHomestay,
   findWorshipPlace,
+  findTraditionalHouse,
 };

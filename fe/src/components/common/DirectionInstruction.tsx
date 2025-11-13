@@ -11,7 +11,7 @@ const DirectionInstruction = ({ className }: { className?: string }) => {
   return (
     response && (
       <SingleContentWrapper className={className}>
-        <header className="text-center text-lg py-4 mb-4 border-b">
+        <header className="text-center text-lg py-4 mb-4 border-b leading-loose" >
           <h2>Directions</h2>
           <Table>
             <thead>
@@ -20,7 +20,7 @@ const DirectionInstruction = ({ className }: { className?: string }) => {
                 <th>Step</th>
               </tr>
             </thead>
-            <tbody className="font-normal text-sm text-left">
+            <tbody className="font-normal text-lg text-left">
               {response?.routes?.[0]?.legs.map((leg, legIndex) => (
                 <Fragment key={legIndex}>
                   <tr>

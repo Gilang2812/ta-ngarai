@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React from "react";
 
 import { Rating } from "./Rating";
 import { formatPrice } from "@/lib/priceFormatter";
@@ -7,8 +7,7 @@ import { VariantSelector } from "./VariantSelector";
 import { QuantitySelector } from "./QuantitySelector";
 import { BsBagCheck, BsCart } from "react-icons/bs";
 import ButtonTooltip from "../common/ButtonTooltip";
-import { FaFacebook, FaPinterest, FaStore, FaTiktok } from "react-icons/fa6";
-import { MdFavorite } from "react-icons/md";
+import { FaStore } from "react-icons/fa6";
 import { Form, Formik } from "formik";
 import { CraftCartForm } from "@/types/schema/CraftCartSchema";
 import { motion } from "framer-motion";
@@ -52,10 +51,7 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({
   crafts,
   data,
 }) => {
-  const [isFavorite, setIsFavorite] = useState(false);
-  const toggleFavorite = () => {
-    setIsFavorite(!isFavorite);
-  };
+
   const { isOwner } = useUserRole();
 
   return (
@@ -126,32 +122,7 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({
         </Form>
       </Formik>
 
-      <div className="pt-4 flex items-center justify-between border-t border-gray-200">
-        <button
-          onClick={toggleFavorite}
-          className={`${
-            isFavorite && "text-red-500"
-          } flex items-center active:text-black text-gray-500    `}
-        >
-          <MdFavorite />
-          <span className="ml-2 text-sm">Favorit</span>
-        </button>
 
-        <div className="flex items-center space-x-3">
-          <span className="text-sm text-gray-500">Bagikan:</span>
-          <div className="flex space-x-2">
-            <button className="text-gray-500 hover:text-primary transition-ease-in-out">
-              <FaFacebook />
-            </button>
-            <button className="text-gray-500 hover:text-white hover:bg-black transition-ease-in-out rounded-full">
-              <FaTiktok />
-            </button>
-            <button className="text-gray-500 hover:text-red-600 transition-ease-in-out">
-              <FaPinterest />
-            </button>
-          </div>
-        </div>
-      </div>
     </div>
   );
 };

@@ -1,19 +1,20 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const { User } = require("../../models/UsersModels");
-const { Op } = require("sequelize");
 const {
   findUniqueUsernameOrEmail,
   findUser,
 } = require("../user/user.repository.js");
 const { CustomError } = require("../../utils/CustomError");
+const { getUserAddress } = require("../address/address.service.js");
 
 const generateToken = (user) => {
   const token = jwt.sign({ user }, process.env.SECRET_TOKEN);
   return token;
 };
 
-const getLoginResponse = (user) => {
+const getLoginResponse = async (user) => {
+  const address = await getUserAddress({ customer_id: user.id });
   return {
     id: user.id,
     email: user.email,
@@ -22,7 +23,7 @@ const getLoginResponse = (user) => {
     username: user.username,
     role: user.id_role,
     phone: user.phone,
-    address: user.address,
+    address: Object.values(address?.toJSON() || {}).toString(),
     store: user.detailSouvenir,
   };
 };
@@ -41,7 +42,7 @@ const userLogin = async (email = "", password) => {
     throw new CustomError("invalid password", 400);
   }
 
-  const response = getLoginResponse(user);
+  const response = await getLoginResponse(user);
   const token = generateToken(response);
 
   return { token, user: response };
@@ -65,7 +66,7 @@ const googleLogin = async (credential) => {
     });
   }
 
-  const response = getLoginResponse(user);
+  const response = await getLoginResponse(user);
   const token = generateToken(response);
   return { token, user: response };
 };

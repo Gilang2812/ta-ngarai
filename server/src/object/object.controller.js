@@ -5,6 +5,7 @@ const {
   findSouvenirPlace,
   findHomestay,
   findWorshipPlace,
+  findTraditionalHouse,
 } = require("./object.repository");
 const { getObjectById, getObjectAround } = require("./object.service");
 const { objectSchema } = require("./object.validation");
@@ -43,6 +44,11 @@ router.get("/galleries/:object/:id", async (req, res, next) => {
       case "worship":
         data = await findWorshipPlace(id);
         break;
+      case "traditional":
+        data = await findTraditionalHouse(id);
+        break;
+      default:
+        data = null;
     }
 
     res.status(200).json(data);
