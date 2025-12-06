@@ -6,16 +6,20 @@ const WorshipPlace = sequelize.define(
   "WorshipPlace",
   {
     id: {
-      type: DataTypes.STRING(5),
+      type: DataTypes.STRING(8), // WO + 5 digits = 7-8 characters
       allowNull: true,
       primaryKey: true,
     },
     name: {
-      type: DataTypes.STRING(255),
+      type: DataTypes.STRING(100),
       allowNull: true,
     },
-    address: {
-      type: DataTypes.STRING(255),
+    location_id: {
+      type: DataTypes.STRING(5),
+      allowNull: true,
+    },
+    street: {
+      type: DataTypes.STRING(30),
       allowNull: true,
     },
     capacity: {
@@ -44,6 +48,17 @@ const WorshipPlace = sequelize.define(
 
 WorshipPlace.beforeCreate(async (instance) => {
   instance.id = await generateCustomId("WO", WorshipPlace, 5);
+});
+
+WorshipPlace.beforeFind((options) => {
+  const { Location } = require("./relation");
+
+  if (!options.include) options.include = [];
+
+  options.include.push({
+    model: Location,
+    as: "location",
+  });
 });
 
 module.exports = { WorshipPlace };

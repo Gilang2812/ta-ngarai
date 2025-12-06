@@ -33,14 +33,20 @@ export const useEditHomestay = (id: string) => {
     id: id,
     geom: JSON.stringify(data?.geom),
     name: data?.name ?? "",
-    address: data?.address ?? "",
+    country: data?.location.country ?? "",
+    province: data?.location.province ?? "",
+    regency: data?.location.regency ?? "",
+    district: data?.location.district ?? "",
+    village: data?.location.village ?? "",
+    postal_code: data?.location.postal_code ?? "",
+    street: data?.street ?? "",
     contact_person: data?.contact_person ?? "",
     open: String(data?.open),
     close: String(data?.close),
     description: data?.description ?? "",
     images: images,
-    latitude: (getCentroid(data?.geom).lat) ?? 0,
-    longitude: (getCentroid(data?.geom).lng) ?? 0,
+    latitude: getCentroid(data?.geom).lat ?? 0,
+    longitude: getCentroid(data?.geom).lng ?? 0,
   };
 
   const facilityInitialValues = {
@@ -104,6 +110,7 @@ export const useEditHomestay = (id: string) => {
   const { mutate, isPending } = useUpdateHomestay({
     onSuccess: () => {
       cornerAlert("homestay updated successfully");
+      refetchHomestay();
       router.push(ROUTES.MANAGE_DETAIL_HOMESTAY(id));
       refetch();
     },

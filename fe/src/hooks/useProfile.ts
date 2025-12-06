@@ -5,7 +5,7 @@ import { useFetchAddress } from "@/features/web/address/useFetchAddress";
 import { useCreateAddress } from "@/features/web/address/useCreateAddress";
 import { useUpdateAddress } from "@/features/web/address/useUpdateAddress";
 import { cornerAlert } from "@/utils/AlertUtils";
-import { Address } from "@/types/schema/CheckoutSchema";
+import { Address, AddressForm } from "@/types/schema/CheckoutSchema";
 import { formatAddress } from "@/lib/formatAddress";
 
 const useProfile = () => {
@@ -52,7 +52,7 @@ const useProfile = () => {
     },
   ];
 
-  const addressInitialValues = {
+  const addressInitialValues: AddressForm = {
     address_id: editingAddress?.address_id || "",
     customer_id: editingAddress?.customer_id || "",
     destination_id: editingAddress?.destination_id || "",
@@ -60,12 +60,12 @@ const useProfile = () => {
     street: editingAddress?.street || "",
     recipient_name: editingAddress?.recipient_name || "",
     recipient_phone: editingAddress?.recipient_phone || "",
-    negara: editingAddress?.negara || "",
-    provinsi: editingAddress?.provinsi || "",
-    kota: editingAddress?.kota || "",
-    kecamatan: editingAddress?.kecamatan || "",
-    kelurahan: editingAddress?.kelurahan || "",
-    kode_pos: editingAddress?.kode_pos || "",
+    country: editingAddress?.location?.country.toLocaleLowerCase() || "",
+    province: editingAddress?.location?.province.toLocaleLowerCase() || "",
+    regency: editingAddress?.location?.regency.toLocaleLowerCase() || "",
+    district: editingAddress?.location?.district.toLocaleLowerCase() || "",
+    village: editingAddress?.location?.village || "",
+    postal_code: editingAddress?.location?.postal_code || "",
     details:
       editingAddress?.details ||
       Object.values(editingAddress || {})
@@ -102,7 +102,7 @@ const useProfile = () => {
   }, [addresses]);
 
   // Handlers
-  const handleSaveAddress = (values: Address) => {
+  const handleSaveAddress = (values: AddressForm) => {
     if (editingAddress) {
       updateAddress(values);
     } else {

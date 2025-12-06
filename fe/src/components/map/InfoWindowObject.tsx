@@ -38,6 +38,7 @@ const InfoWindowObject = ({
   const { icon, text } = getIconAndTextSecondLine(object);
   const { icon: thirdIcon, text: thirdText } = getIconAndTextThirdLine(object);
   const { isUserAuth } = useUserRole();
+
   return (
     <InfoWindow
       options={{ maxWidth: 300 }}

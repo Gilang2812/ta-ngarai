@@ -9,11 +9,13 @@ import MarketPlaceFormSection from "./MarketPlaceFormSection";
 
 const MarketplaceForm = ({
   existingMarketplace,
+  callback
 }: {
   existingMarketplace?: FormMarketplace;
+  callback?: () => void
 }) => {
   const { initialValues, isPending, handleSubmit } =
-    useFormMarketplace(existingMarketplace);
+    useFormMarketplace(existingMarketplace, callback);
 
   return (
     <div>

@@ -62,10 +62,10 @@ const insertGallerySouvenir = async (data) => {
   const created = await GallerySouvenir.create(data);
   return created;
 };
-const destroyGallerySouvenir = async (key) => {
-  const deleted = await GallerySouvenir.destroy({ where: key });
-  return deleted;
-};
+  const destroyGallerySouvenir = async (key) => {
+    const deleted = await GallerySouvenir.destroy({ where: key });
+    return deleted;
+  };
 
 const insertGalleryAttraction = async (data) => {
   const created = await GalleryAttraction.create(data);

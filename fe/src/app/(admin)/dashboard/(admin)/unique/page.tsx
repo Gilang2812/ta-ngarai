@@ -8,6 +8,7 @@ import Button from "@/components/common/Button";
 import FilePondComponent from "@/components/common/Filepond";
 import { SingleContentWrapper } from "@/components/common/SingleContentWrapper";
 import { Table } from "@/components/common/Table";
+import { ValidateClose } from "@/components/common/ValidateClose";
 import { FormInput } from "@/components/inputs/FormInput";
 import ManagementSkeletonLoader from "@/components/loading/ManagementSkeletonLoader";
 import GoogleMapDrawing from "@/components/map/GoogleMapDrawing";
@@ -64,7 +65,7 @@ export default function TraditionalHouse() {
           />
           <Table>
             <TableHeaderManagement
-              headers={["id", "name", "type", "price", "category"]}
+              headers={["id", "name", "contact_person", "category", "ticket_price", "open", "close"]}
             />
             <tbody>
               {currentItems.map((item, index) => (
@@ -72,7 +73,6 @@ export default function TraditionalHouse() {
                   <td>{indexOfFirstItem + index + 1}</td>
                   <td>{item.id}</td>
                   <td>{item.name}</td>
-                  <td>{item.address}</td>
                   <td>{item.contact_person}</td>
                   <td>{getAttractionCategory(item.category)}</td>
                   <td>{formatPrice(item.ticket_price)}</td>
@@ -134,9 +134,45 @@ export default function TraditionalHouse() {
                 </section>
                 <section>
                   <FormInput
-                    label="Address"
-                    name="address"
-                    placeholder="Address"
+                    label="Country"
+                    name="country"
+                    placeholder="Country"
+                  />
+                  <FormInput
+                    label="Province"
+                    name="province"
+                    placeholder="Province"
+                  />
+                </section>
+                <section>
+                  <FormInput
+                    label="District"
+                    name="district"
+                    placeholder="District"
+                  />
+                  <FormInput
+                    label="Regency"
+                    name="regency"
+                    placeholder="Regency"
+                  />
+                </section>
+                <section>
+                  <FormInput
+                    label="Village"
+                    name="village"
+                    placeholder="Village"
+                  />
+                  <FormInput
+                    label="Street"
+                    name="street"
+                    placeholder="Street"
+                  />
+                </section>
+                <section>
+                  <FormInput
+                    label="Postal Code"
+                    name="postal_code"
+                    placeholder="Postal Code"
                   />
                   <FormInput
                     label="Contact Person"
@@ -216,6 +252,7 @@ export default function TraditionalHouse() {
                   <GoogleMapDrawing />
                 </section>
               </article>
+              <ValidateClose />
             </Form>
           </Formik>
         </section>

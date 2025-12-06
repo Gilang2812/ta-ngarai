@@ -4,6 +4,8 @@ import { useEffect, useMemo } from "react";
 import dayjs from "dayjs";
 import { AllUnitHomestayResponseSchema } from "@/types/schema/HomestaySchema";
 import { cornerError } from "@/utils/AlertUtils";
+import { formatAddress } from "@/lib/addressFormatter";
+import { SimplifiedObject } from "@/types/schema/PackageSchema";
 
 type Props = {
   unitHomestay: AllUnitHomestayResponseSchema[];
@@ -131,7 +133,13 @@ const useHomestayReservationForm = ({
 
   const bookingInfoData = [
     { label: "Homestay Name", value: selectedUnit[0]?.homestay.name || "" },
-    { label: "Address", value: selectedUnit[0]?.homestay.address || "" },
+    {
+      label: "Address",
+      value:
+        formatAddress(
+          selectedUnit[0]?.homestay as unknown as SimplifiedObject
+        ) || "",
+    },
     { label: "Check In", value: values.check_in },
     { label: "Total People", value: values.total_people },
     { label: "Contact Person", value: values.whatsapp_number },

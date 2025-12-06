@@ -1,5 +1,5 @@
 "use client";
-import { ContentWrapper } from "@/components/common/ContentWrapper"; 
+import { ContentWrapper } from "@/components/common/ContentWrapper";
 import React from "react";
 import MapObjectSection from "./MapObjectSection";
 import { SingleContentWrapper } from "@/components/common/SingleContentWrapper";
@@ -8,6 +8,8 @@ import DetailHomestayReservationLoader from "@/components/loading/DetailHomestay
 import { formatPrice } from "@/lib/priceFormatter";
 import { Table } from "@/components/common/Table";
 import useTraditionalHouse from "@/hooks/objects/useTraditionalHouse";
+import { formatAddress } from "@/lib/addressFormatter";
+import { SimplifiedObject } from "@/types/schema/PackageSchema";
 
 type Props = {
     id: string;
@@ -25,7 +27,7 @@ const TraditionalHousePage = ({ id }: Props) => {
                 </tr>
                 <tr>
                     <td>Address</td>
-                    <td>{data.address}</td>
+                    <td>{formatAddress(data as unknown as SimplifiedObject)}</td>
                 </tr>
                 <tr>
                     <td>Contact Person</td>
@@ -41,7 +43,7 @@ const TraditionalHousePage = ({ id }: Props) => {
                 </tr>
                 <tr>
                     <td>Ticket Price</td>
-                    <td>{formatPrice(data.price|| 0)}</td>
+                    <td>{formatPrice(data.price || 0)}</td>
                 </tr>
                 <tr>
                     <td colSpan={2}>Description</td>

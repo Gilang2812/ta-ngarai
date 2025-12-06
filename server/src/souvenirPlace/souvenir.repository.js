@@ -71,6 +71,7 @@ const findSouvenirPlace = async (include = false) => {
 
   return souvenirPlace;
 };
+
 const findUserSouvenirPlace = async (user_id) => {
   const souvenirPlace = await SouvenirPlace.findAll({
     attributes: ["id"],

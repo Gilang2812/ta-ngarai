@@ -26,6 +26,7 @@ const {
 } = require("../gallery/gallery.service");
 const fs = require("fs");
 const { deleteFacilityUnitDetail } = require("./homestay.repository");
+const { getLocation } = require("../location/location.repository");
 
 router.get("/", async (req, res, next) => {
   try {
@@ -77,13 +78,35 @@ router.post(
   imageUpload("public/images").array("images"),
   async (req, res, next) => {
     try {
-      const { name, address, open, close, contact_person, description, geom } =
-        req.body;
+      const {
+        name,
+        country,
+        province,
+        regency,
+        district,
+        village,
+        postal_code,
+        street,
+        open,
+        close,
+        contact_person,
+        description,
+        geom,
+      } = req.body;
       req.body.geom = req.body.geom;
       console.log(geom);
+      const location = await getLocation({
+        country,
+        province,
+        regency,
+        district,
+        village,
+        postal_code,
+      });
       const newHomestay = await createHomestay({
         name,
-        address,
+        location_id: location.id,
+        street,
         open,
         close,
         contact_person,
@@ -122,16 +145,48 @@ router.patch(
   async (req, res, next) => {
     try {
       const id = req.params.id;
-      const body = req.body || {};
+      let {
+        name,
+        country,
+        province,
+        regency,
+        district,
+        village,
+        postal_code,
+        street,
+        open,
+        close,
+        contact_person,
+        description,
+        geom,
+      } = req.body || {};
       body.id = id;
-      body.geom = JSON.parse(body.geom);
-      const homestay = await editHomestay(body);
+      geom = JSON.parse(geom);
+      const location = await getLocation({
+        country,
+        province,
+        regency,
+        district,
+        village,
+        postal_code,
+      });
+      const homestay = await editHomestay({
+        id,
+        name,
+        street,
+        open,
+        close,
+        contact_person,
+        description,
+        geom,
+        location_id: location.id,
+      });
       const existingGalleries = homestay.toJSON().galleries || [];
 
       for (const g of existingGalleries) {
         fs.unlinkSync(`public\\${g.url}`);
       }
-      
+
       await deleteGalleryHomestay({ homestay_id: id });
       if (req?.files && req?.files?.length > 0) {
         const newImages = req?.files?.map((file) => ({

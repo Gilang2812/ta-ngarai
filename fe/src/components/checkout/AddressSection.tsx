@@ -1,4 +1,4 @@
-import { Address, addressFormSchema } from "@/types/schema/CheckoutSchema";
+import { Address, type AddressForm as AddressFormSchema, addressFormSchema } from "@/types/schema/CheckoutSchema";
 import Button from "../common/Button";
 import { FaEdit } from "react-icons/fa";
 import AddressSelector from "./AddressSelector";
@@ -6,6 +6,7 @@ import { AddressForm } from "./AddressForm";
 import { useModal } from "@/utils/ModalUtils";
 import { Formik } from "formik";
 import { InfoModal } from "../modal/InfoModal";
+import { formatAddress } from "@/lib/formatAddress";
 
 interface AddressSelectorProps {
   addresses: Address[];
@@ -14,10 +15,10 @@ interface AddressSelectorProps {
   onAddNewAddress: () => void;
   onEditAddress: (address: Address) => void;
   showAddressForm: boolean;
-  handleSaveAddress: (values: Address) => void;
+  handleSaveAddress: (values: AddressFormSchema) => void;
   handleCancelAddressForm: () => void;
   editingAddress?: Address;
-  addressInitialValues: Address;
+  addressInitialValues: AddressFormSchema;
   isPending?: boolean;
 }
 
@@ -34,7 +35,7 @@ export const AddressSection = ({
   isPending,
 }: AddressSelectorProps) => {
   const { isOpen, toggleModal } = useModal();
-  const userAddress = Object.values(selectedAddress).slice(3, -1).join(", ");
+  const userAddress = formatAddress(selectedAddress)
 
   return (
     <div className="space-y-2">

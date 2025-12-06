@@ -4,6 +4,7 @@ const fs = require("fs");
 const { insertGalleryCulinary } = require("../gallery/gallery.repository");
 const router = require("express").Router();
 const { formatImageUrl } = require("../../utils/formatImageUrl");
+const { getLocation } = require("../location/location.repository");
 
 router.get("/", async (req, res, next) => {
   try {
@@ -29,11 +30,26 @@ router.post("/", imageUpload().array("images"), async (req, res, next) => {
       contact_person,
       open,
       close,
+      country,
+      province,
+      regency,
+      district,
+      village,
+      postal_code,
+      street,
       capacity,
       description,
       status,
       geom,
     } = req.body;
+    const location = await getLocation({
+      country,
+      province,
+      regency,
+      district,
+      village,
+      postal_code,
+    });
     const newCulinaryPlace = await CulinaryPlace.create({
       name,
       address,
@@ -41,7 +57,10 @@ router.post("/", imageUpload().array("images"), async (req, res, next) => {
       open,
       close,
       capacity,
+      street,
       description,
+      location_id: location.id,
+      street,
       status,
       geom: JSON.parse(geom),
     });
@@ -71,6 +90,13 @@ router.patch("/:id", imageUpload().array("images"), async (req, res, next) => {
       address,
       contact_person,
       open,
+      country,
+      province,
+      regency,
+      district,
+      village,
+      postal_code,
+      street,
       close,
       capacity,
       description,
@@ -82,6 +108,14 @@ router.patch("/:id", imageUpload().array("images"), async (req, res, next) => {
     const existingGalleries = await GalleryCulinary.findAll({
       where: { culinary_place_id: id },
     });
+    const location = await getLocation({
+      country,
+      province,
+      regency,
+      district,
+      village, 
+      postal_code,
+    });
 
     console.log("imgages", req.files);
 
@@ -91,9 +125,11 @@ router.patch("/:id", imageUpload().array("images"), async (req, res, next) => {
         address,
         contact_person,
         open,
+        location_id: location.id,
         close,
         capacity,
         description,
+        street,
         status,
         geom: JSON.parse(geom),
       },

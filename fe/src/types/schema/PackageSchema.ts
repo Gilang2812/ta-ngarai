@@ -10,6 +10,7 @@ import {
 } from "@/validation/package.validation";
 import * as yup from "yup";
 import { FilepondType } from "../common/FilepondType";
+import { LocationSchema } from "./LocationSchema";
 
 export type PackageTypeSchema = {
   id: string;
@@ -73,7 +74,7 @@ export type AttractionSchema = ObjectBase & {
 };
 
 export type CulinaryPlace = ObjectBase & {
-  address: string;
+  location: LocationSchema;
   contact_person: string;
   capacity: number;
   open: Time;
@@ -94,7 +95,8 @@ export type FacilityType = {
 };
 
 export type SouvenirPlaceSchema = ObjectBase & {
-  address: string;
+  location: LocationSchema;
+  street: string;
   destination_id: string;
   contact_person: string;
   open: Time;
@@ -103,7 +105,7 @@ export type SouvenirPlaceSchema = ObjectBase & {
 };
 
 export type TraditionalHouse = ObjectBase & {
-  address: string;
+  location: LocationSchema;
   contact_person: string;
   open: Time;
   close: Time;
@@ -113,7 +115,7 @@ export type TraditionalHouse = ObjectBase & {
 };
 
 export type WorshipPlaceSchema = ObjectBase & {
-  address: string;
+  location: LocationSchema;
   capacity: number;
   description: string;
   status: number;
@@ -123,7 +125,8 @@ export type SimplifiedObject = ObjectBase & {
   type?: string;
   price?: number;
   contact_person?: string;
-  address?: string;
+  location?: LocationSchema;
+  street?: string;
   capacity?: number;
   open?: string;
   close?: string;

@@ -8,10 +8,17 @@ const TraditionalHouse = sequelize.define(
     id: {
       type: DataTypes.STRING,
       primaryKey: true,
-      allowNull:true
+      allowNull: true,
     },
     name: DataTypes.STRING(255),
-    address: DataTypes.STRING(255),
+    location_id: {
+      type: DataTypes.STRING(5),
+      allowNull: true,
+    },
+    street: {
+      type: DataTypes.STRING(30),
+      allowNull: true,
+    },
     contact_person: DataTypes.STRING(13),
     ticket_price: DataTypes.INTEGER,
     category: DataTypes.INTEGER,
@@ -31,6 +38,17 @@ const TraditionalHouse = sequelize.define(
 
 TraditionalHouse.beforeCreate(async (instance) => {
   instance.id = await generateCustomId("TH", TraditionalHouse, 5);
+});
+
+TraditionalHouse.beforeFind((options) => {
+  const { Location } = require("./relation");
+
+  if (!options.include) options.include = [];
+
+  options.include.push({
+    model: Location,
+    as: "location",
+  });
 });
 
 module.exports = { TraditionalHouse };

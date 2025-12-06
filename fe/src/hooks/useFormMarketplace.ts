@@ -5,34 +5,45 @@ import { LatLngType } from "@/types/props/mapProps";
 import { FormMarketplace } from "@/types/schema/MarketplaceSchema";
 import { cornerAlert } from "@/utils/AlertUtils";
 import { createFormData } from "@/utils/common/createFormData";
+import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-const useFormMarketplace = (existingMarketplace?: FormMarketplace) => {
+const useFormMarketplace = (
+  existingMarketplace?: FormMarketplace,
+  callback?: () => void
+) => {
+  const queryClient = useQueryClient();
   const router = useRouter();
   const [initialValues, setInitialValues] = useState<
     FormMarketplace & LatLngType
   >({
     id: existingMarketplace?.id || "",
     name: existingMarketplace?.name || "",
-    address: existingMarketplace?.address || "",
+    village: existingMarketplace?.village || "",
     contact_person: existingMarketplace?.contact_person || "",
     close: existingMarketplace?.close || "",
     open: existingMarketplace?.open || "",
     description: existingMarketplace?.description || "",
     geom: existingMarketplace?.geom || "",
     images: existingMarketplace?.images || [],
+    postal_code: existingMarketplace?.postal_code || "",
     latitude: 0,
     longitude: 0,
-    destination_id: "",
-    kecamatan: "",
-    kota: "",
-    negara: "",
-    provinsi: "",
+    destination_id: existingMarketplace?.destination_id || "",
+    district: existingMarketplace?.district.toLocaleLowerCase() || "",
+    regency: existingMarketplace?.regency?.toLocaleLowerCase() || "",
+    country: existingMarketplace?.country.toLocaleLowerCase() || "",
+    province: existingMarketplace?.province.toLocaleLowerCase() || "",
+    street: existingMarketplace?.street || "",
   });
+
   const { mutate: createMarketplace, isPending: isPendingCreate } =
     useCreateMarketplace({
       onSuccess: () => {
         cornerAlert("success create marketplace");
+        callback?.();
+        queryClient.invalidateQueries({ queryKey: ["sp-user"] });
+
         router.push(ROUTES.MARKETPLACE);
       },
     });
@@ -40,6 +51,8 @@ const useFormMarketplace = (existingMarketplace?: FormMarketplace) => {
     useUpdateMarketplace({
       onSuccess: () => {
         cornerAlert("success update marketplace");
+        callback?.();
+        queryClient.invalidateQueries({ queryKey: ["sp-user"] });
         router.push(ROUTES.MARKETPLACE);
       },
     });

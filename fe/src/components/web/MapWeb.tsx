@@ -85,6 +85,7 @@ function MapWeb({
   const { allObjectGeom } = useMergeALlObject(objects);
   const { toggleCheckBox } = useCheckBox();
 
+
   useEffect(() => {
     if (open === "around") {
       hideAllObjects();
@@ -149,15 +150,15 @@ function MapWeb({
       <div className="relative min-h-96 min-w-96 ">
         <MapLegend isOpen={isShowLegend} />
         <MapLayout
-          onLoad={(map) => {
-            mapRef.current = map;
-          }}
+          mapRef={mapRef}
           origin={userLocation || clickedPosition}
           onClick={handleManualLocation}
           mapTypeId={`${isTerrain ? "terrain" : "satellite"}`}
           zoom={zoom || 17}
           options={{
             mapTypeId: `${isTerrain ? "terrain" : "satellite"}`,
+            scaleControl: true,
+            rotateControl: true,
           }}
           hideAllLayer={hideAllLayers}
         >

@@ -187,20 +187,20 @@ router.patch(
   }
 );
 
-router.delete(
-  "/:id_souvenir_place/:craft_variant_id",
-  async (req, res, next) => {
-    try {
-      const { craft_variant_id, id_souvenir_place } = req.params;
-      const deletedDetailCraft = await deleteDetailCraft({
-        craft_variant_id,
-        id_souvenir_place,
-      });
-      res.status(204).json(deletedDetailCraft);
-    } catch (error) {
-      next(error);
+  router.delete(
+    "/:id_souvenir_place/:craft_variant_id",
+    async (req, res, next) => {
+      try {
+        const { craft_variant_id, id_souvenir_place } = req.params;
+        const deletedDetailCraft = await deleteDetailCraft({
+          craft_variant_id,
+          id_souvenir_place,
+        });
+        res.status(204).json(deletedDetailCraft);
+      } catch (error) {
+        next(error);
+      }
     }
-  }
-);
+  );
 
 module.exports = router;

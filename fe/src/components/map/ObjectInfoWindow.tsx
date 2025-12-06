@@ -1,3 +1,4 @@
+import { formatAddress } from "@/lib/addressFormatter";
 import { SimplifiedObject } from "@/types/schema/PackageSchema";
 import {
   FaAddressBook,
@@ -21,7 +22,7 @@ export const getIconAndTextThirdLine = (properties: SimplifiedObject) => {
   if (properties.type !== undefined) {
     return { icon: <FaMoneyBill />, text: properties.price };
   } else if (properties.contact_person !== undefined) {
-    return { icon: <FaMapPin />, text: properties.address };
+    return { icon: <FaMapPin />, text: formatAddress(properties) };
   } else {
     return { icon: <FaMoneyBill />, text: "free" };
   }

@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { Check, Edit, MapPin, Plus } from "lucide-react";
 import React from "react";
 import Button from "../common/Button";
+import { formatAddress } from "@/lib/formatAddress";
 
 type Props = {
   addresses: Address[];
@@ -55,10 +56,7 @@ const AddressSelector = ({
               <div>
                 <div className="text-base capitalize text-justify pr-2">
                   <p>
-                    {Object.values(address)
-                      .slice(3, -1)
-                      .join(", ")
-                      .toLowerCase()}
+                    {formatAddress(address)}
                   </p>
                 </div>
                 {address.is_primary ? (

@@ -3,6 +3,7 @@ import { CraftVariantGallery, FetchCraftVariant } from "./CraftSchema";
 import { CheckoutItem } from "./CheckoutSchema";
 import { SouvenirPlace } from "./CraftTransactionSchema";
 import { FilepondType } from "../common/FilepondType";
+import { LocationSchema } from "./LocationSchema";
 export type DetailCraftInclude = (
   | "craft"
   | "craftGalleries"
@@ -62,7 +63,8 @@ export type DetailCraftOrderResponse = DetailCraftUserResponse & {
 export type DetailCraftResponseSouvenirPlace = DetailCraftManagementResponse & {
   souvenirPlace: SouvenirPlace & {
     destination_id: string;
-    address: string;
+    location: LocationSchema;
+    street: string;
     contact_person: string;
   };
 };

@@ -24,6 +24,8 @@ const {
   updateCheckout,
   updateItemsCheckout,
   checkoutOrder,
+  takeCheckout,
+  updateCheckoutStatus,
   // getUserHistory
 } = require("./checkout.service");
 const fs = require("fs");
@@ -88,6 +90,7 @@ router.patch("/:id", async (req, res, next) => {
     const { id } = req.params;
     const { items, item_details, shippings, sub_total, total_shipping_cost } =
       req.body;
+    await takeCheckout({ id });
 
     const transaction = await createPayment({
       order_id: id,
@@ -138,6 +141,13 @@ router.patch("/:id", async (req, res, next) => {
         await currenCraftItem.save();
       })
     );
+    await updateCheckoutStatus({
+      id: id,
+      payment_type: 'bank_transfer',
+      settlement_time: new Date(),
+      shippings: shippingsResult,
+      status: 2,
+    });
     const response = { token: transaction.token, shippings: shippingsResult };
     res.status(200).json(response);
   } catch (error) {
@@ -258,7 +268,6 @@ router.patch(
       const { review_text, review_rating, shipping_id, seller_response } =
         req.body;
       let updatedItem = null;
-      console.log("ini lagi di test");
       if (seller_response || seller_response == "") {
         updatedItem = await updateItemsCheckout(
           { checkout_id, craft_variant_id, id_souvenir_place },

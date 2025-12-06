@@ -3,7 +3,6 @@ const {
   insertSouvenirPlace,
   findSouvenirPlace,
   findSouvenirPlaceById,
-  updateSouvenirPlace,
   deleteSouvenirPlace,
   insertDetailUserSouvenir,
   findUserSouvenirPlace,

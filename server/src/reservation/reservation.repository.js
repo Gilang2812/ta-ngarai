@@ -214,12 +214,12 @@ const findReservationById = async (id) => {
               {
                 model: Homestay,
                 as: "homestay",
-                attributes: [
-                  "id",
-                  "name",
-                  "address",
-                  "description",
-                  "contact_person",
+                attributes: ["id", "name", "description", "contact_person"],
+                include: [
+                  {
+                    model: Location,
+                    as: "location",
+                  },
                 ],
               },
               {

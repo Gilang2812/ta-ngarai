@@ -17,6 +17,7 @@ const { TraditionalHouse } = require("../../models/TraditionalHouse");
 const {
   generateDistanceQuery,
   generateDistanceLessQuery,
+  formatLocationRows,
 } = require("../../utils/generateDistanceQuery");
 
 const objectList = {
@@ -40,8 +41,10 @@ const findObjects = async (key, id) => {
 
 const findObjectAround = async (lat, long, radius, tableName, columns) => {
   const radiusKm = parseFloat(radius) / 1000;
-  let query,
-    replacements = {};
+
+  let query;
+  let replacements = {};
+
   if (lat && lat != 0 && long && long != 0 && radius && radius != 0) {
     query = generateDistanceQuery({
       tableName,
@@ -54,15 +57,29 @@ const findObjectAround = async (lat, long, radius, tableName, columns) => {
       columns,
     });
   }
+
   let [objects] = await sequelize.query(query, {
     replacements,
   });
+
+  // khusus facility (karena tidak pakai location)
   if (tableName === "facility") {
     objects = objects.map((item) => {
-      const { type, geom, ...rest } = item;
-      return { ...rest, type: { id: item.type_id, type: item.type }, geom };
+      const { geom, type, type_id, ...rest } = item;
+      return {
+        ...rest,
+        type: { id: type_id, type },
+        geom,
+      };
     });
+
+    return objects; // facility tidak butuh formatLocationRows
   }
+
+  // ============================
+  // APPLY formatLocationRows()
+  // ============================
+  objects = formatLocationRows(objects);
 
   return objects;
 };
@@ -139,11 +156,11 @@ const findTraditionalHouse = async (id) => {
       {
         model: GalleryTraditional,
         as: "galleries",
-      }
-    ]
+      },
+    ],
   });
   return traditionalHouse;
-}
+};
 module.exports = {
   findObjects,
   findAttraction,

@@ -17,9 +17,17 @@ export const useReformatObject = (
               type: item.type,
               price: item.price,
               contact_person: item.contact_person,
-              address: item.address,
+              location: {
+                country: item?.location?.country,
+                district: item?.location?.district,
+                province: item?.location?.province,
+                regency: item?.location?.regency,
+                village: item?.location?.village,
+                postal_code: item?.location?.postal_code,
+              },
+              street: item?.street,
               capacity: item.capacity,
-            },
+            } as SimplifiedObject,
           };
         }),
       }

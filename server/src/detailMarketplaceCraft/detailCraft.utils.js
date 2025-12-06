@@ -6,6 +6,7 @@ const {
   ItemCheckoutReviewGallery,
   CraftVariant,
   SouvenirPlace,
+  Location,
 } = require("../../models/relation");
 
 const includeMap = {
@@ -34,7 +35,13 @@ const includeMap = {
   souvenirPlace: {
     model: SouvenirPlace,
     as: "souvenirPlace",
-    attributes: ["id", "name", "address", "contact_person"],
+    attributes: ["id", "name", "contact_person"],
+    include: [
+      {
+        model: Location,
+        as: "location",
+      },
+    ],
   },
 
   checkout: {

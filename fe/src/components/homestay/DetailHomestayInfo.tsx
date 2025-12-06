@@ -2,6 +2,8 @@
 
 import { HomestaySchema } from "@/types/schema/HomestaySchema";
 import { BodyRawSkeleton } from "../loading/BodyRawSkeleton";
+import { formatAddress } from "@/lib/addressFormatter";
+import { SimplifiedObject } from "@/types/schema/PackageSchema";
 
 export const DetailHomestayInfo = ({ data }: { data: HomestaySchema }) => {
   return (
@@ -12,8 +14,8 @@ export const DetailHomestayInfo = ({ data }: { data: HomestaySchema }) => {
           <td>{data?.name ?? <BodyRawSkeleton />}</td>
         </tr>
         <tr>
-          <td>Addree</td>
-          <td>{data?.address ?? <BodyRawSkeleton />}</td>
+          <td>Addrees</td>
+          <td>{formatAddress(data as unknown as SimplifiedObject) ?? <BodyRawSkeleton />}</td>
         </tr>
         <tr>
           <td>Contact person</td>

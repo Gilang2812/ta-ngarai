@@ -13,6 +13,8 @@ import { FormInput } from "@/components/inputs/FormInput";
 import ManagementSkeletonLoader from "@/components/loading/ManagementSkeletonLoader";
 import GoogleMapDrawing from "@/components/map/GoogleMapDrawing";
 import useManageCulinary from "@/hooks/useManageCulinary";
+import { formatAddress } from "@/lib/addressFormatter";
+import { SimplifiedObject } from "@/types/schema/PackageSchema";
 import { culinarySchema } from "@/validation/object.validation";
 import { Form, Formik } from "formik";
 import React from "react";
@@ -71,7 +73,7 @@ const Culinary = () => {
                   <td>{indexOfFirstItem + index + 1}</td>
                   <td>{item.id}</td>
                   <td>{item.name}</td>
-                  <td>{item.address}</td>
+                  <td>{formatAddress(item as unknown as SimplifiedObject)}</td>
                   <td>{item.contact_person}</td>
                   <td>
                     <div className="flex items-center gap-4 justify-center">
@@ -165,9 +167,45 @@ const Culinary = () => {
                 </section>
                 <section>
                   <FormInput
-                    label="Address"
-                    name="address"
-                    placeholder="Address"
+                    label="Country"
+                    name="country"
+                    placeholder="Country"
+                  />
+                  <FormInput
+                    label="Province"
+                    name="province"
+                    placeholder="Province"
+                  />
+                </section>
+                <section>
+                  <FormInput
+                    label="District"
+                    name="district"
+                    placeholder="District"
+                  />
+                  <FormInput
+                    label="Regency"
+                    name="regency"
+                    placeholder="Regency"
+                  />
+                </section>
+                <section>
+                  <FormInput
+                    label="Street"
+                    name="street"
+                    placeholder="Street"
+                  />
+                </section>
+                <section>
+                  <FormInput
+                    label="Village"
+                    name="village"
+                    placeholder="Village"
+                  />
+                  <FormInput
+                    label="Postal Code"
+                    name="postal_code"
+                    placeholder="Postal Code"
                   />
                 </section>
                 <section>

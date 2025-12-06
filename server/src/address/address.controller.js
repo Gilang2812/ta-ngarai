@@ -1,3 +1,4 @@
+const { getLocation } = require("../location/location.repository");
 const {
   getAddress,
   updateAddress,
@@ -23,18 +24,27 @@ router.post("/", async (req, res, next) => {
       label,
       recipient_name,
       recipient_phone,
-      negara,
-      provinsi,
-      kota,
-      kecamatan,
-      kelurahan,
-      kode_pos,
+      country,
+      province,
+      regency,
+      district,
+      village,
+      postal_code,
       street,
       details,
       is_primary,
     } = req.body;
     const customer_id = req.user.id;
     console.log(req.body);
+    const location = await getLocation({
+      country,
+      province,
+      regency,
+      district,
+      village,
+      postal_code,
+    });
+
     if (is_primary)
       await updateAddress({ is_primary: 1, customer_id }, { is_primary: 0 });
     const newAddress = await createAddress({
@@ -43,12 +53,7 @@ router.post("/", async (req, res, next) => {
       label,
       recipient_name,
       recipient_phone,
-      negara,
-      provinsi,
-      kota,
-      kecamatan,
-      kelurahan,
-      kode_pos,
+      location_id: location.id,
       street,
       details,
       is_primary,
@@ -67,16 +72,25 @@ router.patch("/:id", async (req, res, next) => {
       label,
       recipient_name,
       recipient_phone,
-      negara,
-      provinsi,
-      kota,
-      kecamatan,
-      kelurahan,
-      kode_pos,
+      country,
+      province,
+      regency,
+      district,
+      village,
+      postal_code,
       street,
       details,
       is_primary,
     } = req.body;
+    const location = await getLocation({
+      country,
+      province,
+      regency,
+      district,
+      village,
+      postal_code,
+    });
+
     if (is_primary)
       await updateAddress(
         { is_primary: 1, customer_id: req.user.id },
@@ -89,12 +103,7 @@ router.patch("/:id", async (req, res, next) => {
         label,
         recipient_name,
         recipient_phone,
-        negara,
-        provinsi,
-        kota,
-        kecamatan,
-        kelurahan,
-        kode_pos,
+        location_id: location.id,
         street,
         details,
         is_primary,

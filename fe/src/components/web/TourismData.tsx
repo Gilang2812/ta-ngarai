@@ -1,5 +1,7 @@
 import { useFetchTourism } from "@/features/web/useFetchTourism"; 
 import { RawSkeleton } from "@/components/loading/RawSkeleton";
+import { formatAddress } from "@/lib/addressFormatter";
+import { SimplifiedObject } from "@/types/schema/PackageSchema";
 
 export const TourismData = () => {
   const {data,isLoading } = useFetchTourism('KG01')
@@ -17,7 +19,7 @@ export const TourismData = () => {
         </tr>
         <tr>
           <th>Address</th>
-          <td>{data?.address}</td>
+         <td>{formatAddress(data as unknown as SimplifiedObject)}</td>
         </tr>
         <tr>
           <th>Open</th>

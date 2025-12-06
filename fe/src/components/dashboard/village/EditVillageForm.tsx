@@ -1,6 +1,7 @@
 "use client";
 import Button from "@/components/common/Button";
 import FilePondComponent from "@/components/common/Filepond";
+import { ValidateClose } from "@/components/common/ValidateClose";
 import { FormInput } from "@/components/inputs/FormInput";
 import ManagementSkeletonLoader from "@/components/loading/ManagementSkeletonLoader";
 import { tourismVillageSchema, useEditVillage } from "@/hooks/useEditVillage";
@@ -33,7 +34,13 @@ const EditVillageForm = ({ id }: Props) => {
               name="type_of_tourism"
               type="text"
             />
-            <FormInput label="Address" name="address" type="text" />
+            <FormInput label="Country" name="country" type="text" />
+            <FormInput label="Province" name="province" type="text" />
+            <FormInput label="Regency" name="regency" type="text" />
+            <FormInput label="District" name="district" type="text" />
+            <FormInput label="Village" name="village" type="text" />
+            <FormInput label="Postal Code" name="postal_code" type="text" />
+            <FormInput label="Street" name="street" type="text" />
             <FormInput label="Open Time" name="open" type="time" />
             <FormInput label="Close Time" name="close" type="time" />
             <FormInput label="Ticket Price" name="ticket_price" type="number" />
@@ -66,6 +73,7 @@ const EditVillageForm = ({ id }: Props) => {
                 label="QR Image"
               />
             </div>
+            <ValidateClose />
           </section>
 
           {/* Right Column: Gallery Image Uploader */}

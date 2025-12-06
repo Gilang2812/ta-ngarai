@@ -4,6 +4,8 @@ import ImgCraft from "../common/ImgCraft";
 import { SingleContentWrapper } from "../common/SingleContentWrapper";
 import { ReservationStatus } from "@/utils/common/getReservationStatus";
 import { PaymentButton } from "../managereservation/payment/PaymentButton";
+import { formatAddress } from "@/lib/addressFormatter";
+import { SimplifiedObject } from "@/types/schema/PackageSchema";
 
 type Props = {
   data: DetailHomestayReservation;
@@ -69,7 +71,7 @@ const ReservationInfo = ({
               {data.detail?.[0]?.homestay?.homestay?.name || "Homestay Name"}
             </h3>
             <address className="font-normal leading-relaxed line-clamp-4 ">
-              {data.detail?.[0]?.homestay?.homestay?.address ||
+              {formatAddress(data.detail?.[0]?.homestay?.homestay as unknown as SimplifiedObject) ||
                 "Address not available"}{" "}
               {data.detail?.[0]?.homestay?.homestay?.description}
             </address>

@@ -47,6 +47,7 @@ const { WorshipPlace } = require("./WorshipPlace.js");
 const { GalleryWorship } = require("./GalleryWorship.js");
 const { TraditionalHouse } = require("./TraditionalHouse.js");
 const { GalleryTraditional } = require("./GalleryTraditional.js");
+const { Location } = require("./LocationModel.js");
 
 User.hasMany(AuthGroupUsers, { foreignKey: "user_id", as: "user" });
 AuthGroup.hasMany(AuthGroupUsers, { foreignKey: "group_id", as: "group" });
@@ -502,6 +503,69 @@ TraditionalHouse.hasMany(GalleryTraditional, {
   as: "galleries",
 });
 
+GalleryTraditional.belongsTo(TraditionalHouse, {
+  foreignKey: "traditional_house_id",
+  as: "traditionalHouse",
+});
+
+Location.hasMany(CulinaryPlace, {
+  foreignKey: "location_id",
+  as: "culinaryPlaces",
+});
+Location.hasMany(SouvenirPlace, {
+  foreignKey: "location_id",
+  as: "souvenirPlaces",
+});
+Location.hasMany(Homestay, {
+  foreignKey: "location_id",
+  as: "homestays",
+});
+Location.hasMany(WorshipPlace, {
+  foreignKey: "location_id",
+  as: "worshipPlaces",
+});
+Location.hasMany(TraditionalHouse, {
+  foreignKey: "location_id",
+  as: "traditionalHouses",
+});
+Location.hasMany(ShippingAddress, {
+  foreignKey: "location_id",
+  as: "shippingAddresses",
+});
+Location.hasMany(TourismVillage, {
+  foreignKey: "location_id",
+  as: "tourismVillages",
+});
+
+CulinaryPlace.belongsTo(Location, {
+  foreignKey: "location_id",
+  as: "location",
+});
+SouvenirPlace.belongsTo(Location, {
+  foreignKey: "location_id",
+  as: "location",
+});
+Homestay.belongsTo(Location, {
+  foreignKey: "location_id",
+  as: "location",
+});
+WorshipPlace.belongsTo(Location, {
+  foreignKey: "location_id",
+  as: "location",
+});
+TraditionalHouse.belongsTo(Location, {
+  foreignKey: "location_id",
+  as: "location",
+});
+ShippingAddress.belongsTo(Location, {
+  foreignKey: "location_id",
+  as: "location",
+});
+TourismVillage.belongsTo(Location, {
+  foreignKey: "location_id",
+  as: "location",
+});
+
 module.exports = {
   AuthGroup,
   AuthGroupUsers,
@@ -509,7 +573,7 @@ module.exports = {
   Announcement,
   TourismVillage,
   GalleryTourism,
-  Package,
+  Package, 
   PackageDay,
   PackageType,
   ServicePackage,
@@ -550,4 +614,5 @@ module.exports = {
   GalleryWorship,
   TraditionalHouse,
   GalleryTraditional,
+  Location,
 };

@@ -14,8 +14,12 @@ const Homestay = sequelize.define(
       type: DataTypes.STRING(50),
       allowNull: true,
     },
-    address: {
-      type: DataTypes.STRING(100),
+    location_id: {
+      type: DataTypes.STRING(5),
+      allowNull: true,
+    },
+    street: {
+      type: DataTypes.STRING(30),
       allowNull: true,
     },
     contact_person: {
@@ -61,6 +65,16 @@ const Homestay = sequelize.define(
 
 Homestay.beforeCreate(async (instance) => {
   instance.id = await generateCustomId("HO", Homestay, 5);
+});
+
+Homestay.beforeFind((options) => {
+  const { Location } = require("./relation");
+  if (!options.include) options.include = [];
+
+  options.include.push({
+    model: Location,
+    as: "location",
+  });
 });
 
 module.exports = { Homestay };

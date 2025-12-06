@@ -1,7 +1,9 @@
 "use client";
 
 import { X } from "lucide-react";
-import { Address } from "@/types/schema/CheckoutSchema";
+import { type AddressForm as AddressFormSchema } from "@/types/schema/CheckoutSchema";
+
+
 import Button from "../common/Button";
 import { motion } from "framer-motion";
 import { Form } from "formik";
@@ -10,9 +12,9 @@ import { CheckBoxLabel } from "../common/CheckBoxLabel";
 import { useAddressForm } from "@/hooks/useAddressForm";
 
 interface AddressFormProps {
-  onSave: (values: Address) => void;
+  onSave: (values: AddressFormSchema) => void;
   onCancel: () => void;
-  addressInitialValues: Address;
+  addressInitialValues: AddressFormSchema;
   isPending?: boolean;
 }
 
@@ -58,11 +60,11 @@ export const AddressForm = ({
           <div>
             <FormInput
               type="number"
-              name="kode_pos"
+              name="postal_code"
               label="Postal Code"
               autoFocus
             />
-            {areaData && values.kode_pos && countryName.length === 0 && (
+            {areaData && values.postal_code && countryName.length === 0 && (
               <p className="text-red-600 text-sm font-bold">
                 postal code not found
               </p>
@@ -70,7 +72,7 @@ export const AddressForm = ({
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <FormInput as="select" name="negara" label="Country">
+            <FormInput as="select" name="country" label="Country">
               {!countryName || countryName.length === 0 ? (
                 <option value="" disabled>
                   No Country Available, Input Postal Code First
@@ -78,14 +80,14 @@ export const AddressForm = ({
               ) : (
                 <>
                   {countryName?.map((item, index) => (
-                    <option key={index} value={item}>
+                    <option key={index} value={item.toLowerCase()}>
                       {item}
                     </option>
                   ))}
                 </>
               )}
             </FormInput>
-            <FormInput as="select" name="provinsi" label="State/Province">
+            <FormInput as="select" name="province" label="State/Province">
               {!provinceName || provinceName.length === 0 ? (
                 <option value="" disabled>
                   No Province Available, Select Country First
@@ -93,7 +95,7 @@ export const AddressForm = ({
               ) : (
                 <>
                   {provinceName?.map((item, index) => (
-                    <option key={index} value={item}>
+                    <option key={index} value={item.toLowerCase()}>
                       {item}
                     </option>
                   ))}
@@ -104,7 +106,7 @@ export const AddressForm = ({
 
           <>
             <div className="grid grid-cols-1 md:grid-cols-2  gap-4">
-              <FormInput as="select" name="kota" label="City">
+              <FormInput as="select" name="regency" label="City">
                 {!cityName || cityName.length === 0 ? (
                   <option value="" disabled>
                     No City Available
@@ -112,14 +114,14 @@ export const AddressForm = ({
                 ) : (
                   <>
                     {cityName?.map((item, index) => (
-                      <option key={index} value={item}>
+                      <option key={index} value={item.toLowerCase()}>
                         {item}
                       </option>
                     ))}
                   </>
                 )}
               </FormInput>
-              <FormInput as="select" name="kecamatan" label="District">
+              <FormInput as="select" name="district" label="District">
                 {!districtName || districtName.length === 0 ? (
                   <option value="" disabled>
                     No District Available, select City First
@@ -127,7 +129,7 @@ export const AddressForm = ({
                 ) : (
                   <>
                     {districtName?.map((item, index) => (
-                      <option key={index} value={item}>
+                      <option key={index} value={item.toLowerCase()}>
                         {item}
                       </option>
                     ))}
@@ -136,7 +138,7 @@ export const AddressForm = ({
               </FormInput>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <FormInput name="kelurahan" label="Subdistrict" />
+              <FormInput name="village" label="Village" />
               <FormInput name="recipient_phone" label="Phone" />
             </div>
           </>

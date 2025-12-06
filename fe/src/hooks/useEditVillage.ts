@@ -13,7 +13,16 @@ export const tourismVillageSchema = yup.object({
   id: yup.string().required("ID is required"),
   name: yup.string().required("Name is required"),
   type_of_tourism: yup.string().required("Type of tourism is required"),
-  address: yup.string().required("Address is required"),
+  country: yup.string().max(30).required("Country is required"),
+  province: yup.string().max(30).required("Province is required"),
+  regency: yup.string().max(50).required("Regency is required"),
+  district: yup.string().max(30).required("District is required"),
+  village: yup.string().max(30).required("Village is required"),
+  street: yup.string().max(50).required("Street is required"),
+  postal_code: yup
+    .string()
+    .length(5, "Postal code must be exactly 5 characters")
+    .required("Postal code is required"),
   open: yup.string().required("Open time is required"),
   close: yup.string().required("Close time is required"),
   ticket_price: yup.number().required("Ticket price is required"),
@@ -32,7 +41,13 @@ type EditVillageForm = {
   id: string;
   name: string;
   type_of_tourism: string;
-  address: string;
+  country: string;
+  province: string;
+  regency: string;
+  district: string;
+  village: string;
+  postal_code: string;
+  street: string;
   open: string;
   close: string;
   ticket_price: number;
@@ -50,6 +65,7 @@ type EditVillageForm = {
 export const useEditVillage = (id: string) => {
   const router = useRouter();
   const { data, isLoading, refetch } = useFetchTourism(id);
+  
   const qr = useMemo(() => {
     if (!data?.qr_url) return [];
     return formatImageUrls([data.qr_url]);
@@ -65,7 +81,13 @@ export const useEditVillage = (id: string) => {
     id: data?.id ?? "",
     name: data?.name ?? "",
     type_of_tourism: data?.type_of_tourism ?? "",
-    address: data?.address ?? "",
+    country: data?.location.country ?? "",
+    province: data?.location.province ?? "",
+    regency: data?.location.regency ?? "",
+    district: data?.location.district ?? "",
+    village: data?.location.village ?? "",
+    postal_code: data?.location.postal_code ?? "",
+    street: data?.street ?? "",
     open: data?.open ?? "",
     close: data?.close ?? "",
     ticket_price: data?.ticket_price ?? ("" as unknown as number),

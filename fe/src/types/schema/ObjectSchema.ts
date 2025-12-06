@@ -1,5 +1,6 @@
 import { MultiPolygon } from "geojson";
 import { FilepondType } from "../common/FilepondType";
+import { LocationSchema } from "./LocationSchema";
 
 export type Attraction = {
   id: string;
@@ -38,20 +39,16 @@ export type GalleryWorship = {
   url: string;
 };
 
-
 export type GalleryTraditional = {
   id: string;
   traditional_house_id: string;
   url: string;
 };
 
-
-
-
 export type CulinaryPlace = {
   id: string;
   name: string;
-  address: string;
+  location: LocationSchema;
   contact_person: string;
   open: string;
   close: string;
@@ -62,17 +59,14 @@ export type CulinaryPlace = {
   geom?: MultiPolygon | string;
 };
 
-
-
-
-
 export type TraditionalHouse = {
   id: string;
   name: string;
-  address: string;
+  location: LocationSchema;
+  street: string;
   contact_person: string;
   ticket_price: number;
-  category: 1|2;
+  category: 1 | 2;
   min_capacity: number;
   open: string;
   close: string;
@@ -86,14 +80,32 @@ export type CulinarySchema = CulinaryPlace & {
   galleries: GalleryCulinary[];
 };
 
-export type CulinaryForm = CulinaryPlace & {
+export type CulinaryForm = {
+  id: string;
+  name: string;
+  country: string;
+  district: string;
+  province: string;
+  regency: string;
+  village: string;
+  postal_code: string;
+  street: string;
+  contact_person: string;
+  open: string;
+  close: string;
+  capacity: number;
+  description: string;
+  status: number;
+  video_url?: string;
+  geom?: MultiPolygon | string;
   images: FilepondType;
 };
 
 export type WorshipPlace = {
   id: string;
   name: string;
-  address: string;
+  location: LocationSchema;
+  street: string;
   capacity: number;
   description: string;
   status: number;
@@ -104,7 +116,23 @@ export type WorshipSchema = WorshipPlace & {
   galleries: GalleryWorship[];
 };
 
-export type WorshipForm = WorshipPlace & {
+export type WorshipForm = {
+  id: string;
+  name: string;
+  country: string;
+  district: string;
+  province: string;
+  regency: string;
+  village: string;
+  postal_code: string;
+  street: string;
+  contact_person: string;
+  open: string;
+  close: string;
+  capacity: number;
+  description: string;
+  status: number;
+  geom?: MultiPolygon | string;
   images: FilepondType;
 };
 
@@ -112,6 +140,25 @@ export type TraditionalSchema = TraditionalHouse & {
   galleries: GalleryTraditional[];
 };
 
-export type TraditionalForm = TraditionalHouse & {
+export type TraditionalForm = {
+  id: string;
+  name: string;
+  country: string;
+  district: string;
+  province: string;
+  regency: string;
+  village: string;
+  postal_code: string;
+  street: string;
+  contact_person: string;
+  ticket_price: number;
+  category: 1 | 2;
+  min_capacity: number;
+  open: string;
+  close: string;
+  description: string;
+  status?: number;
+  video_url?: string;
+  geom?: MultiPolygon | string;
   images: FilepondType;
 };

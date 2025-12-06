@@ -3,7 +3,10 @@ import { useFetchTraditional } from "@/features/dashboard/traditional/useFetchTr
 import { useEffect, useMemo, useState } from "react";
 import useSearchTable from "./useSearchTable";
 import useTableManagement from "./useTableManagement";
-import { TraditionalForm, TraditionalSchema } from "@/types/schema/ObjectSchema";
+import {
+  TraditionalForm,
+  TraditionalSchema,
+} from "@/types/schema/ObjectSchema";
 import useCreateTraditional from "@/features/dashboard/traditional/useCreateTraditional";
 import { useModal } from "@/utils/ModalUtils";
 import { createFormData } from "@/utils/common/createFormData";
@@ -25,7 +28,13 @@ const useManageTraditional = () => {
   >({
     id: "",
     name: "",
-    address: "",
+    street: "",
+    country: "",
+    district: "",
+    province: "",
+    regency: "",
+    village: "",
+    postal_code: "",
     contact_person: "",
     ticket_price: 0,
     category: 1,
@@ -46,7 +55,12 @@ const useManageTraditional = () => {
       const request = {
         id: item.id,
         name: item.name,
-        address: item.address,
+        country: item.location?.country,
+        district: item.location?.district,
+        province: item.location?.province,
+        regency: item.location?.regency,
+        village: item.location?.village,
+        postal_code: item.location?.postal_code,
         contact_person: item.contact_person,
         category: getAttractionCategory(item.category),
         price: item.ticket_price,
@@ -106,7 +120,12 @@ const useManageTraditional = () => {
     setInitialValues((prev) => ({
       ...prev,
       name: "",
-      address: "",
+      country: "",
+      district: "",
+      province: "",
+      regency: "",
+      village: "",
+      postal_code: "",
       contact_person: "",
       ticket_price: 0,
       category: 1,
@@ -122,7 +141,7 @@ const useManageTraditional = () => {
     }));
   };
 
-  const handleEditTraditional = (traditional: TraditionalSchema) => { 
+  const handleEditTraditional = (traditional: TraditionalSchema) => {
     toggleModal();
     const images = formatImageUrls(
       traditional?.galleries?.map((gallery) => gallery.url) || []
@@ -132,7 +151,13 @@ const useManageTraditional = () => {
       ...prev,
       id: traditional?.id || "",
       name: traditional?.name || "",
-      address: traditional?.address || "",
+      country: traditional?.location?.country || "",
+      district: traditional?.location?.district || "",
+      province: traditional?.location?.province || "",
+      regency: traditional?.location?.regency || "",
+      village: traditional?.location?.village || "",
+      street: traditional?.street || "",
+      postal_code: traditional?.location?.postal_code || "",
       contact_person: traditional?.contact_person || "",
       ticket_price: traditional?.ticket_price || 0,
       category: traditional?.category || 1,
@@ -155,9 +180,8 @@ const useManageTraditional = () => {
   const handleSubmit = (values: typeof initialValues) => {
     const formData = createFormData(values);
     if (initialValues.id) {
-      updateTraditional(formData); 
-    } else { 
-
+      updateTraditional(formData);
+    } else {
       createTraditional(formData);
     }
   };

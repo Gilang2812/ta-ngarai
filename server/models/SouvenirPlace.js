@@ -19,9 +19,13 @@ const SouvenirPlace = sequelize.define(
       type: DataTypes.STRING(255),
       allowNull: false,
     },
-    address: {
-      type: DataTypes.STRING(255),
-      allowNull: false,
+    location_id: {
+      type: DataTypes.STRING(5),
+      allowNull: true,
+    },
+    street: {
+      type: DataTypes.STRING(30),
+      allowNull: true,
     },
     contact_person: {
       type: DataTypes.STRING(15),
@@ -54,7 +58,15 @@ const SouvenirPlace = sequelize.define(
     timestamps: false,
   }
 );
+SouvenirPlace.beforeFind((options) => {
+  const { Location } = require("./relation");
+  if (!options.include) options.include = [];
 
+  options.include.push({
+    model: Location,
+    as: "location",
+  });
+});
 SouvenirPlace.beforeCreate(async (instance) => {
   instance.id = await generateCustomId("SP", SouvenirPlace, 5);
 });

@@ -17,6 +17,7 @@ import { ReservationStatus } from "@/utils/common/getReservationStatus";
 import ButtonConfirmation from "../reservation/ButtonConfirmation";
 import ButtonCancel from "../reservation/ButtonCancel";
 import { CheckStatus } from "../managereservation/payment/CheckStatusButton";
+import { useRef } from "react";
 
 const DetailHomestayReservation = ({ id }: { id: string }) => {
   const {
@@ -34,6 +35,7 @@ const DetailHomestayReservation = ({ id }: { id: string }) => {
     handleRecheck,
   } = useDetailHomestayReservation(id);
   const centroid = getCentroid(geom);
+  const mapRef = useRef<google.maps.Map | null>(null);
   if (isLoading) return <DetailHomestayReservationLoader />;
   return (
     data &&
@@ -55,6 +57,7 @@ const DetailHomestayReservation = ({ id }: { id: string }) => {
               </h2>
             </header>
             <MapLayout
+              mapRef={mapRef}
               containerStyle={{ width: "100%", height: "500px" }}
               zoom={18}
               center={centroid}

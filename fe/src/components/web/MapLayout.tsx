@@ -14,12 +14,16 @@ import { ObjectAround } from "../map/ObjectAround";
 import { useMapLoad } from "@/hooks/useMapLoad";
 import { useDirectionStore } from "@/stores/DirectionStore";
 import useTravelRoute from "@/hooks/useTravelRoute";
+import { useMapHandler } from "@/hooks/useMapHandler";
+import { Compass } from "../map/Compass";
+import { CursorPosition } from "../map/Cursor";
 
 type Props = React.ComponentProps<typeof GoogleMap> & {
   children?: React.ReactNode;
   origin?: LatLngLiteral | null;
   hideAllLayer?: () => void;
   containerStyle?: React.CSSProperties;
+  mapRef: React.MutableRefObject<google.maps.Map | null>
 };
 
 function MapLayout({
@@ -30,23 +34,29 @@ function MapLayout({
     width: "100%",
     aspectRatio: 4 / 3,
   },
+  mapRef,
   ...props
 }: Props) {
   const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
+
   const { isLoaded } = useMapLoad();
   const [isOpen, setIsOpen] = useState(false);
   const { setResponse } = useDirectionStore();
   const { routes } = useTravelRoute();
   const toggleInfoWindow = useCallback(() => setIsOpen((prev) => !prev), []);
-
+  const { setZoomLevel } = useMapHandler(mapRef?.current)
   if (!isLoaded) return <MapSkeleton />;
   if (!apiKey) return <div>Google Maps API key is missing</div>;
 
   return (
     <GoogleMap
+      onLoad={map => { mapRef.current = map }}
       mapContainerStyle={containerStyle}
       center={props.center || LANDMARK_POSITION}
       zoom={zoom || 6}
+      onZoomChanged={() => {
+        if (mapRef.current) setZoomLevel(mapRef.current.getZoom()!);
+      }}
       mapTypeId="satellite"
       options={{
         disableDefaultUI: true,
@@ -54,6 +64,8 @@ function MapLayout({
         zoomControl: true,
         fullscreenControl: true,
         mapTypeControl: true,
+        scaleControl: true,
+        rotateControl: true,
         streetViewControl: true,
 
         gestureHandling: "greedy",
@@ -61,6 +73,9 @@ function MapLayout({
       {...props}
     >
       {children}
+      <Compass />
+      <CursorPosition />
+
       <MapMarker
         icon={{
           url: "/images/marker-kage.png",

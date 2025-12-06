@@ -1,5 +1,10 @@
 import { Address, Checkout, CheckoutItem } from "@/types/schema/CheckoutSchema";
-import { CourierPricing, DraftRequestForm } from "@/types/schema/ShippingSchema";
+import {
+  CourierPricing,
+  DraftRequestForm,
+} from "@/types/schema/ShippingSchema";
+import { formatAddress } from "./addressFormatter";
+import { SimplifiedObject } from "@/types/schema/PackageSchema";
 
 export const createShippingStoreBody = ({
   checkout,
@@ -18,7 +23,10 @@ export const createShippingStoreBody = ({
     origin_contact_phone:
       checkout?.items?.[0]?.detailCraft?.souvenirPlace?.contact_person ?? "",
     origin_address:
-      checkout?.items?.[0]?.detailCraft?.souvenirPlace?.address ?? "",
+      formatAddress(
+        checkout?.items?.[0]?.detailCraft
+          ?.souvenirPlace as unknown as SimplifiedObject
+      ) ?? "",
     origin_note: items[0]?.note ?? "",
     origin_area_id: checkout?.shippingAddress?.destination_id ?? "",
     destination_contact_name:

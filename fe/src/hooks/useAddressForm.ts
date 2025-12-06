@@ -2,12 +2,12 @@
 import React, { useMemo, useState } from "react";
 import { useEffect } from "react";
 import { useFormikContext } from "formik";
-import { Address } from "@/types/schema/CheckoutSchema";
+import { AddressForm } from "@/types/schema/CheckoutSchema";
 import useGetArea from "@/features/shipping/useGetArea";
 import { hideLoadingAlert, showLoadingAlert } from "@/utils/AlertUtils";
 import { debounce } from "lodash";
 export const useAddressForm = () => {
-  const { setFieldValue, values } = useFormikContext<Address>();
+  const { setFieldValue, values } = useFormikContext<AddressForm>();
   const [input, setInput] = useState<string>("");
   const { data: areaData, isLoading, isSuccess } = useGetArea(input);
 
@@ -17,13 +17,18 @@ export const useAddressForm = () => {
 
   const areas = useMemo(() => areaData?.areas || [], [areaData]);
 
-  const countryName = [...new Set(areas.map((item) => item.country_name))];
+  const countryName = [
+    ...new Set(areas.map((item) => item.country_name.toLowerCase())),
+  ];
  
   const provinceName = [
     ...new Set(
       areas
-        .filter((item) => item.country_name === values.negara)
-        .map((item) => item.administrative_division_level_1_name)
+        .filter(
+          (item) =>
+            item.country_name.toLowerCase() === values.country.toLowerCase()
+        )
+        .map((item) => item.administrative_division_level_1_name.toLowerCase())
     ),
   ];
 
@@ -41,10 +46,11 @@ export const useAddressForm = () => {
       areas
         .filter(
           (item) =>
-            item.country_name === values.negara &&
-            item.administrative_division_level_1_name === values.provinsi
+            item.country_name.toLowerCase() == values.country.toLowerCase() &&
+            item.administrative_division_level_1_name.toLowerCase() ==
+              values.province.toLowerCase()
         )
-        .map((item) => item.administrative_division_level_2_name)
+        .map((item) => item.administrative_division_level_2_name.toLowerCase())
     ),
   ];
 
@@ -53,31 +59,36 @@ export const useAddressForm = () => {
       areas
         .filter(
           (item) =>
-            item.country_name === values.negara &&
-            item.administrative_division_level_1_name === values.provinsi &&
-            item.administrative_division_level_2_name === values.kota
+            item.country_name.toLowerCase() == values.country.toLowerCase() &&
+            item.administrative_division_level_1_name.toLowerCase() ==
+              values.province.toLowerCase() &&
+            item.administrative_division_level_2_name.toLowerCase() ==
+              values.regency.toLowerCase()
         )
-        .map((item) => item.administrative_division_level_3_name)
+        .map((item) => item.administrative_division_level_3_name.toLowerCase())
     ),
   ];
 
   const destination = areas?.find(
     (item) =>
-      item.country_name == values.negara &&
-      item.administrative_division_level_1_name == values.provinsi &&
-      item.administrative_division_level_2_name === values.kota &&
-      item.administrative_division_level_3_name === values.kecamatan
+      item.country_name.toLowerCase() === values.country.toLowerCase() &&
+      item.administrative_division_level_1_name.toLowerCase() ===
+        values.province.toLowerCase() &&
+      item.administrative_division_level_2_name.toLowerCase() ===
+        values.regency.toLowerCase() &&
+      item.administrative_division_level_3_name.toLowerCase() ===
+        values.district.toLowerCase()
   );
 
   const destination_id = destination?.id || "";
 
   useEffect(() => {
-    if (String(values.kode_pos)?.length === 5) {
+    if (String(values.postal_code)?.length === 5) {
       debounce(() => {
-        setInput(values.kode_pos || "");
+        setInput(values.postal_code || "");
       }, 500)();
     }
-  }, [values.kode_pos]);
+  }, [values.postal_code]);
 
   useEffect(() => {
     if (destination_id) {

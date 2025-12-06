@@ -26,15 +26,18 @@ type Props = {
 };
 
 const SouvenirGeoJSON = ({ data, handleSelectStore }: Props) => {
+  
   const { open, toggleInfoWindow } = useInfoWindow();
   const { setResponse } = useDirectionStore();
   const { routes } = useTravelRoute();
+
   const handleClose = (index: number) => {
     toggleInfoWindow(index);
     if (!(routes.length > 1)) {
       setResponse(null);
     }
   };
+
   const souvenirFeatureCollection: FeatureCollection = useMemo(() => {
     return {
       type: "FeatureCollection",

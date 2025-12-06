@@ -11,7 +11,7 @@ type Props = {
 };
 
 const EditMarketplacePage = ({ id }: Props) => {
-  const { data, isLoading } = useGetSouvenirPlace(id);
+  const { data, isLoading, refetch } = useGetSouvenirPlace(id);
   const images = useMemo(() => {
     return formatImageUrls(
       data?.galleries?.map((gallery) => gallery.url) || []
@@ -20,8 +20,14 @@ const EditMarketplacePage = ({ id }: Props) => {
   if (isLoading || !data) return <ManagementSkeletonLoader />;
 
   const existingSouvenir: FormMarketplace = {
+    country: data?.location.country,
     name: data?.name,
-    address: data?.address,
+    village: data?.location.village,
+    district: data?.location.district,
+    regency: data?.location.regency,
+    province: data?.location.province,
+    postal_code: data?.location.postal_code,
+    street: data?.street,
     open: data?.open,
     close: data?.close,
     contact_person: data?.contact_person,
@@ -30,12 +36,8 @@ const EditMarketplacePage = ({ id }: Props) => {
     id: data.id,
     destination_id: data.destination_id,
     images,
-    kecamatan: "",
-    kota: "",
-    negara: "",
-    provinsi: "",
   };
-  return <FormStoreSection existingMarketplace={existingSouvenir} />;
+  return <FormStoreSection existingMarketplace={existingSouvenir} callback={refetch} />;
 };
 
 export default EditMarketplacePage;

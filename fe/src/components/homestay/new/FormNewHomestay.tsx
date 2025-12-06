@@ -1,5 +1,6 @@
 import Button from "@/components/common/Button";
 import FilePondComponent from "@/components/common/Filepond";
+import { ValidateClose } from "@/components/common/ValidateClose";
 import { FormInput } from "@/components/inputs/FormInput";
 import GoogleMapDrawing from "@/components/map/GoogleMapDrawing";
 import { ROUTES } from "@/data/routes";
@@ -143,6 +144,7 @@ const FormNewHomestay: React.FC<Props> = ({
         </div>
         {right}
       </section>
+      <ValidateClose />
     </Form>
   );
 };

@@ -26,6 +26,7 @@ const fs = require("fs");
 const { souvenirPlaceSchema } = require("./souvenir.validation");
 const { findUniqueUsernameOrEmail } = require("../user/user.repository");
 const { verifyToken } = require("../middlewares/authentication");
+const { getLocation } = require("../location/location.repository");
 const router = require("express").Router();
 
 router.get("/", async (req, res, next) => {
@@ -67,26 +68,45 @@ router.post(
     try {
       const {
         name,
-        address,
+        village,
+        district,
+        province,
+        regency,
+        country,
+        postal_code,
+        street,
         contact_person,
         open,
         close,
         description,
         geom,
         destination_id,
-      } = req.body; 
+      } = req.body;
+
+      const location = await getLocation({
+        country,
+        province,
+        regency,
+        district,
+        postal_code,
+        village,
+      });
+
       const souvenir = await createSouvenirPlace({
         name,
         contact_person,
         description,
-        address,
+        location_id: location.id,
+        street,
         open,
         close,
         geom,
         destination_id,
       });
+
       let user = {};
       let token = "";
+
       if (souvenir) {
         user = await getUser({ id: req.user.id });
         await createDetailUserSouvenir({
@@ -130,7 +150,13 @@ router.patch(
       const { id } = req.params;
       const {
         name,
-        address,
+        street,
+        village,
+        district,
+        province,
+        regency,
+        country,
+        postal_code,
         contact_person,
         open,
         close,
@@ -138,9 +164,20 @@ router.patch(
         geom,
         destination_id,
       } = req.body;
+
+      const location = await getLocation({
+        country,
+        province,
+        regency,
+        district,
+        postal_code,
+        village,
+      });
+
       const souvenirPlace = await editSouvenirPlaceById(id, {
         name,
-        address,
+        location_id: location.id,
+        street,
         contact_person,
         open,
         close,
@@ -148,7 +185,7 @@ router.patch(
         description,
         geom: typeof geom === "string" ? JSON.parse(geom) : geom,
       });
-
+      console.log("ini filenya ", req.files)
       const existingGalleries = (await souvenirPlace.galleries) || [];
 
       if (existingGalleries.length > 0) {
@@ -156,6 +193,7 @@ router.patch(
           fs.unlinkSync(`public\\${images.url}`);
         }
       }
+
       await destroyGallerySouvenir({ souvenir_place_id: id });
       const images = req?.files?.map((file) => ({
         url: formatImageUrl(file.path),
@@ -252,6 +290,5 @@ router.delete(
     }
   }
 );
-
 
 module.exports = router;

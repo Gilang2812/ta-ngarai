@@ -11,6 +11,7 @@ const {
   SouvenirPlace,
   Shipping,
   DetailMarketplaceCraft,
+  Location,
 } = require("../../models/relation");
 
 const {
@@ -98,6 +99,12 @@ const findUserCheckouts = async (condition) => {
             {
               model: ShippingAddress,
               as: "addresses",
+              include: [
+                {
+                  model: Location,
+                  as: "location",
+                },
+              ],
             },
           ],
         },
@@ -144,12 +151,12 @@ const findUserCheckouts = async (condition) => {
               {
                 model: SouvenirPlace,
                 as: "souvenirPlace",
-                attributes: [
-                  "id",
-                  "destination_id",
-                  "name",
-                  "address",
-                  "contact_person",
+                attributes: ["id", "destination_id", "name", "contact_person"],
+                include: [
+                  {
+                    model: Location,
+                    as: "location",
+                  },
                 ],
               },
             ],
@@ -224,7 +231,13 @@ const userHistory = async (condition) => {
                   {
                     model: SouvenirPlace,
                     as: "souvenirPlace",
-                    attributes: ["id", "name", "address", "contact_person"],
+                    attributes: ["id", "name", "contact_person"],
+                    include: [
+                      {
+                        model: Location,
+                        as: "location",
+                      },
+                    ],
                   },
                 ],
               },

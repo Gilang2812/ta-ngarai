@@ -11,6 +11,7 @@ const router = require("express").Router();
 const imageUpload = require("../../middlewares/imageUploads");
 const { formatImageUrl } = require("../../utils/formatImageUrl");
 const { deleteGalleryByAtribut } = require("./tourism.repository");
+const { getLocation } = require("../location/location.repository");
 
 router.get("/:id", async (req, res) => {
   try {
@@ -45,29 +46,61 @@ router.patch(
   async (req, res) => {
     try {
       const id = req.params.id;
-      const requestData = {
-        name: req.body?.name,
-        type_of_tourism: req.body?.type_of_tourism,
-        address: req.body?.address,
-        open: req.body?.open,
-        close: req.body?.close,
-        ticket_price: req.body?.ticket_price,
-        contact_person: req.body?.contact_person,
-        description: req.body?.description,
-        deposit_percentage: req.body?.deposit_percentage,
-        geom: req.body?.geom,
-        lat: req.body?.lat,
-        lng: req.body?.lng,
-        bank_name: req.body?.bank_name,
-        bank_code: req.body?.bank_code,
-        bank_account_holder: req.body?.bank_account_holder,
-        bank_account_number: req.body?.bank_account_number,
-        qr_url: req?.files?.qr_url
-          ? formatImageUrl(req?.files?.qr_url?.[0].path)
-          : "",
-      };
+      let {
+        name,
+        type_of_tourism,
+        country,
+        province,
+        regency,
+        district,
+        village,
+        postal_code,
+        open,
+        close,
+        ticket_price,
+        contact_person,
+        description,
+        deposit_percentage,
+        geom,
+        lat,
+        lng,
+        bank_name,
+        bank_code,
+        bank_account_holder,
+        bank_account_number,
+      } = req.body;
+      const qr_url = req?.files?.qr_url
+        ? formatImageUrl(req?.files?.qr_url?.[0].path)
+        : "";
 
-      const updatedTourism = await editTourismById(id, requestData);
+      const location = await getLocation({
+        country,
+        province,
+        regency,
+        district,
+        village,
+        postal_code,
+      });
+      const updatedTourism = await editTourismById(id, {
+        name,
+        type_of_tourism,
+        location_id: location.id,
+        open,
+        close,
+        ticket_price,
+        contact_person,
+        description,
+        deposit_percentage,
+        geom,
+        lat,
+        lng,
+        qr_url,
+        bank_name,
+        bank_code,
+        bank_account_holder,
+        bank_account_number,
+      });
+
       if (updatedTourism.qr_url) {
         fs.unlinkSync(`public\\${updatedTourism.qr_url}`);
       }

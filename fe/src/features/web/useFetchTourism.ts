@@ -1,13 +1,14 @@
 import { useAxiosAuth } from "@/lib/axios";
+import { LocationSchema } from "@/types/schema/LocationSchema";
 import { useQuery } from "@tanstack/react-query";
 
 export const useFetchTourism = (id: string) => {
-  const axiosInstance = useAxiosAuth()
- return useQuery<{
+  const axiosInstance = useAxiosAuth();
+  return useQuery<{
     id: string;
     name: string;
     type_of_tourism: string;
-    address: string;
+    location: LocationSchema;
     deposit_percentage: number;
     open: string;
     close: string;
@@ -15,6 +16,7 @@ export const useFetchTourism = (id: string) => {
     contact_person: string;
     bank_code: string;
     bank_name: string;
+    street: string;
     bank_account: string;
     bank_account_holder: string;
     bank_account_number: string;

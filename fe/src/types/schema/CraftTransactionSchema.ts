@@ -1,7 +1,8 @@
 import { DetailCraftResponseSouvenirPlace } from "./DetailCraftSchema";
+import { LocationSchema } from "./LocationSchema";
 import { ReviewGallerySchema } from "./ReviewSchema";
 
-export type ShippingData = { 
+export type ShippingData = {
   shipping_id: string;
   shipping_no: string;
   draft_id: string;
@@ -16,7 +17,7 @@ export type ShippingData = {
   shippingItems: ShippingItem[];
 };
 
-export type ShippingDataWithReviewGallery = { 
+export type ShippingDataWithReviewGallery = {
   shipping_id: string;
   shipping_no: string;
   draft_id: string;
@@ -93,12 +94,7 @@ export type ShippingAddress = {
   recipient_name: string;
   recipient_phone: string;
   street: string;
-  kelurahan: string;
-  kecamatan: string;
-  kota: string;
-  provinsi: string;
-  negara: string;
-  kode_pos: string;
+  location: LocationSchema;
   addressCustomer: AddressCustomer;
 };
 

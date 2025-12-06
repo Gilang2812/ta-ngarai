@@ -16,6 +16,7 @@ const {
   Package,
   PackageDay,
   User,
+  Location,
 } = require("../../models/relation");
 
 const detailFacilityHomestayInclude = {
@@ -134,8 +135,15 @@ const findUnitHomestays = async (newCheckIn) => {
       {
         model: Homestay,
         as: "homestay",
-        attributes: ["name", "address"],
-        include: [detailFacilityHomestayInclude, galleryHomestayInclude],
+        attributes: ["name"],
+        include: [
+          detailFacilityHomestayInclude,
+          galleryHomestayInclude,
+          {
+            model: Location,
+            as: "location",
+          },
+        ],
       },
       {
         model: FacilityUnitDetail,
@@ -188,7 +196,7 @@ const findUnitHomestays = async (newCheckIn) => {
         },
         include: [
           {
-            required:false,
+            required: false,
             model: Reservation,
             as: "reservation",
             attributes: ["id", "check_in", "package_id"],
@@ -239,8 +247,19 @@ const findAllUnitHomestays = async ({ homestay_id }) => {
       {
         model: Homestay,
         as: "homestay",
-        attributes: ["name", "address"],
-        include: [detailFacilityHomestayInclude, galleryHomestayInclude],
+        attributes: ["name"],
+        include: [
+          detailFacilityHomestayInclude,
+          galleryHomestayInclude,
+          {
+            model: Location,
+            as: "location",
+          },
+          {
+            model: Location,
+            as: "location",
+          },
+        ],
       },
       {
         required: false,
@@ -305,7 +324,7 @@ const findAllUnitHomestays = async ({ homestay_id }) => {
         ),
         include: [
           {
-            required:false,
+            required: false,
             model: Reservation,
             as: "reservation",
             attributes: ["package_id", "check_in"],

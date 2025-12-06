@@ -23,7 +23,16 @@ const useManageWorship = () => {
   const [initialValues, setInitialValues] = useState<WorshipForm & LatLngType>({
     id: "",
     name: "",
-    address: "",
+    country: "",
+    district: "",
+    province: "",
+    regency: "",
+    close: "",
+    open: "",
+    contact_person: "",
+    street: "",
+    village: "",
+    postal_code: "",
     capacity: 0,
     description: "",
     status: 1,
@@ -93,7 +102,12 @@ const useManageWorship = () => {
       ...prev,
       id: "",
       name: "",
-      address: "",
+      country: "",
+      district: "",
+      province: "",
+      regency: "",
+      village: "",
+      postal_code: "",
       capacity: 0,
       description: "",
       status: 1,
@@ -104,6 +118,8 @@ const useManageWorship = () => {
 
   const handleEditWorship = (worship: WorshipSchema) => {
     toggleModal();
+    const { country, district, postal_code, province, regency, village } =
+      worship.location;
     const images = formatImageUrls(
       worship?.galleries?.map((gallery) => gallery.url) || []
     );
@@ -114,8 +130,14 @@ const useManageWorship = () => {
     setInitialValues((prev) => ({
       ...prev,
       ...worship,
+      country,
+      province,
+      regency,
+      district,
+      village,
+      postal_code,
       images: images,
-      geom
+      geom,
     }));
   };
 

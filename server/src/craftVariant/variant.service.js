@@ -7,13 +7,7 @@ const {
 } = require("./variant.repository");
 
 const { CustomError } = require("../../utils/CustomError");
-const {
-  findDetailCraft,
-} = require("../detailMarketplaceCraft/detailCraft.repository");
-const {
-  getDetailCrafts,
-} = require("../detailMarketplaceCraft/detailCraft.service");
-
+ 
 const getVariants = async (includeKeys) => {
   const variants = await findVariants(includeKeys);
   return variants;

@@ -9,11 +9,13 @@ import {
   UnitGallerySchema,
 } from "./GalleryHomestaySchema";
 import { DetailReservationResponse } from "./ReservationSchema";
+import { LocationSchema } from "./LocationSchema";
 
 export type HomestaySchema = {
   id: string;
   name: string;
-  address: string;
+  location: LocationSchema;
+  street: string;
   contact_person?: string;
   description?: string;
   status?: number;

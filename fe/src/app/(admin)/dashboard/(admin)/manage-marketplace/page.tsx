@@ -11,7 +11,9 @@ import { Modal } from "@/components/modal/Modal";
 import { useManageMarketplace } from "@/hooks/useManageMarketplace";
 import useSearchTable from "@/hooks/useSearchTable";
 import useTableManagement from "@/hooks/useTableManagement";
+import { formatAddress } from "@/lib/addressFormatter";
 import { timeFormatter } from "@/lib/timeFormatter";
+import { SimplifiedObject } from "@/types/schema/PackageSchema";
 import { useMemo } from "react";
 import { FaCircleInfo } from "react-icons/fa6";
 
@@ -35,11 +37,17 @@ const ManageMarketplace = () => {
         const request = {
           id: item.id,
           name: item.name,
-          address: item.address,
-          contact_person: item.contact_person,
-          open: item.open,
-          close: item.close,
-          description: item.description,
+          country: item?.location?.country,
+          province: item?.location?.province,
+          regency: item?.location?.regency,
+          district: item?.location?.district,
+          village: item?.location?.village,
+          postal_code: item?.location?.postal_code,
+          street: item?.street,
+          contact_person: item?.contact_person,
+          open: item?.open,
+          close: item?.close,
+          description: item?.description,
         };
         return Object.values(request)
           .join(" ")
@@ -73,7 +81,7 @@ const ManageMarketplace = () => {
               <td>{index + indexOfFirstItem + 1}</td>
               <td>{sp.id}</td>
               <td>{sp.name}</td>
-              <td>{sp.address}</td>
+              <td>{formatAddress(sp as unknown as SimplifiedObject)}</td>
               <td>{sp.contact_person}</td>
               <td>{timeFormatter(sp.open)}</td>
               <td>{timeFormatter(sp.close)}</td>

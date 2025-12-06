@@ -1,4 +1,6 @@
 import ImgCraft from "@/components/common/ImgCraft";
+import { formatAddress } from "@/lib/addressFormatter";
+import { SimplifiedObject } from "@/types/schema/PackageSchema";
 import { UserMarketplaceSchema } from "@/types/schema/SouvenirSchema";
 import { Clock, Crown, MapPin, Phone, Users } from "lucide-react";
 import React from "react";
@@ -17,7 +19,7 @@ const DetailMarketplaceSection = ({ souvenirPlace }: Props) => {
           <h3 className="text-xl font-semibold  mb-2">{souvenirPlace?.name}</h3>
           <div className="flex items-start gap-2  mb-3">
             <MapPin className="w-5 h-5 mt-0.5 flex-shrink-0" />
-            <span>{souvenirPlace?.address}</span>
+            <span>{formatAddress(souvenirPlace as unknown as SimplifiedObject)}</span>
           </div>
           <div className="flex items-center gap-2  mb-3">
             <Phone className="w-5 h-5 flex-shrink-0" />

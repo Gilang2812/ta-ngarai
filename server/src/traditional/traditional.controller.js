@@ -4,6 +4,7 @@ const { TraditionalHouse } = require("../../models/relation");
 const { insertGalleryTraditional } = require("../gallery/gallery.repository");
 const fs = require("fs");
 const { formatImageUrl } = require("../../utils/formatImageUrl");
+const { getLocation } = require("../location/location.repository");
 
 const router = require("express").Router();
 
@@ -25,10 +26,39 @@ router.get("/", async (req, res, next) => {
 
 router.post("/", imageUpload().array("images"), async (req, res, next) => {
   try {
-    const { name, address, contact_person, ticket_price, category, min_capacity, open, close, description, status, geom } = req.body;
+    const {
+      name,
+      country,
+      province,
+      regency,
+      district,
+      postal_code,
+      village,
+      street,
+      contact_person,
+      ticket_price,
+      category,
+      min_capacity,
+      open,
+      close,
+      description,
+      status,
+      geom,
+    } = req.body;
+
+    const location = await getLocation({
+      country,
+      province,
+      regency,
+      district,
+      postal_code,
+      village,
+    });
+
     const newTraditionalHouse = await TraditionalHouse.create({
       name,
-      address,
+      location_id: location.id,
+      street,
       contact_person,
       ticket_price,
       category,
@@ -58,11 +88,40 @@ router.post("/", imageUpload().array("images"), async (req, res, next) => {
 router.patch("/:id", imageUpload().array("images"), async (req, res, next) => {
   try {
     const { id } = req.params;
-    const {  name, address, contact_person, ticket_price, category, min_capacity, open, close, description, status, geom } = req.body;
+    const {
+      name,
+      country,
+      province,
+      regency,
+      district,
+      postal_code,
+      village,
+      street,
+      contact_person,
+      ticket_price,
+      category,
+      min_capacity,
+      open,
+      close,
+      description,
+      status,
+      geom,
+    } = req.body;
+
+    const location = await getLocation({
+      country,
+      province,
+      regency,
+      district,
+      postal_code,
+      village,
+    });
+
     const updatedTraditionalHouse = await TraditionalHouse.update(
       {
         name,
-        address,
+        location_id: location.id,
+      street,
         contact_person,
         ticket_price,
         category,

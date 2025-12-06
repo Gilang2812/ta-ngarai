@@ -15,7 +15,15 @@ export const attractionSchema = yup.object().shape({
 
 export const culinarySchema = yup.object().shape({
   name: yup.string().required("Please enter the restaurant name"),
-  address: yup.string().required("Please enter the address"),
+  country: yup.string().max(30).required("Please enter the country"),
+  province: yup.string().max(30).required("Please enter the province"),
+  regency: yup.string().max(50).required("Please enter the regency"),
+  district: yup.string().max(30).required("Please enter the district"),
+  village: yup.string().max(30).required("Please enter the village"),
+  postal_code: yup
+    .string()
+    .length(5, "Postal code must be exactly 5 characters")
+    .required("Please enter the postal code"),
   contact_person: yup.string().required("Please enter the contact person"),
   open: yup.string().required("Please enter the opening time"),
   close: yup.string().required("Please enter the closing time"),
@@ -30,14 +38,30 @@ export const culinarySchema = yup.object().shape({
 
 export const worshipSchema = yup.object().shape({
   name: yup.string().required("Please enter the place of worship name"),
-  address: yup.string().required("Please enter the address"),
+  country: yup.string().max(30).required("Please enter the country"),
+  province: yup.string().max(30).required("Please enter the province"),
+  regency: yup.string().max(50).required("Please enter the regency"),
+  district: yup.string().max(30).required("Please enter the district"),
+  village: yup.string().max(30).required("Please enter the village"),
+  postal_code: yup
+    .string()
+    .length(5, "Postal code must be exactly 5 characters")
+    .required("Please enter the postal code"),
   capacity: yup.number().required("Please enter the capacity"),
   description: yup.string().required("Please provide a description"),
   geom: yup.string().required("Please draw the location on the map"),
 });
 export const traditionalSchema = yup.object().shape({
   name: yup.string().required("Please enter the traditional house name"),
-  address: yup.string().required("Please enter the address"),
+  country: yup.string().max(30).required("Please enter the country"),
+  province: yup.string().max(30).required("Please enter the province"),
+  regency: yup.string().max(50).required("Please enter the regency"),
+  district: yup.string().max(30).required("Please enter the district"),
+  village: yup.string().max(30).required("Please enter the village"),
+  postal_code: yup
+    .string()
+    .length(5, "Postal code must be exactly 5 characters")
+    .required("Please enter the postal code"),
   contact_person: yup.string().required("Please enter the contact person"),
   ticket_price: yup
     .number()
@@ -47,6 +71,6 @@ export const traditionalSchema = yup.object().shape({
   min_capacity: yup.number().required("Please enter the minimum capacity"),
   open: yup.string().required("Please enter the opening time"),
   close: yup.string().required("Please enter the closing time"),
-  description: yup.string().required("Please provide a description"),  
+  description: yup.string().required("Please provide a description"),
   geom: yup.string().required("Please draw the location on the map"),
 });

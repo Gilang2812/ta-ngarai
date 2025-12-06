@@ -1,7 +1,11 @@
 import { useCreateAddress } from "@/features/web/address/useCreateAddress";
 import { useUpdateAddress } from "@/features/web/address/useUpdateAddress";
 import { useGetUserCheckout } from "@/features/web/checkout/useGetUserCheckout";
-import { CheckoutItem, type Address } from "@/types/schema/CheckoutSchema";
+import {
+  AddressForm,
+  CheckoutItem,
+  type Address,
+} from "@/types/schema/CheckoutSchema";
 import { CourierPricing } from "@/types/schema/ShippingSchema";
 import { cornerAlert } from "@/utils/AlertUtils";
 import { useRouter } from "next/navigation";
@@ -67,12 +71,12 @@ export const useCheckout = () => {
     street: editingAddress?.street || "",
     recipient_name: editingAddress?.recipient_name || "",
     recipient_phone: editingAddress?.recipient_phone || "",
-    negara: editingAddress?.negara || "",
-    provinsi: editingAddress?.provinsi || "",
-    kota: editingAddress?.kota || "",
-    kecamatan: editingAddress?.kecamatan || "",
-    kelurahan: editingAddress?.kelurahan || "",
-    kode_pos: editingAddress?.kode_pos || "",
+    country: editingAddress?.location?.country.toLocaleLowerCase() || "",
+    province: editingAddress?.location?.province.toLocaleLowerCase() || "",
+    regency: editingAddress?.location?.regency.toLocaleLowerCase() || "",
+    district: editingAddress?.location?.district.toLocaleLowerCase() || "",
+    village: editingAddress?.location?.village || "",
+    postal_code: editingAddress?.location?.postal_code || "",
     details:
       editingAddress?.details ||
       Object.values(editingAddress || {})
@@ -117,7 +121,7 @@ export const useCheckout = () => {
     setShowAddressForm(true);
   };
 
-  const handleSaveAddress = (values: Address) => {
+  const handleSaveAddress = (values: AddressForm) => {
     if (editingAddress) {
       updateAddress(values);
     } else {
@@ -131,11 +135,9 @@ export const useCheckout = () => {
     setEditingAddress(undefined);
   };
 
-  
-
   return {
     checkout,
-    checkoutLoading, 
+    checkoutLoading,
     addressList,
     selectedAddress,
     showAddressForm,
@@ -148,7 +150,7 @@ export const useCheckout = () => {
     paymentMethod,
     setPaymentMethod,
     orderNotes,
-    setOrderNotes, 
+    setOrderNotes,
     addressInitialValues,
     isPending: creating || updating,
     shippingMethods,

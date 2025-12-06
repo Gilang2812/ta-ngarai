@@ -1,4 +1,3 @@
-const { handleInput } = require("../../utils/handleInput");
 const {
   findAttraction,
   findCulinaryPlace,
@@ -8,7 +7,6 @@ const {
   findTraditionalHouse,
 } = require("./object.repository");
 const { getObjectById, getObjectAround } = require("./object.service");
-const { objectSchema } = require("./object.validation");
 
 const router = require("express").Router();
 
@@ -91,13 +89,13 @@ router.get("/culinary", async (req, res, next) => {
     const columns = [
       "id",
       "name",
-      "address",
       "contact_person",
       "open",
       "close",
       "capacity",
       "description",
       "status",
+      "street",
     ];
     if (!geomless) {
       columns.push("geom");
@@ -120,6 +118,7 @@ router.get("/facilities", async (req, res, next) => {
       "category",
       "price",
       "min_capacity",
+      "street",
     ];
     const geomless = req.query.geomless === "true";
     const { lat, long, radius, geo } = req.query;
@@ -140,12 +139,12 @@ router.get("/souvenirs", async (req, res, next) => {
     const columns = [
       "id",
       "name",
-      "address",
       "contact_person",
       "open",
       "close",
       "description",
       "status",
+      "street",
     ];
     if (!geomless) {
       columns.push("geom");
@@ -164,7 +163,7 @@ router.get("/traditional", async (req, res, next) => {
     const columns = [
       "id",
       "name",
-      "address",
+
       "ticket_price",
       "category",
       "contact_person",
@@ -174,6 +173,7 @@ router.get("/traditional", async (req, res, next) => {
       "description",
       "status",
       "video_url",
+      "street",
     ];
     const geomless = req.query.geomless === "true";
     if (!geomless) {
@@ -193,10 +193,10 @@ router.get("/worship", async (req, res, next) => {
     const columns = [
       "id",
       "name",
-      "address",
       "capacity",
       "description",
       "status",
+      "street",
     ];
     const geomless = req.query.geomless === "true";
     if (!geomless) {
@@ -217,13 +217,13 @@ router.get("/homestay", async (req, res, next) => {
     const columns = [
       "id",
       "name",
-      "address",
       "contact_person",
       "open",
       "close",
       "description",
       "status",
       "video_url",
+      "street",
     ];
     const geomless = req.query.geomless === "true";
     if (!geomless) {

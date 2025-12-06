@@ -30,9 +30,7 @@ const createDetailCraft = async (body) => {
   const existingDetailCraft = await getDetailCrafts({
     craft_variant_id: body.craft_variant_id,
     id_souvenir_place: body.id_souvenir_place,
-  });
-  console.log("body", body);
-  console.log("existingDetailCraft", existingDetailCraft);
+  }); 
   if (existingDetailCraft.length > 0) {
     throw new CustomError("Detail craft already exists", 400);
   }

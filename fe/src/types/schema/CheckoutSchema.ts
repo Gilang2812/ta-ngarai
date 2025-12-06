@@ -1,6 +1,7 @@
 import * as yup from "yup";
 import { DetailCraftResponseSouvenirPlace } from "./DetailCraftSchema";
 import { DraftRequestForm } from "./ShippingSchema";
+import { LocationSchema } from "./LocationSchema";
 
 export const addressFormSchema = yup.object({
   destination_id: yup
@@ -20,27 +21,27 @@ export const addressFormSchema = yup.object({
     .string()
     .required("Recipient phone is required")
     .matches(/^\d{10,15}$/, "Phone number must be between 10 and 15 digits"),
-  negara: yup
+  country: yup
     .string()
     .required("Country is required")
     .max(50, "Country must be at most 50 characters"),
-  provinsi: yup
+  province: yup
     .string()
     .required("State/Province is required")
     .max(50, "State/Province must be at most 50 characters"),
-  kota: yup
+  regency: yup
     .string()
     .required("City is required")
     .max(50, "City must be at most 50 characters"),
-  kecamatan: yup
+  district: yup
     .string()
     .required("District is required")
     .max(50, "District must be at most 50 characters"),
-  kelurahan: yup
+  village: yup
     .string()
     .max(50, "Sub-district must be at most 50 characters")
     .nullable(),
-  kode_pos: yup
+  postal_code: yup
     .string()
     .required("Postal code is required")
     .matches(/^\d{5}$/, "Postal code must be exactly 5 digits"),
@@ -58,10 +59,21 @@ export const addressFormSchema = yup.object({
     .nullable()
     .optional(),
 });
-export type AddressForm = yup.InferType<typeof addressFormSchema>;
-export type Address = AddressForm & {
+export type AddressForm = yup.InferType<typeof addressFormSchema> & {
+  address_id?: string;
+  customer_id?: string | number;
+};
+export type Address = {
   address_id: string;
   customer_id: string | number;
+  destination_id: string;
+  label: string;
+  street: string;
+  recipient_name: string;
+  recipient_phone: string;
+  details: string;
+  location: LocationSchema;
+  is_primary: number | null;
 };
 
 // Checkout Schema
@@ -196,7 +208,7 @@ export interface CraftVariant {
 export type SouvenirPlace = {
   id: string;
   name: string;
-  address: string;
+  location: LocationSchema;
   contact_person: string;
 };
 
@@ -239,7 +251,8 @@ export type Item = {
       souvenirPlace: {
         name: string;
         contact_person: string;
-        address: string;
+        location: LocationSchema;
+        street: string;
       };
     };
   };

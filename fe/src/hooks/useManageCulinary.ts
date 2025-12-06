@@ -23,7 +23,13 @@ const useManageCulinary = () => {
     {
       id: "",
       name: "",
-      address: "",
+      country: "",
+      province: "",
+      street: "",
+      regency: "",
+      district: "",
+      village: "",
+      postal_code: "",
       capacity: 0,
       open: "",
       close: "",
@@ -97,7 +103,12 @@ const useManageCulinary = () => {
       ...prev,
       id: "",
       name: "",
-      address: "",
+      country: "",
+      province: "",
+      regency: "",
+      district: "",
+      village: "",
+      postal_code: "",
       capacity: 0,
       open: "",
       status: 1,
@@ -111,6 +122,8 @@ const useManageCulinary = () => {
   };
 
   const handleEditCulinary = (culinary: CulinarySchema) => {
+    const { country, district, postal_code, province, regency, village } =
+      culinary.location;
     toggleModal();
     const images = formatImageUrls(
       culinary?.galleries?.map((gallery) => gallery.url) || []
@@ -119,6 +132,12 @@ const useManageCulinary = () => {
     setInitialValues((prev) => ({
       ...prev,
       ...culinary,
+      country,
+      province,
+      regency,
+      district,
+      village,
+      postal_code,
       geom,
       images: images,
     }));

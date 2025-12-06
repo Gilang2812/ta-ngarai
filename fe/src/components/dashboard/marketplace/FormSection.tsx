@@ -9,8 +9,10 @@ import { ROUTES } from "@/data/routes";
 
 export const FormStoreSection = ({
   existingMarketplace,
+  callback
 }: {
   existingMarketplace?: FormMarketplace;
+  callback?: () => void;
 }) => {
   return (
     <SingleContentWrapper className="min-h-fit">
@@ -22,7 +24,7 @@ export const FormStoreSection = ({
           <Link href={ROUTES.MARKETPLACE}>Cancel</Link>
         </Button>
       </header>
-      <MarketplaceForm existingMarketplace={existingMarketplace} />
+      <MarketplaceForm existingMarketplace={existingMarketplace} callback={callback} />
     </SingleContentWrapper>
   );
 };

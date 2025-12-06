@@ -31,32 +31,12 @@ const ShippingAddress = sequelize.define(
       type: DataTypes.STRING(15),
       allowNull: true,
     },
-    negara: {
-      type: DataTypes.STRING(50),
-      allowNull: true,
-    },
-    provinsi: {
-      type: DataTypes.STRING(50),
-      allowNull: true,
-    },
-    kota: {
-      type: DataTypes.STRING(50),
-      allowNull: true,
-    },
-    kecamatan: {
-      type: DataTypes.STRING(50),
-      allowNull: true,
-    },
-    kelurahan: {
-      type: DataTypes.STRING(50),
-      allowNull: true,
-    },
-    kode_pos: {
-      type: DataTypes.STRING(50),
+    location_id: {
+      type: DataTypes.STRING(5),
       allowNull: true,
     },
     street: {
-      type: DataTypes.STRING(50),
+      type: DataTypes.STRING(39),
       allowNull: true,
     },
     details: {
@@ -82,6 +62,16 @@ ShippingAddress.beforeCreate(async (instance) => {
     5,
     "address_id"
   );
+});
+
+ShippingAddress.beforeFind((options) => {
+  const { Location } = require("./relation");
+  if (!options.include) options.include = [];
+
+  options.include.push({
+    model: Location,
+    as: "location",
+  });
 });
 
 module.exports = ShippingAddress;

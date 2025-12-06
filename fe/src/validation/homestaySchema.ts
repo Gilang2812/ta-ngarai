@@ -3,7 +3,16 @@ import * as yup from "yup";
 
 export const createHomestaySchema = yup.object({
   name: yup.string().min(2).max(100).required(),
-  address: yup.string().min(5).max(200).required(),
+  country: yup.string().max(30).required(),
+  province: yup.string().max(30).required(),
+  regency: yup.string().max(50).required(),
+  district: yup.string().max(30).required(),
+  village: yup.string().max(30).required(),
+  postal_code: yup
+    .string()
+    .length(5, "Postal code must be exactly 5 characters")
+    .required(),
+  street: yup.string().max(30).required(),
   contact_person: yup.string().min(2).max(100).required(),
   description: yup.string().min(5).max(500).required(),
   geom: yup.string().required("draw your homestay on the map"),

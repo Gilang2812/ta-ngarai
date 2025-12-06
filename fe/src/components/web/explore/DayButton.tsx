@@ -17,6 +17,7 @@ import { Dispatch, SetStateAction } from "react";
 import { Dropdown } from "flowbite-react";
 import { FaCaretDown, FaRoad } from "react-icons/fa";
 import { LANDMARK_POSITION } from "@/lib/objectLandmark";
+import { formatAddress } from "@/lib/addressFormatter"; 
 
 type Props = {
   packageDays: (PackageDay & {
@@ -48,27 +49,27 @@ export const DayButton = ({
     const object = activities?.map((ac) => {
       if (ac?.activity_type === "A") {
         const { geom, geom_area, name, type, price } =
-          ac?.object as AttractionSchema;
+          ac?.object as unknown as AttractionSchema;
         return { geom, geom_area, name, type, price };
       } else if (ac?.activity_type === "CP") {
-        const { geom, geom_area, name, contact_person, address } =
+        const { geom, geom_area, name, contact_person } =
           ac?.object as CulinaryPlace;
-        return { geom, geom_area, name, contact_person, address };
+        return { geom, geom_area, name, contact_person, address: formatAddress(ac?.object as unknown as SimplifiedObject) };
       } else if (ac?.activity_type === "FC") {
-        const { geom, geom_area, name, price } = ac?.object as Facility;
+        const { geom, geom_area, name, price } = ac?.object as unknown as Facility;
         return { geom, geom_area, name, price };
       } else if (ac?.activity_type === "SP") {
-        const { geom, geom_area, name, contact_person, address } =
+        const { geom, geom_area, name, contact_person } =
           ac?.object as SouvenirPlaceSchema;
-        return { geom, geom_area, name, contact_person, address };
+        return { geom, geom_area, name, contact_person, address: formatAddress(ac?.object as unknown as SimplifiedObject) };
       } else if (ac?.activity_type === "TH") {
-        const { geom, geom_area, name, contact_person, address } =
+        const { geom, geom_area, name, contact_person } =
           ac?.object as TraditionalHouse;
-        return { geom, geom_area, name, contact_person, address };
+        return { geom, geom_area, name, contact_person, address: formatAddress(ac?.object as unknown as SimplifiedObject) };
       } else if (ac?.activity_type === "WO") {
-        const { geom, geom_area, name, capacity, address } =
+        const { geom, geom_area, name, capacity } =
           ac?.object as WorshipPlaceSchema;
-        return { geom, geom_area, name, capacity, address };
+        return { geom, geom_area, name, capacity, address: formatAddress(ac?.object as unknown as SimplifiedObject) };
       }
     });
     if (key === buttonActive) {
@@ -113,7 +114,7 @@ export const DayButton = ({
               !!(direction || objects?.length > 0) &&
               (buttonActive?.startsWith(`${day?.day}${day?.package_id}`) ||
                 buttonActive ===
-                  `first${day?.day}${day?.package_id}${day?.detailPackages?.[0]?.activity}`)
+                `first${day?.day}${day?.package_id}${day?.detailPackages?.[0]?.activity}`)
             }
           />
         )}
@@ -140,7 +141,7 @@ export const DayButton = ({
             active={
               !!direction &&
               buttonActive ===
-                `first${day?.day}${day?.package_id}${day?.detailPackages?.[0]?.activity}`
+              `first${day?.day}${day?.package_id}${day?.detailPackages?.[0]?.activity}`
             }
           >
             <FaRoad /> visit {day?.detailPackages?.[0]?.description}

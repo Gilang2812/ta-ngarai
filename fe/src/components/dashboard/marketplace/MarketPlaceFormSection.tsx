@@ -32,11 +32,11 @@ const MarketPlaceFormSection = ({ id, isPending }: Props) => {
         <div>
           <FormInput
             type="number"
-            name="kode_pos"
+            name="postal_code"
             label="Postal Code"
             autoFocus
           />
-          {areaData && values.kode_pos && countryName.length === 0 && (
+          {areaData && values.postal_code && countryName.length === 0 && (
             <p className="text-red-600 text-sm font-bold">
               postal code not found
             </p>
@@ -44,7 +44,7 @@ const MarketPlaceFormSection = ({ id, isPending }: Props) => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <FormInput as="select" name="negara" label="Country">
+          <FormInput as="select" name="country" label="Country">
             {!countryName || countryName.length === 0 ? (
               <option value="" disabled>
                 No Country Available, Input Postal Code First
@@ -52,14 +52,14 @@ const MarketPlaceFormSection = ({ id, isPending }: Props) => {
             ) : (
               <>
                 {countryName?.map((item, index) => (
-                  <option key={index} value={item}>
+                  <option key={index} value={item.toLowerCase()}>
                     {item}
                   </option>
                 ))}
               </>
             )}
           </FormInput>
-          <FormInput as="select" name="provinsi" label="State/Province">
+          <FormInput as="select" name="province" label="State/Province">
             {!provinceName || provinceName.length === 0 ? (
               <option value="" disabled>
                 No Province Available, Select Country First
@@ -67,7 +67,7 @@ const MarketPlaceFormSection = ({ id, isPending }: Props) => {
             ) : (
               <>
                 {provinceName?.map((item, index) => (
-                  <option key={index} value={item}>
+                  <option key={index} value={item.toLowerCase()}>
                     {item}
                   </option>
                 ))}
@@ -78,7 +78,7 @@ const MarketPlaceFormSection = ({ id, isPending }: Props) => {
 
         <section>
           <div className="grid grid-cols-1 md:grid-cols-2  gap-4">
-            <FormInput as="select" name="kota" label="City">
+            <FormInput as="select" name="regency" label="City">
               {!cityName || cityName.length === 0 ? (
                 <option value="" disabled>
                   No City Available
@@ -86,14 +86,14 @@ const MarketPlaceFormSection = ({ id, isPending }: Props) => {
               ) : (
                 <>
                   {cityName?.map((item, index) => (
-                    <option key={index} value={item}>
+                    <option key={index} value={item.toLowerCase()}>
                       {item}
                     </option>
                   ))}
                 </>
               )}
             </FormInput>
-            <FormInput as="select" name="kecamatan" label="District">
+            <FormInput as="select" name="district" label="District">
               {!districtName || districtName.length === 0 ? (
                 <option value="" disabled>
                   No District Available, select City First
@@ -101,7 +101,7 @@ const MarketPlaceFormSection = ({ id, isPending }: Props) => {
               ) : (
                 <>
                   {districtName?.map((item, index) => (
-                    <option key={index} value={item}>
+                    <option key={index} value={item.toLowerCase()}>
                       {item}
                     </option>
                   ))}
@@ -110,9 +110,10 @@ const MarketPlaceFormSection = ({ id, isPending }: Props) => {
             </FormInput>
           </div>
         </section>
+        <FormInput type={"text"} label={`village`} name="village" />
+        <FormInput type={"text"} label={`Street`} name="street" />
         {id && <FormInput type={"text"} label={`id`} name="id" readonly />}
         <FormInput type={"text"} label={`name`} name="name" />
-        <FormInput type={"text"} label={`address`} name="address" />
         <FormInput
           type={"number"}
           label={`contact person`}

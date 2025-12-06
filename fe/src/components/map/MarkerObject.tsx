@@ -4,7 +4,7 @@ import { type SimplifiedObject } from "@/types/schema/PackageSchema";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef } from "react";
 import { useTools } from "@/hooks/useTools";
-import InfoWindowObject from "./InfoWindowObject";
+import InfoWindowObject from "./InfoWindowObject"; 
 
 type MarkerProps = {
   position: LatLngLiteral;
@@ -24,7 +24,7 @@ export const MarkerObject = ({
 }: MarkerProps) => {
   const pathName = usePathname();
   const markersRef = useRef<(google.maps.Marker | null)[]>([]);
-
+ 
   const {
     setObjectId,
     togglePackage,

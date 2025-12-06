@@ -29,8 +29,6 @@ const formatPrice = (price) => {
 };
 router.get("/pdfmake/:id", verifyToken, async (req, res) => {
   try {
-    const pathUrl = path.join(__dirname, "test");
-    console.log("link", pathUrl);
     const { id } = req.params;
     const user = {
       username: req?.user?.username || req?.user?.name || "",

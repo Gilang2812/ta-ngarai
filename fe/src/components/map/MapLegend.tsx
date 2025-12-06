@@ -1,3 +1,4 @@
+import { STROKE_COLOR } from "@/data/strokeColor";
 import Image from "next/image";
 import React from "react";
 
@@ -8,9 +9,8 @@ type Props = {
 export default function MapLegend({ isOpen = false }: Props) {
   return (
     <section
-      className={`${
-        !isOpen ? "max-h-0" : "max-h-[9999px]"
-      } transition-all ease-in-out duration-[10s] delay-[0]  absolute z-[1]  overflow-hidden top-1/2 -translate-y-1/2 right-4 origin-top `}
+      className={`${!isOpen ? "max-h-0" : "max-h-[9999px]"
+        } transition-all ease-in-out duration-[10s] delay-[0]  absolute z-[1]  overflow-hidden top-1/2 -translate-y-1/2 right-4 origin-top `}
     >
       <div
         className={` p-4 rounded-sm shadow bg-white [&_div]:flex [&_div]:gap-2 [&_div]:items-center [&_p]:font-normal [&_span]:h-4 [&_span]:w-4   [&_span]:rounded-full`}
@@ -52,6 +52,14 @@ export default function MapLegend({ isOpen = false }: Props) {
           <span><Image width={50} height={50} alt="icon" src="/icons/worship.png" /></span>
           <p>Worship Place</p>
         </div>
+        {
+          Object.keys(STROKE_COLOR).map((key) => (
+            <div key={key}>
+              <span style={{ width: 38, height: 4, background: STROKE_COLOR[key as keyof typeof STROKE_COLOR] }}></span>
+              <p>{key} boundry</p>
+            </div>
+          ))
+        }
       </div>
     </section>
   );

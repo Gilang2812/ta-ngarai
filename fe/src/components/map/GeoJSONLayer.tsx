@@ -1,3 +1,5 @@
+import { STROKE_COLOR } from "@/data/strokeColor";
+import { useAttachmentStore } from "@/stores/attachmentStore";
 import { useGoogleMap } from "@react-google-maps/api";
 import React, { useEffect } from "react";
 
@@ -8,6 +10,7 @@ export interface GeoJsonLayerProps {
   onRightClick?: (feature: google.maps.Data.Feature) => void;
 }
 const GeoJsonLayer = ({ data, onClick, onRightClick }: GeoJsonLayerProps) => {
+  const { setCursorPos } = useAttachmentStore()
   const map = useGoogleMap();
   const stringToColor = (str: string) => {
     let hash = 0;
@@ -21,8 +24,7 @@ const GeoJsonLayer = ({ data, onClick, onRightClick }: GeoJsonLayerProps) => {
   useEffect(() => {
     if (!map || !data) return;
     const dataLayer = new google.maps.Data({ map });
-    const specialLayer = new google.maps.Data({ map });
-
+  
     dataLayer.addGeoJson({
       ...data,
       features: data.features.filter(
@@ -35,6 +37,13 @@ const GeoJsonLayer = ({ data, onClick, onRightClick }: GeoJsonLayerProps) => {
           )
       ),
     });
+    dataLayer.addListener('mousemove', (event: google.maps.Data.MouseEvent) => {
+      setCursorPos({
+        lat: event.latLng!.lat(),
+        lng: event.latLng!.lng(),
+
+      })
+    })
     dataLayer.setStyle((feature) => {
       const type = feature.getProperty("type");
       const name = String(feature.getProperty("name")) || "indonesia";
@@ -48,44 +57,56 @@ const GeoJsonLayer = ({ data, onClick, onRightClick }: GeoJsonLayerProps) => {
 
       switch (type) {
         case "negara":
+          switch(name.toLowerCase()){
+            case "malaysia":
+              fillColor = "#9061f9";
+              break;
+            case "singapore":
+              fillColor = "#e11d48";
+              break;
+            case "brunei":
+              fillColor = "#faca15";
+              break;
+              
+          }
           return {
             fillColor,
-            strokeColor,
+            strokeColor: STROKE_COLOR.international,
             fillOpacity,
             strokeWeight,
           };
         case "provinsi":
           return {
             fillColor: "#f3722c",
-            strokeColor,
+            strokeColor: STROKE_COLOR.provincial,
             fillOpacity,
             strokeWeight,
           };
         case "kab_kota":
           return {
             fillColor: "#f9c74f",
-            strokeColor,
+            strokeColor: STROKE_COLOR.regency,
             fillOpacity,
             strokeWeight,
           };
         case "kecamatan":
           return {
             fillColor: "#90be6d",
-            strokeColor,
+            strokeColor: STROKE_COLOR.district,
             fillOpacity,
             strokeWeight,
           };
         case "village":
           return {
             fillColor: "#577590",
-            strokeColor,
+            strokeColor: STROKE_COLOR.village,
             fillOpacity,
             strokeWeight,
           };
         case "tourism":
           return {
             fillColor: "#43aa8b",
-            strokeColor: fillColor,
+            strokeColor: STROKE_COLOR.tourism,
             fillOpacity: 0,
             strokeWeight: 3,
           };
@@ -98,12 +119,7 @@ const GeoJsonLayer = ({ data, onClick, onRightClick }: GeoJsonLayerProps) => {
           };
       }
     });
-    specialLayer.setStyle({
-      fillColor: "#43aa8b",
-      strokeColor: "#43aa8b",
-      fillOpacity: 0, // transparan
-      strokeWeight: 2,
-    });
+ 
     if (onClick) {
       dataLayer.addListener("click", (event: google.maps.Data.MouseEvent) => {
         onClick(event.feature);
@@ -118,10 +134,9 @@ const GeoJsonLayer = ({ data, onClick, onRightClick }: GeoJsonLayerProps) => {
       );
     }
     return () => {
-      dataLayer.setMap(null);
-      specialLayer.setMap(null);
+      dataLayer.setMap(null); 
     };
-  }, [map, data, onClick, onRightClick]);
+  }, [map, data, onClick, onRightClick, setCursorPos]);
   return null;
 };
 GeoJsonLayer.displayName = "GeoJsonLayer";

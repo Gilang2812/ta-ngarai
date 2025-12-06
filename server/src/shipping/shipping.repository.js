@@ -11,8 +11,8 @@ const {
   CraftVariantGallery,
   ItemCheckoutReviewGallery,
   DetailMarketplaceCraft,
+  Location,
 } = require("../../models/relation");
-const { Literal } = require("sequelize/lib/utils");
 const {
   buildIncludeModels,
 } = require("../detailMarketplaceCraft/detailCraft.utils");
@@ -81,12 +81,7 @@ const findShippingById = async (shippingId) => {
                   "recipient_name",
                   "recipient_phone",
                   "street",
-                  "kelurahan",
-                  "kecamatan",
-                  "kota",
-                  "provinsi",
-                  "negara",
-                  "kode_pos",
+                  "details",
                 ],
                 as: "shippingAddress",
                 include: [
@@ -94,6 +89,10 @@ const findShippingById = async (shippingId) => {
                     model: User,
                     as: "addressCustomer",
                     attributes: ["id", "fullname"],
+                  },
+                  {
+                    model: Location,
+                    as: "location",
                   },
                 ],
               },
@@ -180,7 +179,13 @@ const userHistory = async ({ shipping_id = null, customer_id = null }) => {
               {
                 model: SouvenirPlace,
                 as: "souvenirPlace",
-                attributes: ["id", "name", "address", "contact_person"],
+                attributes: ["id", "name", "contact_person"],
+                include: [
+                  {
+                    model: Location,
+                    as: "location",
+                  },
+                ],
               },
             ],
           },
@@ -212,12 +217,6 @@ const userHistory = async ({ shipping_id = null, customer_id = null }) => {
                   "recipient_name",
                   "recipient_phone",
                   "street",
-                  "kelurahan",
-                  "kecamatan",
-                  "kota",
-                  "provinsi",
-                  "negara",
-                  "kode_pos",
                 ],
                 required: true,
                 as: "shippingAddress",
@@ -226,6 +225,10 @@ const userHistory = async ({ shipping_id = null, customer_id = null }) => {
                     model: User,
                     as: "addressCustomer",
                     attributes: ["id", "fullname"],
+                  },
+                  {
+                    model: Location,
+                    as: "location",
                   },
                 ],
               },
@@ -315,7 +318,13 @@ const findSouvenirTransaction = async ({ id_souvenir_place = null } = {}) => {
               {
                 model: SouvenirPlace,
                 as: "souvenirPlace",
-                attributes: ["id", "name", "address", "contact_person"],
+                attributes: ["id", "name", "contact_person"],
+                include: [
+                  {
+                    model: Location,
+                    as: "location",
+                  },
+                ],
               },
             ],
           },
@@ -344,12 +353,6 @@ const findSouvenirTransaction = async ({ id_souvenir_place = null } = {}) => {
                   "recipient_name",
                   "recipient_phone",
                   "street",
-                  "kelurahan",
-                  "kecamatan",
-                  "kota",
-                  "provinsi",
-                  "negara",
-                  "kode_pos",
                 ],
                 required: true,
                 as: "shippingAddress",
@@ -358,6 +361,10 @@ const findSouvenirTransaction = async ({ id_souvenir_place = null } = {}) => {
                     model: User,
                     as: "addressCustomer",
                     attributes: ["id", "fullname"],
+                  },
+                  {
+                    model: Location,
+                    as: "location",
                   },
                 ],
               },

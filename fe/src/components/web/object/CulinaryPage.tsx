@@ -7,13 +7,15 @@ import { SingleContentWrapper } from "@/components/common/SingleContentWrapper";
 import GalleryObjectSection from "./GalleryObjectSection";
 import DetailHomestayReservationLoader from "@/components/loading/DetailHomestayReservationloader";
 import { Table } from "@/components/common/Table";
+import { formatAddress } from "@/lib/addressFormatter";
+import { SimplifiedObject } from "@/types/schema/PackageSchema";
 
 type Props = {
   id: string;
 };
 
 const CulinaryPage = ({ id }: Props) => {
-  const { data, isLoading } = useCulinary(id); 
+  const { data, isLoading } = useCulinary(id);
   if (!data || isLoading) return <DetailHomestayReservationLoader />;
   return (
     <ContentWrapper>
@@ -32,7 +34,7 @@ const CulinaryPage = ({ id }: Props) => {
               </tr>
               <tr>
                 <td>Address</td>
-                <td>{data?.address}</td>
+                <td>{formatAddress(data as unknown as SimplifiedObject)}</td>
               </tr>
               <tr>
                 <td>Contact Person</td>
