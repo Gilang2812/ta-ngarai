@@ -1,4 +1,4 @@
-import { useCallback,   useState } from "react";
+import { useCallback, useState } from "react";
 
 export const useToggleMapOptions = <T extends Record<string, boolean>>(
   initialState: T
@@ -25,7 +25,7 @@ export const useToggleMapOptions = <T extends Record<string, boolean>>(
 
   const toggleAllOptions = useCallback(() => {
     setState((prev) => (allChecked(prev) ? unCheckAll(prev) : checkAll(prev)));
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const checkAllOptions = useCallback(() => {
@@ -34,7 +34,7 @@ export const useToggleMapOptions = <T extends Record<string, boolean>>(
     ) as T;
 
     setState(checkedState);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const unCheckAllOptions = useCallback(() => {
@@ -43,10 +43,8 @@ export const useToggleMapOptions = <T extends Record<string, boolean>>(
     ) as T;
 
     setState(uncheckedState);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
- 
 
   return {
     state,
@@ -54,6 +52,6 @@ export const useToggleMapOptions = <T extends Record<string, boolean>>(
     toggleAllOptions,
     checkAllOptions,
     unCheckAllOptions,
-    allChecked : allChecked(state),
+    allChecked: allChecked(state),
   };
 };

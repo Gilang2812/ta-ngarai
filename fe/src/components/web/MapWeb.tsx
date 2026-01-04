@@ -35,6 +35,7 @@ import useTravelRoute from "@/hooks/useTravelRoute";
 import MapWeather from "../weather/MapWeather";
 import MarkerInfoWindow from "../map/MarkerInfoWindow";
 import DirectionGuide from "../map/DirectionGuide";
+import StreetGeoJSON from "../map/StreetGeoJSON";
 
 function MapWeb({
   zoom,
@@ -91,7 +92,7 @@ function MapWeb({
       hideAllObjects();
     }
   }, [open, hideAllObjects]);
-  const { isLoading, mergedRegions } = useMapLayer(layers as LayerType);
+  const { isLoading, mergedRegions, streetlayer } = useMapLayer(layers as LayerType);
 
   useEffect(() => {
     if (souvenir) {
@@ -153,10 +154,11 @@ function MapWeb({
           mapRef={mapRef}
           origin={userLocation || clickedPosition}
           onClick={handleManualLocation}
-          mapTypeId={`${isTerrain ? "terrain" : "satellite"}`}
+          mapTypeId={`${isTerrain ? "terrain" : showLabel ? "hybrid" : "satellite"}`}
+
           zoom={zoom || 17}
           options={{
-            mapTypeId: `${isTerrain ? "terrain" : "satellite"}`,
+            mapTypeId: `${isTerrain ? "terrain" : showLabel ? "hybrid" : "satellite"}`,
             scaleControl: true,
             rotateControl: true,
           }}
@@ -178,6 +180,7 @@ function MapWeb({
           {objectGeom && <ObjectGeoJSON data={objectGeom} />}
           {allObjectGeom && <ObjectGeoJSON data={allObjectGeom} />}
           {children}
+          <StreetGeoJSON data={streetlayer} />
           <CustomRoute hideAllLayers={hideAllLayers} />
         </MapLayout>
       </div>

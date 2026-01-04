@@ -18,6 +18,7 @@ import ImgCraft from "../common/ImgCraft";
 import { ROUTES } from "@/data/routes";
 import useAuth from "@/hooks/useAuth";
 import { usePathname } from "next/navigation";
+import { useRef } from "react";
 
 const GalleryHomestay = dynamic(() => import("./GalleryHomestay"), {
   ssr: false,
@@ -35,7 +36,7 @@ export const DetailHomestaySection = ({ id }: { id: string }) => {
     handleSelectedUnit,
     selectedUnit,
   } = useManageDetailHomestay(id);
-
+  const mapRef = useRef<google.maps.Map | null>(null)
   const { user } = useAuth();
 
   if (isLoading) return <DetailHomestayReservationLoader />;
@@ -92,6 +93,7 @@ export const DetailHomestaySection = ({ id }: { id: string }) => {
           <MapLayout
             containerStyle={{ width: "100%", height: "500px" }}
             zoom={18}
+            mapRef={mapRef}
             center={centroid}
           >
             <ReservationHomestayMap geom={geom} />

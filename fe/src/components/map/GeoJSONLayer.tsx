@@ -1,3 +1,5 @@
+
+import { LAYER_STYLES } from "@/data/layerStyles";
 import { STROKE_COLOR } from "@/data/strokeColor";
 import { useAttachmentStore } from "@/stores/attachmentStore";
 import { useGoogleMap } from "@react-google-maps/api";
@@ -24,7 +26,7 @@ const GeoJsonLayer = ({ data, onClick, onRightClick }: GeoJsonLayerProps) => {
   useEffect(() => {
     if (!map || !data) return;
     const dataLayer = new google.maps.Data({ map });
-  
+
     dataLayer.addGeoJson({
       ...data,
       features: data.features.filter(
@@ -57,17 +59,17 @@ const GeoJsonLayer = ({ data, onClick, onRightClick }: GeoJsonLayerProps) => {
 
       switch (type) {
         case "negara":
-          switch(name.toLowerCase()){
+          switch (name.toLowerCase()) {
             case "malaysia":
-              fillColor = "#9061f9";
+              fillColor = LAYER_STYLES.MALAYSIA.background;
               break;
             case "singapore":
-              fillColor = "#e11d48";
+              fillColor = LAYER_STYLES.SINGAPORE.background;
               break;
             case "brunei":
-              fillColor = "#faca15";
+              fillColor = LAYER_STYLES.BRUNEI.background;
               break;
-              
+
           }
           return {
             fillColor,
@@ -77,35 +79,35 @@ const GeoJsonLayer = ({ data, onClick, onRightClick }: GeoJsonLayerProps) => {
           };
         case "provinsi":
           return {
-            fillColor: "#f3722c",
+            fillColor: LAYER_STYLES.PROVINCE.background,
             strokeColor: STROKE_COLOR.provincial,
             fillOpacity,
             strokeWeight,
           };
         case "kab_kota":
           return {
-            fillColor: "#f9c74f",
+            fillColor: LAYER_STYLES.REGENCY.background,
             strokeColor: STROKE_COLOR.regency,
             fillOpacity,
             strokeWeight,
           };
         case "kecamatan":
           return {
-            fillColor: "#90be6d",
+            fillColor: LAYER_STYLES.DISTRICT.background,
             strokeColor: STROKE_COLOR.district,
             fillOpacity,
             strokeWeight,
           };
         case "village":
           return {
-            fillColor: "#577590",
+            fillColor: LAYER_STYLES.VILLAGE.background,
             strokeColor: STROKE_COLOR.village,
             fillOpacity,
             strokeWeight,
           };
         case "tourism":
           return {
-            fillColor: "#43aa8b",
+            fillColor: LAYER_STYLES.TOURISM.background,
             strokeColor: STROKE_COLOR.tourism,
             fillOpacity: 0,
             strokeWeight: 3,
@@ -119,7 +121,7 @@ const GeoJsonLayer = ({ data, onClick, onRightClick }: GeoJsonLayerProps) => {
           };
       }
     });
- 
+
     if (onClick) {
       dataLayer.addListener("click", (event: google.maps.Data.MouseEvent) => {
         onClick(event.feature);
@@ -134,7 +136,7 @@ const GeoJsonLayer = ({ data, onClick, onRightClick }: GeoJsonLayerProps) => {
       );
     }
     return () => {
-      dataLayer.setMap(null); 
+      dataLayer.setMap(null);
     };
   }, [map, data, onClick, onRightClick, setCursorPos]);
   return null;

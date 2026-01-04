@@ -46,7 +46,7 @@ export const Around = ({ handleCloseAround, isAroundOpen }: AroundProps) => {
               className="border rounded divide-x font-normal"
             >
               <section className="flex items-center justify-between gap-4 p-2 px-4 capitalize">
-                <p>{`${index + 1}. ${route.name}`}</p>
+                <p>{`${String.fromCharCode(65 + index).toUpperCase()}. ${route.name}`}</p>
                 <Button
                   variant={"danger"}
                   type="button"
@@ -63,7 +63,7 @@ export const Around = ({ handleCloseAround, isAroundOpen }: AroundProps) => {
               type="button"
               variant={"edit"}
             >
-              Return to To Your Location
+              Return to Your Location
             </Button>
             <Button
               className="border"

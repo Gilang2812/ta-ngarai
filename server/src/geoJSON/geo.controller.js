@@ -6,6 +6,7 @@ const {
   getAllKabKota,
   getAllKecamatan,
   getAllVillages,
+  getStreets,
 } = require("./geo.service");
 
 const router = express.Router();
@@ -56,6 +57,15 @@ router.get("/village", async (req, res, next) => {
   try {
     const villages = await getAllVillages();
     res.status(200).json(villages);
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.get("/street", async (req, res, next) => {
+  try {
+    const streets = await getStreets();
+    res.status(200).json(streets);
   } catch (error) {
     next(error);
   }

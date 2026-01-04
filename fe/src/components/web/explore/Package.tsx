@@ -50,7 +50,7 @@ export const Package = ({ title }: { title: string }) => {
           <tr className="border-b ">
             <td className="flex gap-1 items-center relative flex-wrap gap-y-2 p-2">
               <ButtonTooltip
-                label={`${isUserAuth ? "Book Now" : "Login As Customer First"}`}
+                label={`${isUserAuth ? "Reserve Now" : "Login As Customer First"}`}
                 className="rounded-none"
                 variant="success"
                 disabled={!isUserAuth}

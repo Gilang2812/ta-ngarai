@@ -5,8 +5,10 @@ import { useFetchProvince } from "@/features/map/useFetchProvince";
 import { useFetchVillage } from "@/features/map/useFetchVillage";
 import { useMergeGeoJSON } from "./useMergeGeoJSON";
 import { LayerType } from "@/data/layers";
+import { useFetchStreet } from "@/features/map/useFetchStreet";
 
 export const useMapLayer = (layers: LayerType) => {
+  console.log("useMapLayers called with layers:", layers);
   const { data: country, isLoading: isCountryLoading } = useFetchCountry(
     layers.country
   );
@@ -21,6 +23,8 @@ export const useMapLayer = (layers: LayerType) => {
     layers.village
   );
 
+  const { data: street, isLoading: isStreetLoading } = useFetchStreet();
+
   const tourismVillage = village
     ? {
         ...village,
@@ -29,7 +33,10 @@ export const useMapLayer = (layers: LayerType) => {
             (feature) =>
               String(feature.properties?.name).toLowerCase() === "koto gadang"
           )
-          .map((f) => ({ ...f, properties: { ...f.properties, type: "tourism" } })),
+          .map((f) => ({
+            ...f,
+            properties: { ...f.properties, type: "tourism" },
+          })),
       }
     : null;
 
@@ -38,6 +45,7 @@ export const useMapLayer = (layers: LayerType) => {
     isProvinceLoading ||
     isKabKotaLoading ||
     isKecamatanLoading ||
+    isStreetLoading ||
     isVillageLoading;
   const mergedRegions = useMergeGeoJSON([
     layers.tourism ? tourismVillage : null,
@@ -48,5 +56,7 @@ export const useMapLayer = (layers: LayerType) => {
     layers.village ? village : null,
   ]);
 
-  return { isLoading, mergedRegions };
+  const streetlayer = layers.street ? street : null;
+
+  return { isLoading, mergedRegions, streetlayer };
 };

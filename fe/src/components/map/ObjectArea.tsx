@@ -45,7 +45,7 @@ export const ObjectArea = () => {
     objects.map((ob, index) => (
       <MapMarker
         key={index}
-        label={{ text: (index + 1).toString(), color: "white" }}
+        label={{ text: (String.fromCharCode(65 + index)), color: "white" }}
         position={getCentroid(ob.geom)}
         onClick={() => toggleInfoWindow(index)}
         onLoad={(marker) => {

@@ -1,3 +1,4 @@
+const { read } = require("fs");
 const {
   findAllProvinces,
   findAllKabKota,
@@ -7,11 +8,20 @@ const {
 } = require("./geo.repository");
 const fs = require("fs").promises;
 
+const readFile = async (path) => {
+  try {
+    const data = await fs.readFile("public" + path, "utf-8");
+    return JSON.parse(data);
+  } catch (error) {
+    console.error(`Error reading file at ${path}:`, error);
+    return null;
+  }
+};
+
 const readGeoJSONFile = async (path) => {
   try {
     const data = await fs.readFile("public" + path, "utf-8");
-    const parsedData = JSON.parse(data);
-
+    const parsedData =await readFile(path);
     if (parsedData.type === "FeatureCollection") {
       const firstFeature = parsedData.features[0];
       return firstFeature.geometry;
@@ -103,6 +113,12 @@ const getAllVillages = async () => {
   return villages;
 };
 
+const getStreets = async () => {
+  const streets = await readFile("/map/valid_street.geojson");
+  return streets;
+  // Not implemented yet
+};
+
 module.exports = {
   getAllGeoJSONData,
   getAllCountry,
@@ -110,4 +126,5 @@ module.exports = {
   getAllKabKota,
   getAllKecamatan,
   getAllVillages,
+  getStreets,
 };

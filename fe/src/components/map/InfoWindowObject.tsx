@@ -90,10 +90,10 @@ const InfoWindowObject = ({
             <Button disabled={!isUserAuth} variant={"success"} asChild>
               {isUserAuth ? (
                 <Link href={ROUTES.HOMESTAY_RESERVATION(object.id)}>
-                  Book Now
+                  Reserve Now
                 </Link>
               ) : (
-                "Book Now"
+                "Reserve Now"
               )}
             </Button>
           </section>

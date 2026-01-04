@@ -110,9 +110,9 @@ export const OverviewSection = ({ data, isLoading }: Props) => {
               variant={"success"}
             >
               {isUserAuth ? (
-                <Link href={ROUTES.PACKAGE_RESERVATION(data.id)}>Book Now</Link>
+                <Link href={ROUTES.PACKAGE_RESERVATION(data.id)}>Reserve Now</Link>
               ) : (
-                "book now"
+                "Reserve now"
               )}
             </Button>
           </div>

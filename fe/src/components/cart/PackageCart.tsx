@@ -107,13 +107,13 @@ const PackageCart = () => {
                   <Button
                     variant={"success"}
                     className="text-nowrap"
-                    aria-label={`Book ${item.package_id}`}
+                    aria-label={`Reserve ${item.package_id}`}
                     asChild
                     disabled={!isUserAuth}
                   >
                     {isUserAuth ? (
                       <Link href={ROUTES.PACKAGE_RESERVATION(item.package_id)}>
-                        Book Now
+                        Reserve Now
                       </Link>
                     ) : (
                       "Login First"

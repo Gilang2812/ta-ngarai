@@ -1,4 +1,4 @@
-import { cities } from "@/data/cities"; 
+import { cities } from "@/data/cities";
 import { OverlayView } from "@react-google-maps/api";
 import Image from "next/image";
 import React from "react";

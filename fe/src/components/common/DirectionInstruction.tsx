@@ -7,7 +7,7 @@ import { useDirectionStore } from "@/stores/DirectionStore";
 
 const DirectionInstruction = ({ className }: { className?: string }) => {
   const { response } = useDirectionStore();
- 
+
   return (
     response && (
       <SingleContentWrapper className={className}>
@@ -26,7 +26,7 @@ const DirectionInstruction = ({ className }: { className?: string }) => {
                   <tr>
                     <td className="text-center">0</td>
                     <td>
-                      {`point ${legIndex }`} &rarr; Point {legIndex + 1}{" "}
+                      {`point ${String.fromCharCode(65 + legIndex).toUpperCase()}`} &rarr; Point {String.fromCharCode(65 + legIndex + 1).toUpperCase()}{" "}
                       &mdash;&nbsp;
                       {leg?.distance?.text}
                     </td>
