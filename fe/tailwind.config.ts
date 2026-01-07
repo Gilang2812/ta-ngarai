@@ -1,6 +1,6 @@
 import type { Config } from "tailwindcss";
 import { mtConfig } from "@material-tailwind/react";
-import flowbite from "flowbite-react/tailwind";
+import { plugin as flowbite } from "flowbite-react/tailwind";
 
 const config: Config = {
   content: [
@@ -8,7 +8,7 @@ const config: Config = {
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
     "./node_modules/@material-tailwind/react/**/*.{js,ts,jsx,tsx}",
-    flowbite.content(),
+    "./node_modules/flowbite-react/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
     screens: {
@@ -31,7 +31,6 @@ const config: Config = {
         success: "#4DC397",
         basic: "#f2f7ff",
       },
-
       fontSize: {
         xxs: ["0.625rem", { lineHeight: "1rem" }],
         base: ["min(3vw, 1rem)", { lineHeight: "1.5rem" }],
@@ -69,10 +68,14 @@ const config: Config = {
         },
       },
       animation: {
-        FadeIn: "fadeIn 3s linear ",
+        FadeIn: "fadeIn 3s linear",
       },
     },
   },
-  plugins: [flowbite.plugin(), mtConfig],
+  plugins: [
+    flowbite,
+    mtConfig,
+  ],
 };
+
 export default config;
