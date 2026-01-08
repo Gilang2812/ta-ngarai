@@ -20,8 +20,7 @@ const ImgCraft = ({
       setImgSrc(notFound);
     };
   }, [foundedSrc]);
-
-  console.log("ImgCraft src:", imgSrc);
+ 
 
   return (
     <Image
