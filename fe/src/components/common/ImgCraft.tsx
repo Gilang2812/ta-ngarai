@@ -21,6 +21,8 @@ const ImgCraft = ({
     };
   }, [foundedSrc]);
 
+  console.log("ImgCraft src:", imgSrc);
+
   return (
     <Image
       src={imgSrc}
