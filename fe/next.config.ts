@@ -22,9 +22,9 @@ const nextConfig = {
         hostname: "openweathermap.org",
         pathname: "/img/wn/**",
       },
-      {
+       {
         protocol: "https",
-        hostname: "ta-be-production.up.railway.app",
+        hostname: "kage.kotogadang.cloud",
         pathname: "/images/**",
       },
     ],
