@@ -1,3 +1,4 @@
+import { baseUrl } from "@/lib/baseUrl";
 import { io, Socket } from "socket.io-client";
 import { create } from "zustand";
 
@@ -12,7 +13,7 @@ export const useSocketStore = create<SocketType>((set, get) => ({
   socket: null,
   connect: (userId) => {
     if (get().socket) return;
-    const socket = io("http://localhost:5000");
+    const socket = io( baseUrl||"http://localhost:5000");
     socket.emit("join", userId);
     set({ socket });
   },
