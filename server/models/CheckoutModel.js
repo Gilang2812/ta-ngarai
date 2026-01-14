@@ -38,7 +38,7 @@ const Checkout = sequelize.define(
     payment_date: {
       type: DataTypes.DATE,
       allowNull: true,
-    },nod
+    },
   },
   {
     tableName: "checkout",
