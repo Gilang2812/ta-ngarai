@@ -32,6 +32,7 @@ const {
   deleteGalleryPackage,
   createGalleryPackage,
 } = require("../gallery/gallery.service");
+const { unlinkSync } = require("../../utils/unlinkSync");
 const router = require("express").Router();
 
 router.get("/", async (req, res, next) => {
@@ -300,7 +301,7 @@ router.put(
         }
       }
       if (updatedPackage.video_url) {
-        fs.unlinkSync(`public/${updatedPackage.video_url}`);
+        unlinkSync(`public/${updatedPackage.video_url}`);
       }
 
       await deleteGalleryPackage({ package_id: id });

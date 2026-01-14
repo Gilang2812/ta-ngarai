@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const imageUpload = require("../../middlewares/imageUploads");
 const { formatImageUrl } = require("../../utils/formatImageUrl");
+const { unlinkSync } = require("../../utils/unlinkSync");
 const {
   insertGallery,
   deleteGalleryByAtribut,
@@ -17,6 +18,8 @@ const {
 } = require("./detailCraft.service");
 const { detailCraftSchema } = require("./detailCraft.validation");
 const fs = require("fs");
+
+
 router.get("/users", async (req, res, next) => {
   try {
     const includeKeys = req.query.include?.split(",") || [];
@@ -162,7 +165,7 @@ router.patch(
       if (!isNewImage) {
         console.log("new galerry", isNewImage);
         for (const image of req.files) {
-          fs.unlinkSync(image.path);
+          unlinkSync(image.path);
         }
       } else {
         const images = req.files
@@ -173,7 +176,7 @@ router.patch(
             }))
           : [];
         for (const image of existingGalleries) {
-          fs.unlinkSync(`public\\${image.url}`);
+          unlinkSync(`public\\${image.url}`);
         }
         await deleteGalleryByAtribut({ craft_variant_id, id_souvenir_place });
         for (const image of images) {

@@ -2,6 +2,7 @@ const { DataTypes } = require("sequelize");
 const sequlize = require("../config/database");
 const { CustomError } = require("../utils/CustomError");
 const fs = require("fs");
+const { unlinkSync } = require("../utils/unlinkSync.js");
 const DetailMarketplaceCraft = sequlize.define(
   "DetailMarketplaceCraft",
   {
@@ -73,7 +74,7 @@ DetailMarketplaceCraft.beforeBulkDestroy(async (crafts) => {
 
   if (galleries.length > 0) {
     for (const image of galleries) {
-      fs.unlinkSync(`public\\${image.url}`);
+      unlinkSync(`public\\${image.url}`);
     }
   }
 });

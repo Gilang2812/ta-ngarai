@@ -5,6 +5,7 @@ const { insertGalleryWorship } = require("../gallery/gallery.repository");
 const fs = require("fs");
 const { formatImageUrl } = require("../../utils/formatImageUrl");
 const { getLocation } = require("../location/location.repository");
+const { unlinkSync } = require("../../utils/unlinkSync");
 
 const router = require("express").Router();
 
@@ -121,7 +122,7 @@ router.patch("/:id", imageUpload().array("images"), async (req, res, next) => {
 
     if (existingGalleries.length > 0) {
       for (const gallery of existingGalleries) {
-        fs.unlinkSync(`public/${gallery.url}`);
+        unlinkSync(`public/${gallery.url}`);
       }
     }
 

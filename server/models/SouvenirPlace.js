@@ -3,6 +3,7 @@ const sequelize = require("../config/database");
 const { generateCustomId } = require("../utils/generateId");
 const { CustomError } = require("../utils/CustomError");
 const fs = require("fs");
+const { unlinkSync } = require("../utils/unlinkSync");
 const SouvenirPlace = sequelize.define(
   "SouvenirPlace",
   {
@@ -93,7 +94,7 @@ SouvenirPlace.beforeBulkDestroy(async (instaces) => {
 
   if (galleries.length > 0) {
     for (const image of galleries) {
-      fs.unlinkSync(`public\\${image.url}`);
+      unlinkSync(`public\\${image.url}`);
     }
   }
 

@@ -2,6 +2,7 @@ const { DataTypes } = require("sequelize");
 const sequelize = require("../config/database");
 const fs = require("fs");
 const { CustomError } = require("../utils/CustomError");
+const { unlinkSync } = require("../utils/unlinkSync");
 
 const UnitHomestay = sequelize.define(
   "UnitHomestay",
@@ -108,11 +109,7 @@ UnitHomestay.beforeBulkDestroy(async (instance) => {
     },
   });
   for (const item of gallery) {
-    fs.unlinkSync(`public\\${item.url}`, (err) => {
-      if (err) {
-        console.error(`Error deleting file ${item.url}:`, err);
-      }
-    });
+    unlinkSync(`public\\${item.url}`);
   }
 });
 

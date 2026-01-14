@@ -12,6 +12,7 @@ const imageUpload = require("../../middlewares/imageUploads");
 const { formatImageUrl } = require("../../utils/formatImageUrl");
 const { deleteGalleryByAtribut } = require("./tourism.repository");
 const { getLocation } = require("../location/location.repository");
+const { unlinkSync } = require("../../utils/unlinkSync");
 
 router.get("/:id", async (req, res) => {
   try {
@@ -102,11 +103,11 @@ router.patch(
       });
 
       if (updatedTourism.qr_url) {
-        fs.unlinkSync(`public\\${updatedTourism.qr_url}`);
+        unlinkSync(`public\\${updatedTourism.qr_url}`);
       }
       const existingGalleries = updatedTourism.galleries || [];
       for (const image of existingGalleries) {
-        fs.unlinkSync(`public\\${image.url}`);
+        unlinkSync(`public\\${image.url}`);
       }
       await deleteTourismGallery({ tourism_village_id: id });
       console.log(updatedTourism);

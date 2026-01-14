@@ -27,6 +27,7 @@ const {
 const fs = require("fs");
 const { deleteFacilityUnitDetail } = require("./homestay.repository");
 const { getLocation } = require("../location/location.repository");
+const { unlinkSync } = require("../../utils/unlinkSync");
 
 router.get("/", async (req, res, next) => {
   try {
@@ -184,7 +185,7 @@ router.patch(
       const existingGalleries = homestay.toJSON().galleries || [];
 
       for (const g of existingGalleries) {
-        fs.unlinkSync(`public\\${g.url}`);
+        unlinkSync(`public\\${g.url}`);
       }
 
       await deleteGalleryHomestay({ homestay_id: id });
@@ -273,7 +274,7 @@ router.patch(
       await deleteGalleryUnit({ homestay_id, unit_type, unit_number });
       if (existingGalleries.length > 0) {
         for (const g of existingGalleries) {
-          fs.unlinkSync(`public\\${g.url}`);
+          unlinkSync(`public\\${g.url}`);
         }
       }
       for (const image of images) {

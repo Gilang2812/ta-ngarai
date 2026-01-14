@@ -1,6 +1,7 @@
 const imageUpload = require("../../middlewares/imageUploads");
 const { Attraction, GalleryAttraction } = require("../../models/relation");
 const { formatImageUrl } = require("../../utils/formatImageUrl");
+const { unlinkSync } = require("../../utils/unlinkSync");
 const { insertGalleryAttraction } = require("../gallery/gallery.repository");
 const fs = require("fs");
 const router = require("express").Router();
@@ -84,7 +85,7 @@ router.patch("/:id", imageUpload().array("images"), async (req, res, next) => {
 
     if (existingGalleries.length > 0) {
       for (const gallery of existingGalleries) {
-        fs.unlinkSync(`public/${gallery.url}`);
+        unlinkSync(`public/${gallery.url}`);
       }
     }
     await GalleryAttraction.destroy({

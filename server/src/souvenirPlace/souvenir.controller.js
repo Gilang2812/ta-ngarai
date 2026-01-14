@@ -27,6 +27,7 @@ const { souvenirPlaceSchema } = require("./souvenir.validation");
 const { findUniqueUsernameOrEmail } = require("../user/user.repository");
 const { verifyToken } = require("../middlewares/authentication");
 const { getLocation } = require("../location/location.repository");
+const { unlinkSync } = require("../../utils/unlinkSync");
 const router = require("express").Router();
 
 router.get("/", async (req, res, next) => {
@@ -190,7 +191,7 @@ router.patch(
 
       if (existingGalleries.length > 0) {
         for (const images of existingGalleries) {
-          fs.unlinkSync(`public\\${images.url}`);
+          unlinkSync(`public\\${images.url}`);
         }
       }
 

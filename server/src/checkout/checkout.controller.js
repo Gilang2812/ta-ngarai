@@ -36,6 +36,7 @@ const {
 const {
   findDetailCraft,
 } = require("../detailMarketplaceCraft/detailCraft.repository");
+const { unlinkSync } = require("../../utils/unlinkSync");
 
 const router = require("express").Router();
 
@@ -297,7 +298,7 @@ router.patch(
             await deleteReviewGalleryById({
               id: gallery.id,
             });
-            fs.unlinkSync(`public\\${gallery.url}`);
+            unlinkSync(`public\\${gallery.url}`);
           });
         });
         if (images.length > 0) {
