@@ -186,7 +186,7 @@ router.patch(
         description,
         geom: typeof geom === "string" ? JSON.parse(geom) : geom,
       });
-      console.log("ini filenya ", req.files)
+      console.log("ini filenya ", req.files);
       const existingGalleries = (await souvenirPlace.galleries) || [];
 
       if (existingGalleries.length > 0) {
@@ -203,6 +203,7 @@ router.patch(
 
       if (images.length > 0) {
         for (const image of images) {
+          console.log("ini image ", image);
           await insertGallerySouvenir(image);
         }
       }
