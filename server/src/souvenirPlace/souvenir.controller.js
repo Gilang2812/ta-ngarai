@@ -194,12 +194,13 @@ router.patch(
           unlinkSync(`public\\${images.url}`);
         }
       }
-
       await destroyGallerySouvenir({ souvenir_place_id: id });
       const images = req?.files?.map((file) => ({
         url: formatImageUrl(file.path),
         souvenir_place_id: id,
       }));
+      
+      console.log(images)
 
       if (images.length > 0) {
         for (const image of images) {
