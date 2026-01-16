@@ -200,11 +200,10 @@ router.patch(
         souvenir_place_id: id,
       }));
       
-      console.log(images)
+      
 
       if (images.length > 0) {
-        for (const image of images) {
-          console.log("ini image ", image);
+        for (const image of images) { 
           await insertGallerySouvenir(image);
         }
       }
