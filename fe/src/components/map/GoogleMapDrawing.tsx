@@ -79,6 +79,7 @@ const GoogleMapDrawing = ({ ...props }: Props) => {
               mapTypeId: "satellite",
               zoomControl: true,
               fullscreenControl: true,
+              scaleControl:true,
               mapTypeControl: true,
               streetViewControl: true,
               gestureHandling: "greedy",

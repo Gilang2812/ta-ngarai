@@ -10,8 +10,7 @@ import Link from "next/link";
 import { Packages } from "@/types/schema/PackageSchema";
 import { ROUTES } from "@/data/routes";
 import useUserRole from "@/hooks/useUserRole";
-import { useToggleStore } from "@/stores/ToggleStore";
-import Button from "@/components/common/Button";
+import { useToggleStore } from "@/stores/ToggleStore"; 
 import { FaPuzzlePiece } from "react-icons/fa6";
 import { useOrderPackage } from "@/hooks/useOrderPackage";
 
@@ -68,7 +67,8 @@ export const Package = ({ title }: { title: string }) => {
                   <FaRegCalendarAlt />
                 )}
               </ButtonTooltip>
-              <Button
+              <ButtonTooltip
+                label="Extend"
                 onClick={() => {
                   handleModifyPackage({ packageId: item?.id });
                 }}
@@ -76,8 +76,9 @@ export const Package = ({ title }: { title: string }) => {
                 type="button"
               >
                 <FaPlusSquare />
-              </Button>
-              <Button
+              </ButtonTooltip>
+              <ButtonTooltip
+                label="Custom"
                 onClick={() =>
                   handleModifyPackage({ packageId: item.id, isCustom: true })
                 }
@@ -85,7 +86,7 @@ export const Package = ({ title }: { title: string }) => {
                 type="button"
               >
                 <FaPuzzlePiece />
-              </Button>
+              </ButtonTooltip>
 
               <DayButton
                 buttonActive={buttonActive}

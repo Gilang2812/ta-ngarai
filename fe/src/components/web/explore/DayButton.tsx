@@ -17,7 +17,7 @@ import { Dispatch, SetStateAction } from "react";
 import { Dropdown } from "flowbite-react";
 import { FaCaretDown, FaRoad } from "react-icons/fa";
 import { LANDMARK_POSITION } from "@/lib/objectLandmark";
-import { formatAddress } from "@/lib/addressFormatter"; 
+import { formatAddress } from "@/lib/addressFormatter";
 
 type Props = {
   packageDays: (PackageDay & {
@@ -119,37 +119,10 @@ export const DayButton = ({
           />
         )}
       >
-        {day?.detailPackages?.[0]?.activity && (
-          <Button
-            onClick={() => {
-              const active = `first${day?.day}${day?.package_id}${day?.detailPackages?.[0]?.activity}`;
-              const isSame = buttonActive === active;
-              if (isSame) {
-                setButtonActive?.(null);
-                clearDirection?.();
-                clearObject?.();
-              } else {
-                clearObject?.();
-                setOption?.(
-                  LANDMARK_POSITION,
-                  getCentroid(day?.detailPackages?.[0]?.object?.geom)
-                );
-                setButtonActive?.(active);
-              }
-            }}
-            variant={"primary"}
-            active={
-              !!direction &&
-              buttonActive ===
-              `first${day?.day}${day?.package_id}${day?.detailPackages?.[0]?.activity}`
-            }
-          >
-            <FaRoad /> visit {day?.detailPackages?.[0]?.description}
-          </Button>
-        )}
+
         {day?.detailPackages?.map((ac, index) => {
-          const next = day?.detailPackages?.[index + 1];
-          if (!next) return;
+          const prev = day?.detailPackages?.[index - 1];
+          const first = index === 0;
           return (
             <Button
               key={index}
@@ -165,8 +138,8 @@ export const DayButton = ({
                   clearObject?.();
                 } else {
                   setOption?.(
-                    getCentroid(ac?.object?.geom),
-                    getCentroid(next?.object?.geom)
+                    first ? LANDMARK_POSITION : getCentroid(prev?.object?.geom),
+                    getCentroid(ac?.object?.geom)
                   );
                   setButtonActive?.(active);
                 }
@@ -177,7 +150,7 @@ export const DayButton = ({
               }
               variant={"primary"}
             >
-              <FaRoad /> then, {ac.description}
+              <FaRoad />{first ? "First" : "Then"}, {ac.description}
             </Button>
           );
         })}
