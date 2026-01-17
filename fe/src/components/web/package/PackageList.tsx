@@ -115,10 +115,10 @@ export const PackageList = () => {
         <div className="flex flex-wrap gap-8 ">
           {isLoading
             ? [...Array(4)].map((_, index) => (
-                <div className="basis-1/3 w-1/2 p-8" key={index}>
-                  <ImagePlaceHoldeSkeleton />{" "}
-                </div>
-              ))
+              <div className="basis-1/3 w-1/2 p-8" key={index}>
+                <ImagePlaceHoldeSkeleton />{" "}
+              </div>
+            ))
             : data && <RenderPackage />}
         </div>
       </section>

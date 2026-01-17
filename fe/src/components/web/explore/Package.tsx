@@ -4,26 +4,30 @@ import React, { useState } from "react";
 import { DayButton } from "./DayButton";
 import { useFetchPackages } from "@/features/web/package/useFetchPackage";
 import ButtonTooltip from "@/components/common/ButtonTooltip";
-import { FaRegCalendarAlt } from "react-icons/fa";
+import { FaPlusSquare, FaRegCalendarAlt } from "react-icons/fa";
 import Loading from "@/app/loading";
 import Link from "next/link";
 import { Packages } from "@/types/schema/PackageSchema";
 import { ROUTES } from "@/data/routes";
 import useUserRole from "@/hooks/useUserRole";
 import { useToggleStore } from "@/stores/ToggleStore";
+import Button from "@/components/common/Button";
+import { FaPuzzlePiece } from "react-icons/fa6";
+import { useOrderPackage } from "@/hooks/useOrderPackage";
 
 // Main component
 export const Package = ({ title }: { title: string }) => {
   const { data, isLoading } = useFetchPackages<Packages>({ package: true });
+  const { handleModifyPackage } = useOrderPackage()
   const [buttonActive, setButtonActive] = useState<string | null>(null);
   const { isUserAuth } = useUserRole();
   const { object_id } = useToggleStore();
   const filteredData = object_id
     ? data?.filter((item) =>
-        item.packageDays.some((day) =>
-          day.detailPackages.some((pkg) => pkg.object_id === object_id)
-        )
-      ) ?? []
+      item.packageDays.some((day) =>
+        day.detailPackages.some((pkg) => pkg.object_id === object_id)
+      )
+    ) ?? []
     : data;
   if (isLoading) return <Loading />;
   const RenderPackage = () => {
@@ -64,6 +68,24 @@ export const Package = ({ title }: { title: string }) => {
                   <FaRegCalendarAlt />
                 )}
               </ButtonTooltip>
+              <Button
+                onClick={() => {
+                  handleModifyPackage({ packageId: item?.id });
+                }}
+                variant={"primary"}
+                type="button"
+              >
+                <FaPlusSquare />
+              </Button>
+              <Button
+                onClick={() =>
+                  handleModifyPackage({ packageId: item.id, isCustom: true })
+                }
+                variant={"primary"}
+                type="button"
+              >
+                <FaPuzzlePiece />
+              </Button>
 
               <DayButton
                 buttonActive={buttonActive}
