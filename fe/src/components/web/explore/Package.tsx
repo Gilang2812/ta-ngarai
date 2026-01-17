@@ -10,7 +10,7 @@ import Link from "next/link";
 import { Packages } from "@/types/schema/PackageSchema";
 import { ROUTES } from "@/data/routes";
 import useUserRole from "@/hooks/useUserRole";
-import { useToggleStore } from "@/stores/ToggleStore"; 
+import { useToggleStore } from "@/stores/ToggleStore";
 import { FaPuzzlePiece } from "react-icons/fa6";
 import { useOrderPackage } from "@/hooks/useOrderPackage";
 
@@ -111,7 +111,7 @@ export const Package = ({ title }: { title: string }) => {
       <header className="space-y-8 mb-8 text-lg text-center">
         <h1 className="text-xl text-wrap px-4 capitalize">{title}</h1>
       </header>
-      <section className="relative overflow-auto  ">
+      <section className="relative    ">
         <table className="w-full table-auto overflow-auto  text-base capitalize">
           <thead>
             <tr className="border-b-2">

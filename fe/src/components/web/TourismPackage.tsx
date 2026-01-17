@@ -10,7 +10,7 @@ const TourismPackage = () => {
   const { togglePackage } = useWebRightSection();
   return (
     <motion.section
-      className={`  p-5 space-y-4 bg-white rounded-xl overflow-clip`}
+      className={`  p-5 space-y-4 bg-white rounded-xl `}
       layoutId="rightSectionWeb"
       {...fadeMotion}
     >
