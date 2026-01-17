@@ -111,7 +111,7 @@ export const Package = ({ title }: { title: string }) => {
       <header className="space-y-8 mb-8 text-lg text-center">
         <h1 className="text-xl text-wrap px-4 capitalize">{title}</h1>
       </header>
-      <section className="relative max-h-[450px] overflow-auto  ">
+      <section className="relative overflow-auto  ">
         <table className="w-full table-auto overflow-auto  text-base capitalize">
           <thead>
             <tr className="border-b-2">

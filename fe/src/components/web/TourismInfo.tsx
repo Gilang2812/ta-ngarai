@@ -17,7 +17,7 @@ export default function TourismInfo() {
   return (
     <motion.div {...fadeMotion} className={`space-y-2`}>
       <ContentHeader text="nagari koto gadang" />
-      <section className="overflow-x-hidden max-h-[550px]">
+      <section className="overflow-x-hidden">
         <TourismGalleries />
         <TourismData />
       </section>
