@@ -55,7 +55,7 @@ export const Package = () => {
           explore village with our package
         </h1>
       </header>
-      <section className="relative max-h-[450px] overflow-auto  ">
+      <section className="relative overflow-auto  ">
         {!isLoading ? (
           <table className="w-full animate-[fadeIn_1s_linear_forwards] table-auto overflow-x-clip  text-base capitalize">
             <thead>
