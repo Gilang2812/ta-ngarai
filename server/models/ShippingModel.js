@@ -17,6 +17,7 @@ const Shipping = sequelize.define(
     order_id: {
       type: DataTypes.STRING(50),
       allowNull: true,
+      defaultValue:null,
     },
     draft_id: {
       type: DataTypes.STRING(50),
